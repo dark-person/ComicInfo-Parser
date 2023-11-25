@@ -21,7 +21,7 @@ go.work
 temp/*
 
 # Example File for developer reference only
-ComicInfoStruct/Example.xml
+Example.xml
 
 # Wails Default
 build/bin
