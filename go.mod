@@ -1,4 +1,4 @@
-module changeme
+module gui-comicinfo
 
 go 1.18
 

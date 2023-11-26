@@ -1,13 +1,13 @@
 package main
 
 import (
-	"changeme/internal/archive"
-	"changeme/internal/comicinfo"
+	"gui-comicinfo/internal/archive"
+	"gui-comicinfo/internal/comicinfo"
 
-	"changeme/internal/parser"
-	"changeme/internal/scanner"
 	"encoding/xml"
 	"fmt"
+	"gui-comicinfo/internal/parser"
+	"gui-comicinfo/internal/scanner"
 	"os"
 	"path/filepath"
 	"testing"
