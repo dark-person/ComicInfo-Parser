@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
-	"fmt"
+
+	"github.com/sirupsen/logrus"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // App struct
@@ -21,7 +23,17 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
+// Open a Dialog for user to select Directory.
+//
+// If Error is occur, then this function will return an empty string
+func (a *App) GetDirectory() string {
+	directory, err := runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{
+		Title: "Select Directory",
+	})
+
+	if err != nil {
+		logrus.Warnf("Error when getting directory from user: %v\n", err)
+		return ""
+	}
+	return directory
 }

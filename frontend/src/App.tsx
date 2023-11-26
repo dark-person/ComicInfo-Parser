@@ -1,28 +1,52 @@
-import {useState} from 'react';
-import logo from './assets/images/logo-universal.png';
-import './App.css';
-import {Greet} from "../wailsjs/go/main/App";
+import { useState } from "react";
+import "./App.css";
+import Form from "react-bootstrap/Form";
+import Tab from "react-bootstrap/Tab";
+import Tabs from "react-bootstrap/Tabs";
+import InputGroup from "react-bootstrap/InputGroup";
+import Button from "react-bootstrap/Button";
+
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
-    const [resultText, setResultText] = useState("Please enter your name below 👇");
-    const [name, setName] = useState('');
-    const updateName = (e: any) => setName(e.target.value);
-    const updateResultText = (result: string) => setResultText(result);
-
-    function greet() {
-        Greet(name).then(updateResultText);
-    }
-
-    return (
-        <div id="App">
-            <img src={logo} id="logo" alt="logo"/>
-            <div id="result" className="result">{resultText}</div>
-            <div id="input" className="input-box">
-                <input id="name" className="input" onChange={updateName} autoComplete="off" name="input" type="text"/>
-                <button className="btn" onClick={greet}>Greet</button>
-            </div>
-        </div>
-    )
+	return (
+		<div id="App">
+			<div id="Folder-Select">
+				<InputGroup className="mb-3">
+					<Button variant="outline-secondary" id="btn-select-folder">
+						Select Folder
+					</Button>
+					<Form.Control
+						aria-describedby="btn-select-folder"
+						type="text"
+						placeholder="select folder.."
+						readOnly
+					/>
+				</InputGroup>
+			</div>
+			<div id="Input-Panel">
+				<Tabs
+					defaultActiveKey="Main"
+					id="uncontrolled-tab-example"
+					className="mb-3">
+					<Tab eventKey="Main" title="Main">
+						Tab content for Home
+					</Tab>
+					<Tab eventKey="Creator" title="Creator">
+						Tab content for Profile
+					</Tab>
+					<Tab eventKey="Tags" title="Tags" disabled>
+						Tab content for Contact
+					</Tab>
+				</Tabs>
+			</div>
+			<div id="Export-Panel">
+				<Button variant="outline-secondary" id="btn-export-xml">
+					Export
+				</Button>
+			</div>
+		</div>
+	);
 }
 
-export default App
+export default App;
