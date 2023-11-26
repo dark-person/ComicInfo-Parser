@@ -5,3 +5,7 @@
 export function GetDirectory() {
   return window['go']['main']['App']['GetDirectory']();
 }
+
+export function QuickExportKomga(arg1) {
+  return window['go']['main']['App']['QuickExportKomga'](arg1);
+}

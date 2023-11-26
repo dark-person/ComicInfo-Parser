@@ -1,13 +1,10 @@
-import Form from "react-bootstrap/Form";
-import Tab from "react-bootstrap/Tab";
-import Tabs from "react-bootstrap/Tabs";
-import InputGroup from "react-bootstrap/InputGroup";
-import Button from "react-bootstrap/Button";
-import { useState } from "react";
-import Card from "react-bootstrap/Card";
-import Collapse from "react-bootstrap/Collapse";
 import Modal from "react-bootstrap/Modal";
 
+/**
+ * A Modal that display "Please wait..." message and block output.
+ * @param show determine the modal to display or not
+ * @returns React Function Component
+ */
 export default function LoadingModal({ show }: { show: boolean }) {
 	return (
 		<Modal
