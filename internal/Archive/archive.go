@@ -2,7 +2,7 @@ package archive
 
 import (
 	"archive/zip"
-	"changeme/internal/parser"
+	"gui-comicinfo/internal/parser"
 	"io"
 	"os"
 	"path/filepath"

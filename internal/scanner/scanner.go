@@ -1,8 +1,8 @@
 package scanner
 
 import (
-	"changeme/internal/comicinfo"
-	"changeme/internal/parser"
+	"gui-comicinfo/internal/comicinfo"
+	"gui-comicinfo/internal/parser"
 	"log"
 	"os"
 	"path/filepath"

@@ -1,11 +1,11 @@
 package main
 
 import (
-	"changeme/internal/archive"
-	"changeme/internal/scanner"
 	"context"
 	"encoding/xml"
 	"fmt"
+	"gui-comicinfo/internal/archive"
+	"gui-comicinfo/internal/scanner"
 	"os"
 	"path/filepath"
 
