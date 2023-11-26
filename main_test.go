@@ -18,7 +18,7 @@ func TestScan(t *testing.T) {
 	pages := scanner.GetPageInfo(`temp\Give My Regards to Black Jack\Give My Regards to Black Jack_v01`)
 
 	v := comicinfo.New()
-	v.Pages = comicinfo.ArrayOfComicPageInfo{Page: pages}
+	v.Pages = pages
 	v.PageCount = len(pages)
 
 	output, err := xml.MarshalIndent(v, "", "  ")
@@ -60,6 +60,8 @@ func TestScan(t *testing.T) {
 		t.Errorf("Result not matched")
 		os.Stdout.Write(output)
 	}
+
+	os.Stdout.Write(output)
 
 }
 
@@ -151,6 +153,42 @@ func TestZip(t *testing.T) {
 
 	// Start Archive
 	filename, _ := archive.CreateZip(testFolder)
+	err = archive.RenameZip(filename)
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+	}
+}
+
+// This Test is for checking internal whole process only. This test is passed with any situation
+func TestProduce(t *testing.T) {
+	absPath := `D:\Desktop\(C102) [丸杏亭 (マルコ)] ヒミツの××開発 (原神)｜秘密的××开发 [黎欧出资汉化]`
+
+	if absPath == "" {
+		panic("Missing absolute path")
+	}
+
+	// Load Abs Path
+	c := scanner.ScanBooks(absPath)
+
+	output, err := xml.MarshalIndent(c, "  ", "    ")
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+	}
+
+	// Open File for reading
+	f, err := os.Create(filepath.Join(absPath, "ComicInfo.xml"))
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+
+	// Write XML Content to file
+	f.Write([]byte("<?xml version=\"1.0\"?>\n"))
+	f.Write(output)
+	f.Sync()
+
+	// Start Archive
+	filename, _ := archive.CreateZip(absPath)
 	err = archive.RenameZip(filename)
 	if err != nil {
 		fmt.Printf("error: %v\n", err)

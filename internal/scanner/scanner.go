@@ -72,7 +72,7 @@ func ScanBooks(folderPath string) comicinfo.ComicInfo {
 	// Get Pages
 	pages := GetPageInfo(folderPath)
 
-	c.Pages = comicinfo.ArrayOfComicPageInfo{Page: pages}
+	c.Pages = pages
 	c.PageCount = len(pages)
 
 	return c

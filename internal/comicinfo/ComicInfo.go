@@ -59,11 +59,11 @@ type ComicInfo struct {
 	Locations       string        `xml:"Locations"`
 	ScanInformation string        `xml:"ScanInformation"`
 
-	Pages               ArrayOfComicPageInfo `xml:"Pages"`
-	CommunityRating     float64              `xml:"CommunityRating,omitempty"`
-	MainCharacterOrTeam string               `xml:"MainCharacterOrTeam,omitempty"`
-	Review              string               `xml:"Review,omitempty"`
-	GTIN                string               `xml:"GTIN,omitempty"`
+	Pages               []ComicPageInfo `xml:"Pages>Page"`
+	CommunityRating     float64         `xml:"CommunityRating,omitempty"`
+	MainCharacterOrTeam string          `xml:"MainCharacterOrTeam,omitempty"`
+	Review              string          `xml:"Review,omitempty"`
+	GTIN                string          `xml:"GTIN,omitempty"`
 }
 
 // Add Tags to the comic info container.
@@ -82,11 +82,6 @@ func (c *ComicInfo) AddTags(tags ...string) {
 	}
 
 	c.Tags = strings.Join(temp, ",")
-}
-
-type ArrayOfComicPageInfo struct {
-	XMLName xml.Name        `xml:"Pages"`
-	Page    []ComicPageInfo `xml:"Page"`
 }
 
 type ComicPageInfo struct {
