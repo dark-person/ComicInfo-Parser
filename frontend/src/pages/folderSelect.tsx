@@ -7,7 +7,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Collapse from "react-bootstrap/Collapse";
-import LoadingModal from "../loading";
+import { CompleteModal, ErrorModal, LoadingModal } from "../modal";
 
 // Wails
 import { GetDirectory, QuickExportKomga } from "../../wailsjs/go/main/App";
@@ -63,6 +63,8 @@ function CollapseCard(props: {
 export default function FolderSelect({ handleConfirm }: ButtonProps) {
 	const [directory, setDirectory] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
+	const [isCompleted, setIsCompleted] = useState(false);
+	const [errMsg, setErrMsg] = useState("");
 
 	function handleSelect() {
 		GetDirectory().then((input) => {
@@ -74,19 +76,34 @@ export default function FolderSelect({ handleConfirm }: ButtonProps) {
 		setIsLoading(true);
 
 		QuickExportKomga(directory).then((err) => {
-			if (err != "") {
-				console.log(err);
-				alert(err);
-			} else {
-				alert("success");
-			}
 			setIsLoading(false);
+			if (err != "") {
+				setErrMsg(err);
+			} else {
+				setIsCompleted(true);
+			}
 		});
 	}
 
 	return (
 		<div id="Folder-Select" className="mt-5">
 			<LoadingModal show={isLoading} />
+			<CompleteModal
+				show={isCompleted}
+				disposeFunc={() => {
+					setIsCompleted(false);
+					return {};
+				}}
+			/>
+			<ErrorModal
+				show={errMsg != ""}
+				errorMessage={errMsg}
+				disposeFunc={() => {
+					setErrMsg("");
+					return {};
+				}}
+			/>
+
 			<h5 className="mb-4">Select Folder to Start:</h5>
 			<InputGroup className="mb-3">
 				<InputGroup.Text>Image Folder</InputGroup.Text>
@@ -104,13 +121,13 @@ export default function FolderSelect({ handleConfirm }: ButtonProps) {
 					Select Folder
 				</Button>
 			</InputGroup>
-			<Button
+			{/* <Button
 				variant="success"
 				className="mx-2"
 				id="btn-confirm-folder"
 				onClick={handleConfirm}>
 				Confirm
-			</Button>
+			</Button> */}
 			<Button
 				variant="outline-info"
 				className="mx-2"
@@ -118,6 +135,12 @@ export default function FolderSelect({ handleConfirm }: ButtonProps) {
 				onClick={handleQuickExport}>
 				Quick Export (Komga)
 			</Button>
+			{/* <Button
+				variant="secondary"
+				className="mx-2"
+				onClick={() => setErrMsg("Testing.")}>
+				Test
+			</Button> */}
 
 			<div className="mt-5">
 				<CollapseCard
