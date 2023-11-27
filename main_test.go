@@ -12,57 +12,6 @@ package main
 // 	"testing"
 // )
 
-// // Test Scanning a Complete Directory.
-// func TestScan(t *testing.T) {
-// 	pages := scanner.GetPageInfo(`temp\Give My Regards to Black Jack\Give My Regards to Black Jack_v01`)
-
-// 	v := comicinfo.New()
-// 	v.Pages = pages
-// 	v.PageCount = len(pages)
-
-// 	output, err := xml.MarshalIndent(v, "", "  ")
-// 	if err != nil {
-// 		fmt.Printf("error: %v\n", err)
-// 	}
-
-// 	result :=
-// 		`<ComicInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-//   <Title></Title>
-//   <Series></Series>
-//   <Number></Number>
-//   <Volume>0</Volume>
-//   <AlternateSeries></AlternateSeries>
-//   <AlternateNumber></AlternateNumber>
-//   <StoryArc></StoryArc>
-//   <StoryArcNumber></StoryArcNumber>
-//   <SeriesGroup></SeriesGroup>
-//   <Summary></Summary>
-//   <Notes></Notes>
-//   <Writer></Writer>
-//   <Publisher></Publisher>
-//   <Imprint></Imprint>
-//   <Genre></Genre>
-//   <Tags></Tags>
-//   <PageCount>0</PageCount>
-//   <LanguageISO></LanguageISO>
-//   <Format></Format>
-//   <AgeRating></AgeRating>
-//   <Manga></Manga>
-//   <Characters></Characters>
-//   <Teams></Teams>
-//   <Locations></Locations>
-//   <ScanInformation></ScanInformation>
-//   <Pages></Pages>
-// </ComicInfo>`
-
-// 	if string(output) != result {
-// 		t.Errorf("Result not matched")
-// 		os.Stdout.Write(output)
-// 	}
-
-// 	os.Stdout.Write(output)
-// }
-
 // // Test below process:
 // //  1. Create ComicInfo.xml for testFolder
 // //  2. Zip the testFolder into .zip
