@@ -65,7 +65,7 @@ func ScanBooks(folderPath string) comicinfo.ComicInfo {
 	}
 
 	// Add Special Tags
-	tags := GetSpecialTags(folderName)
+	tags := parser.GetSpecialTags(folderName)
 	log.Println("Special Tags: ", strings.Join(tags, ","))
 	c.AddTags(tags...)
 

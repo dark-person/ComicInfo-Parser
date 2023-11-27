@@ -16,10 +16,10 @@ Current Schema version is `2.1`.
 
 Utils Package. Extract information from filename/directory name to comicInfo.
 
-Currently Support `Author`, `Title`.
+Currently Support `Author`, `Title`, also for identify special tags.
 
 ## scanner
 
-The package for scanner image directory, also for identify special tags.
+The package for scanner image directory.
 
 This package will produce a `ComicInfo` Struct, which contains pages detail, and also information that extract from `parser` package.
