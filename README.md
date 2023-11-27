@@ -2,7 +2,7 @@
 
 ## About
 
-`ComicInfo.xml` is a metadata for manga/comic. It is used in some self-hosted app, e.g. `komga`.
+ [ComicInfo.xml](https://anansi-project.github.io/docs/comicinfo/documentation)  is a metadata for manga/comic. It is used in some self-hosted app, e.g. `komga`.
 
 This Project is aim to provide a simple GUI for create `ComicInfo.xml` and `.cbz` archive at easy way.
 

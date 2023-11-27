@@ -8,7 +8,7 @@ The package to convert image directory to `.zip` and `.cbz` file.
 
 ## comicinfo
 
-The ComicInfo Structure in `Go`, Converted from `ComicInfo.xsd`.
+The [ComicInfo.xml](https://anansi-project.github.io/docs/comicinfo/documentation) Structure in `Go`, Converted from `ComicInfo.xsd`.
 
 Current Schema version is `2.1`.
 
