@@ -5,6 +5,9 @@ import (
 	"strings"
 )
 
+// Schema Version of Current ComicInfo Structure
+const schemaVersion = "2.1"
+
 // Escape String for XML.
 // Prevent appear &#39 .etc
 type EscapedString struct {
