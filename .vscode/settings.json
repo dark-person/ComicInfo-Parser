@@ -1,29 +1,31 @@
 {
-    "cSpell.words": [
-        "assetserver",
-        "Colour",
-        "comicinfo",
-        "GTIN",
-        "innerxml",
-        "Komga",
-        "Penciller",
-        "wailsapp"
-    ],
-    "editor.formatOnSave": true,
-    "editor.unicodeHighlight.includeStrings": false,
-    "[typescriptreact]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[css]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[javascriptreact]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[html]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[json]": {
-        "editor.defaultFormatter": "vscode.json-language-features"
-    }
+	"cSpell.words": [
+		"assetserver",
+		"Colour",
+		"comicinfo",
+		"GTIN",
+		"innerxml",
+		"Komga",
+		"Penciller",
+		"wailsapp"
+	],
+	"editor.formatOnSave": true,
+	"editor.unicodeHighlight.includeStrings": false,
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[css]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[javascriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[html]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "vscode.json-language-features"
+	},
+	"editor.tabSize": 4,
+	"editor.detectIndentation": true
 }
