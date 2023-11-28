@@ -69,6 +69,7 @@ func TestParse(t *testing.T) {
 
 // Test Marshal a XML to ComicInfo Struct, then Unmarshal to XML.
 func TestMarshal(t *testing.T) {
+	// Read Example XML in directory
 	file, err := os.Open("Example.xml") // For read access.
 	if err != nil {
 		fmt.Printf("error: %v", err)
@@ -80,6 +81,8 @@ func TestMarshal(t *testing.T) {
 		fmt.Printf("error: %v", err)
 		return
 	}
+
+	// Unmarshal XML
 	v := ComicInfo{}
 	err = xml.Unmarshal(data, &v)
 	if err != nil {
@@ -91,13 +94,13 @@ func TestMarshal(t *testing.T) {
 	v.Xsi = "http://www.w3.org/2001/XMLSchema-instance"
 	v.Xsd = "http://www.w3.org/2001/XMLSchema"
 
+	// Marshal XML
 	output, err := xml.MarshalIndent(v, "", "    ")
 	if err != nil {
 		fmt.Printf("error: %v\n", err)
 	}
 
-	// TODO: Check Result
-
+	// Check Result
 	if string(output) != marshalResult {
 		t.Errorf("Result not matched")
 		os.Stdout.Write(output)
