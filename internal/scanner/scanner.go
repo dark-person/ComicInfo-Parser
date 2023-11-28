@@ -3,7 +3,6 @@ package scanner
 import (
 	"gui-comicinfo/internal/comicinfo"
 	"gui-comicinfo/internal/parser"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -66,7 +65,6 @@ func ScanBooks(folderPath string) comicinfo.ComicInfo {
 
 	// Add Special Tags
 	tags := parser.GetSpecialTags(folderName)
-	log.Println("Special Tags: ", strings.Join(tags, ","))
 	c.AddTags(tags...)
 
 	// Get Pages
