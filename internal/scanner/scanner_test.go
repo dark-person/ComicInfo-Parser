@@ -133,3 +133,13 @@ func TestScanBooks(t *testing.T) {
 		}
 	}
 }
+
+func TestCheckFolder(t *testing.T) {
+	// tempDir := t.TempDir()
+
+	// Prepare Test Set
+	//  1. Folder contain Image
+	//  2. Folder contain another folder
+	//  3. Empty Folder
+
+}

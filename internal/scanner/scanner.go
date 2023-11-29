@@ -75,3 +75,38 @@ func ScanBooks(folderPath string) (comicinfo.ComicInfo, error) {
 
 	return c, err
 }
+
+// Check the folder fulfill requirement of the given Scanner Options
+func CheckFolder(folderPath string, opt ScanOpt) (bool, error) {
+	// Get all file/folder in given path
+	entries, err := os.ReadDir(folderPath)
+	if err != nil {
+		return false, err
+	}
+
+	// Prepare variable
+	hasImage := false
+
+	// Loop the entries
+	for _, entry := range entries {
+		// Check if not allow folder
+		if opt.SubFolder == Exclude && entry.IsDir() {
+			return false, nil
+		}
+
+		// Check File Extension is image or not
+		ext := filepath.Ext(entry.Name())
+		ext = strings.ToLower(ext)
+		if ext == ".jpg" || ext == ".png" || ext == ".jpeg" {
+			hasImage = true
+		}
+	}
+
+	// Check if contains any image
+	if opt.Image == Contain && !hasImage {
+		return false, nil
+	}
+
+	// All Checking Passed
+	return true, nil
+}
