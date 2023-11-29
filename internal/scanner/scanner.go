@@ -9,10 +9,10 @@ import (
 )
 
 // Scan all image in the Directory. Sorted by filename.
-func GetPageInfo(absPath string) []comicinfo.ComicPageInfo {
+func GetPageInfo(absPath string) (pages []comicinfo.ComicPageInfo, err error) {
 	entries, err := os.ReadDir(absPath)
 	if err != nil {
-		return nil
+		return nil, err
 	}
 
 	pageInfos := make([]comicinfo.ComicPageInfo, 0)
@@ -45,11 +45,11 @@ func GetPageInfo(absPath string) []comicinfo.ComicPageInfo {
 		// fmt.Println("Entry ", idx, ":", filepath.Join(absPath, entry.Name()), "Size: ", info.Size())
 	}
 
-	return pageInfos
+	return pageInfos, nil
 }
 
 // Scan the folderPath as a book/manga, then return comicInfo.
-func ScanBooks(folderPath string) comicinfo.ComicInfo {
+func ScanBooks(folderPath string) (comicinfo.ComicInfo, error) {
 	folderName := filepath.Base(folderPath)
 
 	// Test XML
@@ -68,10 +68,10 @@ func ScanBooks(folderPath string) comicinfo.ComicInfo {
 	c.AddTags(tags...)
 
 	// Get Pages
-	pages := GetPageInfo(folderPath)
+	pages, err := GetPageInfo(folderPath)
 
 	c.Pages = pages
 	c.PageCount = len(pages)
 
-	return c
+	return c, err
 }

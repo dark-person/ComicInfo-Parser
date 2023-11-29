@@ -24,7 +24,11 @@ func TestGetPageInfo(t *testing.T) {
 	}
 
 	// Start Testing Functions
-	pages := GetPageInfo(tempDir)
+	pages, err := GetPageInfo(tempDir)
+
+	if err != nil {
+		t.Error(err)
+	}
 
 	// Check Size, should skip xml
 	if len(pages) != 3 {
@@ -80,7 +84,11 @@ func TestScanBooks(t *testing.T) {
 
 	// Run Function and Checks
 	for i, folder := range imagesFolder {
-		c := ScanBooks(filepath.Join(tempDir, folder))
+		c, err := ScanBooks(filepath.Join(tempDir, folder))
+
+		if err != nil {
+			t.Error(err)
+		}
 
 		// Check Basic
 		if c.Title != title[i] {

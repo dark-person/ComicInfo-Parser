@@ -64,11 +64,15 @@ func (a *App) QuickExportKomga(folder string) string {
 	}
 
 	// Load Abs Path
-	c := scanner.ScanBooks(absPath)
+	c, err := scanner.ScanBooks(absPath)
+	if err != nil {
+		return err.Error()
+	}
 
 	output, err := xml.MarshalIndent(c, "  ", "    ")
 	if err != nil {
 		fmt.Printf("error: %v\n", err)
+		return err.Error()
 	}
 
 	// Open File for reading
@@ -81,13 +85,18 @@ func (a *App) QuickExportKomga(folder string) string {
 	// Write XML Content to file
 	f.Write([]byte("<?xml version=\"1.0\"?>\n"))
 	f.Write(output)
-	f.Sync()
+
+	err = f.Sync()
+	if err != nil {
+		return err.Error()
+	}
 
 	// Start Archive
 	filename, _ := archive.CreateZip(absPath)
 	err = archive.RenameZip(filename)
 	if err != nil {
 		fmt.Printf("error: %v\n", err)
+		return err.Error()
 	}
 	return ""
 }
