@@ -1,6 +1,7 @@
 package scanner
 
 import (
+	"fmt"
 	"gui-comicinfo/internal/comicinfo"
 	"gui-comicinfo/internal/parser"
 	"os"
@@ -78,6 +79,10 @@ func ScanBooks(folderPath string) (comicinfo.ComicInfo, error) {
 
 // Check the folder fulfill requirement of the given Scanner Options
 func CheckFolder(folderPath string, opt ScanOpt) (bool, error) {
+	if !opt.Valid() {
+		return false, fmt.Errorf("invalid scan options")
+	}
+
 	// Get all file/folder in given path
 	entries, err := os.ReadDir(folderPath)
 	if err != nil {
@@ -85,25 +90,53 @@ func CheckFolder(folderPath string, opt ScanOpt) (bool, error) {
 	}
 
 	// Prepare variable
-	hasImage := false
+	subfolderCount := 0
+	imageCount := 0
+	totalCount := 0
 
 	// Loop the entries
 	for _, entry := range entries {
-		// Check if not allow folder
-		if opt.SubFolder == Exclude && entry.IsDir() {
-			return false, nil
+		totalCount++
+
+		// Directory Check
+		if entry.IsDir() {
+			subfolderCount++
+			continue
 		}
 
-		// Check File Extension is image or not
+		// Image Extension check
 		ext := filepath.Ext(entry.Name())
 		ext = strings.ToLower(ext)
 		if ext == ".jpg" || ext == ".png" || ext == ".jpeg" {
-			hasImage = true
+			imageCount++
+			continue
 		}
 	}
 
-	// Check if contains any image
-	if opt.Image == Contain && !hasImage {
+	// Check Contain Only Option
+	if opt.Image == AllowOnly && (totalCount != imageCount) {
+		return false, nil
+	}
+
+	if opt.SubFolder == AllowOnly && (totalCount != subfolderCount) {
+		return false, nil
+	}
+
+	// Check Reject Option
+	if opt.Image == Reject && imageCount > 0 {
+		return false, nil
+	}
+
+	if opt.SubFolder == Reject && subfolderCount > 0 {
+		return false, nil
+	}
+
+	// Check Contain Option
+	if (opt.Image == Allow || opt.Image == AllowOnly) && imageCount <= 0 {
+		return false, nil
+	}
+
+	if (opt.SubFolder == Allow || opt.SubFolder == AllowOnly) && subfolderCount <= 0 {
 		return false, nil
 	}
 

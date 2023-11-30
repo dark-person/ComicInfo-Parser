@@ -6,12 +6,12 @@ type optEnum int
 const (
 	// Unspecific criteria, bypass option matching.
 	Unspecific optEnum = iota
-	// Contain item that matches option, can include item that not match option
-	Contain
-	// Only contain item that matches option
-	ContainOnly
-	// Exclude all item that matches option
-	Exclude
+	// Allow the item to exist
+	Allow
+	// Allow the item to exist, and not allow other items
+	AllowOnly
+	// Not Allow the item to exist
+	Reject
 )
 
 // The option for scanner package.
@@ -21,4 +21,17 @@ type ScanOpt struct {
 
 	// Option for given path has any image
 	Image optEnum
+}
+
+// Check the ScanOpt is valid for process, prevent contradiction among fields.
+func (opt *ScanOpt) Valid() bool {
+	if opt.Image == AllowOnly && (opt.SubFolder == Allow || opt.SubFolder == AllowOnly) {
+		return false
+	}
+
+	if opt.SubFolder == AllowOnly && (opt.Image == Allow || opt.Image == AllowOnly) {
+		return false
+	}
+
+	return true
 }
