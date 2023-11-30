@@ -78,7 +78,9 @@ export default function FolderSelect({ handleConfirm }: ButtonProps) {
 		QuickExportKomga(directory).then((err) => {
 			setIsLoading(false);
 			if (err != "") {
-				setErrMsg(err);
+				// Convert Error Message Text to Human readable string with foot stop & Capital Letter
+				let result = err.charAt(0).toUpperCase() + err.slice(1) + ".";
+				setErrMsg(result);
 			} else {
 				setIsCompleted(true);
 			}
