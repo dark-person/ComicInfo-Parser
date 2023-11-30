@@ -63,6 +63,14 @@ func (a *App) QuickExportKomga(folder string) string {
 		return "folder cannot be empty"
 	}
 
+	// Validate the directory
+	isValid, err := scanner.CheckFolder(absPath, scanner.ScanOpt{SubFolder: scanner.Reject, Image: scanner.Allow})
+	if err != nil {
+		return err.Error()
+	} else if !isValid {
+		return "folder structure is not correct"
+	}
+
 	// Load Abs Path
 	c, err := scanner.ScanBooks(absPath)
 	if err != nil {
