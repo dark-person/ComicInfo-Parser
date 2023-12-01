@@ -10,7 +10,11 @@ import Collapse from "react-bootstrap/Collapse";
 import { CompleteModal, ErrorModal, LoadingModal } from "../modal";
 
 // Wails
-import { GetDirectory, QuickExportKomga } from "../../wailsjs/go/main/App";
+import {
+	GetDirectory,
+	QuickExportKomga,
+	GetDirectoryWithDefault,
+} from "../../wailsjs/go/main/App";
 
 /** Button Props Interface for FolderSelect */
 type ButtonProps = {
@@ -67,9 +71,15 @@ export default function FolderSelect({ handleConfirm }: ButtonProps) {
 	const [errMsg, setErrMsg] = useState("");
 
 	function handleSelect() {
-		GetDirectory().then((input) => {
-			setDirectory(input);
-		});
+		if (directory != "") {
+			GetDirectoryWithDefault(directory).then((input) => {
+				setDirectory(input);
+			});
+		} else {
+			GetDirectory().then((input) => {
+				setDirectory(input);
+			});
+		}
 	}
 
 	function handleQuickExport() {

@@ -3,4 +3,6 @@
 
 export function GetDirectory():Promise<string>;
 
+export function GetDirectoryWithDefault(arg1:string):Promise<string>;
+
 export function QuickExportKomga(arg1:string):Promise<string>;

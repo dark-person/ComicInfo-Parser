@@ -6,6 +6,10 @@ export function GetDirectory() {
   return window['go']['main']['App']['GetDirectory']();
 }
 
+export function GetDirectoryWithDefault(arg1) {
+  return window['go']['main']['App']['GetDirectoryWithDefault'](arg1);
+}
+
 export function QuickExportKomga(arg1) {
   return window['go']['main']['App']['QuickExportKomga'](arg1);
 }
