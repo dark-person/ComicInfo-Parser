@@ -30,6 +30,10 @@ function App() {
 		}, 5000);
 	}
 
+	/**
+	 * Return to previous page.
+	 * @param event React.MouseEvent
+	 */
 	function backward(event: React.MouseEvent) {
 		// Get Current Mode
 		let temp = mode;
@@ -44,10 +48,12 @@ function App() {
 	return (
 		<div id="App" className="container-fluid">
 			<Row className="min-vh-100">
-				<Col xs={1} className="align-self-center">
-					<Button variant="secondary" onClick={backward}>
-						{"<"}
-					</Button>
+				<Col xs={1} className="mt-4">
+					{mode > 1 && (
+						<Button variant="secondary" onClick={backward}>
+							{"<"}
+						</Button>
+					)}
 				</Col>
 				<Col>
 					{mode == mode_select_folder && (
@@ -56,7 +62,7 @@ function App() {
 					{mode == mode_input_data && <InputPanel />}
 				</Col>
 				<Col xs={1} className="align-self-center">
-					<Button variant="secondary">{">"}</Button>
+					{/* <Button variant="secondary">{">"}</Button> */}
 				</Col>
 			</Row>
 
