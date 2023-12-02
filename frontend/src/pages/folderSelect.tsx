@@ -137,13 +137,13 @@ export default function FolderSelect({ handleConfirm }: ButtonProps) {
 					Select Folder
 				</Button>
 			</InputGroup>
-			{/* <Button
+			<Button
 				variant="success"
 				className="mx-2"
 				id="btn-confirm-folder"
 				onClick={handleConfirm}>
-				Confirm
-			</Button> */}
+				Generate ComicInfo.xml
+			</Button>
 			<Button
 				variant="outline-info"
 				className="mx-2"

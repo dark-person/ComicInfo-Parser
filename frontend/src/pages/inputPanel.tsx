@@ -6,9 +6,15 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import { useState } from "react";
 
+/** Button Props Interface for InputPanel */
+type InputProps = {
+	// returnFunc: (event: React.MouseEvent) => void;
+};
+
 export default function InputPanel() {
 	return (
-		<div id="Input-Panel">
+		<div id="Input-Panel" className="mt-5">
+			<h5 className="mb-4">Modify ComicInfo.xml</h5>
 			<Tabs
 				defaultActiveKey="Main"
 				id="uncontrolled-tab-example"
