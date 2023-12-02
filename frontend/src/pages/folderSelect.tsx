@@ -29,7 +29,7 @@ type ButtonProps = {
  * @returns a Card Component with Collapse ability for card body.
  */
 function CollapseCard(props: {
-	key: number;
+	myKey: number;
 	title: string;
 	body?: React.ReactNode;
 }) {
@@ -43,15 +43,19 @@ function CollapseCard(props: {
 		<Card className="text-start">
 			<Card.Header
 				onClick={handleCollapse}
-				aria-controls={"collapse-text-" + String(props.key)}
+				aria-controls={"collapse-text-" + String(props.myKey)}
 				aria-expanded={open}>
 				<span className="me-2">{open == true ? "▼" : ">"}</span>
 				{props.title}
 			</Card.Header>
 			<Collapse in={open}>
-				<Card.Body id={"collapse-text-" + String(props.key)}>
-					<Card.Text className="newLine">{props.body}</Card.Text>
-				</Card.Body>
+				<div>
+					<Card.Body id={"collapse-text-" + String(props.myKey)}>
+						<Card.Text as="div" className="newLine">
+							{props.body}
+						</Card.Text>
+					</Card.Body>
+				</div>
 			</Collapse>
 		</Card>
 	);
@@ -156,10 +160,10 @@ export default function FolderSelect({ handleConfirm }: ButtonProps) {
 
 			<div className="mt-5">
 				<CollapseCard
-					key={0}
+					myKey={0}
 					title={"Example of Your Image Folder"}
 					body={
-						<div>
+						<>
 							<p>
 								{" 📦 <Manga Name>\n" +
 									" ┣ 📜01.jpg\n" +
@@ -167,14 +171,14 @@ export default function FolderSelect({ handleConfirm }: ButtonProps) {
 									" ┗ <other images>"}
 							</p>
 							<p>No ComicInfo.xml is needed. It will be overwrite if exist.</p>
-						</div>
+						</>
 					}
 				/>
 				<CollapseCard
-					key={1}
+					myKey={1}
 					title={"Quick Export (Komga)"}
 					body={
-						<div>
+						<>
 							<p>
 								Directly Export .cbz file with ComicInfo.xml inside. The
 								generated file with be like:
@@ -188,7 +192,7 @@ export default function FolderSelect({ handleConfirm }: ButtonProps) {
 									" ┣ <other images>\n" +
 									" ┗ 📜ComicInfo.xml\n"}
 							</p>
-						</div>
+						</>
 					}
 				/>
 			</div>
