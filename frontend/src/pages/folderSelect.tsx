@@ -19,8 +19,7 @@ import {
 } from "../../wailsjs/go/main/App";
 
 /** Props Interface for FolderSelect */
-type folderProps = {
-	handleConfirm: () => void;
+type FolderProps = {
 	handleFolder: (folder: string) => void;
 };
 
@@ -68,14 +67,10 @@ function CollapseCard(props: {
  * Page for Selecting Folder to process.
  * This page also contains some basic tutorial for folder structure.
  *
- * @param handleConfirm handler when confirm button is clicked
  * @param handleFolder handler when folder is selected
  * @returns Page for selecting Folder
  */
-export default function FolderSelect({
-	handleConfirm,
-	handleFolder,
-}: folderProps) {
+export default function FolderSelect({ handleFolder }: FolderProps) {
 	const [directory, setDirectory] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const [isCompleted, setIsCompleted] = useState(false);
@@ -108,9 +103,6 @@ export default function FolderSelect({
 
 	function handleProcess() {
 		handleFolder(directory);
-
-		// Switch to another page
-		handleConfirm();
 	}
 
 	return (

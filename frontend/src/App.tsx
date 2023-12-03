@@ -8,10 +8,12 @@ import Button from "react-bootstrap/Button";
 import { Row, Col } from "react-bootstrap";
 
 // Project Specified Component
-import FolderSelect from "./pages/folderSelect";
-import { ErrorModal, LoadingModal } from "./modal";
-import InputPanel from "./pages/inputPanel";
 import { DataPass } from "./data";
+import { ErrorModal, LoadingModal } from "./modal";
+import FolderSelect from "./pages/folderSelect";
+import InputPanel from "./pages/inputPanel";
+
+// Wails
 import { GetComicInfo } from "../wailsjs/go/main/App";
 
 const mode_select_folder = 1;
@@ -54,26 +56,6 @@ function App() {
 		});
 	}
 
-	// TODO: Only for debugging purposes, should be removed later
-	useEffect(() => {
-		console.log("after pass:" + JSON.stringify(data, null, 4));
-	}, [data]);
-
-	/**
-	 * Handling confirm button for select folder
-	 * @deprecated should be removed
-	 */
-	function handleConfirm() {
-		console.log("confirm clicked");
-		// setIsLoading(true);
-
-		// console.log("Delayed for 2 second.");
-		// setTimeout(() => {
-		// 	setIsLoading(false);
-		// 	setMode(mode_input_data);
-		// }, 2000);
-	}
-
 	/**
 	 * Return to previous page.
 	 * @param event React.MouseEvent
@@ -110,10 +92,7 @@ function App() {
 				</Col>
 				<Col>
 					{mode == mode_select_folder && (
-						<FolderSelect
-							handleConfirm={handleConfirm}
-							handleFolder={passingFolder}
-						/>
+						<FolderSelect handleFolder={passingFolder} />
 					)}
 					{mode == mode_input_data && (
 						<InputPanel comicInfo={data?.comicInfo} />
