@@ -5,26 +5,44 @@ import { Form } from "react-bootstrap";
 
 // Project Specified Component
 import { FormDateRow, FormRow } from "../formRow";
+import { comicinfo } from "../../wailsjs/go/models";
 
-/** Button Props Interface for InputPanel */
-// type InputProps = {
-// 	// returnFunc: (event: React.MouseEvent) => void;
-// };
+/** Props Interface for InputPanel */
+type InputProps = {
+	comicInfo: comicinfo.ComicInfo | undefined;
+	// returnFunc: (event: React.MouseEvent) => void;
+};
 
 /**
  * The interface for show/edit book metadata.
  * @returns JSX Element
  */
-function BookMetadata() {
+function BookMetadata({ comicInfo: info }: InputProps) {
 	return (
 		<div>
 			<Form>
-				<FormRow title={"Title"} disabled />
-				<FormRow title={"Summary"} textareaRow={3} disabled />
-				<FormRow title={"Number"} inputType="number" disabled />
-				<FormDateRow title={"Year/Month/Day"} disabled />
-				<FormRow title={"Web"} disabled />
-				<FormRow title={"GTIN"} disabled />
+				<FormRow title={"Title"} value={info?.Title} disabled />
+				<FormRow
+					title={"Summary"}
+					value={info?.Summary.InnerXML}
+					textareaRow={3}
+					disabled
+				/>
+				<FormRow
+					title={"Number"}
+					inputType="number"
+					value={info?.Number}
+					disabled
+				/>
+				<FormDateRow
+					title={"Year/Month/Day"}
+					year={info?.Year}
+					month={info?.Month}
+					day={info?.Day}
+					disabled
+				/>
+				<FormRow title={"Web"} value={info?.Web} disabled />
+				<FormRow title={"GTIN"} value={info?.GTIN} disabled />
 			</Form>
 		</div>
 	);
@@ -34,19 +52,19 @@ function BookMetadata() {
  * The interface for show/edit creator metadata.
  * @returns JSX Element
  */
-function CreatorMetadata() {
+function CreatorMetadata({ comicInfo: info }: InputProps) {
 	return (
 		<div>
 			<Form>
-				<FormRow title={"Writer"} disabled />
-				<FormRow title={"Penciller"} disabled />
-				<FormRow title={"Inker"} disabled />
-				<FormRow title={"Colorist"} disabled />
-				<FormRow title={"Letterer"} disabled />
-				<FormRow title={"CoverArtist"} disabled />
-				<FormRow title={"Editor"} disabled />
-				<FormRow title={"Translator"} disabled />
-				<FormRow title={"Publisher"} disabled />
+				<FormRow title={"Writer"} value={info?.Writer} disabled />
+				<FormRow title={"Penciller"} value={info?.Penciller} disabled />
+				<FormRow title={"Inker"} value={info?.Inker} disabled />
+				<FormRow title={"Colorist"} value={info?.Colorist} disabled />
+				<FormRow title={"Letterer"} value={info?.Letterer} disabled />
+				<FormRow title={"CoverArtist"} value={info?.CoverArtist} disabled />
+				<FormRow title={"Editor"} value={info?.Editor} disabled />
+				<FormRow title={"Translator"} value={info?.Translator} disabled />
+				<FormRow title={"Publisher"} value={info?.Publisher} disabled />
 			</Form>
 		</div>
 	);
@@ -56,11 +74,11 @@ function CreatorMetadata() {
  * The interface for show/edit tags metadata.
  * @returns JSX Element
  */
-function TagMetadata() {
+function TagMetadata({ comicInfo: info }: InputProps) {
 	return (
 		<div>
 			<Form>
-				<FormRow title={"Tag"} textareaRow={10} disabled />
+				<FormRow title={"Tag"} textareaRow={10} value={info?.Tags} disabled />
 			</Form>
 		</div>
 	);
@@ -70,7 +88,7 @@ function TagMetadata() {
  * The panel for input/edit content of ComicInfo.xml
  * @returns JSX Element
  */
-export default function InputPanel() {
+export default function InputPanel({ comicInfo }: InputProps) {
 	return (
 		<div id="Input-Panel" className="mt-5">
 			<h5 className="mb-4">Modify ComicInfo.xml</h5>
@@ -79,14 +97,14 @@ export default function InputPanel() {
 				id="uncontrolled-tab-example"
 				className="mb-3">
 				<Tab eventKey="Main" title="Book Metadata">
-					<BookMetadata />
+					<BookMetadata comicInfo={comicInfo} />
 				</Tab>
 
 				<Tab eventKey="Creator" title="Creator">
-					<CreatorMetadata />
+					<CreatorMetadata comicInfo={comicInfo} />
 				</Tab>
 				<Tab eventKey="Tags" title="Tags">
-					<TagMetadata />
+					<TagMetadata comicInfo={comicInfo} />
 				</Tab>
 			</Tabs>
 		</div>

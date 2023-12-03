@@ -9,9 +9,10 @@ import { Row, Col } from "react-bootstrap";
 
 // Project Specified Component
 import FolderSelect from "./pages/folderSelect";
-import { LoadingModal } from "./modal";
+import { ErrorModal, LoadingModal } from "./modal";
 import InputPanel from "./pages/inputPanel";
 import { DataPass } from "./data";
+import { GetComicInfo } from "../wailsjs/go/main/App";
 
 const mode_select_folder = 1;
 const mode_input_data = 2;
@@ -20,6 +21,7 @@ function App() {
 	const [mode, setMode] = useState<number>(mode_select_folder);
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [errMsg, setErrMsg] = useState<string>("");
 
 	const [data, setData] = useState<DataPass | undefined>(undefined);
 
@@ -29,15 +31,27 @@ function App() {
 	 */
 	function passingFolder(folder: string) {
 		console.log("passing folder: " + folder);
+		// Set Loading Modal
+		setIsLoading(true);
 
-		let temp: DataPass;
-		if (data != undefined) {
-			temp = { folder: folder, comicInfo: data.comicInfo };
-			setData(temp);
-		} else {
-			temp = { folder: folder, comicInfo: undefined };
-			setData(temp);
-		}
+		// Get ComicInfo
+		GetComicInfo(folder).then((response) => {
+			// Remove loading modal
+			setIsLoading(false);
+
+			let error = response.ErrorMessage;
+			if (error != "") {
+				// Print Error Message
+				setErrMsg(error);
+			} else {
+				// Set data with info
+				let temp = { folder: folder, comicInfo: response.ComicInfo };
+				setData(temp);
+
+				// Pass to another panel
+				setMode(mode_input_data);
+			}
+		});
 	}
 
 	// TODO: Only for debugging purposes, should be removed later
@@ -45,7 +59,10 @@ function App() {
 		console.log("after pass:" + JSON.stringify(data, null, 4));
 	}, [data]);
 
-	// Handling confirm button for select folder
+	/**
+	 * Handling confirm button for select folder
+	 * @deprecated should be removed
+	 */
 	function handleConfirm() {
 		console.log("confirm clicked");
 		// setIsLoading(true);
@@ -74,6 +91,15 @@ function App() {
 
 	return (
 		<div id="App" className="container-fluid">
+			<ErrorModal
+				show={errMsg != ""}
+				errorMessage={errMsg}
+				disposeFunc={() => {
+					setErrMsg("");
+					return {};
+				}}
+			/>
+
 			<Row className="min-vh-100">
 				<Col xs={1} className="mt-4">
 					{mode > 1 && (
@@ -89,7 +115,9 @@ function App() {
 							handleFolder={passingFolder}
 						/>
 					)}
-					{mode == mode_input_data && <InputPanel />}
+					{mode == mode_input_data && (
+						<InputPanel comicInfo={data?.comicInfo} />
+					)}
 				</Col>
 				<Col xs={1} className="align-self-center">
 					{/* <Button variant="secondary">{">"}</Button> */}
