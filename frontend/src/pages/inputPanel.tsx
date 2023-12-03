@@ -1,15 +1,6 @@
 // React Component
-import Form from "react-bootstrap/Form";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import InputGroup from "react-bootstrap/InputGroup";
-import Button from "react-bootstrap/Button";
-import { useState } from "react";
-
-/** Button Props Interface for InputPanel */
-type InputProps = {
-	// returnFunc: (event: React.MouseEvent) => void;
-};
 
 export default function InputPanel() {
 	return (

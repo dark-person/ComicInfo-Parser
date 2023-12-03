@@ -7,6 +7,8 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Collapse from "react-bootstrap/Collapse";
+
+// Project Specific Component
 import { CompleteModal, ErrorModal, LoadingModal } from "../modal";
 
 // Wails
@@ -23,7 +25,7 @@ type ButtonProps = {
 
 /**
  * A Card with collapse functionality. The collapsed content will be shown/hidden when click the card title.
- * @param key the unique key for this component, used to generate id
+ * @param myKey the unique key for this component, used to generate id
  * @param title the title to display in Card.Title
  * @param body the body inside the Card.Body
  * @returns a Card Component with Collapse ability for card body.

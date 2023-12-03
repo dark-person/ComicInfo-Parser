@@ -5,21 +5,22 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // React Component
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
+import { Row, Col } from "react-bootstrap";
+
+// Project Specified Component
 import FolderSelect from "./pages/folderSelect";
 import { LoadingModal } from "./modal";
 import InputPanel from "./pages/inputPanel";
-import { Row, Col } from "react-bootstrap";
 
 const mode_select_folder = 1;
 const mode_input_data = 2;
-
-const largest_mode = mode_input_data;
 
 function App() {
 	const [mode, setMode] = useState<number>(mode_select_folder);
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
+	// Handling confirm button for select folder
 	function handleConfirm(event: React.MouseEvent) {
 		console.log("config clicked");
 		setIsLoading(true);
