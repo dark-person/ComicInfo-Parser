@@ -50,7 +50,7 @@ func GetPageInfo(absPath string) (pages []comicinfo.ComicPageInfo, err error) {
 }
 
 // Scan the folderPath as a book/manga, then return comicInfo.
-func ScanBooks(folderPath string) (comicinfo.ComicInfo, error) {
+func ScanBooks(folderPath string) (*comicinfo.ComicInfo, error) {
 	folderName := filepath.Base(folderPath)
 
 	// Test XML
@@ -74,7 +74,7 @@ func ScanBooks(folderPath string) (comicinfo.ComicInfo, error) {
 	c.Pages = pages
 	c.PageCount = len(pages)
 
-	return c, err
+	return &c, err
 }
 
 // Check the folder fulfill requirement of the given Scanner Options
