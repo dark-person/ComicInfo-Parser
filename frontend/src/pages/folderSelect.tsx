@@ -7,6 +7,8 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Collapse from "react-bootstrap/Collapse";
+
+// Project Specific Component
 import { CompleteModal, ErrorModal, LoadingModal } from "../modal";
 
 // Wails
@@ -23,13 +25,13 @@ type ButtonProps = {
 
 /**
  * A Card with collapse functionality. The collapsed content will be shown/hidden when click the card title.
- * @param key the unique key for this component, used to generate id
+ * @param myKey the unique key for this component, used to generate id
  * @param title the title to display in Card.Title
  * @param body the body inside the Card.Body
  * @returns a Card Component with Collapse ability for card body.
  */
 function CollapseCard(props: {
-	key: number;
+	myKey: number;
 	title: string;
 	body?: React.ReactNode;
 }) {
@@ -43,15 +45,19 @@ function CollapseCard(props: {
 		<Card className="text-start">
 			<Card.Header
 				onClick={handleCollapse}
-				aria-controls={"collapse-text-" + String(props.key)}
+				aria-controls={"collapse-text-" + String(props.myKey)}
 				aria-expanded={open}>
 				<span className="me-2">{open == true ? "▼" : ">"}</span>
 				{props.title}
 			</Card.Header>
 			<Collapse in={open}>
-				<Card.Body id={"collapse-text-" + String(props.key)}>
-					<Card.Text className="newLine">{props.body}</Card.Text>
-				</Card.Body>
+				<div>
+					<Card.Body id={"collapse-text-" + String(props.myKey)}>
+						<Card.Text as="div" className="newLine">
+							{props.body}
+						</Card.Text>
+					</Card.Body>
+				</div>
 			</Collapse>
 		</Card>
 	);
@@ -88,9 +94,7 @@ export default function FolderSelect({ handleConfirm }: ButtonProps) {
 		QuickExportKomga(directory).then((err) => {
 			setIsLoading(false);
 			if (err != "") {
-				// Convert Error Message Text to Human readable string with foot stop & Capital Letter
-				let result = err.charAt(0).toUpperCase() + err.slice(1) + ".";
-				setErrMsg(result);
+				setErrMsg(err);
 			} else {
 				setIsCompleted(true);
 			}
@@ -133,13 +137,13 @@ export default function FolderSelect({ handleConfirm }: ButtonProps) {
 					Select Folder
 				</Button>
 			</InputGroup>
-			{/* <Button
+			<Button
 				variant="success"
 				className="mx-2"
 				id="btn-confirm-folder"
 				onClick={handleConfirm}>
-				Confirm
-			</Button> */}
+				Generate ComicInfo.xml
+			</Button>
 			<Button
 				variant="outline-info"
 				className="mx-2"
@@ -156,10 +160,10 @@ export default function FolderSelect({ handleConfirm }: ButtonProps) {
 
 			<div className="mt-5">
 				<CollapseCard
-					key={0}
+					myKey={0}
 					title={"Example of Your Image Folder"}
 					body={
-						<div>
+						<>
 							<p>
 								{" 📦 <Manga Name>\n" +
 									" ┣ 📜01.jpg\n" +
@@ -167,14 +171,14 @@ export default function FolderSelect({ handleConfirm }: ButtonProps) {
 									" ┗ <other images>"}
 							</p>
 							<p>No ComicInfo.xml is needed. It will be overwrite if exist.</p>
-						</div>
+						</>
 					}
 				/>
 				<CollapseCard
-					key={1}
+					myKey={1}
 					title={"Quick Export (Komga)"}
 					body={
-						<div>
+						<>
 							<p>
 								Directly Export .cbz file with ComicInfo.xml inside. The
 								generated file with be like:
@@ -188,7 +192,7 @@ export default function FolderSelect({ handleConfirm }: ButtonProps) {
 									" ┣ <other images>\n" +
 									" ┗ 📜ComicInfo.xml\n"}
 							</p>
-						</div>
+						</>
 					}
 				/>
 			</div>
