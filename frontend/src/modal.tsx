@@ -77,6 +77,16 @@ export function ErrorModal({
 	errorMessage: string;
 	disposeFunc: () => {};
 }) {
+	/**
+	 * Convert Error Message Text to Human readable string with foot stop & Capital Letter
+	 * @param msg the original Error Message
+	 * @returns the human readable with foot stop & Capital Letter
+	 */
+	function humanReadable(msg: string): string {
+		let result = msg.charAt(0).toUpperCase() + msg.slice(1) + ".";
+		return result;
+	}
+
 	return (
 		<Modal
 			show={show}
@@ -89,7 +99,7 @@ export function ErrorModal({
 			</Modal.Header>
 			<Modal.Body className="text-nowrap text-start">
 				<p>The Process is failed because: </p>
-				<p>{errorMessage}</p>
+				<p>{humanReadable(errorMessage)}</p>
 			</Modal.Body>
 			<Modal.Footer className="justify-content-center">
 				<Button variant="secondary" onClick={disposeFunc}>

@@ -23,11 +23,11 @@ function App() {
 	function handleConfirm(event: React.MouseEvent) {
 		console.log("config clicked");
 		setIsLoading(true);
-		console.log("Delayed for 5 second.");
+		console.log("Delayed for 2 second.");
 		setTimeout(() => {
 			setIsLoading(false);
 			setMode(mode_input_data);
-		}, 5000);
+		}, 2000);
 	}
 
 	/**
