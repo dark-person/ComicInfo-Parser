@@ -101,7 +101,7 @@ export function FormDateRow(props: {
 				<Form.Control
 					type="number"
 					max="9999"
-					value={props.year}
+					value={props.year === 0 ? "" : props.year}
 					disabled={props.disabled}
 				/>
 			</Col>
