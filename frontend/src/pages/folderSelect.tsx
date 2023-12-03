@@ -18,9 +18,10 @@ import {
 	GetDirectoryWithDefault,
 } from "../../wailsjs/go/main/App";
 
-/** Button Props Interface for FolderSelect */
-type ButtonProps = {
-	handleConfirm: (event: React.MouseEvent) => void;
+/** Props Interface for FolderSelect */
+type folderProps = {
+	handleConfirm: () => void;
+	handleFolder: (folder: string) => void;
 };
 
 /**
@@ -68,9 +69,13 @@ function CollapseCard(props: {
  * This page also contains some basic tutorial for folder structure.
  *
  * @param handleConfirm handler when confirm button is clicked
+ * @param handleFolder handler when folder is selected
  * @returns Page for selecting Folder
  */
-export default function FolderSelect({ handleConfirm }: ButtonProps) {
+export default function FolderSelect({
+	handleConfirm,
+	handleFolder,
+}: folderProps) {
 	const [directory, setDirectory] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const [isCompleted, setIsCompleted] = useState(false);
@@ -99,6 +104,13 @@ export default function FolderSelect({ handleConfirm }: ButtonProps) {
 				setIsCompleted(true);
 			}
 		});
+	}
+
+	function handleProcess() {
+		handleFolder(directory);
+
+		// Switch to another page
+		handleConfirm();
 	}
 
 	return (
@@ -141,7 +153,7 @@ export default function FolderSelect({ handleConfirm }: ButtonProps) {
 				variant="success"
 				className="mx-2"
 				id="btn-confirm-folder"
-				onClick={handleConfirm}>
+				onClick={handleProcess}>
 				Generate ComicInfo.xml
 			</Button>
 			<Button
