@@ -19,12 +19,13 @@ func main() {
 	err := wails.Run(&options.App{
 		Title:  "Gui-comicInfo-Parser",
 		Width:  1200,
-		Height: 900,
+		Height: 768,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
 		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
 		OnStartup:        app.startup,
+		WindowStartState: options.Maximised,
 		Bind: []interface{}{
 			app,
 		},

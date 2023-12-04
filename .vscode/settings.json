@@ -7,8 +7,12 @@
 		"GTIN",
 		"innerxml",
 		"Komga",
+		"logrus",
+		"Maximised",
 		"Penciller",
-		"wailsapp"
+		"sirupsen",
+		"wailsapp",
+		"Warnf"
 	],
 	"editor.formatOnSave": true,
 	"editor.unicodeHighlight.includeStrings": false,
