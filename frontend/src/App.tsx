@@ -3,7 +3,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 // React Component
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import { Row, Col } from "react-bootstrap";
 
@@ -15,9 +15,11 @@ import InputPanel from "./pages/inputPanel";
 
 // Wails
 import { GetComicInfo } from "../wailsjs/go/main/App";
+import ExportPanel from "./pages/exportPanel";
 
 const mode_select_folder = 1;
 const mode_input_data = 2;
+const mode_export = 3;
 
 function App() {
 	const [mode, setMode] = useState<number>(mode_select_folder);
@@ -56,6 +58,10 @@ function App() {
 		});
 	}
 
+	function exportToCbz() {
+		setMode(mode_export);
+	}
+
 	/**
 	 * Return to previous page.
 	 * @param event React.MouseEvent
@@ -92,7 +98,10 @@ function App() {
 				</Col>
 				<Col>
 					{mode == mode_select_folder && <FolderSelect handleFolder={passingFolder} />}
-					{mode == mode_input_data && <InputPanel comicInfo={data?.comicInfo} />}
+					{mode == mode_input_data && (
+						<InputPanel comicInfo={data?.comicInfo} exportFunc={exportToCbz} />
+					)}
+					{mode == mode_export && <ExportPanel />}
 				</Col>
 				<Col xs={1} className="align-self-center">
 					{/* <Button variant="secondary">{">"}</Button> */}
