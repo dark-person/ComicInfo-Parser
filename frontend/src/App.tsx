@@ -91,12 +91,8 @@ function App() {
 					)}
 				</Col>
 				<Col>
-					{mode == mode_select_folder && (
-						<FolderSelect handleFolder={passingFolder} />
-					)}
-					{mode == mode_input_data && (
-						<InputPanel comicInfo={data?.comicInfo} />
-					)}
+					{mode == mode_select_folder && <FolderSelect handleFolder={passingFolder} />}
+					{mode == mode_input_data && <InputPanel comicInfo={data?.comicInfo} />}
 				</Col>
 				<Col xs={1} className="align-self-center">
 					{/* <Button variant="secondary">{">"}</Button> */}

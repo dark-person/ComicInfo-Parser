@@ -12,11 +12,7 @@ import Collapse from "react-bootstrap/Collapse";
 import { CompleteModal, ErrorModal, LoadingModal } from "../modal";
 
 // Wails
-import {
-	GetDirectory,
-	QuickExportKomga,
-	GetDirectoryWithDefault,
-} from "../../wailsjs/go/main/App";
+import { GetDirectory, QuickExportKomga, GetDirectoryWithDefault } from "../../wailsjs/go/main/App";
 
 /** Props Interface for FolderSelect */
 type FolderProps = {
@@ -30,11 +26,7 @@ type FolderProps = {
  * @param body the body inside the Card.Body
  * @returns a Card Component with Collapse ability for card body.
  */
-function CollapseCard(props: {
-	myKey: number;
-	title: string;
-	body?: React.ReactNode;
-}) {
+function CollapseCard(props: { myKey: number; title: string; body?: React.ReactNode }) {
 	const [open, setOpen] = useState(false);
 
 	function handleCollapse() {
@@ -134,10 +126,7 @@ export default function FolderSelect({ handleFolder }: FolderProps) {
 					value={directory}
 					readOnly
 				/>
-				<Button
-					variant="secondary"
-					id="btn-select-folder"
-					onClick={handleSelect}>
+				<Button variant="secondary" id="btn-select-folder" onClick={handleSelect}>
 					Select Folder
 				</Button>
 			</InputGroup>
@@ -184,8 +173,8 @@ export default function FolderSelect({ handleFolder }: FolderProps) {
 					body={
 						<>
 							<p>
-								Directly Export .cbz file with ComicInfo.xml inside. The
-								generated file with be like:
+								Directly Export .cbz file with ComicInfo.xml inside. The generated
+								file with be like:
 							</p>
 							<p>
 								{" 📦 <Manga Name>\n" +

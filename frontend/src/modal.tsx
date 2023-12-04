@@ -31,13 +31,7 @@ export function LoadingModal({ show }: { show: boolean }) {
  * @param disposeFunc the function to dispose this modal. Usually like setShow(false).
  * @returns React Function Component
  */
-export function CompleteModal({
-	show,
-	disposeFunc,
-}: {
-	show: boolean;
-	disposeFunc: () => {};
-}) {
+export function CompleteModal({ show, disposeFunc }: { show: boolean; disposeFunc: () => {} }) {
 	return (
 		<Modal
 			show={show}
