@@ -87,6 +87,7 @@ export default function InputPanel({ comicInfo }: InputProps) {
 	return (
 		<div id="Input-Panel" className="mt-5">
 			<h5 className="mb-4">Modify ComicInfo.xml</h5>
+
 			<Tabs defaultActiveKey="Main" id="uncontrolled-tab-example" className="mb-3">
 				<Tab eventKey="Main" title="Book Metadata">
 					<BookMetadata comicInfo={comicInfo} />
@@ -99,6 +100,12 @@ export default function InputPanel({ comicInfo }: InputProps) {
 					<TagMetadata comicInfo={comicInfo} />
 				</Tab>
 			</Tabs>
+
+			<div className="fixed-bottom mb-3">
+				<Button variant="outline-success" className="mx-2 " id="btn-export-cbz">
+					Export to .cbz
+				</Button>
+			</div>
 		</div>
 	);
 }
