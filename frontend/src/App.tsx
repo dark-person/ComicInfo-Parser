@@ -16,6 +16,7 @@ import InputPanel from "./pages/inputPanel";
 // Wails
 import { GetComicInfo } from "../wailsjs/go/main/App";
 import ExportPanel from "./pages/exportPanel";
+import { comicinfo } from "../wailsjs/go/models";
 
 const mode_select_folder = 1;
 const mode_input_data = 2;
@@ -27,7 +28,8 @@ function App() {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [errMsg, setErrMsg] = useState<string>("");
 
-	const [data, setData] = useState<DataPass | undefined>(undefined);
+	const [info, setInfo] = useState<comicinfo.ComicInfo | undefined>(undefined);
+	const [inputDir, setInputDir] = useState<string | undefined>(undefined);
 
 	/**
 	 * Set value of selected folder. Used in communicate with other components.
@@ -35,6 +37,7 @@ function App() {
 	 */
 	function passingFolder(folder: string) {
 		console.log("passing folder: " + folder);
+
 		// Set Loading Modal
 		setIsLoading(true);
 
@@ -49,8 +52,8 @@ function App() {
 				setErrMsg(error);
 			} else {
 				// Set data with info
-				let temp = { folder: folder, comicInfo: response.ComicInfo };
-				setData(temp);
+				setInfo(response.ComicInfo);
+				setInputDir(folder);
 
 				// Pass to another panel
 				setMode(mode_input_data);
@@ -97,12 +100,12 @@ function App() {
 					)}
 				</Col>
 				<Col>
-					{mode == mode_select_folder && <FolderSelect handleFolder={passingFolder} />}
+					{mode == mode_select_folder && <FolderSelect processFunc={passingFolder} />}
 					{mode == mode_input_data && (
-						<InputPanel comicInfo={data?.comicInfo} exportFunc={exportToCbz} />
+						<InputPanel comicInfo={info} exportFunc={exportToCbz} />
 					)}
 					{mode == mode_export && (
-						<ExportPanel comicInfo={data?.comicInfo} originalDirectory={data?.folder} />
+						<ExportPanel comicInfo={info} originalDirectory={inputDir} />
 					)}
 				</Col>
 				<Col xs={1} className="align-self-center">

@@ -16,7 +16,8 @@ import { GetDirectory, QuickExportKomga, GetDirectoryWithDefault } from "../../w
 
 /** Props Interface for FolderSelect */
 type FolderProps = {
-	handleFolder: (folder: string) => void;
+	/** function called when process to next step. This function is not applied to Quick Export.*/
+	processFunc: (folder: string) => void;
 };
 
 /**
@@ -59,10 +60,10 @@ function CollapseCard(props: { myKey: number; title: string; body?: React.ReactN
  * Page for Selecting Folder to process.
  * This page also contains some basic tutorial for folder structure.
  *
- * @param handleFolder handler when folder is selected
+ * @param processFunc handler when process button is clicked
  * @returns Page for selecting Folder
  */
-export default function FolderSelect({ handleFolder }: FolderProps) {
+export default function FolderSelect({ processFunc: handleFolder }: FolderProps) {
 	const [directory, setDirectory] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const [isCompleted, setIsCompleted] = useState(false);
