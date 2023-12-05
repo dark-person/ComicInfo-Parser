@@ -8,9 +8,16 @@ import Button from "react-bootstrap/Button";
 import { Row, Col } from "react-bootstrap";
 
 // Wails
-import { GetDirectory, GetDirectoryWithDefault } from "../../wailsjs/go/main/App";
+import { GetDirectory, GetDirectoryWithDefault, ExportXml } from "../../wailsjs/go/main/App";
+import { comicinfo } from "../../wailsjs/go/models";
 
-export default function ExportPanel() {
+/** Props Interface for FolderSelect */
+type ExportProps = {
+	comicInfo: comicinfo.ComicInfo | undefined;
+	originalDirectory: string | undefined;
+};
+
+export default function ExportPanel({ comicInfo: info, originalDirectory }: ExportProps) {
 	// Since this is the final step, could ignore the interaction with App.tsx
 	const [exportDir, setExportDir] = useState("");
 
@@ -25,6 +32,21 @@ export default function ExportPanel() {
 			});
 		}
 	}
+
+	function handleExportXml() {
+		if (originalDirectory == undefined) {
+			console.log("[ERR] No original directory");
+			return;
+		} else if (info == undefined) {
+			console.log("[ERR] No original comicinfo");
+			return;
+		}
+
+		ExportXml(originalDirectory, info).then((msg) => {
+			console.log("xml return: " + msg);
+		});
+	}
+
 	return (
 		<div id="Export-Panel" className="mt-5">
 			<h5 className="mb-4">Export to .cbz</h5>
@@ -45,7 +67,10 @@ export default function ExportPanel() {
 
 			<Row className="mb-3">
 				<Col>
-					<Button variant="outline-secondary" id="btn-export-xml">
+					<Button
+						variant="outline-secondary"
+						id="btn-export-xml"
+						onClick={handleExportXml}>
 						Export ComicInfo.xml Only
 					</Button>
 				</Col>

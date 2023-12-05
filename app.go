@@ -178,3 +178,39 @@ func (a *App) QuickExportKomga(folder string) string {
 	}
 	return ""
 }
+
+// Export the ComicInfo struct to XML file.
+// This will create/overwrite ComicInfo.xml inside originalDir.
+// If the process success, then function will output empty string.
+// Otherwise, function will return the reason for error.
+//
+// The originalDir MUST be absolute path to write it precisely.
+func (a *App) ExportXml(originalDir string, c *comicinfo.ComicInfo) (errorMsg string) {
+	output, err := xml.MarshalIndent(c, "  ", "    ")
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+		return err.Error()
+	}
+
+	// Open File for reading
+	f, err := os.Create(filepath.Join(originalDir, "ComicInfo.xml"))
+	if err != nil {
+		return err.Error()
+	}
+	defer f.Close()
+
+	// Write XML Content to file
+	f.Write([]byte("<?xml version=\"1.0\"?>\n"))
+	f.Write(output)
+
+	err = f.Sync()
+	if err != nil {
+		return err.Error()
+	}
+
+	return ""
+}
+
+func (a *App) ExportCbz(info *comicinfo.ComicInfo) {
+
+}

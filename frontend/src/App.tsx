@@ -101,7 +101,9 @@ function App() {
 					{mode == mode_input_data && (
 						<InputPanel comicInfo={data?.comicInfo} exportFunc={exportToCbz} />
 					)}
-					{mode == mode_export && <ExportPanel />}
+					{mode == mode_export && (
+						<ExportPanel comicInfo={data?.comicInfo} originalDirectory={data?.folder} />
+					)}
 				</Col>
 				<Col xs={1} className="align-self-center">
 					{/* <Button variant="secondary">{">"}</Button> */}
