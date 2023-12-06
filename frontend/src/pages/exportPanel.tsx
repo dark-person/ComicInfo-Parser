@@ -15,6 +15,7 @@ import {
 	ExportCbz,
 } from "../../wailsjs/go/main/App";
 import { comicinfo } from "../../wailsjs/go/models";
+import { LoadingModal, CompleteModal, ErrorModal } from "../modal";
 
 /** Props Interface for FolderSelect */
 type ExportProps = {
@@ -22,9 +23,15 @@ type ExportProps = {
 	originalDirectory: string | undefined;
 };
 
+type ModalState = "loading" | "complete" | undefined;
+
 export default function ExportPanel({ comicInfo: info, originalDirectory }: ExportProps) {
 	// Since this is the final step, could ignore the interaction with App.tsx
 	const [exportDir, setExportDir] = useState<string>("");
+
+	// Modal Controller
+	const [modalState, setModalState] = useState<ModalState>(undefined);
+	const [errMsg, setErrMsg] = useState<string>("");
 
 	// Set the export directory to input directory if it exists
 	useEffect(() => {
@@ -54,7 +61,18 @@ export default function ExportPanel({ comicInfo: info, originalDirectory }: Expo
 			return;
 		}
 
+		// Open Modal
+		setModalState("loading");
+
+		// Start Running
 		ExportXml(originalDirectory, info).then((msg) => {
+			if (msg != "") {
+				setErrMsg(msg);
+				setModalState(undefined);
+			} else {
+				setModalState("complete");
+			}
+
 			console.log("xml return: '" + msg + "'");
 		});
 	}
@@ -68,15 +86,45 @@ export default function ExportPanel({ comicInfo: info, originalDirectory }: Expo
 			return;
 		}
 
+		// Open Modal
+		setModalState("loading");
+
+		// Start Running
 		ExportCbz(originalDirectory, exportDir, info).then((msg) => {
+			if (msg != "") {
+				setErrMsg(msg);
+				setModalState(undefined);
+			} else {
+				setModalState("complete");
+			}
 			console.log("cbz return: '" + msg + "'");
 		});
 	}
 
 	return (
 		<div id="Export-Panel" className="mt-5">
+			{/* Modal Part */}
+			<LoadingModal show={modalState === "loading"} />
+			<CompleteModal
+				show={modalState === "complete"}
+				disposeFunc={() => {
+					setModalState(undefined);
+					return {};
+				}}
+			/>
+			<ErrorModal
+				show={errMsg != ""}
+				errorMessage={errMsg}
+				disposeFunc={() => {
+					setErrMsg("");
+					return {};
+				}}
+			/>
+
+			{/* Main Content of this panel */}
 			<h5 className="mb-4">Export to .cbz</h5>
 
+			{/* File Chooser */}
 			<InputGroup className="mb-3">
 				<InputGroup.Text>Export Folder</InputGroup.Text>
 				<Form.Control
@@ -91,6 +139,7 @@ export default function ExportPanel({ comicInfo: info, originalDirectory }: Expo
 				</Button>
 			</InputGroup>
 
+			{/* Button to Export */}
 			<Row className="mb-3">
 				<Col>
 					<Button
