@@ -171,7 +171,80 @@ func (a *App) QuickExportKomga(folder string) string {
 
 	// Start Archive
 	filename, _ := archive.CreateZip(absPath)
-	err = archive.RenameZip(filename)
+	err = archive.RenameZip(filename, true)
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+		return err.Error()
+	}
+	return ""
+}
+
+// Export the ComicInfo struct to XML file.
+// This will create/overwrite ComicInfo.xml inside originalDir.
+// If the process success, then function will output empty string.
+// Otherwise, function will return the reason for error.
+//
+// The originalDir MUST be absolute path to write it precisely.
+func (a *App) ExportXml(originalDir string, c *comicinfo.ComicInfo) (errorMsg string) {
+	output, err := xml.MarshalIndent(c, "  ", "    ")
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+		return err.Error()
+	}
+
+	// Open File for reading
+	f, err := os.Create(filepath.Join(originalDir, "ComicInfo.xml"))
+	if err != nil {
+		return err.Error()
+	}
+	defer f.Close()
+
+	// Write XML Content to file
+	f.Write([]byte("<?xml version=\"1.0\"?>\n"))
+	f.Write(output)
+
+	err = f.Sync()
+	if err != nil {
+		return err.Error()
+	}
+
+	return ""
+}
+
+// Export the .cbz file to destination.
+// This .cbz file will contain all image in the input directory,
+// including newly generated ComicInfo.xml.
+//
+// If the process success, then function will output empty string.
+// Otherwise, function will return the reason for error.
+//
+// Both input directory and output directory MUST be absolute paths.
+func (a *App) ExportCbz(inputDir string, exportDir string, c *comicinfo.ComicInfo) (errMsg string) {
+	// Marshal ComicInfo to XML
+	output, err := xml.MarshalIndent(c, "  ", "    ")
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+		return err.Error()
+	}
+
+	// Open File for reading
+	f, err := os.Create(filepath.Join(inputDir, "ComicInfo.xml"))
+	if err != nil {
+		return err.Error()
+	}
+	defer f.Close()
+
+	// Write XML Content to file
+	f.Write([]byte("<?xml version=\"1.0\"?>\n"))
+	f.Write(output)
+	err = f.Sync()
+	if err != nil {
+		return err.Error()
+	}
+
+	// Start Archive
+	filename, _ := archive.CreateZipTo(inputDir, exportDir)
+	err = archive.RenameZip(filename, true)
 	if err != nil {
 		fmt.Printf("error: %v\n", err)
 		return err.Error()

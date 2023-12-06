@@ -12,15 +12,12 @@ import Collapse from "react-bootstrap/Collapse";
 import { CompleteModal, ErrorModal, LoadingModal } from "../modal";
 
 // Wails
-import {
-	GetDirectory,
-	QuickExportKomga,
-	GetDirectoryWithDefault,
-} from "../../wailsjs/go/main/App";
+import { GetDirectory, QuickExportKomga, GetDirectoryWithDefault } from "../../wailsjs/go/main/App";
 
 /** Props Interface for FolderSelect */
 type FolderProps = {
-	handleFolder: (folder: string) => void;
+	/** function called when process to next step. This function is not applied to Quick Export.*/
+	processFunc: (folder: string) => void;
 };
 
 /**
@@ -30,11 +27,7 @@ type FolderProps = {
  * @param body the body inside the Card.Body
  * @returns a Card Component with Collapse ability for card body.
  */
-function CollapseCard(props: {
-	myKey: number;
-	title: string;
-	body?: React.ReactNode;
-}) {
+function CollapseCard(props: { myKey: number; title: string; body?: React.ReactNode }) {
 	const [open, setOpen] = useState(false);
 
 	function handleCollapse() {
@@ -67,10 +60,10 @@ function CollapseCard(props: {
  * Page for Selecting Folder to process.
  * This page also contains some basic tutorial for folder structure.
  *
- * @param handleFolder handler when folder is selected
+ * @param processFunc handler when process button is clicked
  * @returns Page for selecting Folder
  */
-export default function FolderSelect({ handleFolder }: FolderProps) {
+export default function FolderSelect({ processFunc: handleFolder }: FolderProps) {
 	const [directory, setDirectory] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const [isCompleted, setIsCompleted] = useState(false);
@@ -134,10 +127,7 @@ export default function FolderSelect({ handleFolder }: FolderProps) {
 					value={directory}
 					readOnly
 				/>
-				<Button
-					variant="secondary"
-					id="btn-select-folder"
-					onClick={handleSelect}>
+				<Button variant="secondary" id="btn-select-folder" onClick={handleSelect}>
 					Select Folder
 				</Button>
 			</InputGroup>
@@ -184,8 +174,8 @@ export default function FolderSelect({ handleFolder }: FolderProps) {
 					body={
 						<>
 							<p>
-								Directly Export .cbz file with ComicInfo.xml inside. The
-								generated file with be like:
+								Directly Export .cbz file with ComicInfo.xml inside. The generated
+								file with be like:
 							</p>
 							<p>
 								{" 📦 <Manga Name>\n" +

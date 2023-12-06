@@ -107,21 +107,11 @@ export function FormDateRow(props: {
 			</Col>
 
 			<Col sm="3">
-				<RangeSelect
-					min={1}
-					max={12}
-					value={props.month}
-					disabled={props.disabled}
-				/>
+				<RangeSelect min={1} max={12} value={props.month} disabled={props.disabled} />
 			</Col>
 
 			<Col sm="3">
-				<RangeSelect
-					min={1}
-					max={31}
-					value={props.day}
-					disabled={props.disabled}
-				/>
+				<RangeSelect min={1} max={31} value={props.day} disabled={props.disabled} />
 			</Col>
 		</Form.Group>
 	);

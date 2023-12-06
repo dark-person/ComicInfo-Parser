@@ -40,7 +40,7 @@ func TestGetPageInfo(t *testing.T) {
 		t.Error("Wrong Type of first page")
 	}
 
-	// Check filesize
+	// Check file size
 	for i, page := range pages {
 		if page.ImageSize != fileSizes[i] {
 			t.Errorf("Wrong Size of page %d", i)
@@ -125,7 +125,7 @@ func TestScanBooks(t *testing.T) {
 			t.Error("Wrong Type of first page")
 		}
 
-		// Check filesize
+		// Check file size
 		for i, page := range c.Pages {
 			if page.ImageSize != fileSizes[i] {
 				t.Errorf("Wrong Size of page %d", i)
