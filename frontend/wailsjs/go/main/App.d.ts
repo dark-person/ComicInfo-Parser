@@ -3,7 +3,7 @@
 import {comicinfo} from '../models';
 import {main} from '../models';
 
-export function ExportCbz(arg1:comicinfo.ComicInfo):Promise<void>;
+export function ExportCbz(arg1:string,arg2:string,arg3:comicinfo.ComicInfo):Promise<string>;
 
 export function ExportXml(arg1:string,arg2:comicinfo.ComicInfo):Promise<string>;
 
