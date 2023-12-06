@@ -9,13 +9,16 @@ import { comicinfo } from "../../wailsjs/go/models";
 
 /** Props Interface for InputPanel */
 type InputProps = {
+	/** The comic info object. Accept undefined value. */
 	comicInfo: comicinfo.ComicInfo | undefined;
+
+	/** The function to change display panel to export panel. */
 	exportFunc: () => void;
-	// returnFunc: (event: React.MouseEvent) => void;
 };
 
-/** Props Interface for Metadata */
+/** Props Interface for Metadata. */
 type MetadataProps = {
+	/** The comic info object. Accept undefined value. */
 	comicInfo: comicinfo.ComicInfo | undefined;
 };
 
@@ -79,6 +82,7 @@ function TagMetadata({ comicInfo: info }: MetadataProps) {
 	return (
 		<div>
 			<Form>
+				{/* A Text Area for holding lines of tags. */}
 				<FormRow title={"Tag"} textareaRow={10} value={info?.Tags} disabled />
 			</Form>
 		</div>
@@ -94,6 +98,7 @@ export default function InputPanel({ comicInfo, exportFunc }: InputProps) {
 		<div id="Input-Panel" className="mt-5">
 			<h5 className="mb-4">Modify ComicInfo.xml</h5>
 
+			{/* The Tabs Group to display metadata. */}
 			<Tabs defaultActiveKey="Main" id="uncontrolled-tab-example" className="mb-3">
 				<Tab eventKey="Main" title="Book Metadata">
 					<BookMetadata comicInfo={comicInfo} />
@@ -107,6 +112,7 @@ export default function InputPanel({ comicInfo, exportFunc }: InputProps) {
 				</Tab>
 			</Tabs>
 
+			{/* The button that will always at the bottom of screen. Should ensure there has enough space */}
 			<div className="fixed-bottom mb-3">
 				<Button
 					variant="outline-success"

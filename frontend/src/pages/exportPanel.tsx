@@ -35,6 +35,10 @@ type ModalState = "loading" | "complete" | undefined;
 /** The button name state constant, for last clicked button */
 type buttonName = "xml" | "cbz" | undefined;
 
+/**
+ * The panel to export comic info to cbz/xml file.
+ * @returns JSX Component
+ */
 export default function ExportPanel({
 	comicInfo: info,
 	originalDirectory,
