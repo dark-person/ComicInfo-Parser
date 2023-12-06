@@ -80,6 +80,13 @@ function App() {
 		setMode(temp);
 	}
 
+	/**
+	 * Return to the home panel. In current version, it is select folder panel.
+	 */
+	function backToHomePanel() {
+		setMode(mode_select_folder);
+	}
+
 	return (
 		<div id="App" className="container-fluid">
 			<ErrorModal
@@ -105,7 +112,11 @@ function App() {
 						<InputPanel comicInfo={info} exportFunc={exportToCbz} />
 					)}
 					{mode == mode_export && (
-						<ExportPanel comicInfo={info} originalDirectory={inputDir} />
+						<ExportPanel
+							comicInfo={info}
+							originalDirectory={inputDir}
+							backToHomeFunc={backToHomePanel}
+						/>
 					)}
 				</Col>
 				<Col xs={1} className="align-self-center">

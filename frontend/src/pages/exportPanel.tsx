@@ -21,17 +21,29 @@ import { LoadingModal, CompleteModal, ErrorModal } from "../modal";
 type ExportProps = {
 	comicInfo: comicinfo.ComicInfo | undefined;
 	originalDirectory: string | undefined;
+	backToHomeFunc: () => void;
 };
 
+/** The modal state constant. */
 type ModalState = "loading" | "complete" | undefined;
 
-export default function ExportPanel({ comicInfo: info, originalDirectory }: ExportProps) {
+/** The button name state constant, for last clicked button */
+type buttonName = "xml" | "cbz" | undefined;
+
+export default function ExportPanel({
+	comicInfo: info,
+	originalDirectory,
+	backToHomeFunc,
+}: ExportProps) {
 	// Since this is the final step, could ignore the interaction with App.tsx
 	const [exportDir, setExportDir] = useState<string>("");
 
 	// Modal Controller
 	const [modalState, setModalState] = useState<ModalState>(undefined);
 	const [errMsg, setErrMsg] = useState<string>("");
+
+	// The button name of last clicked button
+	const [btnClicked, setBtnClicked] = useState<buttonName>(undefined);
 
 	// Set the export directory to input directory if it exists
 	useEffect(() => {
@@ -64,6 +76,9 @@ export default function ExportPanel({ comicInfo: info, originalDirectory }: Expo
 		// Open Modal
 		setModalState("loading");
 
+		// Set button state
+		setBtnClicked("xml");
+
 		// Start Running
 		ExportXml(originalDirectory, info).then((msg) => {
 			if (msg != "") {
@@ -89,6 +104,9 @@ export default function ExportPanel({ comicInfo: info, originalDirectory }: Expo
 		// Open Modal
 		setModalState("loading");
 
+		// Set button state
+		setBtnClicked("cbz");
+
 		// Start Running
 		ExportCbz(originalDirectory, exportDir, info).then((msg) => {
 			if (msg != "") {
@@ -109,6 +127,10 @@ export default function ExportPanel({ comicInfo: info, originalDirectory }: Expo
 				show={modalState === "complete"}
 				disposeFunc={() => {
 					setModalState(undefined);
+					// Redirect to first page only if export cbz is clicked
+					if (btnClicked == "cbz") {
+						backToHomeFunc();
+					}
 					return {};
 				}}
 			/>
