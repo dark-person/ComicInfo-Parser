@@ -7,6 +7,9 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import { Row, Col } from "react-bootstrap";
 
+// Project Component
+import { LoadingModal, CompleteModal, ErrorModal } from "../modal";
+
 // Wails
 import {
 	GetDirectory,
@@ -15,12 +18,14 @@ import {
 	ExportCbz,
 } from "../../wailsjs/go/main/App";
 import { comicinfo } from "../../wailsjs/go/models";
-import { LoadingModal, CompleteModal, ErrorModal } from "../modal";
 
 /** Props Interface for FolderSelect */
 type ExportProps = {
+	/** The comic info content. */
 	comicInfo: comicinfo.ComicInfo | undefined;
+	/** The directory of original input, contains comic images. */
 	originalDirectory: string | undefined;
+	/** The function to change current panel to home panel, which defined by App.tsx */
 	backToHomeFunc: () => void;
 };
 
@@ -52,6 +57,7 @@ export default function ExportPanel({
 		}
 	}, []);
 
+	/** Handler for click "Select Folder". This will open file chooser for choose a file. */
 	function handleSelect() {
 		if (exportDir != "") {
 			GetDirectoryWithDefault(exportDir).then((input) => {
@@ -64,6 +70,7 @@ export default function ExportPanel({
 		}
 	}
 
+	/** Handler for click export XML only, export path will be the folder chosen by file chooser. */
 	function handleExportXml() {
 		if (originalDirectory == undefined) {
 			console.log("[ERR] No original directory");
@@ -92,6 +99,7 @@ export default function ExportPanel({
 		});
 	}
 
+	/** Handler for click export .cbz only, export path will be the folder chosen by file chooser. */
 	function handleExportCbz() {
 		if (originalDirectory == undefined) {
 			console.log("[ERR] No original directory");
