@@ -3,7 +3,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 // React Component
-import React, { useState } from "react";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import { Row, Col } from "react-bootstrap";
 
@@ -17,21 +17,38 @@ import { GetComicInfo } from "../wailsjs/go/main/App";
 import ExportPanel from "./pages/exportPanel";
 import { comicinfo } from "../wailsjs/go/models";
 
+/** Const, for Display page of select folder */
 const mode_select_folder = 1;
+/** Const, for Display page of input panel */
 const mode_input_data = 2;
+/** Const, for Display page of export panel */
 const mode_export = 3;
 
+/**
+ * The main component to be displayed. It will handle all pages data & timing to display.
+ *
+ * There will have two column with width=1 at left and right side, for center the panel/page component.
+ *
+ * There has a return button at the top-left corner in this window.
+ */
 function App() {
+	/** Decide which panel will be displayed */
 	const [mode, setMode] = useState<number>(mode_select_folder);
 
+	/** True if need to display loading dialog. Should be show when change to another page. */
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+
+	/** Error Message, will modal be display when not empty string. Empty Strings mean not error at all. */
 	const [errMsg, setErrMsg] = useState<string>("");
 
+	/** The ComicInfo model. For communicate with different panel. */
 	const [info, setInfo] = useState<comicinfo.ComicInfo | undefined>(undefined);
+
+	/** The directory of initial input, which is the folder contain image1. */
 	const [inputDir, setInputDir] = useState<string | undefined>(undefined);
 
 	/**
-	 * Set value of selected folder. Used in communicate with other components.
+	 * Set value of selected folder, then pass selected folder to next panel.
 	 * @param folder the absolute path to the folder
 	 */
 	function passingFolder(folder: string) {
@@ -60,15 +77,15 @@ function App() {
 		});
 	}
 
-	function exportToCbz() {
+	/** Change the panel in app to export panel. */
+	function showExportPanel() {
 		setMode(mode_export);
 	}
 
 	/**
 	 * Return to previous page.
-	 * @param event React.MouseEvent
 	 */
-	function backward(event: React.MouseEvent) {
+	function backward() {
 		// Get Current Mode
 		let temp = mode;
 
@@ -88,6 +105,8 @@ function App() {
 
 	return (
 		<div id="App" className="container-fluid">
+			{/* Modal Part */}
+			<LoadingModal show={isLoading} />
 			<ErrorModal
 				show={errMsg != ""}
 				errorMessage={errMsg}
@@ -97,7 +116,9 @@ function App() {
 				}}
 			/>
 
+			{/* Main Panel of this app */}
 			<Row className="min-vh-100">
+				{/* Back Button, return to previous panel */}
 				<Col xs={1} className="mt-4">
 					{mode > 1 && (
 						<Button variant="secondary" onClick={backward}>
@@ -105,10 +126,12 @@ function App() {
 						</Button>
 					)}
 				</Col>
+
+				{/* Area to display panel */}
 				<Col>
 					{mode == mode_select_folder && <FolderSelect processFunc={passingFolder} />}
 					{mode == mode_input_data && (
-						<InputPanel comicInfo={info} exportFunc={exportToCbz} />
+						<InputPanel comicInfo={info} exportFunc={showExportPanel} />
 					)}
 					{mode == mode_export && (
 						<ExportPanel
@@ -118,12 +141,12 @@ function App() {
 						/>
 					)}
 				</Col>
+
+				{/* Aborted Button, now use as alignment */}
 				<Col xs={1} className="align-self-center">
 					{/* <Button variant="secondary">{">"}</Button> */}
 				</Col>
 			</Row>
-
-			<LoadingModal show={isLoading} />
 		</div>
 	);
 }
