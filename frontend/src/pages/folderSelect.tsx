@@ -20,6 +20,16 @@ type FolderProps = {
 	processFunc: (folder: string) => void;
 };
 
+/** Props Interface for CollapseCard */
+type CardProps = {
+	/** the unique key for this component, used to generate id*/
+	myKey: number;
+	/** the title to display in Card.Title */
+	title: string;
+	/** the body inside the Card.Body */
+	body?: React.ReactNode;
+};
+
 /**
  * A Card with collapse functionality. The collapsed content will be shown/hidden when click the card title.
  * @param myKey the unique key for this component, used to generate id
@@ -27,9 +37,10 @@ type FolderProps = {
  * @param body the body inside the Card.Body
  * @returns a Card Component with Collapse ability for card body.
  */
-function CollapseCard(props: { myKey: number; title: string; body?: React.ReactNode }) {
+function CollapseCard({ myKey, title, body }: CardProps) {
 	const [open, setOpen] = useState(false);
 
+	/** Handler for user click card header. Collapse/Open the card. */
 	function handleCollapse() {
 		setOpen(!open);
 	}
@@ -38,16 +49,16 @@ function CollapseCard(props: { myKey: number; title: string; body?: React.ReactN
 		<Card className="text-start">
 			<Card.Header
 				onClick={handleCollapse}
-				aria-controls={"collapse-text-" + String(props.myKey)}
+				aria-controls={"collapse-text-" + String(myKey)}
 				aria-expanded={open}>
 				<span className="me-2">{open == true ? "▼" : ">"}</span>
-				{props.title}
+				{title}
 			</Card.Header>
 			<Collapse in={open}>
 				<div>
-					<Card.Body id={"collapse-text-" + String(props.myKey)}>
+					<Card.Body id={"collapse-text-" + String(myKey)}>
 						<Card.Text as="div" className="newLine">
-							{props.body}
+							{body}
 						</Card.Text>
 					</Card.Body>
 				</div>
@@ -64,11 +75,19 @@ function CollapseCard(props: { myKey: number; title: string; body?: React.ReactN
  * @returns Page for selecting Folder
  */
 export default function FolderSelect({ processFunc: handleFolder }: FolderProps) {
+	/** The Directory Absolute Path selected by User. */
 	const [directory, setDirectory] = useState("");
+
+	/** True if loading screen should appear */
 	const [isLoading, setIsLoading] = useState(false);
+
+	/** True if completed screen should appear */
 	const [isCompleted, setIsCompleted] = useState(false);
+
+	/** Error Message for completed process. If has string, then appear modal for display message. */
 	const [errMsg, setErrMsg] = useState("");
 
+	/** Handler when user clicked select folder. It will use different function depend on there are already selected folder or not */
 	function handleSelect() {
 		if (directory != "") {
 			GetDirectoryWithDefault(directory).then((input) => {
@@ -81,6 +100,7 @@ export default function FolderSelect({ processFunc: handleFolder }: FolderProps)
 		}
 	}
 
+	/** Handler when user clicked Quick Export Komga Button. Start quick export process. */
 	function handleQuickExport() {
 		setIsLoading(true);
 
@@ -94,12 +114,14 @@ export default function FolderSelect({ processFunc: handleFolder }: FolderProps)
 		});
 	}
 
+	/** Handle when user click "Generate ComicInfo". Move to another pages for display/edit comicinfo content. */
 	function handleProcess() {
 		handleFolder(directory);
 	}
 
 	return (
 		<div id="Folder-Select" className="mt-5">
+			\{/* Model Part */}
 			<LoadingModal show={isLoading} />
 			<CompleteModal
 				show={isCompleted}
@@ -116,8 +138,8 @@ export default function FolderSelect({ processFunc: handleFolder }: FolderProps)
 					return {};
 				}}
 			/>
-
 			<h5 className="mb-4">Select Folder to Start:</h5>
+			{/* Folder Chooser */}
 			<InputGroup className="mb-3">
 				<InputGroup.Text>Image Folder</InputGroup.Text>
 				<Form.Control
@@ -131,6 +153,7 @@ export default function FolderSelect({ processFunc: handleFolder }: FolderProps)
 					Select Folder
 				</Button>
 			</InputGroup>
+			{/* Button Group */}
 			<Button
 				variant="success"
 				className="mx-2"
@@ -151,7 +174,7 @@ export default function FolderSelect({ processFunc: handleFolder }: FolderProps)
 				onClick={() => setErrMsg("Testing.")}>
 				Test
 			</Button> */}
-
+			{/* Tutorial/Instruction  */}
 			<div className="mt-5">
 				<CollapseCard
 					myKey={0}
