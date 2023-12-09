@@ -10,6 +10,10 @@ var specialTags = []string{
 	"無修正", "DL版",
 }
 
+// Find the special tag that is included in given filename.
+// If no special tag is found, then this function returns a empty slice.
+//
+// The special tag definition is in var of specialTags.
 func GetSpecialTags(filename string) []string {
 	finalTags := make([]string, 0)
 
