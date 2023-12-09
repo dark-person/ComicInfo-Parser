@@ -5,6 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"gui-comicinfo/internal/archive"
+	"gui-comicinfo/internal/comicinfo"
 	"gui-comicinfo/internal/scanner"
 	"os"
 	"path/filepath"
@@ -44,6 +45,75 @@ func (a *App) GetDirectory() string {
 	return directory
 }
 
+// Open a Dialog for user to select Directory, this dialog will show default directory when open.
+//
+// If Error is occur, then this function will return an empty string
+func (a *App) GetDirectoryWithDefault(defaultDirectory string) string {
+	// Try to get parent of default directory
+	dir := filepath.Dir(defaultDirectory)
+
+	directory, err := runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{
+		Title:            "Select Directory",
+		DefaultDirectory: dir,
+	})
+
+	if err != nil {
+		logrus.Warnf("Error when getting directory from user: %v\n", err)
+		return ""
+	}
+	return directory
+}
+
+type ComicInfoResponse struct {
+	ComicInfo    *comicinfo.ComicInfo `json:"ComicInfo"`
+	ErrorMessage string               `json:"ErrorMessage"`
+}
+
+// Get the comic info by scan the given folder.
+// This function will not create/modify the comicinfo xml.
+//
+// This function will return a comicInfo struct, with error message in string.
+func (a *App) GetComicInfo(folder string) ComicInfoResponse {
+	absPath := folder
+
+	// Check Absolute path is empty or not
+	if absPath == "" {
+		return ComicInfoResponse{
+			ComicInfo:    nil,
+			ErrorMessage: "folder cannot be empty",
+		}
+	}
+
+	// Validate the directory
+	isValid, err := scanner.CheckFolder(absPath, scanner.ScanOpt{SubFolder: scanner.Reject, Image: scanner.Allow})
+	if err != nil {
+		return ComicInfoResponse{
+			ComicInfo:    nil,
+			ErrorMessage: err.Error(),
+		}
+	} else if !isValid {
+		return ComicInfoResponse{
+			ComicInfo:    nil,
+			ErrorMessage: "folder structure is not correct",
+		}
+	}
+
+	// Load Abs Path
+	c, err := scanner.ScanBooks(absPath)
+	if err != nil {
+		return ComicInfoResponse{
+			ComicInfo:    nil,
+			ErrorMessage: err.Error(),
+		}
+	}
+
+	// Return result
+	return ComicInfoResponse{
+		ComicInfo:    c,
+		ErrorMessage: "",
+	}
+}
+
 // Perform Quick Export Action,
 // where ComicInfo.xml file can not be modified before archived.
 //
@@ -63,12 +133,24 @@ func (a *App) QuickExportKomga(folder string) string {
 		return "folder cannot be empty"
 	}
 
+	// Validate the directory
+	isValid, err := scanner.CheckFolder(absPath, scanner.ScanOpt{SubFolder: scanner.Reject, Image: scanner.Allow})
+	if err != nil {
+		return err.Error()
+	} else if !isValid {
+		return "folder structure is not correct"
+	}
+
 	// Load Abs Path
-	c := scanner.ScanBooks(absPath)
+	c, err := scanner.ScanBooks(absPath)
+	if err != nil {
+		return err.Error()
+	}
 
 	output, err := xml.MarshalIndent(c, "  ", "    ")
 	if err != nil {
 		fmt.Printf("error: %v\n", err)
+		return err.Error()
 	}
 
 	// Open File for reading
@@ -81,13 +163,91 @@ func (a *App) QuickExportKomga(folder string) string {
 	// Write XML Content to file
 	f.Write([]byte("<?xml version=\"1.0\"?>\n"))
 	f.Write(output)
-	f.Sync()
+
+	err = f.Sync()
+	if err != nil {
+		return err.Error()
+	}
 
 	// Start Archive
 	filename, _ := archive.CreateZip(absPath)
-	err = archive.RenameZip(filename)
+	err = archive.RenameZip(filename, true)
 	if err != nil {
 		fmt.Printf("error: %v\n", err)
+		return err.Error()
+	}
+	return ""
+}
+
+// Export the ComicInfo struct to XML file.
+// This will create/overwrite ComicInfo.xml inside originalDir.
+// If the process success, then function will output empty string.
+// Otherwise, function will return the reason for error.
+//
+// The originalDir MUST be absolute path to write it precisely.
+func (a *App) ExportXml(originalDir string, c *comicinfo.ComicInfo) (errorMsg string) {
+	output, err := xml.MarshalIndent(c, "  ", "    ")
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+		return err.Error()
+	}
+
+	// Open File for reading
+	f, err := os.Create(filepath.Join(originalDir, "ComicInfo.xml"))
+	if err != nil {
+		return err.Error()
+	}
+	defer f.Close()
+
+	// Write XML Content to file
+	f.Write([]byte("<?xml version=\"1.0\"?>\n"))
+	f.Write(output)
+
+	err = f.Sync()
+	if err != nil {
+		return err.Error()
+	}
+
+	return ""
+}
+
+// Export the .cbz file to destination.
+// This .cbz file will contain all image in the input directory,
+// including newly generated ComicInfo.xml.
+//
+// If the process success, then function will output empty string.
+// Otherwise, function will return the reason for error.
+//
+// Both input directory and output directory MUST be absolute paths.
+func (a *App) ExportCbz(inputDir string, exportDir string, c *comicinfo.ComicInfo) (errMsg string) {
+	// Marshal ComicInfo to XML
+	output, err := xml.MarshalIndent(c, "  ", "    ")
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+		return err.Error()
+	}
+
+	// Open File for reading
+	f, err := os.Create(filepath.Join(inputDir, "ComicInfo.xml"))
+	if err != nil {
+		return err.Error()
+	}
+	defer f.Close()
+
+	// Write XML Content to file
+	f.Write([]byte("<?xml version=\"1.0\"?>\n"))
+	f.Write(output)
+	err = f.Sync()
+	if err != nil {
+		return err.Error()
+	}
+
+	// Start Archive
+	filename, _ := archive.CreateZipTo(inputDir, exportDir)
+	err = archive.RenameZip(filename, true)
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+		return err.Error()
 	}
 	return ""
 }

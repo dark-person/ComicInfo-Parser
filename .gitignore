@@ -20,9 +20,6 @@ go.work
 # Testing Directory
 temp/*
 
-# Example File for developer reference only
-Example.xml
-
 # Wails Default
 build/bin
 node_modules

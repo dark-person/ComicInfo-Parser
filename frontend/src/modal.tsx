@@ -1,12 +1,16 @@
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
+type LoadingModalProps = {
+	/** determine the modal to display or not */
+	show: boolean;
+};
+
 /**
  * A Modal that display "Please wait..." message and block output.
- * @param show determine the modal to display or not
  * @returns React Function Component
  */
-export function LoadingModal({ show }: { show: boolean }) {
+export function LoadingModal({ show }: LoadingModalProps) {
 	return (
 		<Modal
 			show={show}
@@ -25,19 +29,21 @@ export function LoadingModal({ show }: { show: boolean }) {
 	);
 }
 
+/** The Props for CompleteModal */
+type CompleteModalProps = {
+	/**  determine the modal to show or not*/
+	show: boolean;
+	/** the function to dispose this modal. Usually like setShow(false). */
+	disposeFunc: () => {};
+};
+
 /**
  * A Modal that display Success Complete Message.
  * @param show determine the modal to show or not
- * @param disposeFunc the function to dispose this modal. Usually like setShow(false).
+ * @param disposeFunc
  * @returns React Function Component
  */
-export function CompleteModal({
-	show,
-	disposeFunc,
-}: {
-	show: boolean;
-	disposeFunc: () => {};
-}) {
+export function CompleteModal({ show, disposeFunc }: CompleteModalProps) {
 	return (
 		<Modal
 			show={show}
@@ -61,22 +67,31 @@ export function CompleteModal({
 	);
 }
 
+/** The Props for Error Modal. */
+type ErrorModalProps = {
+	/** determine the modal to show or not */
+	show: boolean;
+	/** the error message to displayed */
+	errorMessage: string;
+	/** the function to dispose this modal. Usually like setShow(false) */
+	disposeFunc: () => {};
+};
+
 /**
  * A Modal that display Success Error Message.
- * @param show determine the modal to show or not
- * @param errorMessage the error message to displayed
- * @param disposeFunc the function to dispose this modal. Usually like setShow(false).
  * @returns React Function Component
  */
-export function ErrorModal({
-	show,
-	errorMessage,
-	disposeFunc,
-}: {
-	show: boolean;
-	errorMessage: string;
-	disposeFunc: () => {};
-}) {
+export function ErrorModal({ show, errorMessage, disposeFunc }: ErrorModalProps) {
+	/**
+	 * Convert Error Message Text to Human readable string with foot stop & Capital Letter
+	 * @param msg the original Error Message
+	 * @returns the human readable with foot stop & Capital Letter
+	 */
+	function humanReadable(msg: string): string {
+		let result = msg.charAt(0).toUpperCase() + msg.slice(1) + ".";
+		return result;
+	}
+
 	return (
 		<Modal
 			show={show}
@@ -89,7 +104,7 @@ export function ErrorModal({
 			</Modal.Header>
 			<Modal.Body className="text-nowrap text-start">
 				<p>The Process is failed because: </p>
-				<p>{errorMessage}</p>
+				<p>{humanReadable(errorMessage)}</p>
 			</Modal.Body>
 			<Modal.Footer className="justify-content-center">
 				<Button variant="secondary" onClick={disposeFunc}>

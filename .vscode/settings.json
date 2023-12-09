@@ -1,13 +1,19 @@
 {
 	"cSpell.words": [
 		"assetserver",
+		"classs",
 		"Colour",
 		"comicinfo",
 		"GTIN",
 		"innerxml",
 		"Komga",
+		"logrus",
+		"Maximised",
 		"Penciller",
-		"wailsapp"
+		"sirupsen",
+		"wailsapp",
+		"wailsjs",
+		"Warnf"
 	],
 	"editor.formatOnSave": true,
 	"editor.unicodeHighlight.includeStrings": false,
@@ -27,5 +33,10 @@
 		"editor.defaultFormatter": "vscode.json-language-features"
 	},
 	"editor.tabSize": 4,
-	"editor.detectIndentation": true
+	"editor.detectIndentation": true,
+	"prettier.tabWidth": 4,
+	"prettier.useTabs": true,
+	"prettier.bracketSameLine": true,
+	"prettier.singleAttributePerLine": false,
+	"prettier.printWidth": 100
 }

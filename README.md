@@ -8,6 +8,10 @@ This Project is aim to provide a simple GUI for create `ComicInfo.xml` and `.cbz
 
 ## Feature Available
 
+### Preview ComicInfo
+
+Preview the `ComicInfo.xml` content before generate. After confirm the content, user can choose to generate `ComicInfo.xml` or an `.cbz` archive.
+
 ### Quick Export (Komga Only)
 
 Create a directory that can copy directly to `komga` comic directory.

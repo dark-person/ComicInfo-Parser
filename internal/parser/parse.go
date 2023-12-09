@@ -24,12 +24,22 @@ func Parse(filename string) (market, author, bookName string) {
 		re := regexp.MustCompile(`\(([^\)]*)\)?\s?\[([^\]]*)\]{1}(.*)`)
 		matches := re.FindStringSubmatch(filename)
 
+		if len(matches) == 0 {
+			// Filename not parse, abort market & author recognize
+			return "", "", filename
+		}
+
 		market = strings.TrimSpace(matches[1])
 		author = strings.TrimSpace(matches[2])
 		bookName = strings.TrimSpace(matches[3])
 	} else {
 		re := regexp.MustCompile(`\[([^\]]*)\]{1}(.*)`)
 		matches := re.FindStringSubmatch(name)
+
+		if len(matches) == 0 {
+			// Filename not parse, abort market & author recognize
+			return "", "", filename
+		}
 
 		market = ""
 		author = strings.TrimSpace(matches[1])
