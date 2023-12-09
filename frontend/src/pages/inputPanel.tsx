@@ -6,6 +6,7 @@ import { Button, Form } from "react-bootstrap";
 // Project Specified Component
 import { FormDateRow, FormRow } from "../formRow";
 import { comicinfo } from "../../wailsjs/go/models";
+import { ChangeEvent } from "react";
 
 /** Props Interface for InputPanel */
 type InputProps = {
@@ -14,19 +15,22 @@ type InputProps = {
 
 	/** The function to change display panel to export panel. */
 	exportFunc: () => void;
+
+	infoSetter: (field: string, value: string | number) => void;
 };
 
 /** Props Interface for Metadata. */
 type MetadataProps = {
 	/** The comic info object. Accept undefined value. */
 	comicInfo: comicinfo.ComicInfo | undefined;
+	infoSetter: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 /**
  * The interface for show/edit book metadata.
  * @returns JSX Element
  */
-function BookMetadata({ comicInfo: info }: MetadataProps) {
+function BookMetadata({ comicInfo: info, infoSetter }: MetadataProps) {
 	return (
 		<div>
 			<Form>
@@ -35,7 +39,7 @@ function BookMetadata({ comicInfo: info }: MetadataProps) {
 					title={"Summary"}
 					value={info?.Summary.InnerXML}
 					textareaRow={3}
-					disabled
+					onChange={infoSetter}
 				/>
 				<FormRow title={"Number"} inputType="number" value={info?.Number} disabled />
 				<FormDateRow
@@ -93,7 +97,12 @@ function TagMetadata({ comicInfo: info }: MetadataProps) {
  * The panel for input/edit content of ComicInfo.xml
  * @returns JSX Element
  */
-export default function InputPanel({ comicInfo, exportFunc }: InputProps) {
+export default function InputPanel({ comicInfo, exportFunc, infoSetter }: InputProps) {
+	function test(e: React.ChangeEvent<HTMLInputElement>) {
+		// console.log(e.target.title, e.target.value);
+		infoSetter(e.target.title, e.target.value);
+	}
+
 	return (
 		<div id="Input-Panel" className="mt-5">
 			<h5 className="mb-4">Modify ComicInfo.xml</h5>
@@ -101,14 +110,24 @@ export default function InputPanel({ comicInfo, exportFunc }: InputProps) {
 			{/* The Tabs Group to display metadata. */}
 			<Tabs defaultActiveKey="Main" id="uncontrolled-tab-example" className="mb-3">
 				<Tab eventKey="Main" title="Book Metadata">
-					<BookMetadata comicInfo={comicInfo} />
+					<BookMetadata comicInfo={comicInfo} infoSetter={test} />
 				</Tab>
 
 				<Tab eventKey="Creator" title="Creator">
-					<CreatorMetadata comicInfo={comicInfo} />
+					<CreatorMetadata
+						comicInfo={comicInfo}
+						infoSetter={function (e: ChangeEvent<HTMLInputElement>): void {
+							throw new Error("Function not implemented.");
+						}}
+					/>
 				</Tab>
 				<Tab eventKey="Tags" title="Tags">
-					<TagMetadata comicInfo={comicInfo} />
+					<TagMetadata
+						comicInfo={comicInfo}
+						infoSetter={function (e: ChangeEvent<HTMLInputElement>): void {
+							throw new Error("Function not implemented.");
+						}}
+					/>
 				</Tab>
 			</Tabs>
 

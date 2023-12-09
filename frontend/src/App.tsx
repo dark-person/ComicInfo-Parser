@@ -103,6 +103,23 @@ function App() {
 		setMode(mode_select_folder);
 	}
 
+	function setValue<T, K extends keyof T>(data: T, key: K, value: any) {
+		data[key] = value;
+	}
+
+	function infoSetter(field: string, value: string | number) {
+		let temp = { ...info } as comicinfo.ComicInfo;
+
+		if (field === "Summary" && typeof value === "string") {
+			temp["Summary"]["InnerXML"] = value;
+		} else {
+			let key = field as keyof comicinfo.ComicInfo;
+			setValue(temp, key, value);
+		}
+
+		setInfo(temp);
+	}
+
 	return (
 		<div id="App" className="container-fluid">
 			{/* Modal Part */}
@@ -131,7 +148,11 @@ function App() {
 				<Col>
 					{mode == mode_select_folder && <FolderSelect processFunc={passingFolder} />}
 					{mode == mode_input_data && (
-						<InputPanel comicInfo={info} exportFunc={showExportPanel} />
+						<InputPanel
+							comicInfo={info}
+							exportFunc={showExportPanel}
+							infoSetter={infoSetter}
+						/>
 					)}
 					{mode == mode_export && (
 						<ExportPanel

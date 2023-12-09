@@ -53,13 +53,22 @@ type FormRowProps = {
 	textareaRow?: number | undefined;
 	/** determines whether the input is disabled */
 	disabled?: boolean;
+
+	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 /**
  * Create a uniform Form.Group Element as Row.
  * @returns A Row Element, Contains one input group with label.
  */
-export function FormRow({ title, inputType, value, textareaRow, disabled }: FormRowProps) {
+export function FormRow({
+	title,
+	inputType,
+	value,
+	textareaRow,
+	disabled,
+	onChange,
+}: FormRowProps) {
 	return (
 		<Form.Group as={Row} className="mb-3">
 			<Form.Label column sm="2">
@@ -70,6 +79,8 @@ export function FormRow({ title, inputType, value, textareaRow, disabled }: Form
 					as={textareaRow != undefined ? "textarea" : undefined}
 					type={inputType}
 					value={value}
+					title={title}
+					onChange={onChange}
 					rows={textareaRow != undefined ? textareaRow : 1}
 					disabled={disabled}
 				/>
