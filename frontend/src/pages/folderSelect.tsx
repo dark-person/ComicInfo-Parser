@@ -121,7 +121,7 @@ export default function FolderSelect({ processFunc: handleFolder }: FolderProps)
 
 	return (
 		<div id="Folder-Select" className="mt-5">
-			\{/* Model Part */}
+			{/* Model Part */}
 			<LoadingModal show={isLoading} />
 			<CompleteModal
 				show={isCompleted}
