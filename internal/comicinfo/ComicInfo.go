@@ -87,6 +87,7 @@ func (c *ComicInfo) AddTags(tags ...string) {
 	c.Tags = strings.Join(temp, ",")
 }
 
+// The Go Struct Version for ComicPageInfo, used to store page information.
 type ComicPageInfo struct {
 	XMLName xml.Name `xml:"Page"`
 
