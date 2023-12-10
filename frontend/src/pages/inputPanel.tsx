@@ -1,3 +1,6 @@
+// React
+import { ChangeEvent } from "react";
+
 // React Component
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
@@ -6,7 +9,6 @@ import { Button, Form } from "react-bootstrap";
 // Project Specified Component
 import { FormDateRow, FormRow } from "../formRow";
 import { comicinfo } from "../../wailsjs/go/models";
-import { ChangeEvent } from "react";
 
 /** Props Interface for InputPanel */
 type InputProps = {
@@ -16,6 +18,7 @@ type InputProps = {
 	/** The function to change display panel to export panel. */
 	exportFunc: () => void;
 
+	/** The info Setter. This function should be doing setting value, but no verification. */
 	infoSetter: (field: string, value: string | number) => void;
 };
 
@@ -23,34 +26,32 @@ type InputProps = {
 type MetadataProps = {
 	/** The comic info object. Accept undefined value. */
 	comicInfo: comicinfo.ComicInfo | undefined;
-	infoSetter: (e: React.ChangeEvent<HTMLInputElement>) => void;
+
+	/** The method called when input field value is changed. */
+	dataHandler: (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => void;
 };
 
 /**
  * The interface for show/edit book metadata.
  * @returns JSX Element
  */
-function BookMetadata({ comicInfo: info, infoSetter }: MetadataProps) {
+function BookMetadata({ comicInfo: info, dataHandler }: MetadataProps) {
 	return (
 		<div>
 			<Form>
-				<FormRow title={"Title"} value={info?.Title} disabled />
-				<FormRow
-					title={"Summary"}
-					value={info?.Summary.InnerXML}
-					textareaRow={3}
-					onChange={infoSetter}
-				/>
-				<FormRow title={"Number"} inputType="number" value={info?.Number} disabled />
+				<FormRow title={"Title"} value={info?.Title} onChange={dataHandler} />
+				<FormRow title={"Summary"} value={info?.Summary.InnerXML} textareaRow={3} onChange={dataHandler} />
+				<FormRow title={"Number"} value={info?.Number} onChange={dataHandler} />
 				<FormDateRow
 					title={"Year/Month/Day"}
 					year={info?.Year}
 					month={info?.Month}
 					day={info?.Day}
-					disabled
+					onYearChange={dataHandler}
+					onSelectChange={dataHandler}
 				/>
-				<FormRow title={"Web"} value={info?.Web} disabled />
-				<FormRow title={"GTIN"} value={info?.GTIN} disabled />
+				<FormRow title={"Web"} value={info?.Web} onChange={dataHandler} />
+				<FormRow title={"GTIN"} value={info?.GTIN} onChange={dataHandler} />
 			</Form>
 		</div>
 	);
@@ -98,8 +99,33 @@ function TagMetadata({ comicInfo: info }: MetadataProps) {
  * @returns JSX Element
  */
 export default function InputPanel({ comicInfo, exportFunc, infoSetter }: InputProps) {
-	function test(e: React.ChangeEvent<HTMLInputElement>) {
-		// console.log(e.target.title, e.target.value);
+	/**
+	 * Handler for all input field in this panel.
+	 * This method will use <code>infoSetter</code> as core,
+	 * and apply change to comicInfo content.
+	 * <p>
+	 * This method will try to find the field is number input first,
+	 * if field name is number/related, then it will call Number() method before set to ComicInfo
+	 *
+	 * @param e the event object, for identify target element
+	 * @returns void
+	 */
+	function handleChanges(e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) {
+		console.log(e.target.title, e.target.value, e.target.type);
+
+		// Identify Number & Year
+		if (e.target.type === "number" || e.target.type === "Year") {
+			infoSetter(e.target.title, Number(e.target.value));
+			return;
+		}
+
+		// Identify Month & Day
+		if (e.target.title === "Month" || e.target.title === "Day") {
+			infoSetter(e.target.title, Number(e.target.value));
+			return;
+		}
+
+		// Normal Cases
 		infoSetter(e.target.title, e.target.value);
 	}
 
@@ -110,13 +136,15 @@ export default function InputPanel({ comicInfo, exportFunc, infoSetter }: InputP
 			{/* The Tabs Group to display metadata. */}
 			<Tabs defaultActiveKey="Main" id="uncontrolled-tab-example" className="mb-3">
 				<Tab eventKey="Main" title="Book Metadata">
-					<BookMetadata comicInfo={comicInfo} infoSetter={test} />
+					<BookMetadata comicInfo={comicInfo} dataHandler={handleChanges} />
 				</Tab>
 
 				<Tab eventKey="Creator" title="Creator">
 					<CreatorMetadata
 						comicInfo={comicInfo}
-						infoSetter={function (e: ChangeEvent<HTMLInputElement>): void {
+						dataHandler={function (
+							e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
+						): void {
 							throw new Error("Function not implemented.");
 						}}
 					/>
@@ -124,7 +152,9 @@ export default function InputPanel({ comicInfo, exportFunc, infoSetter }: InputP
 				<Tab eventKey="Tags" title="Tags">
 					<TagMetadata
 						comicInfo={comicInfo}
-						infoSetter={function (e: ChangeEvent<HTMLInputElement>): void {
+						dataHandler={function (
+							e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
+						): void {
 							throw new Error("Function not implemented.");
 						}}
 					/>
@@ -133,11 +163,7 @@ export default function InputPanel({ comicInfo, exportFunc, infoSetter }: InputP
 
 			{/* The button that will always at the bottom of screen. Should ensure there has enough space */}
 			<div className="fixed-bottom mb-3">
-				<Button
-					variant="outline-success"
-					className="mx-2 "
-					id="btn-export-cbz"
-					onClick={exportFunc}>
+				<Button variant="outline-success" className="mx-2 " id="btn-export-cbz" onClick={exportFunc}>
 					Export to .cbz
 				</Button>
 			</div>
