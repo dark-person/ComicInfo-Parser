@@ -11,12 +11,7 @@ import { Row, Col } from "react-bootstrap";
 import { LoadingModal, CompleteModal, ErrorModal } from "../modal";
 
 // Wails
-import {
-	GetDirectory,
-	GetDirectoryWithDefault,
-	ExportXml,
-	ExportCbz,
-} from "../../wailsjs/go/main/App";
+import { GetDirectory, GetDirectoryWithDefault, ExportXml, ExportCbz } from "../../wailsjs/go/main/App";
 import { comicinfo } from "../../wailsjs/go/models";
 
 /** Props Interface for FolderSelect */
@@ -39,11 +34,7 @@ type buttonName = "xml" | "cbz" | undefined;
  * The panel to export comic info to cbz/xml file.
  * @returns JSX Component
  */
-export default function ExportPanel({
-	comicInfo: info,
-	originalDirectory,
-	backToHomeFunc,
-}: ExportProps) {
+export default function ExportPanel({ comicInfo: info, originalDirectory, backToHomeFunc }: ExportProps) {
 	// Since this is the final step, could ignore the interaction with App.tsx
 	const [exportDir, setExportDir] = useState<string>("");
 
@@ -176,10 +167,7 @@ export default function ExportPanel({
 			{/* Button to Export */}
 			<Row className="mb-3">
 				<Col>
-					<Button
-						variant="outline-secondary"
-						id="btn-export-xml"
-						onClick={handleExportXml}>
+					<Button variant="outline-secondary" id="btn-export-xml" onClick={handleExportXml}>
 						Export ComicInfo.xml Only
 					</Button>
 				</Col>
@@ -187,10 +175,7 @@ export default function ExportPanel({
 
 			<Row className="mb-3">
 				<Col>
-					<Button
-						variant="outline-secondary"
-						id="btn-export-xml"
-						onClick={handleExportCbz}>
+					<Button variant="outline-secondary" id="btn-export-xml" onClick={handleExportCbz}>
 						Export whole .cbz folder
 					</Button>
 				</Col>
