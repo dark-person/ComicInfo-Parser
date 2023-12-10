@@ -38,5 +38,5 @@
 	"prettier.useTabs": true,
 	"prettier.bracketSameLine": true,
 	"prettier.singleAttributePerLine": false,
-	"prettier.printWidth": 100
+	"prettier.printWidth": 120
 }
