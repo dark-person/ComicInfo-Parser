@@ -61,19 +61,19 @@ function BookMetadata({ comicInfo: info, dataHandler }: MetadataProps) {
  * The interface for show/edit creator metadata.
  * @returns JSX Element
  */
-function CreatorMetadata({ comicInfo: info }: MetadataProps) {
+function CreatorMetadata({ comicInfo: info, dataHandler }: MetadataProps) {
 	return (
 		<div>
 			<Form>
-				<FormRow title={"Writer"} value={info?.Writer} disabled />
-				<FormRow title={"Penciller"} value={info?.Penciller} disabled />
-				<FormRow title={"Inker"} value={info?.Inker} disabled />
-				<FormRow title={"Colorist"} value={info?.Colorist} disabled />
-				<FormRow title={"Letterer"} value={info?.Letterer} disabled />
-				<FormRow title={"CoverArtist"} value={info?.CoverArtist} disabled />
-				<FormRow title={"Editor"} value={info?.Editor} disabled />
-				<FormRow title={"Translator"} value={info?.Translator} disabled />
-				<FormRow title={"Publisher"} value={info?.Publisher} disabled />
+				<FormRow title={"Writer"} value={info?.Writer} onChange={dataHandler} />
+				<FormRow title={"Penciller"} value={info?.Penciller} onChange={dataHandler} />
+				<FormRow title={"Inker"} value={info?.Inker} onChange={dataHandler} />
+				<FormRow title={"Colorist"} value={info?.Colorist} onChange={dataHandler} />
+				<FormRow title={"Letterer"} value={info?.Letterer} onChange={dataHandler} />
+				<FormRow title={"CoverArtist"} value={info?.CoverArtist} onChange={dataHandler} />
+				<FormRow title={"Editor"} value={info?.Editor} onChange={dataHandler} />
+				<FormRow title={"Translator"} value={info?.Translator} onChange={dataHandler} />
+				<FormRow title={"Publisher"} value={info?.Publisher} onChange={dataHandler} />
 			</Form>
 		</div>
 	);
@@ -140,14 +140,7 @@ export default function InputPanel({ comicInfo, exportFunc, infoSetter }: InputP
 				</Tab>
 
 				<Tab eventKey="Creator" title="Creator">
-					<CreatorMetadata
-						comicInfo={comicInfo}
-						dataHandler={function (
-							e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
-						): void {
-							throw new Error("Function not implemented.");
-						}}
-					/>
+					<CreatorMetadata comicInfo={comicInfo} dataHandler={handleChanges} />
 				</Tab>
 				<Tab eventKey="Tags" title="Tags">
 					<TagMetadata
