@@ -83,12 +83,12 @@ function CreatorMetadata({ comicInfo: info, dataHandler }: MetadataProps) {
  * The interface for show/edit tags metadata.
  * @returns JSX Element
  */
-function TagMetadata({ comicInfo: info }: MetadataProps) {
+function TagMetadata({ comicInfo: info, dataHandler }: MetadataProps) {
 	return (
 		<div>
 			<Form>
 				{/* A Text Area for holding lines of tags. */}
-				<FormRow title={"Tag"} textareaRow={10} value={info?.Tags} disabled />
+				<FormRow title={"Tags"} textareaRow={10} value={info?.Tags} onChange={dataHandler} />
 			</Form>
 		</div>
 	);
@@ -143,14 +143,7 @@ export default function InputPanel({ comicInfo, exportFunc, infoSetter }: InputP
 					<CreatorMetadata comicInfo={comicInfo} dataHandler={handleChanges} />
 				</Tab>
 				<Tab eventKey="Tags" title="Tags">
-					<TagMetadata
-						comicInfo={comicInfo}
-						dataHandler={function (
-							e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
-						): void {
-							throw new Error("Function not implemented.");
-						}}
-					/>
+					<TagMetadata comicInfo={comicInfo} dataHandler={handleChanges} />
 				</Tab>
 			</Tabs>
 
