@@ -1,10 +1,10 @@
 // React
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 
 // React Component
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import { Button, Form } from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 
 // Project Specified Component
 import { FormDateRow, FormRow } from "../formRow";
@@ -79,16 +79,83 @@ function CreatorMetadata({ comicInfo: info, dataHandler }: MetadataProps) {
 	);
 }
 
+type TagMetadataProps = {
+	/** The comic info object. Accept undefined value. */
+	comicInfo: comicinfo.ComicInfo | undefined;
+
+	// TODO: Remove dataHandler after the tags can be add/remove by other components except human modify
+
+	/** The method called when input field value is changed. */
+	dataHandler: (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => void;
+
+	/** The info Setter. This function should be doing setting value, but no verification. */
+	infoSetter: (field: string, value: string | number) => void;
+};
+
 /**
  * The interface for show/edit tags metadata.
  * @returns JSX Element
  */
-function TagMetadata({ comicInfo: info, dataHandler }: MetadataProps) {
+function TagMetadata({ comicInfo: info, dataHandler, infoSetter }: TagMetadataProps) {
+	// TODO: The documentation for this tags
+
+	const [singleTag, setSingleTag] = useState<string>("");
+
+	// Handle Value changes
+	function handleChanges(e: ChangeEvent<HTMLInputElement>) {
+		setSingleTag(e.target.value);
+	}
+
+	// Function for handling add button click
+	function handleAdd() {
+		// Prevent Empty tags
+		if (singleTag === "") {
+			return;
+		}
+
+		// Retrieve Tags
+		let temp = info?.Tags;
+
+		// Append Tags to comic info
+		if (temp === "" || temp === undefined) {
+			temp = singleTag;
+		} else {
+			temp += ", " + singleTag;
+		}
+
+		// Apply Change to ComicInfo
+		infoSetter("Tags", temp);
+
+		// Empty Tags in textfield
+		setSingleTag("");
+	}
+
 	return (
 		<div>
 			<Form>
 				{/* A Text Area for holding lines of tags. */}
 				<FormRow title={"Tags"} textareaRow={10} value={info?.Tags} onChange={dataHandler} />
+
+				{/* Empty Rows for margin */}
+				<Row className="mb-3" />
+
+				<Row>
+					{/* Empty Column */}
+					<Col sm={2} className="mt-1">
+						Add Custom Tag
+					</Col>
+
+					{/* Column of adding tags */}
+					<Col sm={8}>
+						<Form.Control value={singleTag} onChange={handleChanges} />
+					</Col>
+
+					<Col sm={1}>
+						<Button variant="outline-info" onClick={handleAdd}>
+							Add
+						</Button>
+					</Col>
+				</Row>
 			</Form>
 		</div>
 	);
@@ -143,7 +210,7 @@ export default function InputPanel({ comicInfo, exportFunc, infoSetter }: InputP
 					<CreatorMetadata comicInfo={comicInfo} dataHandler={handleChanges} />
 				</Tab>
 				<Tab eventKey="Tags" title="Tags">
-					<TagMetadata comicInfo={comicInfo} dataHandler={handleChanges} />
+					<TagMetadata comicInfo={comicInfo} dataHandler={handleChanges} infoSetter={infoSetter} />
 				</Tab>
 			</Tabs>
 
