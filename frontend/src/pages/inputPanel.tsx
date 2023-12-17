@@ -1,10 +1,10 @@
 // React
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 
 // React Component
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import { Button, Form } from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 
 // Project Specified Component
 import { FormDateRow, FormRow } from "../formRow";
@@ -61,34 +61,105 @@ function BookMetadata({ comicInfo: info, dataHandler }: MetadataProps) {
  * The interface for show/edit creator metadata.
  * @returns JSX Element
  */
-function CreatorMetadata({ comicInfo: info }: MetadataProps) {
+function CreatorMetadata({ comicInfo: info, dataHandler }: MetadataProps) {
 	return (
 		<div>
 			<Form>
-				<FormRow title={"Writer"} value={info?.Writer} disabled />
-				<FormRow title={"Penciller"} value={info?.Penciller} disabled />
-				<FormRow title={"Inker"} value={info?.Inker} disabled />
-				<FormRow title={"Colorist"} value={info?.Colorist} disabled />
-				<FormRow title={"Letterer"} value={info?.Letterer} disabled />
-				<FormRow title={"CoverArtist"} value={info?.CoverArtist} disabled />
-				<FormRow title={"Editor"} value={info?.Editor} disabled />
-				<FormRow title={"Translator"} value={info?.Translator} disabled />
-				<FormRow title={"Publisher"} value={info?.Publisher} disabled />
+				<FormRow title={"Writer"} value={info?.Writer} onChange={dataHandler} />
+				<FormRow title={"Penciller"} value={info?.Penciller} onChange={dataHandler} />
+				<FormRow title={"Inker"} value={info?.Inker} onChange={dataHandler} />
+				<FormRow title={"Colorist"} value={info?.Colorist} onChange={dataHandler} />
+				<FormRow title={"Letterer"} value={info?.Letterer} onChange={dataHandler} />
+				<FormRow title={"CoverArtist"} value={info?.CoverArtist} onChange={dataHandler} />
+				<FormRow title={"Editor"} value={info?.Editor} onChange={dataHandler} />
+				<FormRow title={"Translator"} value={info?.Translator} onChange={dataHandler} />
+				<FormRow title={"Publisher"} value={info?.Publisher} onChange={dataHandler} />
 			</Form>
 		</div>
 	);
 }
 
+/** The Props for Tag Metadata Component. */
+type TagMetadataProps = {
+	/** The comic info object. Accept undefined value. */
+	comicInfo: comicinfo.ComicInfo | undefined;
+
+	// TODO: Remove dataHandler after the tags can be add/remove by other components except human modify
+
+	/** The method called when input field value is changed. */
+	dataHandler: (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => void;
+
+	/** The info Setter. This function should be doing setting value, but no verification. */
+	infoSetter: (field: string, value: string | number) => void;
+};
+
 /**
  * The interface for show/edit tags metadata.
  * @returns JSX Element
  */
-function TagMetadata({ comicInfo: info }: MetadataProps) {
+function TagMetadata({ comicInfo: info, dataHandler, infoSetter }: TagMetadataProps) {
+	/** Hooks of tag that to be added. Only allow single tag to be added at a time. */
+	const [singleTag, setSingleTag] = useState<string>("");
+
+	/**
+	 * Function to handle the textfield of tag to be added.
+	 * @param e the react event
+	 */
+	function handleChanges(e: ChangeEvent<HTMLInputElement>) {
+		setSingleTag(e.target.value);
+	}
+
+	/** Function for handling add button click */
+	function handleAdd() {
+		// Prevent Empty tags
+		if (singleTag === "") {
+			return;
+		}
+
+		// Retrieve Tags
+		let temp = info?.Tags;
+
+		// Append Tags to comic info
+		if (temp === "" || temp === undefined) {
+			temp = singleTag;
+		} else {
+			temp += ", " + singleTag;
+		}
+
+		// Apply Change to ComicInfo
+		infoSetter("Tags", temp);
+
+		// Empty Tags in textfield
+		setSingleTag("");
+	}
+
 	return (
 		<div>
 			<Form>
 				{/* A Text Area for holding lines of tags. */}
-				<FormRow title={"Tag"} textareaRow={10} value={info?.Tags} disabled />
+				<FormRow title={"Tags"} textareaRow={10} value={info?.Tags} onChange={dataHandler} />
+
+				{/* Empty Rows for margin */}
+				<Row className="mb-3" />
+
+				<Row>
+					{/* Empty Column */}
+					<Col sm={2} className="mt-1">
+						Add Custom Tag
+					</Col>
+
+					{/* Column of adding tags */}
+					<Col sm={8}>
+						<Form.Control value={singleTag} onChange={handleChanges} />
+					</Col>
+
+					{/* Column of add button */}
+					<Col sm={1}>
+						<Button variant="outline-info" onClick={handleAdd}>
+							Add
+						</Button>
+					</Col>
+				</Row>
 			</Form>
 		</div>
 	);
@@ -140,24 +211,10 @@ export default function InputPanel({ comicInfo, exportFunc, infoSetter }: InputP
 				</Tab>
 
 				<Tab eventKey="Creator" title="Creator">
-					<CreatorMetadata
-						comicInfo={comicInfo}
-						dataHandler={function (
-							e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
-						): void {
-							throw new Error("Function not implemented.");
-						}}
-					/>
+					<CreatorMetadata comicInfo={comicInfo} dataHandler={handleChanges} />
 				</Tab>
 				<Tab eventKey="Tags" title="Tags">
-					<TagMetadata
-						comicInfo={comicInfo}
-						dataHandler={function (
-							e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
-						): void {
-							throw new Error("Function not implemented.");
-						}}
-					/>
+					<TagMetadata comicInfo={comicInfo} dataHandler={handleChanges} infoSetter={infoSetter} />
 				</Tab>
 			</Tabs>
 
