@@ -164,22 +164,20 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, backTo
 				</Button>
 			</InputGroup>
 
-			{/* Button to Export */}
-			<Row className="mb-3">
-				<Col>
-					<Button variant="outline-secondary" id="btn-export-xml" onClick={handleExportXml}>
-						Export ComicInfo.xml Only
-					</Button>
-				</Col>
-			</Row>
+			{/* Button to Export. Use d-grid to create block button, use w-25 to smaller size. */}
+			<div className="w-25 mx-auto d-grid gap-2">
+				<Button variant="outline-light" id="btn-export-xml" onClick={handleExportXml}>
+					Export ComicInfo.xml Only
+				</Button>
 
-			<Row className="mb-3">
-				<Col>
-					<Button variant="outline-secondary" id="btn-export-xml" onClick={handleExportCbz}>
-						Export whole .cbz folder
-					</Button>
-				</Col>
-			</Row>
+				<Button variant="outline-secondary" id="btn-export-xml" disabled>
+					Export .cbz file only
+				</Button>
+
+				<Button variant="outline-info" id="btn-export-xml" onClick={handleExportCbz}>
+					Export whole .cbz folder
+				</Button>
+			</div>
 		</div>
 	);
 }
