@@ -79,6 +79,7 @@ function CreatorMetadata({ comicInfo: info, dataHandler }: MetadataProps) {
 	);
 }
 
+/** The Props for Tag Metadata Component. */
 type TagMetadataProps = {
 	/** The comic info object. Accept undefined value. */
 	comicInfo: comicinfo.ComicInfo | undefined;
@@ -97,16 +98,18 @@ type TagMetadataProps = {
  * @returns JSX Element
  */
 function TagMetadata({ comicInfo: info, dataHandler, infoSetter }: TagMetadataProps) {
-	// TODO: The documentation for this tags
-
+	/** Hooks of tag that to be added. Only allow single tag to be added at a time. */
 	const [singleTag, setSingleTag] = useState<string>("");
 
-	// Handle Value changes
+	/**
+	 * Function to handle the textfield of tag to be added.
+	 * @param e the react event
+	 */
 	function handleChanges(e: ChangeEvent<HTMLInputElement>) {
 		setSingleTag(e.target.value);
 	}
 
-	// Function for handling add button click
+	/** Function for handling add button click */
 	function handleAdd() {
 		// Prevent Empty tags
 		if (singleTag === "") {
@@ -150,6 +153,7 @@ function TagMetadata({ comicInfo: info, dataHandler, infoSetter }: TagMetadataPr
 						<Form.Control value={singleTag} onChange={handleChanges} />
 					</Col>
 
+					{/* Column of add button */}
 					<Col sm={1}>
 						<Button variant="outline-info" onClick={handleAdd}>
 							Add
