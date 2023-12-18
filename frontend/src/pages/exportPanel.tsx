@@ -94,8 +94,12 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, backTo
 		});
 	}
 
-	/** Handler for click export .cbz only, export path will be the folder chosen by file chooser. */
-	function handleExportCbz() {
+	/**
+	 * Handler for click export .cbz only, export path will be the folder chosen by file chooser.
+	 * @param isWrap is using wrap folder. If true, then export will include a folder warping cbz file, otherwise only cbz file will be exported.
+	 * @returns nothing
+	 */
+	function handleExportCbz(isWrap: boolean) {
 		if (originalDirectory == undefined) {
 			console.log("[ERR] No original directory");
 			return;
@@ -111,7 +115,7 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, backTo
 		setBtnClicked("cbz");
 
 		// Start Running
-		ExportCbz(originalDirectory, exportDir, info).then((msg) => {
+		ExportCbz(originalDirectory, exportDir, info, isWrap).then((msg) => {
 			if (msg != "") {
 				setErrMsg(msg);
 				setModalState(undefined);
@@ -170,11 +174,11 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, backTo
 					Export ComicInfo.xml Only
 				</Button>
 
-				<Button variant="outline-secondary" id="btn-export-xml" disabled>
+				<Button variant="outline-warning" id="btn-export-xml" onClick={() => handleExportCbz(false)}>
 					Export .cbz file only
 				</Button>
 
-				<Button variant="outline-info" id="btn-export-xml" onClick={handleExportCbz}>
+				<Button variant="outline-info" id="btn-export-xml" onClick={() => handleExportCbz(true)}>
 					Export whole .cbz folder
 				</Button>
 			</div>
