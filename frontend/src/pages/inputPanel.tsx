@@ -220,7 +220,7 @@ export default function InputPanel({ comicInfo, exportFunc, infoSetter }: InputP
 
 			{/* The button that will always at the bottom of screen. Should ensure there has enough space */}
 			<div className="fixed-bottom mb-3">
-				<Button variant="outline-success" className="mx-2 " id="btn-export-cbz" onClick={exportFunc}>
+				<Button variant="success" className="mx-2 " id="btn-export-cbz" onClick={exportFunc}>
 					Export to .cbz
 				</Button>
 			</div>
