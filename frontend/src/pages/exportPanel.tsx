@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
-import { Row, Col } from "react-bootstrap";
 
 // Project Component
 import { LoadingModal, CompleteModal, ErrorModal } from "../modal";
@@ -94,8 +93,12 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, backTo
 		});
 	}
 
-	/** Handler for click export .cbz only, export path will be the folder chosen by file chooser. */
-	function handleExportCbz() {
+	/**
+	 * Handler for click export .cbz only, export path will be the folder chosen by file chooser.
+	 * @param isWrap is using wrap folder. If true, then export will include a folder warping cbz file, otherwise only cbz file will be exported.
+	 * @returns nothing
+	 */
+	function handleExportCbz(isWrap: boolean) {
 		if (originalDirectory == undefined) {
 			console.log("[ERR] No original directory");
 			return;
@@ -111,7 +114,7 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, backTo
 		setBtnClicked("cbz");
 
 		// Start Running
-		ExportCbz(originalDirectory, exportDir, info).then((msg) => {
+		ExportCbz(originalDirectory, exportDir, info, isWrap).then((msg) => {
 			if (msg != "") {
 				setErrMsg(msg);
 				setModalState(undefined);
@@ -164,22 +167,20 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, backTo
 				</Button>
 			</InputGroup>
 
-			{/* Button to Export */}
-			<Row className="mb-3">
-				<Col>
-					<Button variant="outline-secondary" id="btn-export-xml" onClick={handleExportXml}>
-						Export ComicInfo.xml Only
-					</Button>
-				</Col>
-			</Row>
+			{/* Button to Export. Use d-grid to create block button, use w-25 to smaller size. */}
+			<div className="w-25 mx-auto d-grid gap-2">
+				<Button variant="outline-light" id="btn-export-xml" onClick={handleExportXml}>
+					Export ComicInfo.xml Only
+				</Button>
 
-			<Row className="mb-3">
-				<Col>
-					<Button variant="outline-secondary" id="btn-export-xml" onClick={handleExportCbz}>
-						Export whole .cbz folder
-					</Button>
-				</Col>
-			</Row>
+				<Button variant="outline-warning" id="btn-export-xml" onClick={() => handleExportCbz(false)}>
+					Export .cbz file only
+				</Button>
+
+				<Button variant="outline-info" id="btn-export-xml" onClick={() => handleExportCbz(true)}>
+					Export whole .cbz folder
+				</Button>
+			</div>
 		</div>
 	);
 }
