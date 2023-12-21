@@ -103,6 +103,40 @@ function App() {
 		setMode(mode_select_folder);
 	}
 
+	/**
+	 * Set the value by its field name.
+	 * @param data the data to be modify
+	 * @param key  the field name
+	 * @param value new value of that field
+	 */
+	function setValue<T, K extends keyof T>(data: T, key: K, value: any) {
+		data[key] = value;
+	}
+
+	/**
+	 * Setter for changing value of comicInfo.
+	 *
+	 * Note that this function will treat "Summary" field as special case.
+	 * @param field the field name, must be same as ComicInfo field name
+	 * @param value new value of that field
+	 */
+	function infoSetter(field: string, value: string | number) {
+		// Prepare an object of ComicInfo
+		let temp = { ...info } as comicinfo.ComicInfo;
+
+		// Treat Summary field name as special case
+		if (field === "Summary" && typeof value === "string") {
+			temp["Summary"]["InnerXML"] = value;
+		} else {
+			// Normal Change
+			let key = field as keyof comicinfo.ComicInfo;
+			setValue(temp, key, value);
+		}
+
+		// Set the changed value to data
+		setInfo(temp);
+	}
+
 	return (
 		<div id="App" className="container-fluid">
 			{/* Modal Part */}
@@ -131,14 +165,10 @@ function App() {
 				<Col>
 					{mode == mode_select_folder && <FolderSelect processFunc={passingFolder} />}
 					{mode == mode_input_data && (
-						<InputPanel comicInfo={info} exportFunc={showExportPanel} />
+						<InputPanel comicInfo={info} exportFunc={showExportPanel} infoSetter={infoSetter} />
 					)}
 					{mode == mode_export && (
-						<ExportPanel
-							comicInfo={info}
-							originalDirectory={inputDir}
-							backToHomeFunc={backToHomePanel}
-						/>
+						<ExportPanel comicInfo={info} originalDirectory={inputDir} backToHomeFunc={backToHomePanel} />
 					)}
 				</Col>
 

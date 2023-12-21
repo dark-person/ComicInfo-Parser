@@ -1,3 +1,6 @@
+// React
+import { ChangeEventHandler } from "react";
+
 // React Component
 import Form from "react-bootstrap/Form";
 import { Row, Col } from "react-bootstrap";
@@ -22,15 +25,24 @@ type RangeSelectProps = {
 	value: number | undefined;
 	/** determines whether the input is disabled */
 	disabled: boolean | undefined;
+	/** The title of RangeSelect. It will be used to identify changed field. */
+	title: string;
+	/** The OnChange Handler, must be used with value by react hook */
+	onChange: ChangeEventHandler<HTMLSelectElement>;
 };
 
 /**
  * Get a select input, provide option from min ~ max. Also provide an option of empty value.
  * @returns JSX.Element of input select
  */
-export function RangeSelect({ min, max, value, disabled }: RangeSelectProps) {
+export function RangeSelect({ min, max, value, title, disabled, onChange }: RangeSelectProps) {
 	return (
-		<Form.Select aria-label="Default select example" value={value} disabled={disabled}>
+		<Form.Select
+			aria-label="Default select example"
+			value={value}
+			title={title}
+			disabled={disabled}
+			onChange={onChange}>
 			<option value={undefined} key={"val-undefined"}></option>
 			{getArray(min, max).map((num) => (
 				<option value={num} key={"val-" + num.toString()}>
@@ -53,13 +65,15 @@ type FormRowProps = {
 	textareaRow?: number | undefined;
 	/** determines whether the input is disabled */
 	disabled?: boolean;
+	/** Handle value change of input field. */
+	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 /**
  * Create a uniform Form.Group Element as Row.
  * @returns A Row Element, Contains one input group with label.
  */
-export function FormRow({ title, inputType, value, textareaRow, disabled }: FormRowProps) {
+export function FormRow({ title, inputType, value, textareaRow, disabled, onChange }: FormRowProps) {
 	return (
 		<Form.Group as={Row} className="mb-3">
 			<Form.Label column sm="2">
@@ -70,6 +84,8 @@ export function FormRow({ title, inputType, value, textareaRow, disabled }: Form
 					as={textareaRow != undefined ? "textarea" : undefined}
 					type={inputType}
 					value={value}
+					title={title}
+					onChange={onChange}
 					rows={textareaRow != undefined ? textareaRow : 1}
 					disabled={disabled}
 				/>
@@ -90,34 +106,50 @@ type FormDateRowProps = {
 	day?: number;
 	/** determines whether the input is disabled */
 	disabled?: boolean;
+	/** Handler when Year field has changed */
+	onYearChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	/** Handler when select HTML element changed */
+	onSelectChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 
 /**
  * Create a uniform Form.Group Element as Row. This element specify designed for input date.
  * @returns A Row Element, Contains one input group with label. Input group contains three input field for year, month, day.
  */
-export function FormDateRow({ title, year, month, day, disabled }: FormDateRowProps) {
+export function FormDateRow({ title, year, month, day, disabled, onYearChange, onSelectChange }: FormDateRowProps) {
 	return (
 		<Form.Group as={Row} className="mb-3">
 			<Form.Label column sm="2">
 				{title}
 			</Form.Label>
 
+			{/* Year Field */}
 			<Col sm="3">
 				<Form.Control
 					type="number"
 					max="9999"
+					title="Year"
 					value={year === 0 ? "" : year}
 					disabled={disabled}
+					onChange={onYearChange}
 				/>
 			</Col>
 
+			{/* Month Field */}
 			<Col sm="3">
-				<RangeSelect min={1} max={12} value={month} disabled={disabled} />
+				<RangeSelect
+					min={1}
+					max={12}
+					title="Month"
+					value={month}
+					disabled={disabled}
+					onChange={onSelectChange}
+				/>
 			</Col>
 
+			{/* Day Field */}
 			<Col sm="3">
-				<RangeSelect min={1} max={31} value={day} disabled={disabled} />
+				<RangeSelect min={1} max={31} title="Day" value={day} disabled={disabled} onChange={onSelectChange} />
 			</Col>
 		</Form.Group>
 	);

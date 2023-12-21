@@ -215,11 +215,13 @@ func (a *App) ExportXml(originalDir string, c *comicinfo.ComicInfo) (errorMsg st
 // This .cbz file will contain all image in the input directory,
 // including newly generated ComicInfo.xml.
 //
+// This function supports control of using wrap folder.
+//
 // If the process success, then function will output empty string.
 // Otherwise, function will return the reason for error.
 //
 // Both input directory and output directory MUST be absolute paths.
-func (a *App) ExportCbz(inputDir string, exportDir string, c *comicinfo.ComicInfo) (errMsg string) {
+func (a *App) ExportCbz(inputDir string, exportDir string, c *comicinfo.ComicInfo, isWrap bool) (errMsg string) {
 	// Marshal ComicInfo to XML
 	output, err := xml.MarshalIndent(c, "  ", "    ")
 	if err != nil {
@@ -244,7 +246,7 @@ func (a *App) ExportCbz(inputDir string, exportDir string, c *comicinfo.ComicInf
 
 	// Start Archive
 	filename, _ := archive.CreateZipTo(inputDir, exportDir)
-	err = archive.RenameZip(filename, true)
+	err = archive.RenameZip(filename, isWrap)
 	if err != nil {
 		fmt.Printf("error: %v\n", err)
 		return err.Error()
