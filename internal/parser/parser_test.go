@@ -27,7 +27,7 @@ func TestParse(t *testing.T) {
 	for i, filename := range filenames {
 
 		// Test XML
-		market, author, bookName := Parse(filename)
+		market, author, bookName := ParseFolder(filename)
 		c := comicinfo.New()
 		c.Title = bookName
 		c.Writer = author
