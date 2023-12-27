@@ -13,20 +13,19 @@ func FilenameWithoutExt(fileName string) string {
 	return strings.TrimSuffix(fileName, filepath.Ext(fileName))
 }
 
-// Parse the zip filename to multiple string for comicInfo.xml
-// Normally the filename will be (C102) [Author] Name....  .zip
-func Parse(filename string) (market, author, bookName string) {
-	// Get Filename without extension
-
-	name := FilenameWithoutExt(filename)
-	if name[0:1] == "(" {
+// Parse the folder name to multiple string for comicInfo.xml.
+// The folder name MUST be base folder name, i.e. not include its parent directory
+//
+// Normally the folder name will be (C102) [Author] Name....
+func ParseFolder(foldername string) (market, author, bookName string) {
+	if foldername[0:1] == "(" {
 		// Contains C102 e.g
 		re := regexp.MustCompile(`\(([^\)]*)\)?\s?\[([^\]]*)\]{1}(.*)`)
-		matches := re.FindStringSubmatch(filename)
+		matches := re.FindStringSubmatch(foldername)
 
 		if len(matches) == 0 {
 			// Filename not parse, abort market & author recognize
-			return "", "", filename
+			return "", "", foldername
 		}
 
 		market = strings.TrimSpace(matches[1])
@@ -34,11 +33,11 @@ func Parse(filename string) (market, author, bookName string) {
 		bookName = strings.TrimSpace(matches[3])
 	} else {
 		re := regexp.MustCompile(`\[([^\]]*)\]{1}(.*)`)
-		matches := re.FindStringSubmatch(name)
+		matches := re.FindStringSubmatch(foldername)
 
 		if len(matches) == 0 {
 			// Filename not parse, abort market & author recognize
-			return "", "", filename
+			return "", "", foldername
 		}
 
 		market = ""
