@@ -28,6 +28,13 @@ func createFolderContent(tempDir string) {
 	}
 }
 
+// Replace duplicate space to one space.
+// This method is to prevent compare two XML string with same contents
+// and recognize as different, when only tab indentation is not the same.
+func removeExtraSpace(s string) string {
+	return strings.Join(strings.Fields(s), " ")
+}
+
 // Test Get ComicInfo function can return expected result.
 // This test only perform a brief check on the value returned, i.e. nil value or not
 func TestGetComicInfo(t *testing.T) {
@@ -100,8 +107,67 @@ func TestQuickExportKomga(t *testing.T) {
 	// TODO: Implementation
 }
 
+// Test `ExportXml` function in `app`.
+//
+// There has some assumptions for this test:
+//  1. xml.MarshalIndent() not cause any errors
+//  2. *os.File sync() not cause any errors
 func TestExportXml(t *testing.T) {
 	// TODO: Implementation
+	dirInput := make([]string, 0)
+	infoInput := make([]*comicinfo.ComicInfo, 0)
+	textOutput := make([]string, 0)
+
+	// Temp folder creation
+	tempFolder := t.TempDir()
+	// tempFolder := "testing"
+
+	// Assume that xml.MarshalIndent() not cause any errors
+	// Assume that *os.File sync() not cause any errors
+	// Directory is not allow nil value
+
+	// Check if input comicinfo is nil value
+	dirInput = append(dirInput, tempFolder)
+	infoInput = append(infoInput, nil)
+	textOutput = append(textOutput, "comicinfo is nil value")
+
+	// Demo os.Create() error (target directory doesn't exist)
+	dirInput = append(dirInput, filepath.Join(tempFolder, "invalid"))
+	infoInput = append(infoInput, &comicinfo.ComicInfo{})
+	textOutput = append(textOutput, "The system cannot find the path specified")
+
+	// Check output xml
+	c := comicinfo.New()
+
+	dirInput = append(dirInput, tempFolder)
+	infoInput = append(infoInput, &c)
+	textOutput = append(textOutput, "")
+
+	// Create a new app
+	app := NewApp()
+
+	for i := 0; i < len(textOutput); i++ {
+		errMsg := app.ExportXml(dirInput[i], infoInput[i])
+
+		// Check error message
+		if !strings.Contains(errMsg, textOutput[i]) {
+			t.Errorf("Case id = %d: Expected %v, got %v", i, textOutput[i], errMsg)
+		}
+
+		// Early Return for error cases
+		if textOutput[i] != "" {
+			continue
+		}
+
+		// Check output xml equals to expected
+		b, err := os.ReadFile(filepath.Join(tempFolder, "ComicInfo.xml"))
+		if err != nil {
+			t.Errorf("Reading XML in case id %d : %v", i, err)
+		} else if removeExtraSpace(string(b)) != removeExtraSpace(expectedXML) {
+			t.Errorf("Unmatched XML in case id %d: %s vs %s", i, string(b), expectedXML)
+		}
+	}
+
 }
 
 func TestExportCbz_NoWrap(t *testing.T) {
@@ -111,3 +177,33 @@ func TestExportCbz_NoWrap(t *testing.T) {
 func TestExportCbz_Wrap(t *testing.T) {
 	// TODO: Implementation
 }
+
+const expectedXML = `<?xml version="1.0"?>
+<ComicInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<Title></Title>
+	<Series></Series>
+	<Number></Number>
+	<Volume>0</Volume>
+	<AlternateSeries></AlternateSeries>
+	<AlternateNumber></AlternateNumber>
+	<StoryArc></StoryArc>
+	<StoryArcNumber></StoryArcNumber>
+	<SeriesGroup></SeriesGroup>
+	<Summary></Summary>
+	<Notes></Notes>
+	<Writer></Writer>
+	<Publisher></Publisher>
+	<Imprint></Imprint>
+	<Genre></Genre>
+	<Tags></Tags>
+	<PageCount>0</PageCount>
+	<LanguageISO></LanguageISO>
+	<Format></Format>
+	<AgeRating></AgeRating>
+	<Manga></Manga>
+	<Characters></Characters>
+	<Teams></Teams>
+	<Locations></Locations>
+	<ScanInformation></ScanInformation>
+	<Pages></Pages>
+</ComicInfo>`

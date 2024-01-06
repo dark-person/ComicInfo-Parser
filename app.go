@@ -186,6 +186,11 @@ func (a *App) QuickExportKomga(folder string) string {
 //
 // The originalDir MUST be absolute path to write it precisely.
 func (a *App) ExportXml(originalDir string, c *comicinfo.ComicInfo) (errorMsg string) {
+	// Check if comic info is nil value
+	if c == nil {
+		return "comicinfo is nil value"
+	}
+
 	output, err := xml.MarshalIndent(c, "  ", "    ")
 	if err != nil {
 		fmt.Printf("error: %v\n", err)
