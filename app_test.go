@@ -13,17 +13,28 @@ import (
 // due to it will call a file selector, instead of input & output that can be control.
 
 // Create folder content that similar to the real environment.
-// The folder will contain 3 images, and 1 xml file inside.
-// Four file will have different file size.
-func createFolderContent(tempDir string) {
-	// Create Four file, one is not image
-	fileNames := []string{"image1.jpg", "image2.png", "image3.jpeg", "test.xml"}
-	fileSizes := []int64{1234, 3456, 789, 12}
+// The folder will contain 3 images, with different image size.
+//
+// An xml file will be created if `withXml` flag is true.
+//
+// Please note that this function will try to create all necessary folders.
+func createFolderContent(tempDir string, withXml bool) {
+	// Create folder first
+	os.MkdirAll(tempDir, 0755)
+
+	// Create Three Image file
+	fileNames := []string{"image1.jpg", "image2.png", "image3.jpeg"}
+	fileSizes := []int64{1234, 3456, 789}
+
+	// Include XML if flag is true
+	if withXml {
+		fileNames = append(fileNames, "test.xml")
+		fileSizes = append(fileSizes, 12)
+	}
 
 	for i, filename := range fileNames {
 		file, _ := os.Create(filepath.Join(tempDir, filename))
 		file.Truncate(fileSizes[i])
-
 		defer file.Close()
 	}
 }
@@ -45,14 +56,12 @@ func TestGetComicInfo(t *testing.T) {
 
 	// Generate a folder with incorrect structure (Contain Subfolder)
 	incorrectPath := filepath.Join(tempFolder, "incorrect")
-	os.MkdirAll(incorrectPath, 0755)
-	createFolderContent(incorrectPath)
+	createFolderContent(incorrectPath, true)
 	os.MkdirAll(filepath.Join(incorrectPath, "incorrect"), 0755)
 
 	// Generate a folder with correct structure
 	correctPath := filepath.Join(tempFolder, "correct")
-	os.MkdirAll(correctPath, 0755)
-	createFolderContent(correctPath)
+	createFolderContent(correctPath, true)
 
 	// Case of Input
 	caseInput := []string{"", invalidPath, incorrectPath, correctPath}
