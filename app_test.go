@@ -122,7 +122,7 @@ func TestQuickExportKomga(t *testing.T) {
 //  1. xml.MarshalIndent() not cause any errors
 //  2. *os.File sync() not cause any errors
 func TestExportXml(t *testing.T) {
-	// TODO: Implementation
+	// Prepare list of test case
 	dirInput := make([]string, 0)
 	infoInput := make([]*comicinfo.ComicInfo, 0)
 	textOutput := make([]string, 0)
@@ -130,10 +130,6 @@ func TestExportXml(t *testing.T) {
 	// Temp folder creation
 	tempFolder := t.TempDir()
 	// tempFolder := "testing"
-
-	// Assume that xml.MarshalIndent() not cause any errors
-	// Assume that *os.File sync() not cause any errors
-	// Directory is not allow nil value
 
 	// Check if input comicinfo is nil value
 	dirInput = append(dirInput, tempFolder)
@@ -176,11 +172,88 @@ func TestExportXml(t *testing.T) {
 			t.Errorf("Unmatched XML in case id %d: %s vs %s", i, string(b), expectedXML)
 		}
 	}
-
 }
 
+// Test `ExportCbz` function in `app`, which parameters of `isWrap` is false.
+//
+// There has some assumptions for this test:
+//  1. The content of comicInfo is always correct
+//  2. The zip file always content correct image (although this test will check its size)
 func TestExportCbz_NoWrap(t *testing.T) {
-	// TODO: Implementation
+	// Temp folder creation
+	tempFolder := t.TempDir()
+	// tempFolder := "testing"
+
+	// Prepare Paths
+	invalidPath := filepath.Join(tempFolder, "invalid")
+	validInputPath := filepath.Join(tempFolder, "validIn")
+	validOutputPath := filepath.Join(tempFolder, "validOut")
+	os.MkdirAll(validOutputPath, 0755)
+
+	// Create Content
+	createFolderContent(validInputPath, false)
+	validInfo := comicinfo.New()
+
+	// Prepare list for test case
+	inputDirList := make([]string, 0)
+	exportDirList := make([]string, 0)
+	comicInfoList := make([]*comicinfo.ComicInfo, 0)
+	errMsgList := make([]string, 0)
+
+	// When input dir is invalid (os.Create fails)
+	inputDirList = append(inputDirList, invalidPath)
+	exportDirList = append(exportDirList, validOutputPath)
+	comicInfoList = append(comicInfoList, &validInfo)
+	errMsgList = append(errMsgList, "input directory does not exist")
+
+	// When export dir is invalid (os.Create fails)
+	inputDirList = append(inputDirList, validInputPath)
+	exportDirList = append(exportDirList, invalidPath)
+	comicInfoList = append(comicInfoList, &validInfo)
+	errMsgList = append(errMsgList, "export directory does not exist")
+
+	// When comic info is nil value
+	inputDirList = append(inputDirList, validInputPath)
+	exportDirList = append(exportDirList, validOutputPath)
+	comicInfoList = append(comicInfoList, nil)
+	errMsgList = append(errMsgList, "empty comic info")
+
+	// Normal value
+	inputDirList = append(inputDirList, validInputPath)
+	exportDirList = append(exportDirList, validOutputPath)
+	comicInfoList = append(comicInfoList, &validInfo)
+	errMsgList = append(errMsgList, "")
+	expectedFileSize := int64(894)
+
+	// Create a new app
+	app := NewApp()
+
+	for i := 0; i < len(errMsgList); i++ {
+		errMsg := app.ExportCbz(inputDirList[i], exportDirList[i], comicInfoList[i], false)
+
+		if errMsg == "" && errMsg == errMsgList[i] {
+			// Special Handling for Normal case
+			cbzPath := filepath.Join(exportDirList[i], "validIn.cbz")
+
+			stat, err := os.Stat(cbzPath)
+
+			// Check file is exist & archive size is matched with expected
+			if os.IsNotExist(err) {
+				t.Errorf("file is not generated for case %d, path=%s", i, cbzPath)
+			} else if stat.Size() != expectedFileSize {
+				t.Errorf("Wrong file size for case %d: expected %v, got %v", i, stat.Size(), expectedFileSize)
+			}
+
+			continue
+		} else if strings.Contains(errMsg, errMsgList[i]) {
+			// Pass when error message is highly matched
+			continue
+		}
+
+		// Error Message not expected
+		t.Errorf("Wrong error message for case %d: expected %v, got %v", i, errMsgList[i], errMsg)
+
+	}
 }
 
 func TestExportCbz_Wrap(t *testing.T) {
