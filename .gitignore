@@ -19,6 +19,7 @@ go.work
 
 # Testing Directory
 temp/*
+testing/*
 
 # Wails Default
 build/bin
