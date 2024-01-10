@@ -54,7 +54,7 @@ func ScanBooks(folderPath string) (*comicinfo.ComicInfo, error) {
 	folderName := filepath.Base(folderPath)
 
 	// Test XML
-	market, author, bookName := parser.Parse(folderName)
+	market, author, bookName := parser.ParseFolder(folderName)
 	c := comicinfo.New()
 	c.Title = bookName
 	c.Writer = author

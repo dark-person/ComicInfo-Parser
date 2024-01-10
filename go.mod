@@ -2,7 +2,12 @@ module gui-comicinfo
 
 go 1.21
 
-require github.com/wailsapp/wails/v2 v2.6.0
+require github.com/wailsapp/wails/v2 v2.7.1
+
+require (
+	github.com/godbus/dbus/v5 v5.1.0 // indirect
+	github.com/leaanthony/u v1.1.0 // indirect
+)
 
 require (
 	github.com/bep/debounce v1.2.1 // indirect
