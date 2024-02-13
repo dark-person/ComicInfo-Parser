@@ -1,0 +1,5 @@
+.tag-area {
+	min-height: 200px;
+	border: var(--bs-border-width) solid var(--bs-border-color);
+	border-radius: var(--bs-border-radius);
+}
