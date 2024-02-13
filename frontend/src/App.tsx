@@ -172,9 +172,19 @@ function App() {
 					)}
 				</Col>
 
-				{/* Aborted Button, now use as alignment */}
+				{/* Button to next panel, development only, otherwise use as alignment */}
 				<Col xs={1} className="align-self-center">
-					{/* <Button variant="secondary">{">"}</Button> */}
+					<Button
+						variant="danger"
+						onClick={() => {
+							// Perform Mode subtraction
+							let temp = Math.min(mode + 1, mode_export);
+
+							// Set Mode
+							setMode(temp);
+						}}>
+						{">"}
+					</Button>
 				</Col>
 			</Row>
 		</div>
