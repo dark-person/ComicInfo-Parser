@@ -8,7 +8,7 @@ import Button from "react-bootstrap/Button";
 import { Row, Col } from "react-bootstrap";
 
 // Project Specified Component
-import { ErrorModal, LoadingModal } from "./modal";
+import { ErrorModal, LoadingModal } from "./components/modal";
 import FolderSelect from "./pages/folderSelect";
 import InputPanel from "./pages/inputPanel";
 
