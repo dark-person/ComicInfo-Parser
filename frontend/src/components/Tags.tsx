@@ -3,9 +3,10 @@ import "./Tags.css";
 
 type TagsAreaProps = {
 	rawTags: string | undefined;
+	handleDelete: (arg0: number) => void;
 };
 
-export function TagsArea({ rawTags }: TagsAreaProps) {
+export function TagsArea({ rawTags, handleDelete }: TagsAreaProps) {
 	/**
 	 * Parse the raw string that contains tags into arrays.
 	 * <p>
@@ -34,7 +35,7 @@ export function TagsArea({ rawTags }: TagsAreaProps) {
 		<div className="tag-area text-start p-2  ">
 			<div className="d-inline-flex flex-wrap">
 				{getTagsList(rawTags).map((item, index) => (
-					<Tag tag={item} key={index} />
+					<Tag tag={item} key={index} index={index} handleDelete={handleDelete} />
 				))}
 			</div>
 		</div>
@@ -43,13 +44,15 @@ export function TagsArea({ rawTags }: TagsAreaProps) {
 
 type TagProps = {
 	tag: string;
+	index: number;
+	handleDelete: (arg0: number) => void;
 };
 
-export function Tag({ tag }: TagProps) {
+export function Tag({ tag, index, handleDelete }: TagProps) {
 	return (
 		<div className="me-1 mb-1 tag-item bg-secondary p-1">
 			<span className="p-1">{tag}</span>
-			<Button className="btn-close remove-icon"></Button>
+			<Button className="btn-close remove-icon" onClick={() => handleDelete(index)}></Button>
 		</div>
 	);
 }

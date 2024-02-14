@@ -2,13 +2,14 @@
 import { ChangeEvent, useState } from "react";
 
 // React Component
+import { Button, Col, Form, Row } from "react-bootstrap";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import { Button, Col, Form, Row } from "react-bootstrap";
 
 // Project Specified Component
-import { FormDateRow, FormRow } from "../formRow";
 import { comicinfo } from "../../wailsjs/go/models";
+import { TagsArea } from "../components/Tags";
+import { FormDateRow, FormRow } from "../formRow";
 
 /** Props Interface for InputPanel */
 type InputProps = {
@@ -133,11 +134,38 @@ function TagMetadata({ comicInfo: info, dataHandler, infoSetter }: TagMetadataPr
 		setSingleTag("");
 	}
 
+	/** Function for handling delete button click */
+	function handleDelete(id: number) {
+		if (info === undefined || info.Tags === undefined) {
+			return;
+		}
+
+		// Parse tags to array of strings
+		let array = info.Tags.split(",");
+
+		// Remove tag by index
+		array.splice(id, 1);
+
+		// Concat array of string to string
+		let str = array.join(", ");
+
+		// Set by info setter
+		infoSetter("Tags", str);
+	}
+
 	return (
 		<div>
 			<Form>
 				{/* A Text Area for holding lines of tags. */}
-				<FormRow title={"Tags"} textareaRow={10} value={info?.Tags} onChange={dataHandler} />
+				{/* <FormRow title={"Tags"} textareaRow={10} value={info?.Tags} onChange={dataHandler} /> */}
+				<Row>
+					<Col sm={2} className="mt-1">
+						{"Tags"}
+					</Col>
+					<Col sm={9}>
+						<TagsArea rawTags={info?.Tags} handleDelete={handleDelete} />
+					</Col>
+				</Row>
 
 				{/* Empty Rows for margin */}
 				<Row className="mb-3" />
