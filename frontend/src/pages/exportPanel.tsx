@@ -7,7 +7,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 
 // Project Component
-import { LoadingModal, CompleteModal, ErrorModal } from "../modal";
+import { LoadingModal, CompleteModal, ErrorModal } from "../components/modal";
 
 // Wails
 import { GetDirectory, GetDirectoryWithDefault, ExportXml, ExportCbz } from "../../wailsjs/go/main/App";
