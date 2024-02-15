@@ -2,13 +2,14 @@
 import { ChangeEvent, useState } from "react";
 
 // React Component
+import { Button, Col, Form, Row } from "react-bootstrap";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import { Button, Col, Form, Row } from "react-bootstrap";
 
 // Project Specified Component
-import { FormDateRow, FormRow } from "../formRow";
 import { comicinfo } from "../../wailsjs/go/models";
+import { TagsArea } from "../components/Tags";
+import { FormDateRow, FormRow } from "../formRow";
 
 /** Props Interface for InputPanel */
 type InputProps = {
@@ -101,6 +102,14 @@ function TagMetadata({ comicInfo: info, dataHandler, infoSetter }: TagMetadataPr
 	/** Hooks of tag that to be added. Only allow single tag to be added at a time. */
 	const [singleTag, setSingleTag] = useState<string>("");
 
+	/** Function for handing enter key pressed when entering custom tags. */
+	const handleKeyDown = (event: React.KeyboardEvent) => {
+		if (event.key === "Enter") {
+			event.preventDefault();
+			handleAdd();
+		}
+	};
+
 	/**
 	 * Function to handle the textfield of tag to be added.
 	 * @param e the react event
@@ -133,11 +142,38 @@ function TagMetadata({ comicInfo: info, dataHandler, infoSetter }: TagMetadataPr
 		setSingleTag("");
 	}
 
+	/** Function for handling delete button click */
+	function handleDelete(id: number) {
+		if (info === undefined || info.Tags === undefined) {
+			return;
+		}
+
+		// Parse tags to array of strings
+		let array = info.Tags.split(",");
+
+		// Remove tag by index
+		array.splice(id, 1);
+
+		// Concat array of string to string
+		let str = array.join(", ");
+
+		// Set by info setter
+		infoSetter("Tags", str);
+	}
+
 	return (
 		<div>
 			<Form>
 				{/* A Text Area for holding lines of tags. */}
-				<FormRow title={"Tags"} textareaRow={10} value={info?.Tags} onChange={dataHandler} />
+				{/* <FormRow title={"Tags"} textareaRow={10} value={info?.Tags} onChange={dataHandler} /> */}
+				<Row>
+					<Col sm={2} className="mt-1">
+						{"Tags"}
+					</Col>
+					<Col sm={9}>
+						<TagsArea rawTags={info?.Tags} handleDelete={handleDelete} />
+					</Col>
+				</Row>
 
 				{/* Empty Rows for margin */}
 				<Row className="mb-3" />
@@ -150,7 +186,7 @@ function TagMetadata({ comicInfo: info, dataHandler, infoSetter }: TagMetadataPr
 
 					{/* Column of adding tags */}
 					<Col sm={8}>
-						<Form.Control value={singleTag} onChange={handleChanges} />
+						<Form.Control value={singleTag} onChange={handleChanges} onKeyDown={handleKeyDown} />
 					</Col>
 
 					{/* Column of add button */}

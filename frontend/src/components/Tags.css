@@ -1,0 +1,30 @@
+.tag-area {
+	min-height: 200px;
+	border: var(--bs-border-width) solid var(--bs-border-color);
+	border-radius: var(--bs-border-radius);
+}
+
+.tag-item {
+	border: var(--bs-border-width) solid var(--bs-border-color);
+	border-radius: var(--bs-border-radius);
+}
+
+.btn-close.remove-icon {
+	--bs-btn-close-opacity: 0.5;
+	--bs-btn-close-hover-opacity: 0.75;
+	--bs-btn-close-focus-opacity: 1;
+	--bs-btn-close-disabled-opacity: 0.25;
+	width: 0.375em;
+	height: 0.375em;
+	padding: 0.625em 0.25em 0.25em 0.25em;
+	border: 0;
+	border-radius: 0.375rem;
+}
+
+.btn-close.remove-icon:active,
+.btn-close.remove-icon:hover,
+.btn-close.remove-icon:focus,
+.btn-close.remove-icon:focus-visible {
+	background-color: transparent;
+	box-shadow: none;
+}
