@@ -1,11 +1,11 @@
 // CSS Import
-import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 
 // React Component
 import { useState } from "react";
+import { Col, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import { Row, Col } from "react-bootstrap";
 
 // Project Specified Component
 import { ErrorModal, LoadingModal } from "./components/modal";
@@ -14,8 +14,8 @@ import InputPanel from "./pages/inputPanel";
 
 // Wails
 import { GetComicInfo } from "../wailsjs/go/main/App";
-import ExportPanel from "./pages/exportPanel";
 import { comicinfo } from "../wailsjs/go/models";
+import ExportPanel from "./pages/exportPanel";
 
 /** Const, for Display page of select folder */
 const mode_select_folder = 1;
@@ -174,7 +174,7 @@ function App() {
 
 				{/* Button to next panel, development only, otherwise use as alignment */}
 				<Col xs={1} className="align-self-center">
-					<Button
+					{/* <Button
 						variant="danger"
 						onClick={() => {
 							// Perform Mode subtraction
@@ -184,7 +184,7 @@ function App() {
 							setMode(temp);
 						}}>
 						{">"}
-					</Button>
+					</Button> */}
 				</Col>
 			</Row>
 		</div>
