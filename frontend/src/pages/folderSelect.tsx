@@ -9,7 +9,7 @@ import Card from "react-bootstrap/Card";
 import Collapse from "react-bootstrap/Collapse";
 
 // Project Specific Component
-import { CompleteModal, ErrorModal, LoadingModal } from "../modal";
+import { CompleteModal, ErrorModal, LoadingModal } from "../components/modal";
 
 // Wails
 import { GetDirectory, QuickExportKomga, GetDirectoryWithDefault } from "../../wailsjs/go/main/App";
@@ -47,10 +47,7 @@ function CollapseCard({ myKey, title, body }: CardProps) {
 
 	return (
 		<Card className="text-start">
-			<Card.Header
-				onClick={handleCollapse}
-				aria-controls={"collapse-text-" + String(myKey)}
-				aria-expanded={open}>
+			<Card.Header onClick={handleCollapse} aria-controls={"collapse-text-" + String(myKey)} aria-expanded={open}>
 				<span className="me-2">{open == true ? "▼" : ">"}</span>
 				{title}
 			</Card.Header>
@@ -154,18 +151,10 @@ export default function FolderSelect({ processFunc: handleFolder }: FolderProps)
 				</Button>
 			</InputGroup>
 			{/* Button Group */}
-			<Button
-				variant="success"
-				className="mx-2"
-				id="btn-confirm-folder"
-				onClick={handleProcess}>
+			<Button variant="success" className="mx-2" id="btn-confirm-folder" onClick={handleProcess}>
 				Generate ComicInfo.xml
 			</Button>
-			<Button
-				variant="outline-info"
-				className="mx-2"
-				id="btn-quick-export"
-				onClick={handleQuickExport}>
+			<Button variant="outline-info" className="mx-2" id="btn-quick-export" onClick={handleQuickExport}>
 				Quick Export (Komga)
 			</Button>
 			{/* <Button
@@ -181,12 +170,7 @@ export default function FolderSelect({ processFunc: handleFolder }: FolderProps)
 					title={"Example of Your Image Folder"}
 					body={
 						<>
-							<p>
-								{" 📦 <Manga Name>\n" +
-									" ┣ 📜01.jpg\n" +
-									" ┣ 📜02.jpg\n" +
-									" ┗ <other images>"}
-							</p>
+							<p>{" 📦 <Manga Name>\n" + " ┣ 📜01.jpg\n" + " ┣ 📜02.jpg\n" + " ┗ <other images>"}</p>
 							<p>No ComicInfo.xml is needed. It will be overwrite if exist.</p>
 						</>
 					}
@@ -196,10 +180,7 @@ export default function FolderSelect({ processFunc: handleFolder }: FolderProps)
 					title={"Quick Export (Komga)"}
 					body={
 						<>
-							<p>
-								Directly Export .cbz file with ComicInfo.xml inside. The generated
-								file with be like:
-							</p>
+							<p>Directly Export .cbz file with ComicInfo.xml inside. The generated file with be like:</p>
 							<p>
 								{" 📦 <Manga Name>\n" +
 									" ┣ 📦 <Manga Name>  <-- Copy This Folder into Komga Comic Library\n " +
