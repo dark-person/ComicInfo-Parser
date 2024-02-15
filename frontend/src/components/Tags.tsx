@@ -1,11 +1,15 @@
 import { Button } from "react-bootstrap";
 import "./Tags.css";
 
+/** The props of `TagsArea` */
 type TagsAreaProps = {
+	/** Raw string of tags, which is only separate tag with comma. */
 	rawTags: string | undefined;
+	/** The function to delete tag from `comicInfo`. */
 	handleDelete: (arg0: number) => void;
 };
 
+/** Area that holding for Tags. */
 export function TagsArea({ rawTags, handleDelete }: TagsAreaProps) {
 	/**
 	 * Parse the raw string that contains tags into arrays.
@@ -42,12 +46,17 @@ export function TagsArea({ rawTags, handleDelete }: TagsAreaProps) {
 	);
 }
 
+/** The props of `Tag` component. */
 type TagProps = {
+	/** The value of tag name. */
 	tag: string;
+	/** The index of tag, also represent index of tags array. */
 	index: number;
+	/** The function to delete tag from `comicInfo`. */
 	handleDelete: (arg0: number) => void;
 };
 
+/** Item for holding one Tag, include delete button in every tag. */
 export function Tag({ tag, index, handleDelete }: TagProps) {
 	return (
 		<div className="me-1 mb-1 tag-item bg-secondary p-1">
