@@ -102,6 +102,14 @@ function TagMetadata({ comicInfo: info, dataHandler, infoSetter }: TagMetadataPr
 	/** Hooks of tag that to be added. Only allow single tag to be added at a time. */
 	const [singleTag, setSingleTag] = useState<string>("");
 
+	/** Function for handing enter key pressed when entering custom tags. */
+	const handleKeyDown = (event: React.KeyboardEvent) => {
+		if (event.key === "Enter") {
+			event.preventDefault();
+			handleAdd();
+		}
+	};
+
 	/**
 	 * Function to handle the textfield of tag to be added.
 	 * @param e the react event
@@ -178,7 +186,7 @@ function TagMetadata({ comicInfo: info, dataHandler, infoSetter }: TagMetadataPr
 
 					{/* Column of adding tags */}
 					<Col sm={8}>
-						<Form.Control value={singleTag} onChange={handleChanges} />
+						<Form.Control value={singleTag} onChange={handleChanges} onKeyDown={handleKeyDown} />
 					</Col>
 
 					{/* Column of add button */}
