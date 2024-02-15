@@ -1,3 +1,4 @@
+import { Button } from "react-bootstrap";
 import "./Tags.css";
 
 type TagsAreaProps = {
@@ -32,5 +33,10 @@ type TagProps = {
 };
 
 export function Tag({ tag }: TagProps) {
-	return <div className="me-1">{tag}</div>;
+	return (
+		<div className="me-1 mb-1 tag-item bg-secondary p-1">
+			<span className="p-1">{tag}</span>
+			<Button className="btn-close remove-icon"></Button>
+		</div>
+	);
 }
