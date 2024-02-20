@@ -80,15 +80,27 @@ function CreatorMetadata({ comicInfo: info, dataHandler }: MetadataProps) {
 	);
 }
 
+/** The user interface for show/edit Series MetaData. */
+function SeriesMetadata({ comicInfo, dataHandler }: MetadataProps) {
+	return (
+		<div>
+			<Form>
+				<FormRow title={"Series"} value={comicInfo?.Series} onChange={dataHandler} />
+				<FormRow title={"Volume"} value={comicInfo?.Volume} onChange={dataHandler} />
+				<FormRow title={"Count"} value={comicInfo?.Count} onChange={dataHandler} />
+				<FormRow title={"AgeRating"} value={comicInfo?.AgeRating} onChange={dataHandler} />
+				<FormRow title={"Manga"} value={comicInfo?.Manga} onChange={dataHandler} />
+				<FormRow title={"Genre"} value={comicInfo?.Genre} onChange={dataHandler} />
+				<FormRow title={"LanguageISO"} value={comicInfo?.LanguageISO} onChange={dataHandler} />
+			</Form>
+		</div>
+	);
+}
+
 /** The Props for Tag Metadata Component. */
 type TagMetadataProps = {
 	/** The comic info object. Accept undefined value. */
 	comicInfo: comicinfo.ComicInfo | undefined;
-
-	// TODO: Remove dataHandler after the tags can be add/remove by other components except human modify
-
-	/** The method called when input field value is changed. */
-	dataHandler: (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => void;
 
 	/** The info Setter. This function should be doing setting value, but no verification. */
 	infoSetter: (field: string, value: string | number) => void;
@@ -98,7 +110,7 @@ type TagMetadataProps = {
  * The interface for show/edit tags metadata.
  * @returns JSX Element
  */
-function TagMetadata({ comicInfo: info, dataHandler, infoSetter }: TagMetadataProps) {
+function TagMetadata({ comicInfo: info, infoSetter }: TagMetadataProps) {
 	/** Hooks of tag that to be added. Only allow single tag to be added at a time. */
 	const [singleTag, setSingleTag] = useState<string>("");
 
@@ -249,8 +261,13 @@ export default function InputPanel({ comicInfo, exportFunc, infoSetter }: InputP
 				<Tab eventKey="Creator" title="Creator">
 					<CreatorMetadata comicInfo={comicInfo} dataHandler={handleChanges} />
 				</Tab>
+
 				<Tab eventKey="Tags" title="Tags">
-					<TagMetadata comicInfo={comicInfo} dataHandler={handleChanges} infoSetter={infoSetter} />
+					<TagMetadata comicInfo={comicInfo} infoSetter={infoSetter} />
+				</Tab>
+
+				<Tab eventKey="Series" title="Series">
+					<SeriesMetadata comicInfo={comicInfo} dataHandler={handleChanges} />
 				</Tab>
 			</Tabs>
 
