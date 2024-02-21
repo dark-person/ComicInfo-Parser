@@ -97,6 +97,22 @@ function SeriesMetadata({ comicInfo, dataHandler }: MetadataProps) {
 	);
 }
 
+/** The user interface for show/edit Collection & ReadList MetaData. */
+function MiscMetadata({ comicInfo, dataHandler }: MetadataProps) {
+	return (
+		<div>
+			<Form>
+				<FormRow title={"SeriesGroup"} value={comicInfo?.SeriesGroup} onChange={dataHandler} />
+				<FormRow title={"AlternateSeries"} value={comicInfo?.AlternateSeries} onChange={dataHandler} />
+				<FormRow title={"AlternateNumber "} value={comicInfo?.AlternateNumber} onChange={dataHandler} />
+				<FormRow title={"AlternateCount"} value={comicInfo?.AlternateCount} onChange={dataHandler} />
+				<FormRow title={"StoryArc"} value={comicInfo?.StoryArc} onChange={dataHandler} />
+				<FormRow title={"StoryArcNumber"} value={comicInfo?.StoryArcNumber} onChange={dataHandler} />
+			</Form>
+		</div>
+	);
+}
+
 /** The Props for Tag Metadata Component. */
 type TagMetadataProps = {
 	/** The comic info object. Accept undefined value. */
@@ -268,6 +284,10 @@ export default function InputPanel({ comicInfo, exportFunc, infoSetter }: InputP
 
 				<Tab eventKey="Series" title="Series">
 					<SeriesMetadata comicInfo={comicInfo} dataHandler={handleChanges} />
+				</Tab>
+
+				<Tab eventKey="Misc" title="Collection & ReadList">
+					<MiscMetadata comicInfo={comicInfo} dataHandler={handleChanges} />
 				</Tab>
 			</Tabs>
 
