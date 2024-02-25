@@ -1,5 +1,11 @@
 export namespace comicinfo {
 	
+	export enum Manga {
+	    Unknown = "Unknown",
+	    No = "No",
+	    Yes = "Yes",
+	    YesAndRightToLeft = "YesAndRightToLeft",
+	}
 	export class ComicPageInfo {
 	    Image: number;
 	    Type: string;
@@ -73,7 +79,7 @@ export namespace comicinfo {
 	    Format: string;
 	    AgeRating: string;
 	    BlackAndWhite: string;
-	    Manga: string;
+	    Manga: Manga;
 	    Characters: string;
 	    Teams: string;
 	    Locations: string;
