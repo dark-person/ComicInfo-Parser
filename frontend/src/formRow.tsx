@@ -159,3 +159,19 @@ export function FormDateRow({ title, year, month, day, disabled, onYearChange, o
 		</Form.Group>
 	);
 }
+
+type FormSelectRowProps = {
+	title: string;
+	selectElement: JSX.Element;
+};
+
+export function FormSelectRow({ title, selectElement }: FormSelectRowProps) {
+	return (
+		<Form.Group as={Row} className="mb-3">
+			<Form.Label column sm="2">
+				{title}
+			</Form.Label>
+			<Col sm="9">{selectElement}</Col>
+		</Form.Group>
+	);
+}
