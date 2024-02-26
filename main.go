@@ -30,6 +30,7 @@ func main() {
 		},
 		EnumBind: []interface{}{
 			AllMangaValue,
+			AllAgeRatingValue,
 		},
 	})
 

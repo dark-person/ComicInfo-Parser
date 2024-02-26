@@ -10,7 +10,7 @@ import Tabs from "react-bootstrap/Tabs";
 import { comicinfo } from "../../wailsjs/go/models";
 import { TagsArea } from "../components/Tags";
 import { FormDateRow, FormRow, FormSelectRow } from "../formRow";
-import { MangaSelect } from "../components/specificVal";
+import { AgeRatingSelect, MangaSelect } from "../components/specificVal";
 
 /** Props Interface for InputPanel */
 type InputProps = {
@@ -89,7 +89,10 @@ function SeriesMetadata({ comicInfo, dataHandler }: MetadataProps) {
 				<FormRow title={"Series"} value={comicInfo?.Series} onChange={dataHandler} />
 				<FormRow title={"Volume"} value={comicInfo?.Volume} onChange={dataHandler} />
 				<FormRow title={"Count"} value={comicInfo?.Count} onChange={dataHandler} />
-				<FormRow title={"AgeRating"} value={comicInfo?.AgeRating} onChange={dataHandler} />
+				<FormSelectRow
+					title={"AgeRating"}
+					selectElement={<AgeRatingSelect value={comicInfo?.AgeRating} onChange={dataHandler} />}
+				/>
 				<FormSelectRow
 					title={"Manga"}
 					selectElement={<MangaSelect value={comicInfo?.Manga} onChange={dataHandler} />}

@@ -19,7 +19,18 @@ export function MangaSelect({ value, onChange }: MangaSelectProps) {
 	return (
 		<Form.Select value={value} title="Manga" onChange={onChange}>
 			<option value={""}></option>
-			{Object.keys(comicinfo.Manga).map((item) => (
+			{Object.values(comicinfo.Manga).map((item) => (
+				<MangaOptions value={item} />
+			))}
+		</Form.Select>
+	);
+}
+
+export function AgeRatingSelect({ value, onChange }: MangaSelectProps) {
+	return (
+		<Form.Select value={value} title="AgeRating" onChange={onChange}>
+			<option value={""}></option>
+			{Object.values(comicinfo.AgeRating).map((item) => (
 				<MangaOptions value={item} />
 			))}
 		</Form.Select>
