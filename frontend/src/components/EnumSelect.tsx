@@ -1,37 +1,44 @@
 import { Form } from "react-bootstrap";
 import { comicinfo } from "../../wailsjs/go/models";
 
-type props = {
+/** Props for `EnumOptions` */
+type OptionProps = {
+	/** Both displayed value & actual value for `<option>`. */
 	value: string | undefined;
 };
 
-function MangaOptions({ value }: props) {
+/** JSX element for `<option>`, designed to hold enum value. */
+function EnumOptions({ value }: OptionProps) {
 	return <option value={value}>{value}</option>;
 }
 
-type MangaSelectProps = {
+/** Props for select box. */
+type EnumSelectProps = {
+	/** Current value of input field. */
 	value: string | undefined;
 	/** Handle value change of input field. */
 	onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 
-export function MangaSelect({ value, onChange }: MangaSelectProps) {
+/** Form Select Element specified for `Manga` enum. */
+export function MangaSelect({ value, onChange }: EnumSelectProps) {
 	return (
 		<Form.Select value={value} title="Manga" onChange={onChange}>
 			<option value={""}></option>
 			{Object.values(comicinfo.Manga).map((item) => (
-				<MangaOptions value={item} />
+				<EnumOptions value={item} />
 			))}
 		</Form.Select>
 	);
 }
 
-export function AgeRatingSelect({ value, onChange }: MangaSelectProps) {
+/** Form Select Element specified for `AgeRating` enum. */
+export function AgeRatingSelect({ value, onChange }: EnumSelectProps) {
 	return (
 		<Form.Select value={value} title="AgeRating" onChange={onChange}>
 			<option value={""}></option>
 			{Object.values(comicinfo.AgeRating).map((item) => (
-				<MangaOptions value={item} />
+				<EnumOptions value={item} />
 			))}
 		</Form.Select>
 	);

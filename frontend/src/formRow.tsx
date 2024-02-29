@@ -160,11 +160,18 @@ export function FormDateRow({ title, year, month, day, disabled, onYearChange, o
 	);
 }
 
+/** Props for `FormSelectRow`. */
 type FormSelectRowProps = {
+	/** the title/label of this input group */
 	title: string;
+	/** The JSX.Element of `<select>`. */
 	selectElement: JSX.Element;
 };
 
+/**
+ * Create a uniform Form.Group Element as Row.
+ * This element specify designed for select element.
+ */
 export function FormSelectRow({ title, selectElement }: FormSelectRowProps) {
 	return (
 		<Form.Group as={Row} className="mb-3">

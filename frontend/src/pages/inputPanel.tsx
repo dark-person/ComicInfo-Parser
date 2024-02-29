@@ -10,7 +10,7 @@ import Tabs from "react-bootstrap/Tabs";
 import { comicinfo } from "../../wailsjs/go/models";
 import { TagsArea } from "../components/Tags";
 import { FormDateRow, FormRow, FormSelectRow } from "../formRow";
-import { AgeRatingSelect, MangaSelect } from "../components/specificVal";
+import { AgeRatingSelect, MangaSelect } from "../components/EnumSelect";
 
 /** Props Interface for InputPanel */
 type InputProps = {
