@@ -1,5 +1,28 @@
 export namespace comicinfo {
 	
+	export enum Manga {
+	    Unknown = "Unknown",
+	    No = "No",
+	    Yes = "Yes",
+	    YesAndRightToLeft = "YesAndRightToLeft",
+	}
+	export enum AgeRating {
+	    Unknown = "Unknown",
+	    AdultsOnly18 = "Adults Only 18+",
+	    EarlyChildhood = "Early Childhood",
+	    Everyone = "Everyone",
+	    Everyone10Plus = "Everyone 10+",
+	    G = "G",
+	    KidsToAdults = "Kids to Adults",
+	    M = "M",
+	    MA15Plus = "MA15+",
+	    Mature17Plus = "Mature 17+",
+	    PG = "PG",
+	    R18Plus = "R18+",
+	    RatingPending = "Rating Pending",
+	    Teen = "Teen",
+	    X18Plus = "X18+",
+	}
 	export class ComicPageInfo {
 	    Image: number;
 	    Type: string;
@@ -71,9 +94,9 @@ export namespace comicinfo {
 	    PageCount: number;
 	    LanguageISO: string;
 	    Format: string;
-	    AgeRating: string;
+	    AgeRating: AgeRating;
 	    BlackAndWhite: string;
-	    Manga: string;
+	    Manga: Manga;
 	    Characters: string;
 	    Teams: string;
 	    Locations: string;

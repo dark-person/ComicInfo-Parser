@@ -28,6 +28,10 @@ func main() {
 		Bind: []interface{}{
 			app,
 		},
+		EnumBind: []interface{}{
+			AllMangaValue,
+			AllAgeRatingValue,
+		},
 	})
 
 	if err != nil {
