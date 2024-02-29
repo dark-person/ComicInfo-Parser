@@ -38,5 +38,10 @@
 	"prettier.useTabs": true,
 	"prettier.bracketSameLine": true,
 	"prettier.singleAttributePerLine": false,
-	"prettier.printWidth": 120
+	"prettier.printWidth": 120,
+	"code-runner.executorMap": {
+		"go": "wails dev",
+	},
+	"code-runner.clearPreviousOutput": true,
+	"code-runner.runInTerminal": true
 }
