@@ -32,6 +32,9 @@
 	"[json]": {
 		"editor.defaultFormatter": "vscode.json-language-features"
 	},
+	"[markdown]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
 	"editor.tabSize": 4,
 	"editor.detectIndentation": true,
 	"prettier.tabWidth": 4,
