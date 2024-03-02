@@ -60,8 +60,10 @@ type TagProps = {
 export function Tag({ tag, index, handleDelete }: TagProps) {
 	return (
 		<div className="me-1 mb-1 tag-item bg-secondary p-1">
-			<span className="p-1">{tag}</span>
-			<Button className="btn-close remove-icon" onClick={() => handleDelete(index)}></Button>
+			<div className="d-flex align-items-center">
+				<span className="px-1">{tag}</span>
+				<Button className="btn-close remove-icon" onClick={() => handleDelete(index)}></Button>
+			</div>
 		</div>
 	);
 }
