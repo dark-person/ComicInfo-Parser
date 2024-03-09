@@ -43,7 +43,12 @@ The code is hosted at github, which performs:
 -   feature requests
 -   accept pull requests
 
-[Github Flow](https://guides.github.com/introduction/flow/index.html) will be used in this project, so all code changes happen through pull requests.
+### Git workflows
+
+We have two branches for working:
+
+-   `main` : act as release control
+-   `develop` : feature developing
 
 ### Version Release
 
@@ -61,6 +66,8 @@ Don't try to change this file unless you have discuss with other developers. In 
 
 Developer are encouraged to contribute their code through pull request. You should ensure your pull request is meaningful, and not contains any unnecessary / harmful code.
 
+Before start coding, developers SHOULD refer to `DEVELOPMENT.md` for development guide.
+
 After have a self-review for your code, you are free to create a new pull request with below steps:
 
 1. Fork the repo and create your branch from `develop` / `main`.
@@ -69,10 +76,8 @@ After have a self-review for your code, you are free to create a new pull reques
     1. Create normal pull request, if code fulfills the requirements in checklist.
     2. Create draft pull request, if code require further modification
 
-It is recommended to use `git rebase develop` on your code before creating a new pull request.
-
 ## References
 
 This document was adapted from the open-source contribution guidelines for [Facebook's Draft](https://github.com/facebook/draft-js/blob/a9316a723f9e918afde44dea68b5f9f39b7d9b00/CONTRIBUTING.md)
 
-_Last updated: 2024-03-03_
+_Last updated: 2024-03-09_
