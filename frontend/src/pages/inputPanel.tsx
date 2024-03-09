@@ -11,11 +11,15 @@ import { comicinfo } from "../../wailsjs/go/models";
 import { TagsArea } from "../components/Tags";
 import { FormDateRow, FormRow, FormSelectRow } from "../formRow";
 import { AgeRatingSelect, MangaSelect } from "../components/EnumSelect";
+import { basename } from "../filename";
 
 /** Props Interface for InputPanel */
 type InputProps = {
 	/** The comic info object. Accept undefined value. */
 	comicInfo: comicinfo.ComicInfo | undefined;
+
+	/** The folder name for reference. */
+	folderName?: string;
 
 	/** The function to change display panel to export panel. */
 	exportFunc: () => void;
@@ -240,7 +244,7 @@ function TagMetadata({ comicInfo: info, infoSetter }: TagMetadataProps) {
  * The panel for input/edit content of ComicInfo.xml
  * @returns JSX Element
  */
-export default function InputPanel({ comicInfo, exportFunc, infoSetter }: InputProps) {
+export default function InputPanel({ comicInfo, folderName, exportFunc, infoSetter }: InputProps) {
 	/**
 	 * Handler for all input field in this panel.
 	 * This method will use <code>infoSetter</code> as core,
@@ -274,6 +278,12 @@ export default function InputPanel({ comicInfo, exportFunc, infoSetter }: InputP
 	return (
 		<div id="Input-Panel" className="mt-5">
 			<h5 className="mb-4">Modify ComicInfo.xml</h5>
+			<FormRow
+				title={"Folder Name"}
+				titleClass="fst-italic"
+				value={folderName != undefined ? basename(folderName) : "(N/A)"}
+				disabled
+			/>
 
 			{/* The Tabs Group to display metadata. */}
 			<Tabs defaultActiveKey="Main" id="uncontrolled-tab-example" className="mb-3">

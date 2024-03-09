@@ -44,7 +44,7 @@ function App() {
 	/** The ComicInfo model. For communicate with different panel. */
 	const [info, setInfo] = useState<comicinfo.ComicInfo | undefined>(undefined);
 
-	/** The directory of initial input, which is the folder contain image1. */
+	/** The directory of initial input, which is the folder contain image. */
 	const [inputDir, setInputDir] = useState<string | undefined>(undefined);
 
 	/**
@@ -165,7 +165,12 @@ function App() {
 				<Col>
 					{mode == mode_select_folder && <FolderSelect processFunc={passingFolder} />}
 					{mode == mode_input_data && (
-						<InputPanel comicInfo={info} exportFunc={showExportPanel} infoSetter={infoSetter} />
+						<InputPanel
+							comicInfo={info}
+							exportFunc={showExportPanel}
+							infoSetter={infoSetter}
+							folderName={inputDir}
+						/>
 					)}
 					{mode == mode_export && (
 						<ExportPanel comicInfo={info} originalDirectory={inputDir} backToHomeFunc={backToHomePanel} />
