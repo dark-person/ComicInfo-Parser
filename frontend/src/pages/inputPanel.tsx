@@ -278,6 +278,8 @@ export default function InputPanel({ comicInfo, folderName, exportFunc, infoSett
 	return (
 		<div id="Input-Panel" className="mt-5">
 			<h5 className="mb-4">Modify ComicInfo.xml</h5>
+
+			{/* Component for showing folder name (with basename only) */}
 			<FormRow
 				title={"Folder Name"}
 				titleClass="fst-italic"
