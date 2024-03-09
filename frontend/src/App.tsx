@@ -185,6 +185,10 @@ function App() {
 							// Perform Mode subtraction
 							let temp = Math.min(mode + 1, mode_export);
 
+							// Clear user input
+							setInfo(undefined);
+							setInputDir(undefined);
+
 							// Set Mode
 							setMode(temp);
 						}}>
