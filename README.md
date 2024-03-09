@@ -16,9 +16,9 @@ Currently, this project supports fields:
 
 -   `Title`, `Number`, `Summary`, `Year/Month/Day`, `Web`, `GTIN`
 -   ALL Creator fields: `Writer`, `Translator` .etc
--   `Tags` with GUI
+-   `Tags` with GUI to edit & view
 -   `Series`, `Volume`, `Count`
--   `AgeRating`, `Manga`
+-   `AgeRating`, `Manga` with Enum values supported
 -   `Genre`, `LanguageISO`
 -   `SeriesGroup`, `AlternateSeries`
 -   `AlternateNumber`, `AlternateCount`
@@ -39,3 +39,10 @@ Ignore preview section and generate `.cbz` with `komga` folder structure directl
 Already contains a `.cbz` archive and `ComicInfo.xml` at `{selected-folder}/{comic-title}` location, while export location can NOT be changed.
 
 User can directly copy exported folder to `komga` comic directory.
+
+## Screenshots
+
+| ![Select Folder](screenshots/select.png) | ![Preview Page](screenshots/input_book.png) |
+| ---------------------------------------- | ------------------------------------------- |
+| ![Tag View](screenshots/input_tag.png)   | ![Enum Support](screenshots/input_enum.png) |
+| ![Export](screenshots/export.png)        |                                             |
