@@ -2,8 +2,15 @@
  * This file contains filename utilities.
  */
 
-/** Function for get basename in absolute path. */
-export const basename = function (absPath: string): string {
+/**
+ * Function for get basename in absolute path, or empty string if error occurs.
+ *
+ * Basename is retrieved by delete any prefix up to the last slash ('/') character and return the result.
+ *
+ * @param absPath absolute path of folder/file
+ * @returns basename of absolute path, or empty string if any error occurred
+ */
+export function basename(absPath: string): string {
 	const temp = (" " + absPath).slice(1);
 
 	if (temp.split("\\") == undefined) {
@@ -25,4 +32,4 @@ export const basename = function (absPath: string): string {
 	}
 
 	return strParts2;
-};
+}
