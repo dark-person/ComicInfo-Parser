@@ -57,6 +57,8 @@ export function RangeSelect({ min, max, value, title, disabled, onChange }: Rang
 type FormRowProps = {
 	/** the title/label of this input group */
 	title: string;
+	/** Class name for label. Can be used in styling. */
+	titleClass?: string;
 	/** the type of input, same with HTML input type */
 	inputType?: string;
 	/** current inputted value */
@@ -78,10 +80,10 @@ type FormRowProps = {
  *
  * @returns A Row Element, Contains one input group with label.
  */
-export function FormRow({ title, inputType, value, textareaRow, disabled, onChange }: FormRowProps) {
+export function FormRow({ title, titleClass, inputType, value, textareaRow, disabled, onChange }: FormRowProps) {
 	return (
 		<Form.Group as={Row} className="mb-3">
-			<Form.Label column sm="2">
+			<Form.Label column sm="2" className={titleClass != undefined ? titleClass : ""}>
 				{title}
 			</Form.Label>
 			<Col sm="9">
