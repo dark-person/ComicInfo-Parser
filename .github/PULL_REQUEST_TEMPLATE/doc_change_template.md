@@ -4,7 +4,7 @@ Give a list of changed document files, and state which part is modified.
 
 ### Reason of Changes
 
-Give Reason for these changes, e.g. `input validation is not worked as expected`, or `improve UX`. Also give 2~3 sentence to explain your reason.
+Give Reason for these changes, e.g. `fix unclear readme`, or `add github flow`.
 
 ### Related Issues
 

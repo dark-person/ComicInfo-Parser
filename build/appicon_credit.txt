@@ -1,0 +1,11 @@
+appicon.png
+
+Original Name: book-closed-svgrepo-com.png
+
+Source: https://www.svgrepo.com/svg/513520/book-closed
+Author: https://www.svgrepo.com/author/pixelbazaar/
+
+LICENSE: CC Attribution License
+
+======= Changes Made ==========
+- Add `ComicInfo` text

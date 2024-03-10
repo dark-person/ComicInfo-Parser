@@ -22,7 +22,7 @@ The issue number for this feature request.
 #### Documentation Checklist:
 
 -   [ ] I have add new feature description to README.md of this repository
--   [ ] I have add/modify file description to README.md of the package (if any)
+-   [ ] I have add/modify file description to README.md of the package (tick if not applicable)
 
 #### Testing Checklist:
 

@@ -57,10 +57,12 @@ export function RangeSelect({ min, max, value, title, disabled, onChange }: Rang
 type FormRowProps = {
 	/** the title/label of this input group */
 	title: string;
+	/** Class name for label. Can be used in styling. */
+	titleClass?: string;
 	/** the type of input, same with HTML input type */
 	inputType?: string;
 	/** current inputted value */
-	value?: string;
+	value?: string | number;
 	/** number of row of textarea */
 	textareaRow?: number | undefined;
 	/** determines whether the input is disabled */
@@ -71,19 +73,24 @@ type FormRowProps = {
 
 /**
  * Create a uniform Form.Group Element as Row.
+ *
+ * There has some special handling for `number` values:
+ * - When `value == 0`, display empty string instead of `0`
+ * - input type of this element will force to `number`
+ *
  * @returns A Row Element, Contains one input group with label.
  */
-export function FormRow({ title, inputType, value, textareaRow, disabled, onChange }: FormRowProps) {
+export function FormRow({ title, titleClass, inputType, value, textareaRow, disabled, onChange }: FormRowProps) {
 	return (
 		<Form.Group as={Row} className="mb-3">
-			<Form.Label column sm="2">
+			<Form.Label column sm="2" className={titleClass != undefined ? titleClass : ""}>
 				{title}
 			</Form.Label>
 			<Col sm="9">
 				<Form.Control
 					as={textareaRow != undefined ? "textarea" : undefined}
-					type={inputType}
-					value={value}
+					type={typeof value == "number" ? "number" : inputType}
+					value={typeof value == "number" && value == 0 ? "" : value}
 					title={title}
 					onChange={onChange}
 					rows={textareaRow != undefined ? textareaRow : 1}
@@ -151,6 +158,29 @@ export function FormDateRow({ title, year, month, day, disabled, onYearChange, o
 			<Col sm="3">
 				<RangeSelect min={1} max={31} title="Day" value={day} disabled={disabled} onChange={onSelectChange} />
 			</Col>
+		</Form.Group>
+	);
+}
+
+/** Props for `FormSelectRow`. */
+type FormSelectRowProps = {
+	/** the title/label of this input group */
+	title: string;
+	/** The JSX.Element of `<select>`. */
+	selectElement: JSX.Element;
+};
+
+/**
+ * Create a uniform Form.Group Element as Row.
+ * This element specify designed for select element.
+ */
+export function FormSelectRow({ title, selectElement }: FormSelectRowProps) {
+	return (
+		<Form.Group as={Row} className="mb-3">
+			<Form.Label column sm="2">
+				{title}
+			</Form.Label>
+			<Col sm="9">{selectElement}</Col>
 		</Form.Group>
 	);
 }

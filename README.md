@@ -1,37 +1,48 @@
-# GUI ComicInfo Parser
+# ComicInfo Parser
+
+A simple GUI for create `ComicInfo.xml` and `.cbz` archive at easy way.
 
 ## About
 
- [ComicInfo.xml](https://anansi-project.github.io/docs/comicinfo/documentation)  is a metadata for manga/comic. It is used in some self-hosted app, e.g. `komga`.
-
-This Project is aim to provide a simple GUI for create `ComicInfo.xml` and `.cbz` archive at easy way.
+[ComicInfo.xml](https://anansi-project.github.io/docs/comicinfo/documentation) is a metadata for manga/comic. It is used in some self-hosted app, e.g. `komga`.
 
 ## Feature Available
 
-### Preview & Edit ComicInfo
+### Preview generated ComicInfo
 
-Preview the `ComicInfo.xml` content before generate, user can change content of supported field.
+After select folder for generate `ComicInfo.xml`, a preview page will appear. User can change content before export real `ComicInfo.xml`.
 
-After confirm the content, user can choose to generate `ComicInfo.xml` or an `.cbz` archive. User can choose to generate `.cbz`  with `komga` folder structure, or only `.cbz` file.
+Currently, this project supports fields:
+
+-   `Title`, `Number`, `Summary`, `Year/Month/Day`, `Web`, `GTIN`
+-   ALL Creator fields: `Writer`, `Translator` .etc
+-   `Tags` with GUI to edit & view
+-   `Series`, `Volume`, `Count`
+-   `AgeRating`, `Manga` with Enum values supported
+-   `Genre`, `LanguageISO`
+-   `SeriesGroup`, `AlternateSeries`
+-   `AlternateNumber`, `AlternateCount`
+-   `StoryArc`, `StoryArcNumber`
+
+### Option to Export ComicInfo
+
+After preview & press button to export, User can defined export folder, and export in following options:
+
+-   `.cbz` with `komga` folder structure
+-   `.cbz` file ONLY
+-   `ComicInfo.xml` ONLY
 
 ### Quick Export (Komga Only)
 
-Create a directory that can copy directly to `komga` comic directory.
+Ignore preview section and generate `.cbz` with `komga` folder structure directly.
 
-Already contains a `.cbz` archive and `ComicInfo.xml` at correct location.
+Already contains a `.cbz` archive and `ComicInfo.xml` at `{selected-folder}/{comic-title}` location, while export location can NOT be changed.
 
-## Develop
+User can directly copy exported folder to `komga` comic directory.
 
-This project using `go` language, with `wails` framework and `react` typescript as frontend.
+## Screenshots
 
-### Live Development Mode
-
-To run in live development mode, run `wails dev` in the project directory.
-
-This will run a Vite development server that will provide very fast hot reload of your frontend changes.
-
-If you want to develop in a browser and have access to your Go methods, there is also a dev server that runs on http://localhost:34115. Connect to this in your browser, and you can call your Go code from devtools.
-
-### Building
-
-To build a re-distributable, production mode package, use `wails build`.
+| ![Select Folder](screenshots/select.png) | ![Preview Page](screenshots/input_book.png) |
+| ---------------------------------------- | ------------------------------------------- |
+| ![Tag View](screenshots/input_tag.png)   | ![Enum Support](screenshots/input_enum.png) |
+| ![Export](screenshots/export.png)        |                                             |

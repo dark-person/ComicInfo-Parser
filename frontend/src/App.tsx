@@ -1,21 +1,21 @@
 // CSS Import
-import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 
 // React Component
 import { useState } from "react";
+import { Col, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import { Row, Col } from "react-bootstrap";
 
 // Project Specified Component
-import { ErrorModal, LoadingModal } from "./modal";
+import { ErrorModal, LoadingModal } from "./components/modal";
 import FolderSelect from "./pages/folderSelect";
 import InputPanel from "./pages/inputPanel";
 
 // Wails
 import { GetComicInfo } from "../wailsjs/go/main/App";
-import ExportPanel from "./pages/exportPanel";
 import { comicinfo } from "../wailsjs/go/models";
+import ExportPanel from "./pages/exportPanel";
 
 /** Const, for Display page of select folder */
 const mode_select_folder = 1;
@@ -44,7 +44,7 @@ function App() {
 	/** The ComicInfo model. For communicate with different panel. */
 	const [info, setInfo] = useState<comicinfo.ComicInfo | undefined>(undefined);
 
-	/** The directory of initial input, which is the folder contain image1. */
+	/** The directory of initial input, which is the folder contain image. */
 	const [inputDir, setInputDir] = useState<string | undefined>(undefined);
 
 	/**
@@ -165,16 +165,35 @@ function App() {
 				<Col>
 					{mode == mode_select_folder && <FolderSelect processFunc={passingFolder} />}
 					{mode == mode_input_data && (
-						<InputPanel comicInfo={info} exportFunc={showExportPanel} infoSetter={infoSetter} />
+						<InputPanel
+							comicInfo={info}
+							exportFunc={showExportPanel}
+							infoSetter={infoSetter}
+							folderName={inputDir}
+						/>
 					)}
 					{mode == mode_export && (
 						<ExportPanel comicInfo={info} originalDirectory={inputDir} backToHomeFunc={backToHomePanel} />
 					)}
 				</Col>
 
-				{/* Aborted Button, now use as alignment */}
+				{/* Button to next panel, development only, otherwise use as alignment */}
 				<Col xs={1} className="align-self-center">
-					{/* <Button variant="secondary">{">"}</Button> */}
+					{/* <Button
+						variant="danger"
+						onClick={() => {
+							// Perform Mode subtraction
+							let temp = Math.min(mode + 1, mode_export);
+
+							// Clear user input
+							setInfo(undefined);
+							setInputDir(undefined);
+
+							// Set Mode
+							setMode(temp);
+						}}>
+						{">"}
+					</Button> */}
 				</Col>
 			</Row>
 		</div>

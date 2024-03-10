@@ -2,18 +2,24 @@
 import { ChangeEvent, useState } from "react";
 
 // React Component
+import { Button, Col, Form, Row } from "react-bootstrap";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import { Button, Col, Form, Row } from "react-bootstrap";
 
 // Project Specified Component
-import { FormDateRow, FormRow } from "../formRow";
 import { comicinfo } from "../../wailsjs/go/models";
+import { TagsArea } from "../components/Tags";
+import { FormDateRow, FormRow, FormSelectRow } from "../formRow";
+import { AgeRatingSelect, MangaSelect } from "../components/EnumSelect";
+import { basename } from "../filename";
 
 /** Props Interface for InputPanel */
 type InputProps = {
 	/** The comic info object. Accept undefined value. */
 	comicInfo: comicinfo.ComicInfo | undefined;
+
+	/** The folder name for reference. */
+	folderName?: string;
 
 	/** The function to change display panel to export panel. */
 	exportFunc: () => void;
@@ -79,15 +85,49 @@ function CreatorMetadata({ comicInfo: info, dataHandler }: MetadataProps) {
 	);
 }
 
+/** The user interface for show/edit Series MetaData. */
+function SeriesMetadata({ comicInfo, dataHandler }: MetadataProps) {
+	return (
+		<div>
+			<Form>
+				<FormRow title={"Series"} value={comicInfo?.Series} onChange={dataHandler} />
+				<FormRow title={"Volume"} value={comicInfo?.Volume} onChange={dataHandler} />
+				<FormRow title={"Count"} value={comicInfo?.Count} onChange={dataHandler} />
+				<FormSelectRow
+					title={"AgeRating"}
+					selectElement={<AgeRatingSelect value={comicInfo?.AgeRating} onChange={dataHandler} />}
+				/>
+				<FormSelectRow
+					title={"Manga"}
+					selectElement={<MangaSelect value={comicInfo?.Manga} onChange={dataHandler} />}
+				/>
+				<FormRow title={"Genre"} value={comicInfo?.Genre} onChange={dataHandler} />
+				<FormRow title={"LanguageISO"} value={comicInfo?.LanguageISO} onChange={dataHandler} />
+			</Form>
+		</div>
+	);
+}
+
+/** The user interface for show/edit Collection & ReadList MetaData. */
+function MiscMetadata({ comicInfo, dataHandler }: MetadataProps) {
+	return (
+		<div>
+			<Form>
+				<FormRow title={"SeriesGroup"} value={comicInfo?.SeriesGroup} onChange={dataHandler} />
+				<FormRow title={"AlternateSeries"} value={comicInfo?.AlternateSeries} onChange={dataHandler} />
+				<FormRow title={"AlternateNumber "} value={comicInfo?.AlternateNumber} onChange={dataHandler} />
+				<FormRow title={"AlternateCount"} value={comicInfo?.AlternateCount} onChange={dataHandler} />
+				<FormRow title={"StoryArc"} value={comicInfo?.StoryArc} onChange={dataHandler} />
+				<FormRow title={"StoryArcNumber"} value={comicInfo?.StoryArcNumber} onChange={dataHandler} />
+			</Form>
+		</div>
+	);
+}
+
 /** The Props for Tag Metadata Component. */
 type TagMetadataProps = {
 	/** The comic info object. Accept undefined value. */
 	comicInfo: comicinfo.ComicInfo | undefined;
-
-	// TODO: Remove dataHandler after the tags can be add/remove by other components except human modify
-
-	/** The method called when input field value is changed. */
-	dataHandler: (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => void;
 
 	/** The info Setter. This function should be doing setting value, but no verification. */
 	infoSetter: (field: string, value: string | number) => void;
@@ -97,9 +137,17 @@ type TagMetadataProps = {
  * The interface for show/edit tags metadata.
  * @returns JSX Element
  */
-function TagMetadata({ comicInfo: info, dataHandler, infoSetter }: TagMetadataProps) {
+function TagMetadata({ comicInfo: info, infoSetter }: TagMetadataProps) {
 	/** Hooks of tag that to be added. Only allow single tag to be added at a time. */
 	const [singleTag, setSingleTag] = useState<string>("");
+
+	/** Function for handing enter key pressed when entering custom tags. */
+	const handleKeyDown = (event: React.KeyboardEvent) => {
+		if (event.key === "Enter") {
+			event.preventDefault();
+			handleAdd();
+		}
+	};
 
 	/**
 	 * Function to handle the textfield of tag to be added.
@@ -133,11 +181,37 @@ function TagMetadata({ comicInfo: info, dataHandler, infoSetter }: TagMetadataPr
 		setSingleTag("");
 	}
 
+	/** Function for handling delete button click */
+	function handleDelete(id: number) {
+		if (info === undefined || info.Tags === undefined) {
+			return;
+		}
+
+		// Parse tags to array of strings
+		let array = info.Tags.split(",");
+
+		// Remove tag by index
+		array.splice(id, 1);
+
+		// Concat array of string to string
+		let str = array.join(", ");
+
+		// Set by info setter
+		infoSetter("Tags", str);
+	}
+
 	return (
 		<div>
 			<Form>
 				{/* A Text Area for holding lines of tags. */}
-				<FormRow title={"Tags"} textareaRow={10} value={info?.Tags} onChange={dataHandler} />
+				<Row>
+					<Col sm={2} className="mt-1">
+						{"Tags"}
+					</Col>
+					<Col sm={9}>
+						<TagsArea rawTags={info?.Tags} handleDelete={handleDelete} />
+					</Col>
+				</Row>
 
 				{/* Empty Rows for margin */}
 				<Row className="mb-3" />
@@ -150,7 +224,7 @@ function TagMetadata({ comicInfo: info, dataHandler, infoSetter }: TagMetadataPr
 
 					{/* Column of adding tags */}
 					<Col sm={8}>
-						<Form.Control value={singleTag} onChange={handleChanges} />
+						<Form.Control value={singleTag} onChange={handleChanges} onKeyDown={handleKeyDown} />
 					</Col>
 
 					{/* Column of add button */}
@@ -169,7 +243,7 @@ function TagMetadata({ comicInfo: info, dataHandler, infoSetter }: TagMetadataPr
  * The panel for input/edit content of ComicInfo.xml
  * @returns JSX Element
  */
-export default function InputPanel({ comicInfo, exportFunc, infoSetter }: InputProps) {
+export default function InputPanel({ comicInfo, folderName, exportFunc, infoSetter }: InputProps) {
 	/**
 	 * Handler for all input field in this panel.
 	 * This method will use <code>infoSetter</code> as core,
@@ -204,6 +278,14 @@ export default function InputPanel({ comicInfo, exportFunc, infoSetter }: InputP
 		<div id="Input-Panel" className="mt-5">
 			<h5 className="mb-4">Modify ComicInfo.xml</h5>
 
+			{/* Component for showing folder name (with basename only) */}
+			<FormRow
+				title={"Folder Name"}
+				titleClass="fst-italic"
+				value={folderName != undefined ? basename(folderName) : "(N/A)"}
+				disabled
+			/>
+
 			{/* The Tabs Group to display metadata. */}
 			<Tabs defaultActiveKey="Main" id="uncontrolled-tab-example" className="mb-3">
 				<Tab eventKey="Main" title="Book Metadata">
@@ -213,8 +295,17 @@ export default function InputPanel({ comicInfo, exportFunc, infoSetter }: InputP
 				<Tab eventKey="Creator" title="Creator">
 					<CreatorMetadata comicInfo={comicInfo} dataHandler={handleChanges} />
 				</Tab>
+
 				<Tab eventKey="Tags" title="Tags">
-					<TagMetadata comicInfo={comicInfo} dataHandler={handleChanges} infoSetter={infoSetter} />
+					<TagMetadata comicInfo={comicInfo} infoSetter={infoSetter} />
+				</Tab>
+
+				<Tab eventKey="Series" title="Series">
+					<SeriesMetadata comicInfo={comicInfo} dataHandler={handleChanges} />
+				</Tab>
+
+				<Tab eventKey="Misc" title="Collection & ReadList">
+					<MiscMetadata comicInfo={comicInfo} dataHandler={handleChanges} />
 				</Tab>
 			</Tabs>
 
