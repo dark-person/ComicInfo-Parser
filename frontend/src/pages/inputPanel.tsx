@@ -204,7 +204,6 @@ function TagMetadata({ comicInfo: info, infoSetter }: TagMetadataProps) {
 		<div>
 			<Form>
 				{/* A Text Area for holding lines of tags. */}
-				{/* <FormRow title={"Tags"} textareaRow={10} value={info?.Tags} onChange={dataHandler} /> */}
 				<Row>
 					<Col sm={2} className="mt-1">
 						{"Tags"}

@@ -2,25 +2,14 @@ default: help
 
 # Help Menu for makefile
 .PHONY: help
-help:
-	@echo 'Available commands: clean, install, reinstall, test'
+help:	## List all available commands
+	@echo 'Available commands:'
+	@sed -ne '/@sed/!s/## //p' $(MAKEFILE_LIST) 
 
-# clean all build file
-.PHONY: clean
-clean:
+.PHONY: clean 
+clean: 	## remove distribution of both frontend and backend
 	rm build/bin/*.exe
 
-## Install Dependencies
-.PHONY: install
-install:
-	cd frontend; npm install
-
-## Reinstall all dependencies
-.PHONY: reinstall
-reinstall:
-	cd frontend; rm -rf node_modules && npm install
-
-# Run all tests for golang
 .PHONY: test
-test:
+test: 	## perform all tests of golang
 	go test ./... -count=1
