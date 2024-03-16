@@ -1,0 +1,4 @@
+# Dictionary for ComicInfo.xml
+Penciller
+comicinfo
+GTIN
