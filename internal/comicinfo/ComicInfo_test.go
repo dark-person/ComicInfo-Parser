@@ -10,7 +10,7 @@ import (
 
 // Test Parse a XML to ComicInfo Struct.
 func TestParse(t *testing.T) {
-	file, err := os.Open("Example.xml") // For read access.
+	file, err := os.Open("resources/ComicInfo.xml") // For read access.
 	if err != nil {
 		fmt.Printf("error: %v", err)
 		return
@@ -70,7 +70,7 @@ func TestParse(t *testing.T) {
 // Test Marshal a XML to ComicInfo Struct, then Unmarshal to XML.
 func TestMarshal(t *testing.T) {
 	// Read Example XML in directory
-	file, err := os.Open("Example.xml") // For read access.
+	file, err := os.Open("resources/ComicInfo.xml") // For read access.
 	if err != nil {
 		fmt.Printf("error: %v", err)
 		return
