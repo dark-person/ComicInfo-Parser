@@ -24,7 +24,7 @@ func newPage(image int, imageSize int64) ComicPageInfo {
 
 // cSpell:disable
 
-// A comicInfo that generated from `resource/ComicInfo.xml`.
+// A comicInfo that generated from `resource/default/ComicInfo.xml`.
 var testLoadResult = &ComicInfo{
 	XMLName:         xml.Name{Local: "ComicInfo"},
 	Xsi:             "http://www.w3.org/2001/XMLSchema-instance",
@@ -115,7 +115,7 @@ var testLoadResult = &ComicInfo{
 // this test is to ensure the testing result is not corrupted,
 // and allowed to used in further tests like TestSave().
 func TestEquality(t *testing.T) {
-	c1, err := Load("resources/ComicInfo.xml")
+	c1, err := Load("resources/default/ComicInfo.xml")
 	if err != nil {
 		t.Errorf("Error when loading original XML: %v", err)
 		return
@@ -139,9 +139,9 @@ func TestLoad(t *testing.T) {
 
 	tests := []testCase{
 		// 1. Graceful Load
-		{"resources/ComicInfo.xml", testLoadResult, false},
+		{"resources/default/ComicInfo.xml", testLoadResult, false},
 		// 2. Missing "ComicInfo.xml" at path, but existed
-		{"resources", nil, true},
+		{"resources/default/", nil, true},
 		// 3. Pass invalid path
 		{"?/ComicInfo.xml", nil, true},
 		// 4. Pass path that not exists
