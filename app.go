@@ -175,6 +175,10 @@ func (a *App) ExportXml(originalDir string, c *comicinfo.ComicInfo) (errorMsg st
 		return "comicinfo is nil value"
 	}
 
+	if originalDir == "" {
+		return "empty folder path"
+	}
+
 	// Save ComicInfo.xml
 	err := comicinfo.Save(c, filepath.Join(originalDir, "ComicInfo.xml"))
 	if err != nil {
