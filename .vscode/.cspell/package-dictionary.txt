@@ -1,0 +1,6 @@
+# Dictionary for imported packages
+Equalf
+innerxml
+Komga
+logrus
+stretchr
