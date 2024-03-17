@@ -153,7 +153,7 @@ func TestQuickExportKomga(t *testing.T) {
 	// Normal Case
 	dirInput = append(dirInput, valid)
 	errOutput = append(errOutput, "")
-	expectedFileSize := int64(960)
+	expectedFileSize := int64(956)
 
 	// Looping
 	for i := 0; i < len(errOutput); i++ {
@@ -290,7 +290,7 @@ func TestExportCbz_NoWrap(t *testing.T) {
 	exportDirList = append(exportDirList, validOutputPath)
 	comicInfoList = append(comicInfoList, &validInfo)
 	errMsgList = append(errMsgList, "")
-	expectedFileSize := int64(894)
+	expectedFileSize := int64(889)
 
 	// Create a new app
 	app := NewApp()
@@ -371,7 +371,7 @@ func TestExportCbz_Wrap(t *testing.T) {
 	exportDirList = append(exportDirList, validOutputPath)
 	comicInfoList = append(comicInfoList, &validInfo)
 	errMsgList = append(errMsgList, "")
-	expectedFileSize := int64(894)
+	expectedFileSize := int64(889)
 
 	// Create a new app
 	app := NewApp()
