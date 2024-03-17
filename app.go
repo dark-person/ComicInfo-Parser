@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/xml"
 	"fmt"
 	"gui-comicinfo/internal/archive"
 	"gui-comicinfo/internal/comicinfo"
@@ -147,25 +146,10 @@ func (a *App) QuickExportKomga(folder string) string {
 		return err.Error()
 	}
 
-	output, err := xml.MarshalIndent(c, "  ", "    ")
+	// Write ComicInfo.xml
+	err = comicinfo.Save(c, filepath.Join(absPath, "ComicInfo.xml"))
 	if err != nil {
-		fmt.Printf("error: %v\n", err)
-		return err.Error()
-	}
-
-	// Open File for reading
-	f, err := os.Create(filepath.Join(absPath, "ComicInfo.xml"))
-	if err != nil {
-		return err.Error()
-	}
-	defer f.Close()
-
-	// Write XML Content to file
-	f.Write([]byte("<?xml version=\"1.0\"?>\n"))
-	f.Write(output)
-
-	err = f.Sync()
-	if err != nil {
+		fmt.Printf("error when saving: %v\n", err)
 		return err.Error()
 	}
 
@@ -191,25 +175,10 @@ func (a *App) ExportXml(originalDir string, c *comicinfo.ComicInfo) (errorMsg st
 		return "comicinfo is nil value"
 	}
 
-	output, err := xml.MarshalIndent(c, "  ", "    ")
+	// Save ComicInfo.xml
+	err := comicinfo.Save(c, filepath.Join(originalDir, "ComicInfo.xml"))
 	if err != nil {
 		fmt.Printf("error: %v\n", err)
-		return err.Error()
-	}
-
-	// Open File for reading
-	f, err := os.Create(filepath.Join(originalDir, "ComicInfo.xml"))
-	if err != nil {
-		return err.Error()
-	}
-	defer f.Close()
-
-	// Write XML Content to file
-	f.Write([]byte("<?xml version=\"1.0\"?>\n"))
-	f.Write(output)
-
-	err = f.Sync()
-	if err != nil {
 		return err.Error()
 	}
 
@@ -240,25 +209,10 @@ func (a *App) ExportCbz(inputDir string, exportDir string, c *comicinfo.ComicInf
 		return "empty comic info"
 	}
 
-	// Marshal ComicInfo to XML
-	output, err := xml.MarshalIndent(c, "  ", "    ")
+	// Save ComicInfo.xml
+	err := comicinfo.Save(c, filepath.Join(inputDir, "ComicInfo.xml"))
 	if err != nil {
 		fmt.Printf("error: %v\n", err)
-		return err.Error()
-	}
-
-	// Open File for reading
-	f, err := os.Create(filepath.Join(inputDir, "ComicInfo.xml"))
-	if err != nil {
-		return err.Error()
-	}
-	defer f.Close()
-
-	// Write XML Content to file
-	f.Write([]byte("<?xml version=\"1.0\"?>\n"))
-	f.Write(output)
-	err = f.Sync()
-	if err != nil {
 		return err.Error()
 	}
 
