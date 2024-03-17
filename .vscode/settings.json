@@ -1,19 +1,31 @@
 {
-	"cSpell.words": [
-		"assetserver",
-		"classs",
-		"Colour",
-		"comicinfo",
-		"GTIN",
-		"innerxml",
-		"Komga",
-		"logrus",
-		"Maximised",
-		"Penciller",
-		"sirupsen",
-		"wailsapp",
-		"wailsjs",
-		"Warnf"
+	"cSpell.customDictionaries": {
+		"package-dictionary": {
+			"name": "package dictionary",
+			"path": "./.vscode/.cspell/package-dictionary.txt",
+			"addWords": true,
+			"scope": "workspace"
+		},
+		"comicinfo-dictionary": {
+			"name": "ComicInfo.xml dictionary",
+			"path": "./.vscode/.cspell/comicinfo-dictionary.txt",
+			"addWords": true,
+			"scope": "workspace"
+		}
+	},
+	"cSpell.languageSettings": [
+		{ "languageId": "go", "allowCompoundWords": false, "dictionaries": ["go"] },
+		{ "languageId": "typescriptreact", "dictionaries": ["typescript", "node"] },
+		{ "languageId": "css", "dictionaries": ["fonts", "css"] }
+	],
+	"cSpell.ignorePaths": [
+		"package-lock.json",
+		"node_modules",
+		"vscode-extension",
+		".git/objects",
+		".vscode",
+		".vscode-insiders",
+		"wailsjs"
 	],
 	"editor.formatOnSave": true,
 	"editor.unicodeHighlight.includeStrings": false,
@@ -43,7 +55,7 @@
 	"prettier.singleAttributePerLine": false,
 	"prettier.printWidth": 120,
 	"code-runner.executorMap": {
-		"go": "wails dev",
+		"go": "wails dev"
 	},
 	"code-runner.clearPreviousOutput": true,
 	"code-runner.runInTerminal": true
