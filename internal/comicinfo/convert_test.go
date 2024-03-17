@@ -104,6 +104,29 @@ var testLoadResult = &ComicInfo{
 
 // cSpell:enable
 
+// This is a special test, to check struct parsed by two XML is same:
+//   - XML that has self closed tag
+//   - XML that not having self closed tag
+//
+// Due to encoding/xml not having self closed tag supported,
+// this test is to ensure the testing result is not corrupted,
+// and allowed to used in further tests like TestSave().
+func TestEquality(t *testing.T) {
+	c1, err := Load("resources/ComicInfo.xml")
+	if err != nil {
+		t.Errorf("Error when loading original XML: %v", err)
+		return
+	}
+
+	c2, err := Load("resources/closed_tag/ComicInfo.xml")
+	if err != nil {
+		t.Errorf("Error when loading closed tag version XML: %v", err)
+		return
+	}
+
+	assert.EqualValues(t, c1, c2)
+}
+
 func TestLoad(t *testing.T) {
 	type testCase struct {
 		path    string
@@ -117,9 +140,9 @@ func TestLoad(t *testing.T) {
 		// 2. Missing "ComicInfo.xml" at path, but existed
 		{"resources", nil, true},
 		// 3. Pass invalid path
-		{"", nil, true},
+		{"?/ComicInfo.xml", nil, true},
 		// 4. Pass path that not exists
-		{"resources/ComicInfo_not_exist.xml", nil, true},
+		{"resources/not exist/ComicInfo.xml", nil, true},
 	}
 
 	for idx, tt := range tests {
