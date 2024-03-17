@@ -2,6 +2,9 @@ package comicinfo
 
 import (
 	"encoding/xml"
+	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -153,5 +156,67 @@ func TestLoad(t *testing.T) {
 
 		// Check comic info value
 		assert.EqualValues(t, got, tt.want, "Case %d: values not equals", idx)
+	}
+}
+
+func TestSave(t *testing.T) {
+	// For path that not perform any comparison on filepath content
+	const PATH_NO_COMPARE = ""
+
+	// Prepare Temp Directory
+	dir := "testing"
+	os.MkdirAll(dir, 0755)
+
+	type testCase struct {
+		info       *ComicInfo
+		path       string
+		wantedPath string // Path for wanted content
+		wantErr    bool
+	}
+
+	tests := []testCase{
+		// 1. Graceful Save
+		{testLoadResult, filepath.Join(dir, "case1", "ComicInfo.xml"), "resources/closed_tag/ComicInfo.xml", false},
+		// 2. Nil ComicInfo
+		{nil, filepath.Join(dir, "case2", "ComicInfo.xml"), PATH_NO_COMPARE, true},
+		// 3. Invalid path (not ComicInfo.xml)
+		{testLoadResult, filepath.Join(dir, "case3", "abc.xml"), PATH_NO_COMPARE, true},
+		// 4. Invalid path (Invalid path symbol)
+		{testLoadResult, filepath.Join(dir, "case4", "?", "ComicInfo.xml"), PATH_NO_COMPARE, true},
+	}
+
+	for idx, tt := range tests {
+		err := Save(tt.info, tt.path)
+
+		// Check error is expected
+		assert.Equalf(t, err != nil, tt.wantErr, "Case %d: Expected has any error: %v, but %v", idx, tt.wantErr, err)
+
+		// Early return if nothing is expected to compare
+		if tt.wantedPath == PATH_NO_COMPARE {
+			continue
+		}
+
+		// Open file and read wanted
+		wanted, err := os.ReadFile(tt.wantedPath)
+		if err != nil {
+			t.Errorf("Case %d : failed to open wanted path: %v", idx, err)
+			continue
+		}
+		s1 := string(wanted)
+
+		// Open Saved file
+		saved, err := os.ReadFile(tt.path)
+		if err != nil {
+			t.Errorf("Case %d : failed to open saved path: %v", idx, err)
+			continue
+		}
+		s2 := string(saved)
+
+		// Set carriage to "\n" instead of "\r\n", prevent wrong test result
+		s1 = strings.ReplaceAll(s1, "\r\n", "\n")
+		s2 = strings.ReplaceAll(s2, "\r\n", "\n")
+
+		// Compare content
+		assert.EqualValues(t, s1, s2, "XML is not equal")
 	}
 }

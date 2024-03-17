@@ -49,6 +49,46 @@ func Load(path string) (*ComicInfo, error) {
 	return &result, nil
 }
 
+// Save the ComicInfo struct to "ComicInfo.xml" file.
+// If directory is not exist, this function will created by itself.
+//
+// The path must have the last element equal to "ComicInfo.xml".
 func Save(info *ComicInfo, path string) error {
-	panic("Save is not implemented")
+	// Check if comic info is nil value
+	if info == nil {
+		return fmt.Errorf("nil comic info")
+	}
+
+	// Path checking to ensure last element is "ComicInfo.xml"
+	if filepath.Base(path) != "ComicInfo.xml" {
+		return fmt.Errorf("invalid ComicInfo.xml file")
+	}
+
+	// Marshal XML
+	output, err := xml.MarshalIndent(info, "", "    ")
+	if err != nil {
+		logrus.Errorf("Error when marshal to XML file %s: %v", path, err)
+		return err
+	}
+
+	// Ensure filepath is existing
+	os.MkdirAll(filepath.Dir(path), 0755)
+
+	// Open File for reading
+	f, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	// Write XML Content to file
+	f.Write([]byte("<?xml version=\"1.0\"?>\n"))
+	f.Write(output)
+
+	err = f.Sync()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
