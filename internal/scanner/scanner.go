@@ -19,7 +19,7 @@ func GetPageInfo(absPath string) (pages []comicinfo.ComicPageInfo, err error) {
 
 	pageInfos := make([]comicinfo.ComicPageInfo, 0)
 
-	// Image must be rescan due to image contents may changed
+	// Image must be re-scan due to image contents may changed
 	imageIdx := 0
 	for _, entry := range entries {
 		ext := filepath.Ext(entry.Name())
@@ -51,7 +51,15 @@ func GetPageInfo(absPath string) (pages []comicinfo.ComicPageInfo, err error) {
 
 // Scan the folderPath as a book/manga, then return comicInfo.
 func ScanBooks(folderPath string) (*comicinfo.ComicInfo, error) {
-	folderName := filepath.Base(folderPath)
+	// Prevent Empty path
+	if folderPath == "" {
+		return nil, fmt.Errorf("empty folder path")
+	}
+
+	// Prevent invalid path
+	if !files.IsPathValid(folderPath) || !files.IsFileExist(folderPath) {
+		return nil, fmt.Errorf("invalid folder path")
+	}
 
 	// Check any comic info file before start parse
 	infoPath := filepath.Join(folderPath, "ComicInfo.xml")
@@ -63,7 +71,7 @@ func ScanBooks(folderPath string) (*comicinfo.ComicInfo, error) {
 			return nil, err
 		}
 
-		// Force Rescan Pages
+		// Force Re-scan Pages
 		pages, err := GetPageInfo(folderPath)
 		if err != nil {
 			return nil, err
@@ -78,6 +86,7 @@ func ScanBooks(folderPath string) (*comicinfo.ComicInfo, error) {
 	c := comicinfo.New()
 
 	// Parse Folder to info
+	folderName := filepath.Base(folderPath)
 	market, author, bookName := parser.ParseFolder(folderName)
 	c.Title = bookName
 	c.Writer = author
