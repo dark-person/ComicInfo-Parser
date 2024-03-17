@@ -3,6 +3,7 @@ package scanner
 import (
 	"fmt"
 	"gui-comicinfo/internal/comicinfo"
+	"gui-comicinfo/internal/files"
 	"gui-comicinfo/internal/parser"
 	"os"
 	"path/filepath"
@@ -18,6 +19,7 @@ func GetPageInfo(absPath string) (pages []comicinfo.ComicPageInfo, err error) {
 
 	pageInfos := make([]comicinfo.ComicPageInfo, 0)
 
+	// Image must be rescan due to image contents may changed
 	imageIdx := 0
 	for _, entry := range entries {
 		ext := filepath.Ext(entry.Name())
@@ -42,8 +44,6 @@ func GetPageInfo(absPath string) (pages []comicinfo.ComicPageInfo, err error) {
 
 		pageInfos = append(pageInfos, page)
 		imageIdx++
-
-		// fmt.Println("Entry ", idx, ":", filepath.Join(absPath, entry.Name()), "Size: ", info.Size())
 	}
 
 	return pageInfos, nil
@@ -53,9 +53,32 @@ func GetPageInfo(absPath string) (pages []comicinfo.ComicPageInfo, err error) {
 func ScanBooks(folderPath string) (*comicinfo.ComicInfo, error) {
 	folderName := filepath.Base(folderPath)
 
-	// Test XML
-	market, author, bookName := parser.ParseFolder(folderName)
+	// Check any comic info file before start parse
+	infoPath := filepath.Join(folderPath, "ComicInfo.xml")
+
+	if files.IsFileExist(infoPath) {
+		// Marshal info to struct
+		c, err := comicinfo.Load(infoPath)
+		if err != nil {
+			return nil, err
+		}
+
+		// Force Rescan Pages
+		pages, err := GetPageInfo(folderPath)
+		if err != nil {
+			return nil, err
+		}
+
+		c.Pages = pages
+		c.PageCount = len(pages)
+		return c, nil
+	}
+
+	// Create ComicInfo struct
 	c := comicinfo.New()
+
+	// Parse Folder to info
+	market, author, bookName := parser.ParseFolder(folderName)
 	c.Title = bookName
 	c.Writer = author
 	c.Manga = "Yes"
