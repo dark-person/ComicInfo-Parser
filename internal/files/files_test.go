@@ -4,6 +4,8 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestIsFileExist(t *testing.T) {
@@ -25,6 +27,7 @@ func TestIsFileExist(t *testing.T) {
 	}{
 		{path1, true},
 		{path2, false},
+		{"???", false},
 	}
 
 	// Start Test
@@ -32,5 +35,33 @@ func TestIsFileExist(t *testing.T) {
 		if got := IsFileExist(tt.path); got != tt.want {
 			t.Errorf("IsFileExist() = %v, want %v", got, tt.want)
 		}
+	}
+}
+
+func TestIsPathValid(t *testing.T) {
+	// Prepare valid path
+	dir := t.TempDir()
+
+	// Struct for perform unit testing
+	type testCase struct {
+		path string // Path to test
+		want bool   // return value
+	}
+
+	// Prepare Test
+	tests := []testCase{
+		// 1. Case for valid & exist path
+		{dir, true},
+		// 2. Case for valid & not exist path
+		{"not exist", true},
+		// 3. Case for invalid path
+		{"???", false},
+	}
+
+	for idx, tt := range tests {
+		got := IsPathValid(tt.path)
+
+		// Check errors
+		assert.EqualValuesf(t, tt.want, got, "Case %d : result unexpected.", idx)
 	}
 }
