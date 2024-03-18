@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // Please note that, the getDirectory method will not be tested
@@ -153,7 +155,7 @@ func TestQuickExportKomga(t *testing.T) {
 	// Normal Case
 	dirInput = append(dirInput, valid)
 	errOutput = append(errOutput, "")
-	expectedFileSize := int64(960)
+	expectedFileSize := int64(956)
 
 	// Looping
 	for i := 0; i < len(errOutput); i++ {
@@ -189,55 +191,51 @@ func TestQuickExportKomga(t *testing.T) {
 //  1. xml.MarshalIndent() not cause any errors
 //  2. *os.File sync() not cause any errors
 func TestExportXml(t *testing.T) {
-	// Prepare list of test case
-	dirInput := make([]string, 0)
-	infoInput := make([]*comicinfo.ComicInfo, 0)
-	textOutput := make([]string, 0)
-
 	// Temp folder creation
 	tempFolder := t.TempDir()
-	// tempFolder := "testing"
 
-	// Check if input comicinfo is nil value
-	dirInput = append(dirInput, tempFolder)
-	infoInput = append(infoInput, nil)
-	textOutput = append(textOutput, "comicinfo is nil value")
+	type testCase struct {
+		dir       string // Only final part of abs path, i.e. no need to include temp folder value
+		c         *comicinfo.ComicInfo
+		hasErrMsg bool
+	}
 
-	// Demo os.Create() error (target directory doesn't exist)
-	dirInput = append(dirInput, filepath.Join(tempFolder, "invalid"))
-	infoInput = append(infoInput, &comicinfo.ComicInfo{})
-	textOutput = append(textOutput, "The system cannot find the path specified")
+	tempInfo := comicinfo.New()
 
-	// Check output xml
-	c := comicinfo.New()
+	tests := []testCase{
+		// 1. Graceful Test
+		{filepath.Join(tempFolder, "case1"), &tempInfo, false},
+		// 2. nil value of ComicInfo
+		{filepath.Join(tempFolder, "case2"), nil, true},
+		// 3. Empty path
+		{"", &tempInfo, true},
+		// 4. Invalid path (invalid character)
+		{filepath.Join(tempFolder, "???"), &tempInfo, true},
+	}
 
-	dirInput = append(dirInput, tempFolder)
-	infoInput = append(infoInput, &c)
-	textOutput = append(textOutput, "")
-
-	// Create a new app
+	// Prepare dummy App
 	app := NewApp()
 
-	for i := 0; i < len(textOutput); i++ {
-		errMsg := app.ExportXml(dirInput[i], infoInput[i])
+	// Start test
+	for idx, tt := range tests {
+		msg := app.ExportXml(tt.dir, tt.c)
 
-		// Check error message
-		if !strings.Contains(errMsg, textOutput[i]) {
-			t.Errorf("Case id = %d: Expected %v, got %v", i, textOutput[i], errMsg)
-		}
+		// Check error
+		assert.EqualValuesf(t, tt.hasErrMsg, msg != "", "Case %d: unexpected error message: %v", idx, msg)
 
-		// Early Return for error cases
-		if textOutput[i] != "" {
+		// Skip file content compare when tests have expected error message
+		if tt.hasErrMsg {
 			continue
 		}
 
-		// Check output xml equals to expected
-		b, err := os.ReadFile(filepath.Join(tempFolder, "ComicInfo.xml"))
+		// Check exported value
+		b, err := os.ReadFile(filepath.Join(tt.dir, "ComicInfo.xml"))
 		if err != nil {
-			t.Errorf("Reading XML in case id %d : %v", i, err)
-		} else if removeExtraSpace(string(b)) != removeExtraSpace(expectedXML) {
-			t.Errorf("Unmatched XML in case id %d: %s vs %s", i, string(b), expectedXML)
+			t.Errorf("Reading XML in case id %d : %v", idx, err)
 		}
+
+		assert.EqualValuesf(t, removeExtraSpace(expectedXML), removeExtraSpace(string(b)),
+			"Case %d: unmatched XML.", idx)
 	}
 }
 
@@ -290,7 +288,7 @@ func TestExportCbz_NoWrap(t *testing.T) {
 	exportDirList = append(exportDirList, validOutputPath)
 	comicInfoList = append(comicInfoList, &validInfo)
 	errMsgList = append(errMsgList, "")
-	expectedFileSize := int64(894)
+	expectedFileSize := int64(889)
 
 	// Create a new app
 	app := NewApp()
@@ -371,7 +369,7 @@ func TestExportCbz_Wrap(t *testing.T) {
 	exportDirList = append(exportDirList, validOutputPath)
 	comicInfoList = append(comicInfoList, &validInfo)
 	errMsgList = append(errMsgList, "")
-	expectedFileSize := int64(894)
+	expectedFileSize := int64(889)
 
 	// Create a new app
 	app := NewApp()

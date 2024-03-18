@@ -12,6 +12,8 @@ A simple GUI for create `ComicInfo.xml` and `.cbz` archive at easy way.
 
 After select folder for generate `ComicInfo.xml`, a preview page will appear. User can change content before export real `ComicInfo.xml`.
 
+When there has existing `ComicInfo.xml` file in selected folder, GUI will load existing `ComicInfo.xml` data instead of create a new one.
+
 Currently, this project supports fields:
 
 -   `Title`, `Number`, `Summary`, `Year/Month/Day`, `Web`, `GTIN`

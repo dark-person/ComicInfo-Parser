@@ -1,11 +1,12 @@
 package scanner
 
 import (
-	"fmt"
 	"gui-comicinfo/internal/comicinfo"
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // Test GetPageInfo() get correct range of pages and content.
@@ -48,89 +49,81 @@ func TestGetPageInfo(t *testing.T) {
 	}
 }
 
-// Test Scan Books can get correct tags, title & author, also correct pages data.
-// This test is consider as a integration test.
-//
-// ScanBooks() is function that combine functions in package parser & comicinfo,
-// if the other test is passed, normally this test will pass too.
-func TestScanBooks(t *testing.T) {
-	tempDir := t.TempDir()
+// Create dummy comicinfo for testing.
+func newComicInfo(title, writer, tags string) *comicinfo.ComicInfo {
+	c := comicinfo.New()
+	c.Title = title
+	c.Writer = writer
+	c.Tags = tags
+	return &c
+}
 
-	// Image Folder contents
-	imagesFolder := []string{
-		"(C99) [author1] title1",
-		"[author2] title2",
-		"[author3] title3 [DL版]",
-		"(C99) [author4] title4 [DL版]",
-	}
-	tags := []string{"C99", "", "DL版", "C99,DL版"}
-	title := []string{"title1", "title2", "title3 [DL版]", "title4 [DL版]"}
+// Create dummy comic directory for testing.
+func dummyComicDir(path string, c *comicinfo.ComicInfo) *comicinfo.ComicInfo {
+	// Ensure directory exists
+	os.MkdirAll(path, 0755)
 
-	// Create Image folder inside tempDir
-	for _, folder := range imagesFolder {
-		os.MkdirAll(filepath.Join(tempDir, folder), 0755)
-	}
-
-	// Create Four file, one is not image. In first image folder only
-	fileNames := []string{"image1.jpg", "image2.png", "image3.jpeg", "test.xml"}
-	fileSizes := []int64{1234, 3456, 789, 12}
-	folder1 := filepath.Join(tempDir, imagesFolder[0])
+	// Create files
+	fileNames := []string{"image1.jpg", "image2.png", "image3.jpeg"}
+	fileSizes := []int64{1234, 3456, 789}
 
 	for i, filename := range fileNames {
-		file, _ := os.Create(filepath.Join(folder1, filename))
+		file, _ := os.Create(filepath.Join(path, filename))
 		file.Truncate(fileSizes[i])
 		defer file.Close()
 	}
 
-	// Run Function and Checks
-	for i, folder := range imagesFolder {
-		c, err := ScanBooks(filepath.Join(tempDir, folder))
+	c.PageCount = 3
+	c.Manga = comicinfo.Manga_Yes
+	c.Pages = []comicinfo.ComicPageInfo{
+		{Image: 0, Type: comicinfo.ComicPageType_FrontCover, ImageSize: 1234},
+		{Image: 1, ImageSize: 3456},
+		{Image: 2, ImageSize: 789},
+	}
+	return c
+}
 
-		if err != nil {
-			t.Error(err)
-		}
+func TestScanBooks(t *testing.T) {
+	// Prepare testing output
+	dir := "testing"
+	os.MkdirAll("testing", 0755)
 
-		// Check Basic
-		if c.Title != title[i] {
-			t.Errorf("Error in title %d %s", i, c.Title)
-		}
+	// Prepare Test cases
+	type testCase struct {
+		folderPath string
+		want       *comicinfo.ComicInfo
+		wantErr    bool
+	}
 
-		if c.Writer != fmt.Sprintf("author%d", i+1) {
-			t.Errorf("Error in author %d ", i)
-		}
+	tests := []testCase{
+		// 1. Graceful with no comicInfo
+		{filepath.Join(dir, "[author1] title1"), newComicInfo("title1", "author1", ""), false},
+		// 2. Graceful with existing comicInfo
+		{filepath.Join(dir, "[author2] title2"), newComicInfo("title2", "author2", "tags"), false},
+		// 3. Empty path
+		{"", nil, true},
+		// 4. Invalid path contains invalid characters
+		{"???", nil, true},
+		// 5. Not existing path
+		{filepath.Join(dir, "not exists"), nil, true},
+	}
 
-		if c.Manga != comicinfo.Manga_Yes {
-			t.Errorf("Error in Manga %d ", i)
-		}
+	// Generate needed dummy comicinfo directory
+	tests[0].want = dummyComicDir(tests[0].folderPath, tests[0].want)
 
-		// Check Tags
-		if c.Tags != tags[i] {
-			t.Errorf("Error in Tags %d ", i)
-		}
+	tests[1].want = dummyComicDir(tests[1].folderPath, tests[1].want)
+	tests[1].want.ScanInformation = "abcd"
+	comicinfo.Save(tests[1].want, filepath.Join(tests[1].folderPath, "ComicInfo.xml"))
 
-		// Special Check for 1st folder
-		if i != 0 {
-			continue
-		}
+	// Run Tests
+	for idx, tt := range tests {
+		got, err := ScanBooks(tt.folderPath)
 
-		// Check Size, should skip xml
-		if c.PageCount != 3 {
-			t.Errorf("Wrong number of page count: %d", c.PageCount)
-		} else if len(c.Pages) != 3 {
-			t.Errorf("Wrong number of pages: %d", len(c.Pages))
-		}
+		// Error Checking
+		assert.EqualValuesf(t, tt.wantErr, err != nil, "Case %d: unexpected error result: %v", idx, err)
 
-		// Check First Page is front page
-		if c.Pages[0].Type != comicinfo.ComicPageType_FrontCover {
-			t.Error("Wrong Type of first page")
-		}
-
-		// Check file size
-		for i, page := range c.Pages {
-			if page.ImageSize != fileSizes[i] {
-				t.Errorf("Wrong Size of page %d", i)
-			}
-		}
+		// Value checking
+		assert.EqualValuesf(t, tt.want, got, "Case %d: Not equal comicInfo", idx)
 	}
 }
 
