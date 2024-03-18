@@ -1,7 +1,14 @@
 # Dictionary for imported packages
+assetserver
+Colour
+Debugf
 Equalf
+Infof
 innerxml
 Komga
 logrus
+sirupsen
 stretchr
 Valuesf
+wailsapp
+Warnf
