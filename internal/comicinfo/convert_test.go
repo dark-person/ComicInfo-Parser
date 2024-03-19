@@ -164,8 +164,7 @@ func TestSave(t *testing.T) {
 	const PATH_NO_COMPARE = ""
 
 	// Prepare Temp Directory
-	dir := "testing"
-	os.MkdirAll(dir, 0755)
+	dir := t.TempDir()
 
 	type testCase struct {
 		info       *ComicInfo
