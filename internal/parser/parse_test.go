@@ -18,6 +18,7 @@ func TestParseFolder(t *testing.T) {
 	// Prepare List
 	//cSpell:disable
 	tests := []testCase{
+		// Test Case that in real world example
 		{`(C97) [老眼郷 (老眼)] ネロねろ！2 finale (Fate／Grand Order)[ExtraAi个人汉化]`,
 			"ネロねろ！2 finale (Fate／Grand Order)[ExtraAi个人汉化]", "老眼郷 (老眼)", "C97"},
 		{`[Sweet Avenue (カヅチ)] 田舎の黒ギャルJKと結婚しました 1-3`,
@@ -28,6 +29,9 @@ func TestParseFolder(t *testing.T) {
 			"Gals Showdown (勝利の女神：NIKKE) [中国翻訳] [DL版]", "生き恥ハミングバード (天野どん)", ""},
 		{`[しまぱん (立花オミナ)] 異世界ハーレム物語 4.5 (Side Story)`,
 			"異世界ハーレム物語 4.5 (Side Story)", "しまぱん (立花オミナ)", ""},
+		// Test case that is created
+		{"([Author Bookname", "([Author Bookname", "", ""},
+		{"[Author Bookname", "[Author Bookname", "", ""},
 	}
 	//cSpell:enable
 
