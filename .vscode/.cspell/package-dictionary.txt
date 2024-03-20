@@ -8,6 +8,7 @@ Infof
 innerxml
 Komga
 logrus
+mattn
 Nilf
 sirupsen
 stretchr
