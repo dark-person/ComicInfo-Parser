@@ -47,6 +47,9 @@
 	"[markdown]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
+	"[sql]": {
+		"editor.defaultFormatter": "adpyke.vscode-sql-formatter"
+	},
 	"editor.tabSize": 4,
 	"editor.detectIndentation": true,
 	"prettier.tabWidth": 4,
