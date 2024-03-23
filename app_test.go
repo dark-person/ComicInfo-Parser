@@ -111,69 +111,63 @@ func TestGetComicInfo(t *testing.T) {
 // There has some assumptions for this test:
 //  1. All file has been copy to `.cbz` correctly
 func TestQuickExportKomga(t *testing.T) {
-	// Prepare list of test case
-	dirInput := make([]string, 0)
-	errOutput := make([]string, 0)
-
 	// Temp folder creation
 	tempFolder := t.TempDir()
 	// tempFolder := "testing"
 
+	// Prepare Test Case
+	type testCase struct {
+		folder string
+		errMsg string
+	}
+
 	// Prepare valid content
 	valid := filepath.Join(tempFolder, "valid")
 	createFolderContent(valid, false)
+	expectedFileSize := int64(956) // File size of valid .cbz file
 
 	// Prepare invalid content
 	invalid := filepath.Join(tempFolder, "invalid")
 	createFolderContent(invalid, false)
 	os.MkdirAll(filepath.Join(invalid, "dummy"), 0755)
 
+	// Prepare list of test case
+	tests := []testCase{
+		// Normal Case
+		{valid, ""},
+		// folder is invalid - Contains Subfolder
+		{invalid, "folder structure is not correct"},
+		// folder is invalid - Failed to ReadDir (Assume in ScanBooks), e.g. path that not exist
+		{invalid + "2", "system cannot find the file specified"},
+		// folder is empty string
+		{"", "folder cannot be empty"},
+	}
+
 	// Prepare new app
 	app := NewApp()
 
-	// folder is empty string
-	dirInput = append(dirInput, "")
-	errOutput = append(errOutput, "folder cannot be empty")
-
-	// folder is invalid (should contain all cases)
-	//  1. Contains Subfolder
-	dirInput = append(dirInput, invalid)
-	errOutput = append(errOutput, "folder structure is not correct")
-
-	// Failed to ReadDir (Assume in ScanBooks), e.g. path that not exist
-	dirInput = append(dirInput, invalid+"2")
-	errOutput = append(errOutput, "system cannot find the file specified")
-
-	// Normal Case
-	dirInput = append(dirInput, valid)
-	errOutput = append(errOutput, "")
-	expectedFileSize := int64(956)
-
 	// Looping
-	for i := 0; i < len(errOutput); i++ {
-		errMsg := app.QuickExportKomga(dirInput[i])
+	for idx, tt := range tests {
+		errMsg := app.QuickExportKomga(tt.folder)
 
-		if errMsg == "" && errMsg == errOutput[i] {
+		if tt.errMsg == "" {
 			// Special Handling for Normal case
-			cbzPath := filepath.Join(valid, "valid", "valid.cbz")
+			assert.EqualValuesf(t, tt.errMsg, errMsg, "Case %d: expected empty error message, but got non-empty.", idx)
 
+			cbzPath := filepath.Join(valid, "valid", "valid.cbz")
 			stat, err := os.Stat(cbzPath)
 
-			// Check file is exist & archive size is matched with expected
-			if os.IsNotExist(err) {
-				t.Errorf("file is not generated for case %d, path=%s", i, cbzPath)
-			} else if stat.Size() != expectedFileSize {
-				t.Errorf("Wrong file size for case %d: expected %v, got %v", i, stat.Size(), expectedFileSize)
-			}
+			// File existence
+			assert.EqualValuesf(t, false, os.IsNotExist(err),
+				"file is not generated for case %d, path=%s", idx, cbzPath)
 
-			continue
-		} else if strings.Contains(errMsg, errOutput[i]) {
-			// Pass when error message is highly matched
-			continue
+			// Archive Size matching
+			assert.EqualValuesf(t, expectedFileSize, stat.Size(),
+				"Wrong file size for case %d: expected %v, got %v", idx, stat.Size(), expectedFileSize)
+
+		} else {
+			assert.Containsf(t, errMsg, tt.errMsg, "Case %d: expected error message matched, but not.", idx)
 		}
-
-		// Error Message not expected
-		t.Errorf("Wrong error message for case %d: expected %v, got %v", i, errOutput[i], errMsg)
 	}
 }
 
