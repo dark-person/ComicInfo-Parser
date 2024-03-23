@@ -1,12 +1,14 @@
 # Dictionary for imported packages
 assetserver
 Colour
+Containsf
 Debugf
 Equalf
 Infof
 innerxml
 Komga
 logrus
+Nilf
 sirupsen
 stretchr
 Valuesf
