@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"gui-comicinfo/internal/comicinfo"
 	"os"
 	"path/filepath"
@@ -53,6 +52,12 @@ func removeExtraSpace(s string) string {
 func TestGetComicInfo(t *testing.T) {
 	tempFolder := t.TempDir()
 
+	// Test Case Structure
+	type testCase struct {
+		folder   string // Folder name as parameter
+		expected ComicInfoResponse
+	}
+
 	// Generate a invalid older path
 	invalidPath := filepath.Join(tempFolder, "invalid")
 
@@ -65,51 +70,38 @@ func TestGetComicInfo(t *testing.T) {
 	correctPath := filepath.Join(tempFolder, "correct")
 	createFolderContent(correctPath, true)
 
-	// Case of Input
-	caseInput := []string{"", invalidPath, incorrectPath, correctPath}
-
-	// Case of Output. Defined with special usage,
+	// Prepare Test Case. Output is defined with special usage,
 	// The comicInfo only determine it is nil or not,
 	// ErrorMessage only check it contains error message stated,
 	// as sometime error may include absolute path which is unpredictable
-	caseOutput := []ComicInfoResponse{
-		{ComicInfo: nil, ErrorMessage: "folder cannot be empty"},
-		{ComicInfo: nil, ErrorMessage: "The system cannot find the file specified"},
-		{ComicInfo: nil, ErrorMessage: "folder structure is not correct"},
-		{ComicInfo: &comicinfo.ComicInfo{}, ErrorMessage: ""},
+	tests := []testCase{
+		{correctPath, ComicInfoResponse{ComicInfo: &comicinfo.ComicInfo{}, ErrorMessage: ""}},
+		{"", ComicInfoResponse{ComicInfo: nil, ErrorMessage: "folder cannot be empty"}},
+		{invalidPath, ComicInfoResponse{ComicInfo: nil, ErrorMessage: "The system cannot find the file specified"}},
+		{incorrectPath, ComicInfoResponse{ComicInfo: nil, ErrorMessage: "folder structure is not correct"}},
 	}
 
 	// Create a new app
 	app := NewApp()
-	for i := 0; i < len(caseInput); i++ {
-		temp := app.GetComicInfo(caseInput[i])
 
-		fmt.Println("Result: ", temp)
-		fmt.Println("Expected: ", caseOutput[i])
+	// Start Test
+	for idx, tt := range tests {
+		temp := app.GetComicInfo(tt.folder)
 
 		// Check comic info is nil or not
-		if caseOutput[i].ComicInfo == nil && temp.ComicInfo != nil {
-			t.Errorf("Error when running case %d: ComicInfo expected nil, but got non nil\n", i)
-			continue
-		} else if caseOutput[i].ComicInfo != nil && temp.ComicInfo == nil {
-			t.Errorf("Error when running case %d: ComicInfo expected non nil, but got nil\n", i)
-			continue
+		if tt.expected.ComicInfo == nil {
+			assert.Nilf(t, temp.ComicInfo, "Case %d: Expect Comicinfo to be nil, got non nil.", idx)
+		} else {
+			assert.NotNilf(t, temp.ComicInfo, "Case %d: Expect Comicinfo to non nil, got nil.", idx)
 		}
 
-		// Check error message empty/not empty matches
-		if caseOutput[i].ErrorMessage == "" && temp.ErrorMessage != "" {
-			t.Errorf("Error when running case %d: ErrorMessage expected empty, but got %s\n", i, temp.ErrorMessage)
-			continue
-		} else if caseOutput[i].ErrorMessage != "" && temp.ErrorMessage == "" {
-			t.Errorf("Error when running case %d: ErrorMessage expected non-empty, but got empty string\n", i)
-			continue
-		}
-
-		// Check error message similarity
-		if caseOutput[i].ErrorMessage != "" && !strings.Contains(temp.ErrorMessage, caseOutput[i].ErrorMessage) {
-			t.Errorf("Error when running case %d: ErrorMessage expected contain %s, but got %s\n",
-				i, caseOutput[i].ErrorMessage, temp.ErrorMessage)
-			continue
+		// Check Error Message
+		if tt.expected.ErrorMessage == "" {
+			assert.EqualValuesf(t, tt.expected.ErrorMessage, temp.ErrorMessage,
+				"Case %d: expect error message to be empty, got %v", idx, temp.ErrorMessage)
+		} else {
+			assert.Containsf(t, temp.ErrorMessage, tt.expected.ErrorMessage,
+				"Case %d: expected error message matches, but not.", idx)
 		}
 	}
 }
