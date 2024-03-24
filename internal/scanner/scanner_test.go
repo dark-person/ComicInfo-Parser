@@ -84,9 +84,8 @@ func dummyComicDir(path string, c *comicinfo.ComicInfo) *comicinfo.ComicInfo {
 }
 
 func TestScanBooks(t *testing.T) {
-	// Prepare testing output
-	dir := "testing"
-	os.MkdirAll("testing", 0755)
+	// Prepare testing directory
+	dir := t.TempDir()
 
 	// Prepare Test cases
 	type testCase struct {
