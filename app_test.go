@@ -235,6 +235,14 @@ func TestExportCbz_NoWrap(t *testing.T) {
 	tempFolder := t.TempDir()
 	// tempFolder := "testing"
 
+	// Prepare test case struct
+	type testCase struct {
+		inputDir  string
+		exportDir string
+		comicInfo *comicinfo.ComicInfo
+		errMsg    string
+	}
+
 	// Prepare Paths
 	invalidPath := filepath.Join(tempFolder, "invalid")
 	validInputPath := filepath.Join(tempFolder, "validIn")
@@ -244,65 +252,42 @@ func TestExportCbz_NoWrap(t *testing.T) {
 	// Create Content
 	createFolderContent(validInputPath, false)
 	validInfo := comicinfo.New()
-
-	// Prepare list for test case
-	inputDirList := make([]string, 0)
-	exportDirList := make([]string, 0)
-	comicInfoList := make([]*comicinfo.ComicInfo, 0)
-	errMsgList := make([]string, 0)
-
-	// When input dir is invalid (os.Create fails)
-	inputDirList = append(inputDirList, invalidPath)
-	exportDirList = append(exportDirList, validOutputPath)
-	comicInfoList = append(comicInfoList, &validInfo)
-	errMsgList = append(errMsgList, "input directory does not exist")
-
-	// When export dir is invalid (os.Create fails)
-	inputDirList = append(inputDirList, validInputPath)
-	exportDirList = append(exportDirList, invalidPath)
-	comicInfoList = append(comicInfoList, &validInfo)
-	errMsgList = append(errMsgList, "export directory does not exist")
-
-	// When comic info is nil value
-	inputDirList = append(inputDirList, validInputPath)
-	exportDirList = append(exportDirList, validOutputPath)
-	comicInfoList = append(comicInfoList, nil)
-	errMsgList = append(errMsgList, "empty comic info")
-
-	// Normal value
-	inputDirList = append(inputDirList, validInputPath)
-	exportDirList = append(exportDirList, validOutputPath)
-	comicInfoList = append(comicInfoList, &validInfo)
-	errMsgList = append(errMsgList, "")
 	expectedFileSize := int64(889)
+
+	// Prepare Tests
+	tests := []testCase{
+		// When input dir is invalid (os.Create fails)
+		{invalidPath, validOutputPath, &validInfo, "input directory does not exist"},
+		// When export dir is invalid (os.Create fails)
+		{validInputPath, invalidPath, &validInfo, "export directory does not exist"},
+		// When comic info is nil value
+		{validInputPath, validOutputPath, nil, "empty comic info"},
+		// Normal value
+		{validInputPath, validOutputPath, &validInfo, ""},
+	}
 
 	// Create a new app
 	app := NewApp()
 
-	for i := 0; i < len(errMsgList); i++ {
-		errMsg := app.ExportCbz(inputDirList[i], exportDirList[i], comicInfoList[i], false)
+	for idx, tt := range tests {
+		errMsg := app.ExportCbz(tt.inputDir, tt.exportDir, tt.comicInfo, false)
 
-		if errMsg == "" && errMsg == errMsgList[i] {
+		if tt.errMsg == "" {
+			// Check if error message is empty
+			assert.EqualValuesf(t, tt.errMsg, errMsg, "Case %d, expected empty error message but got non empty", idx)
+
 			// Special Handling for Normal case
-			cbzPath := filepath.Join(exportDirList[i], "validIn.cbz")
+			cbzPath := filepath.Join(tt.exportDir, "validIn.cbz")
 
 			stat, err := os.Stat(cbzPath)
 
 			// Check file is exist & archive size is matched with expected
-			if os.IsNotExist(err) {
-				t.Errorf("file is not generated for case %d, path=%s", i, cbzPath)
-			} else if stat.Size() != expectedFileSize {
-				t.Errorf("Wrong file size for case %d: expected %v, got %v", i, stat.Size(), expectedFileSize)
-			}
-
-			continue
-		} else if strings.Contains(errMsg, errMsgList[i]) {
-			// Pass when error message is highly matched
-			continue
+			assert.EqualValuesf(t, false, os.IsNotExist(err), "Case %d, file is not generated in path=%s", idx, cbzPath)
+			assert.EqualValuesf(t, expectedFileSize, stat.Size(), "Case %d, unexpected file size for cbz", idx)
+		} else {
+			// Check error message contains
+			assert.Containsf(t, errMsg, tt.errMsg, "Case %d, unmatched error message", idx)
 		}
-
-		// Error Message not expected
-		t.Errorf("Wrong error message for case %d: expected %v, got %v", i, errMsgList[i], errMsg)
 	}
 }
 
