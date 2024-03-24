@@ -2,7 +2,7 @@ package archive
 
 import (
 	"archive/zip"
-	"gui-comicinfo/internal/parser"
+	"gui-comicinfo/internal/files"
 	"io"
 	"os"
 	"path/filepath"
@@ -128,7 +128,7 @@ func CreateZipTo(inputDir string, destDir string) (dest string, err error) {
 func RenameZip(absPath string, isWrap bool) error {
 	originalDir := filepath.Dir(absPath)
 	originalFile := filepath.Base(absPath)
-	name := parser.FilenameWithoutExt(originalFile)
+	name := files.TrimExt(originalFile)
 
 	// If not wrap, then just rename the file extension to .cbz
 	if !isWrap {
