@@ -1,17 +1,9 @@
 package parser
 
 import (
-	"path/filepath"
 	"regexp"
 	"strings"
 )
-
-// Get the filename, without the file extension.
-//
-// The Filename should be Base, not containing any directory inside.
-func FilenameWithoutExt(fileName string) string {
-	return strings.TrimSuffix(fileName, filepath.Ext(fileName))
-}
 
 // Parse the folder name to multiple string for comicInfo.xml.
 // The folder name MUST be base folder name, i.e. not include its parent directory

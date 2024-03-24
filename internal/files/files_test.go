@@ -65,3 +65,27 @@ func TestIsPathValid(t *testing.T) {
 		assert.EqualValuesf(t, tt.want, got, "Case %d : result unexpected.", idx)
 	}
 }
+
+func TestTrimExt(t *testing.T) {
+	// Prepare test case struct
+	type testCase struct {
+		fileName string
+		want     string
+	}
+
+	// Prepare tests
+	tests := []testCase{
+		// Filename already trim extension
+		{"filename1", "filename1"},
+		// Filename not trim extension
+		{"filename2.ext", "filename2"},
+		// Filename has multiple extension
+		{"filename3.tar.gz", "filename3.tar"},
+	}
+
+	// Run tests
+	for idx, tt := range tests {
+		got := TrimExt(tt.fileName)
+		assert.EqualValuesf(t, tt.want, got, "Case %d: unexpected result", idx)
+	}
+}
