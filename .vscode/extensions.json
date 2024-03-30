@@ -1,0 +1,10 @@
+{
+	"recommendations": [
+		"mhutchie.git-graph",
+		"github.vscode-pull-request-github",
+		"golang.go",
+		"esbenp.prettier-vscode",
+		"adpyke.vscode-sql-formatter",
+		"gruntfuggly.todo-tree"
+	]
+}
