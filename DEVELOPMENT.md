@@ -26,6 +26,8 @@ choco install make
 
 ## Git related
 
+### Branch Management
+
 The git branch management should be followed below principle:
 
 1. Ensure branch has `rebase` to latest branch. Latest branch will be depend on your development purpose:
@@ -34,3 +36,28 @@ The git branch management should be followed below principle:
 2. Ensure your commit history should be simple as possible, i.e. you should not have multiple commits for typo fixes.
 3. File changes in each commit should be as few as possible. This is to prevent `rebase` difficulty.
     - i.e. if you change `module1` & `module2`, you should not use one commit ONLY to conclude both changes, instead use >2 commits depend on complexity of these changes.
+
+### Suggestion for commit
+
+**_The below guidelines is for suggestion ONLY_**.
+
+For source code changes, commit message is suggested in below format:
+
+```
+`{Changed Module}`: {Commit Message}
+```
+
+`Changed Module` usually represent scope of changes, Here is some example:
+
+-   `comicinfo`
+-   `app.go`
+-   `makefile`
+-   `vscode`
+-   `frontend/input`
+-   `frontend/App`
+
+Developer can ignore above format when **Necessary**, e.g.
+
+-   `Update DEVELOPMENT.md`
+-   `Update dependencies for ...`
+-   `Move package ... to ...`
