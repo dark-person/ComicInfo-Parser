@@ -17,12 +17,12 @@ func IsFileExist(path string) bool {
 	_, err := os.Stat(path)
 
 	if os.IsNotExist(err) {
-		logrus.Infof("%v file does not exist\n", path)
+		logrus.Debugf("%v file does not exist\n", path)
 		return false
 	}
 
 	if err == nil {
-		logrus.Infof("%v file exist\n", path)
+		logrus.Debugf("%v file exist\n", path)
 		return true
 	}
 
