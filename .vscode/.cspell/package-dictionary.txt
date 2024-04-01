@@ -11,6 +11,7 @@ logrus
 Nilf
 sirupsen
 stretchr
+Tracef
 Valuesf
 wailsapp
 Warnf
