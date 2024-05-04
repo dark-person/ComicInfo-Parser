@@ -1,6 +1,8 @@
 package database
 
 import (
+	"database/sql"
+	"gui-comicinfo/internal/constant"
 	"os"
 	"path/filepath"
 	"testing"
@@ -87,5 +89,56 @@ func TestAppDB_Connect(t *testing.T) {
 		if tt.a.db != nil {
 			tt.a.db.Close()
 		}
+	}
+}
+
+// Test Close Database connection, which will:
+//   - Enable to run even database is nil
+//   - DB must be nil after close
+//
+// This test is rely on createFile() function to create a new database.
+func TestAppDB_Close(t *testing.T) {
+	prepareTest()
+
+	// Test Case Type
+	type testCase struct {
+		path    *string // Path of database, nil if wanted db is nil
+		wantErr bool    // Determine non-nil error will be returned
+	}
+
+	// Prepare Test Case
+	gracePath := filepath.Join(t.TempDir(), "db_close.db")
+	tests := []testCase{
+		// Graceful Case
+		{&gracePath, false},
+		// Empty database
+		{nil, false},
+	}
+
+	// Run Tests
+	for idx, tt := range tests {
+		var a *AppDB
+
+		if tt.path == nil {
+			// Create AppDB with nil db value
+			a = &AppDB{db: nil}
+		} else {
+			// Create database file with createFile()
+			a = &AppDB{dbPath: *tt.path}
+			createFile(*tt.path)
+
+			// Connect database with connect(), with db is non-nil value ONLY
+			a.db, _ = sql.Open(constant.DatabaseType, a.dbPath)
+		}
+
+		// Close database connection with appDB.Close()
+		err := a.Close()
+
+		// Check want errors
+		assert.EqualValues(t, tt.wantErr, err != nil,
+			"Case %d: Unexpected error as %v", idx+1, err)
+
+		// Ensure Nil Value of sql.DB
+		assert.Nilf(t, a.db, "Case %d: Unexpected non-nil database connection.", idx+1)
 	}
 }

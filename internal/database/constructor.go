@@ -74,3 +74,23 @@ func (a *AppDB) Connect() error {
 	// TODO: Test DB connection by user version
 	return nil
 }
+
+// Close all existing database connection.
+//
+// If AppDB has no database connected, then this function has no effect,
+// with no error returned.
+func (a *AppDB) Close() error {
+	// Prevent no connection for nil pointer
+	if a.db == nil {
+		logrus.Tracef("Closing nil database connection, no effect.")
+		return nil
+	}
+
+	// Close connection
+	err := a.db.Close()
+	a.db = nil
+	logrus.Tracef("Database connection closed successfully.")
+
+	// Return error
+	return err
+}
