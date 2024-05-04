@@ -43,6 +43,11 @@ func NewDB() (*AppDB, error) {
 //
 // Developer can use mocked filepath in tests with this function.
 func new(path string) (*AppDB, error) {
+	// Prevent Not database file
+	if filepath.Ext(path) != ".db" {
+		return nil, ErrInvalidPath
+	}
+
 	// Create Database if need
 	err := createFile(path)
 	if err != nil {

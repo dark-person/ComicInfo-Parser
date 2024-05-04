@@ -33,6 +33,8 @@ func Test_new(t *testing.T) {
 	tests := []testCase{
 		// Graceful Case
 		{filepath.Join(t.TempDir(), "test1.db"), false, false},
+		// Invalid File extension
+		{filepath.Join(t.TempDir(), "test2.ext"), true, true},
 		// Database File cannot be created (Not Test every case)
 		{"", true, true},
 	}
