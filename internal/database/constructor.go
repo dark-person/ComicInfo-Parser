@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/sirupsen/logrus"
 )
 
 // Latest Version of schema supported.
@@ -50,4 +51,26 @@ func new(path string) (*AppDB, error) {
 
 	// Return
 	return &AppDB{dbPath: path}, nil
+}
+
+// Connect to database, when path already stored in AppDB.
+func (a *AppDB) Connect() error {
+	// Prevent Empty Path
+	if a.dbPath == "" {
+		logrus.Warnf("Attempt to connect to empty path Database")
+		return ErrNilDatabase
+	}
+
+	logrus.Infof("Connecting to database: %s", a.dbPath)
+
+	// Open database connection, which create file if not exist
+	var err error
+	a.db, err = sql.Open(constant.DatabaseType, a.dbPath)
+	if err != nil {
+		logrus.Warnf("Failed to open database: %v", err)
+		return err
+	}
+
+	// TODO: Test DB connection by user version
+	return nil
 }
