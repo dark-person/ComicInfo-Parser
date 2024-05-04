@@ -1,6 +1,7 @@
 package database
 
 import (
+	"os"
 	"path/filepath"
 	"testing"
 
@@ -46,6 +47,45 @@ func Test_new(t *testing.T) {
 			assert.Nilf(t, got, "Case %d, unexpected value of non-nil: %v", idx+1, got)
 		} else {
 			assert.NotNilf(t, got, "Case %d, unexpected value of nil.", idx+1)
+		}
+	}
+}
+
+// Test Method of Connect().
+// This test will NOT consider $HOME directory as a case,
+// all tests are using custom path only.
+func TestAppDB_Connect(t *testing.T) {
+	// Test Case type
+	type testCase struct {
+		a       *AppDB
+		wantErr bool
+	}
+
+	// Existing database creation
+	existPath := filepath.Join(t.TempDir(), "exist_test.db")
+	f, _ := os.Create(existPath)
+	f.Close()
+
+	// Prepare Tests
+	tests := []testCase{
+		// Database that not exist
+		{&AppDB{dbPath: filepath.Join(t.TempDir(), "connect_test.db")}, false},
+		// Existed database
+		{&AppDB{dbPath: existPath}, false},
+		// Empty Path
+		{&AppDB{dbPath: ""}, true},
+	}
+
+	// Run Tests
+	for idx, tt := range tests {
+		err := tt.a.Connect()
+
+		assert.EqualValuesf(t, tt.wantErr, err != nil,
+			"Case %d: Unexpected error result: %v", idx+1, err)
+
+		// Close connection (by sql library but not AppDB)
+		if tt.a.db != nil {
+			tt.a.db.Close()
 		}
 	}
 }
