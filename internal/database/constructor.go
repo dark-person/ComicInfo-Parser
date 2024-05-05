@@ -48,6 +48,9 @@ func new(path string) (*AppDB, error) {
 		return nil, ErrInvalidPath
 	}
 
+	// Prevent no directory is created
+	os.MkdirAll(filepath.Dir(path), 0755)
+
 	// Create Database if need
 	err := createFile(path)
 	if err != nil {
