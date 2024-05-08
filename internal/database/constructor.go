@@ -22,7 +22,8 @@ type AppDB struct {
 	dbPath string  // Database absolute path, for easy reuse
 }
 
-// Create a new AppDB, with database location in "{user home directory}/gui-comicinfo/storage.db".
+// Create a new AppDB,
+// with database location in "{user home directory}/gui-comicinfo/storage.db".
 func NewDB() (*AppDB, error) {
 	// Get Home Directory
 	home, err := os.UserHomeDir()
@@ -32,17 +33,17 @@ func NewDB() (*AppDB, error) {
 
 	// Get database path
 	path := filepath.Join(home, constant.RootDir, constant.DatabaseFile)
-	return new(path)
+	return NewPathDB(path)
 }
 
-// Create a new AppDB object.
+// Create a AppDB object, with given database path specified.
 //
-// This function is not accessible outside this package,
-// to force other package to use NewDB() instead,
-// which force database file location.
+// This function is NOT suggested to access outside this package.
+// Reason is NewDB() method, which is another constructor,
+// has force database file location, which ensure all user have same settings.
 //
 // Developer can use mocked filepath in tests with this function.
-func new(path string) (*AppDB, error) {
+func NewPathDB(path string) (*AppDB, error) {
 	// Prevent Not database file
 	if filepath.Ext(path) != ".db" {
 		return nil, ErrInvalidPath
