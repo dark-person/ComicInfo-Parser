@@ -18,8 +18,9 @@ const LatestSchema = 5
 
 // The database manager for this application.
 type AppDB struct {
-	db     *sql.DB // Database connection
-	dbPath string  // Database absolute path, for easy reuse
+	db         *sql.DB // Database connection
+	dbPath     string  // Database absolute path, for easy reuse
+	MigrateDir string  // Directory for storing migration script, default is "schema"
 }
 
 // Create a new AppDB,
@@ -59,7 +60,7 @@ func NewPathDB(path string) (*AppDB, error) {
 	}
 
 	// Return
-	return &AppDB{dbPath: path}, nil
+	return &AppDB{dbPath: path, MigrateDir: "schema"}, nil
 }
 
 // Connect to database, when path already stored in AppDB.

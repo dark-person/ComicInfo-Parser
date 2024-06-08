@@ -17,3 +17,6 @@ var ErrNilDatabase = fmt.Errorf("nil value of *sql.DB")
 
 // Error represents database path is invalid
 var ErrInvalidPath = fmt.Errorf("invalid database path")
+
+// Error represents user_version is negative number
+var ErrNegativeVersion = fmt.Errorf("negative user_version")
