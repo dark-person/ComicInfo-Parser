@@ -25,6 +25,12 @@ func (a *AppDB) migrateInstance(embedFs embed.FS) (*migrate.Migrate, error) {
 		return nil, ErrNilDatabase
 	}
 
+	// Prevent empty migration directory
+	if a.MigrateDir == "" {
+		logrus.Fatal("Migration directory is not set.")
+		return nil, ErrNilDatabase
+	}
+
 	// Get sqlite3 instance
 	instance, err := migrateSqlite3.WithInstance(a.db, &migrateSqlite3.Config{})
 	if err != nil {
