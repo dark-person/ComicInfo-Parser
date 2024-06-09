@@ -14,7 +14,7 @@ import (
 //
 // Every database schema changes,
 // should also change this value at same time.
-const LatestSchema = 5
+const LatestSchema = 1
 
 // The database manager for this application.
 type AppDB struct {
@@ -81,7 +81,12 @@ func (a *AppDB) Connect() error {
 		return err
 	}
 
-	// TODO: Test DB connection by user version
+	// Test DB connection by user version
+	_, err = getUserVersion(a.db)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
