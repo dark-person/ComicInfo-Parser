@@ -53,7 +53,7 @@ func prepareAppDB_LatestTestOnly(t *testing.T, dbName string) (*AppDB, error) {
 	}
 
 	// Step to latest
-	err = a.StepToLatest(fsTesting)
+	err = a.StepToLatestWithFs(fsTesting)
 	if err != nil {
 		t.Fatal("Failed to prepare db as latest: ", err)
 	}
@@ -76,7 +76,7 @@ func TestStepToLatest(t *testing.T) {
 	}
 
 	// Migration
-	err = a.StepToLatest(fsTesting)
+	err = a.StepToLatestWithFs(fsTesting)
 	if err != nil {
 		t.Error("MigrateUp return error: ", err)
 	}

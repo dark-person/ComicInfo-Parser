@@ -49,7 +49,12 @@ func (a *AppDB) migrateInstance(embedFs embed.FS) (*migrate.Migrate, error) {
 }
 
 // Start migration to latest.
-func (a *AppDB) StepToLatest(embedFs embed.FS) error {
+func (a *AppDB) StepToLatest() error {
+	return a.StepToLatestWithFs(fsMigrate)
+}
+
+// Start migration to latest, with embed fs specified.
+func (a *AppDB) StepToLatestWithFs(embedFs embed.FS) error {
 	// Prepare migration instance
 	m, err := a.migrateInstance(embedFs)
 	if err != nil {
@@ -58,12 +63,21 @@ func (a *AppDB) StepToLatest(embedFs embed.FS) error {
 	}
 
 	// modify for Down
-	if err := m.Up(); err != nil {
-		logrus.Errorf("Failed to update db: %v", err)
-		return err
+	err = m.Up()
+
+	// Early return if no error
+	if err == nil {
+		return nil
 	}
 
-	return nil
+	// No changes applied, which is acceptable
+	if err.Error() == "no change" {
+		logrus.Warn("No migration change is performed.")
+		return nil
+	}
+
+	logrus.Errorf("Failed to update db: %v", err)
+	return err
 }
 
 // Start migration down for n version.
