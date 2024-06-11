@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gui-comicinfo/internal/archive"
 	"gui-comicinfo/internal/comicinfo"
+	"gui-comicinfo/internal/database"
 	"gui-comicinfo/internal/scanner"
 	"os"
 	"path/filepath"
@@ -15,6 +16,7 @@ import (
 
 // App struct
 type App struct {
+	DB  *database.AppDB
 	ctx context.Context
 }
 
@@ -27,6 +29,25 @@ func NewApp() *App {
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
+
+	// Init Database
+	var err error
+	a.DB, err = database.NewDB()
+	if err != nil {
+		panic(err)
+	}
+
+	// Perform connect & migration
+	err = a.DB.Connect()
+	if err != nil {
+		panic(err)
+	}
+
+	// Perform migration to database if needed
+	err = a.DB.StepToLatest()
+	if err != nil {
+		panic(err)
+	}
 }
 
 // Open a Dialog for user to select Directory.
