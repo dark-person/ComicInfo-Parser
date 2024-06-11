@@ -14,7 +14,7 @@ import (
 //
 // Every database schema changes,
 // should also change this value at same time.
-const LatestSchema = 1
+const LatestSchema = 2
 
 // The database manager for this application.
 type AppDB struct {
