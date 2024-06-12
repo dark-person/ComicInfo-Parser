@@ -14,15 +14,17 @@ import (
 //
 // Every database schema changes,
 // should also change this value at same time.
-const LatestSchema = 5
+const LatestSchema = 1
 
 // The database manager for this application.
 type AppDB struct {
-	db     *sql.DB // Database connection
-	dbPath string  // Database absolute path, for easy reuse
+	db         *sql.DB // Database connection
+	dbPath     string  // Database absolute path, for easy reuse
+	MigrateDir string  // Directory for storing migration script, default is "schema"
 }
 
-// Create a new AppDB, with database location in "{user home directory}/gui-comicinfo/storage.db".
+// Create a new AppDB,
+// with database location in "{user home directory}/gui-comicinfo/storage.db".
 func NewDB() (*AppDB, error) {
 	// Get Home Directory
 	home, err := os.UserHomeDir()
@@ -32,17 +34,17 @@ func NewDB() (*AppDB, error) {
 
 	// Get database path
 	path := filepath.Join(home, constant.RootDir, constant.DatabaseFile)
-	return new(path)
+	return NewPathDB(path)
 }
 
-// Create a new AppDB object.
+// Create a AppDB object, with given database path specified.
 //
-// This function is not accessible outside this package,
-// to force other package to use NewDB() instead,
-// which force database file location.
+// This function is NOT suggested to access outside this package.
+// Reason is NewDB() method, which is another constructor,
+// has force database file location, which ensure all user have same settings.
 //
 // Developer can use mocked filepath in tests with this function.
-func new(path string) (*AppDB, error) {
+func NewPathDB(path string) (*AppDB, error) {
 	// Prevent Not database file
 	if filepath.Ext(path) != ".db" {
 		return nil, ErrInvalidPath
@@ -58,7 +60,7 @@ func new(path string) (*AppDB, error) {
 	}
 
 	// Return
-	return &AppDB{dbPath: path}, nil
+	return &AppDB{dbPath: path, MigrateDir: "schema"}, nil
 }
 
 // Connect to database, when path already stored in AppDB.
@@ -79,7 +81,12 @@ func (a *AppDB) Connect() error {
 		return err
 	}
 
-	// TODO: Test DB connection by user version
+	// Test DB connection by user version
+	_, err = getUserVersion(a.db)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

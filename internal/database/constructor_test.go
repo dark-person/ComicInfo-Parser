@@ -22,7 +22,7 @@ func TestNewDB(t *testing.T) {
 
 // Test function of AppDB. It will not check content of AppDB,
 // but will perform check for nil value.
-func Test_new(t *testing.T) {
+func Test_NewPathDB(t *testing.T) {
 	type testCase struct {
 		path    string // absolute path, non-nil value
 		wantNil bool   // Determine *AppDB should not be nil
@@ -41,7 +41,7 @@ func Test_new(t *testing.T) {
 
 	// Start Test
 	for idx, tt := range tests {
-		got, err := new(tt.path)
+		got, err := NewPathDB(tt.path)
 
 		// Check error
 		assert.EqualValuesf(t, tt.wantErr, err != nil, "Case %d: Unexpected error: %v", idx+1, err)
