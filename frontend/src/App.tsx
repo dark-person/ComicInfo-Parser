@@ -179,7 +179,7 @@ function App() {
 
 				{/* Button to next panel, development only, otherwise use as alignment */}
 				<Col xs={1} className="align-self-center">
-					{/* <Button
+					<Button
 						variant="danger"
 						onClick={() => {
 							// Perform Mode subtraction
@@ -193,7 +193,7 @@ function App() {
 							setMode(temp);
 						}}>
 						{">"}
-					</Button> */}
+					</Button>
 				</Col>
 			</Row>
 		</div>
