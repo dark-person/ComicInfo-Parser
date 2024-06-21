@@ -1,9 +1,12 @@
 // React
-import { ChangeEventHandler } from "react";
+import { ChangeEventHandler, useState } from "react";
 
 // React Component
+import { Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
-import { Row, Col } from "react-bootstrap";
+
+import { ActionMeta, Options, SingleValue } from "react-select";
+import CreatableSelect from "react-select/async-creatable";
 
 /**
  * Get an array that start with min value and end with max value.
@@ -95,6 +98,63 @@ export function FormRow({ title, titleClass, inputType, value, textareaRow, disa
 					onChange={onChange}
 					rows={textareaRow != undefined ? textareaRow : 1}
 					disabled={disabled}
+				/>
+			</Col>
+		</Form.Group>
+	);
+}
+
+type OptionFormRowProps = {
+	/** the title/label of this input group */
+	title: string;
+	/** Class name for label. Can be used in styling. */
+	titleClass?: string;
+	/** current inputted value */
+	value?: string;
+	/** determines whether the input is disabled */
+	disabled?: boolean;
+
+	setValue?: (value: string) => void;
+};
+
+export function OptionFormRow({ title, titleClass, value, disabled, setValue }: OptionFormRowProps) {
+	const [options, setOptions] = useState<string[]>(["hello", "world"]);
+
+	const handleChange = (newValue: SingleValue<string>, actionMeta: ActionMeta<string>): void => {
+		console.log("New value: " + JSON.stringify(newValue) + ", actionMeta: " + JSON.stringify(actionMeta));
+
+		// Skip if setValue is null
+		if (setValue === undefined) {
+			return;
+		}
+
+		// Handle create
+		if (actionMeta.action === "create-option" && newValue != undefined) {
+			setValue(newValue);
+			return;
+		}
+
+		// Handle clear
+		if (actionMeta.action === "clear") {
+			setValue("");
+			return;
+		}
+	};
+
+	return (
+		<Form.Group as={Row} className="mb-3">
+			<Form.Label column sm="2" className={titleClass != undefined ? titleClass : ""}>
+				{title}
+			</Form.Label>
+			<Col sm="9">
+				<CreatableSelect
+					className="dark-creatable-select"
+					isClearable
+					onChange={handleChange}
+					options={options}
+					value={value}
+					isDisabled={disabled}
+					// unstyled
 				/>
 			</Col>
 		</Form.Group>
