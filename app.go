@@ -6,6 +6,7 @@ import (
 	"gui-comicinfo/internal/archive"
 	"gui-comicinfo/internal/comicinfo"
 	"gui-comicinfo/internal/database"
+	"gui-comicinfo/internal/history"
 	"gui-comicinfo/internal/scanner"
 	"os"
 	"path/filepath"
@@ -184,6 +185,10 @@ func (a *App) QuickExportKomga(folder string) string {
 	return ""
 }
 
+func (a *App) saveGenre(genre string) error {
+	return history.InsertInputted(a.DB, "Genre", genre)
+}
+
 // Export the ComicInfo struct to XML file.
 // This will create/overwrite ComicInfo.xml inside originalDir.
 // If the process success, then function will output empty string.
@@ -205,6 +210,12 @@ func (a *App) ExportXml(originalDir string, c *comicinfo.ComicInfo) (errorMsg st
 	if err != nil {
 		fmt.Printf("error: %v\n", err)
 		return err.Error()
+	}
+
+	// Write to database
+	err = a.saveGenre(c.Genre)
+	if err != nil {
+		logrus.Error(err)
 	}
 
 	return ""
@@ -241,6 +252,12 @@ func (a *App) ExportCbz(inputDir string, exportDir string, c *comicinfo.ComicInf
 		return err.Error()
 	}
 
+	// Write to database
+	err = a.saveGenre(c.Genre)
+	if err != nil {
+		logrus.Error(err)
+	}
+
 	// Start Archive
 	filename, _ := archive.CreateZipTo(inputDir, exportDir)
 	err = archive.RenameZip(filename, isWrap)
@@ -249,4 +266,28 @@ func (a *App) ExportCbz(inputDir string, exportDir string, c *comicinfo.ComicInf
 		return err.Error()
 	}
 	return ""
+}
+
+type LastInputResponse struct {
+	Inputs   []string `json:"Inputs"`
+	ErrorMsg string   `json:"ErrorMsg"`
+}
+
+func (a *App) GetAllLastInput(category string) LastInputResponse {
+	list, err := history.GetInputtedList(a.DB, category, "")
+	if err != nil {
+		return LastInputResponse{nil, err.Error()}
+	}
+
+	return LastInputResponse{list, ""}
+}
+
+// If text is empty string, then return all
+func (a *App) GetLastInput(category string, text string) LastInputResponse {
+	list, err := history.GetInputtedList(a.DB, category, text)
+	if err != nil {
+		return LastInputResponse{nil, err.Error()}
+	}
+
+	return LastInputResponse{list, ""}
 }

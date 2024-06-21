@@ -215,6 +215,20 @@ export namespace main {
 		    return a;
 		}
 	}
+	export class LastInputResponse {
+	    Inputs: string[];
+	    ErrorMsg: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new LastInputResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Inputs = source["Inputs"];
+	        this.ErrorMsg = source["ErrorMsg"];
+	    }
+	}
 
 }
 

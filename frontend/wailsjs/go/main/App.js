@@ -10,6 +10,10 @@ export function ExportXml(arg1, arg2) {
   return window['go']['main']['App']['ExportXml'](arg1, arg2);
 }
 
+export function GetAllLastInput(arg1) {
+  return window['go']['main']['App']['GetAllLastInput'](arg1);
+}
+
 export function GetComicInfo(arg1) {
   return window['go']['main']['App']['GetComicInfo'](arg1);
 }
@@ -20,6 +24,10 @@ export function GetDirectory() {
 
 export function GetDirectoryWithDefault(arg1) {
   return window['go']['main']['App']['GetDirectoryWithDefault'](arg1);
+}
+
+export function GetLastInput(arg1, arg2) {
+  return window['go']['main']['App']['GetLastInput'](arg1, arg2);
 }
 
 export function QuickExportKomga(arg1) {
