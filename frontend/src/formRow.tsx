@@ -5,8 +5,8 @@ import { ChangeEventHandler, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 
-import { ActionMeta, Options, SingleValue } from "react-select";
-import CreatableSelect from "react-select/async-creatable";
+import { ActionMeta, GroupBase, SingleValue } from "react-select";
+import CreatableSelect from "react-select/creatable";
 
 /**
  * Get an array that start with min value and end with max value.
@@ -147,7 +147,7 @@ export function OptionFormRow({ title, titleClass, value, disabled, setValue }: 
 				{title}
 			</Form.Label>
 			<Col sm="9">
-				<CreatableSelect
+				<CreatableSelect<string, false, GroupBase<string>>
 					className="dark-creatable-select"
 					isClearable
 					onChange={handleChange}
