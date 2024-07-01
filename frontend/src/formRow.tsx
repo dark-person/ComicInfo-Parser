@@ -118,9 +118,23 @@ type OptionFormRowProps = {
 };
 
 export function OptionFormRow({ title, titleClass, value, disabled, setValue }: OptionFormRowProps) {
-	const [options, setOptions] = useState<string[]>(["hello", "world"]);
+	/** Interface for react-select option. */
+	interface SelectOption {
+		label: string; // Necessary field
+		value: string; // Necessary field
+	}
 
-	const handleChange = (newValue: SingleValue<string>, actionMeta: ActionMeta<string>): void => {
+	const emptyOption: SelectOption = { label: "", value: "" };
+
+	const defaultOptions: SelectOption[] = [
+		{ label: "hello", value: "hello" },
+		{ label: "world", value: "world" },
+	];
+
+	const [options, setOptions] = useState<SelectOption[]>(defaultOptions);
+	const [selectedVal, setSelectedVal] = useState<SelectOption>(emptyOption);
+
+	const handleChange = (newValue: SingleValue<SelectOption>, actionMeta: ActionMeta<SelectOption>): void => {
 		console.log("New value: " + JSON.stringify(newValue) + ", actionMeta: " + JSON.stringify(actionMeta));
 
 		// Skip if setValue is null
@@ -130,13 +144,15 @@ export function OptionFormRow({ title, titleClass, value, disabled, setValue }: 
 
 		// Handle create
 		if (actionMeta.action === "create-option" && newValue != undefined) {
-			setValue(newValue);
+			setValue(newValue.value);
+			setSelectedVal(newValue);
 			return;
 		}
 
 		// Handle clear
 		if (actionMeta.action === "clear") {
 			setValue("");
+			setSelectedVal(emptyOption);
 			return;
 		}
 	};
@@ -147,12 +163,12 @@ export function OptionFormRow({ title, titleClass, value, disabled, setValue }: 
 				{title}
 			</Form.Label>
 			<Col sm="9">
-				<CreatableSelect<string, false, GroupBase<string>>
+				<CreatableSelect<SelectOption, false, GroupBase<SelectOption>>
 					className="dark-creatable-select"
 					isClearable
 					onChange={handleChange}
 					options={options}
-					value={value}
+					value={selectedVal}
 					isDisabled={disabled}
 					// unstyled
 				/>
