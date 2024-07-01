@@ -1,5 +1,5 @@
 // React
-import { ChangeEventHandler, useState } from "react";
+import { ChangeEventHandler, useEffect, useState } from "react";
 
 // React Component
 import { Col, Row } from "react-bootstrap";
@@ -7,6 +7,8 @@ import Form from "react-bootstrap/Form";
 
 import { ActionMeta, GroupBase, SingleValue } from "react-select";
 import CreatableSelect from "react-select/creatable";
+
+import { GetAllLastInput } from "../wailsjs/go/main/App";
 
 /**
  * Get an array that start with min value and end with max value.
@@ -134,6 +136,32 @@ export function OptionFormRow({ title, titleClass, value, disabled, setValue }: 
 	const [options, setOptions] = useState<SelectOption[]>(defaultOptions);
 	const [selectedVal, setSelectedVal] = useState<SelectOption>(emptyOption);
 
+	// Init components
+	useEffect(() => {
+		getOptions();
+	}, []);
+
+	/** Get option for wails binding, which value came from database. */
+	function getOptions() {
+		// Get data from wails binding
+		GetAllLastInput("Genre").then((response) => {
+			console.log("[getOptions] " + JSON.stringify(response, null, 4));
+
+			if (response.ErrorMsg != "") {
+				return;
+			}
+
+			// Set options
+			let tmpOptions: SelectOption[] = [];
+
+			response.Inputs.forEach((item) => {
+				tmpOptions.push({ label: item, value: item });
+			});
+
+			setOptions(tmpOptions);
+		});
+	}
+
 	const handleChange = (newValue: SingleValue<SelectOption>, actionMeta: ActionMeta<SelectOption>): void => {
 		console.log("New value: " + JSON.stringify(newValue) + ", actionMeta: " + JSON.stringify(actionMeta));
 
@@ -153,6 +181,13 @@ export function OptionFormRow({ title, titleClass, value, disabled, setValue }: 
 		if (actionMeta.action === "clear") {
 			setValue("");
 			setSelectedVal(emptyOption);
+			return;
+		}
+
+		// Handle Select
+		if (actionMeta.action === "select-option" && newValue != undefined) {
+			setValue(newValue.value);
+			setSelectedVal(newValue);
 			return;
 		}
 	};
