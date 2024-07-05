@@ -1,9 +1,12 @@
 // React
-import { ChangeEventHandler } from "react";
+import { ChangeEventHandler, useState } from "react";
 
 // React Component
+import { Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
-import { Row, Col } from "react-bootstrap";
+
+import { ActionMeta, GroupBase, SingleValue } from "react-select";
+import CreatableSelect from "react-select/creatable";
 
 /**
  * Get an array that start with min value and end with max value.
@@ -95,6 +98,85 @@ export function FormRow({ title, titleClass, inputType, value, textareaRow, disa
 					onChange={onChange}
 					rows={textareaRow != undefined ? textareaRow : 1}
 					disabled={disabled}
+				/>
+			</Col>
+		</Form.Group>
+	);
+}
+
+/** Props for `OptionFormRow`. */
+type OptionFormRowProps = {
+	/** the title/label of this input group */
+	title: string;
+	/** Class name for label. Can be used in styling. */
+	titleClass?: string;
+	/** current inputted value */
+	value?: string;
+	/** determines whether the input is disabled */
+	disabled?: boolean;
+	/** Function to set value back to primary comicinfo object. */
+	setValue?: (value: string) => void;
+};
+
+/** Create a uniform Form.Group Element as Row, which contains select component that allow create new options. */
+export function OptionFormRow({ title, titleClass, value, disabled, setValue }: OptionFormRowProps) {
+	/** Interface for react-select option. */
+	interface SelectOption {
+		label: string; // Necessary field
+		value: string; // Necessary field
+	}
+
+	/** Options for react-select, which contains no options (i.e. empty). */
+	const emptyOption: SelectOption = { label: "", value: "" };
+
+	/** Default option for react-select component. */
+	const defaultOptions: SelectOption[] = [
+		{ label: "hello", value: "hello" },
+		{ label: "world", value: "world" },
+	];
+
+	/** Options that used as default options. */
+	const [options, setOptions] = useState<SelectOption[]>(defaultOptions);
+	const [selectedVal, setSelectedVal] = useState<SelectOption>(emptyOption);
+
+	/** Method to handle onChange of CreatableSelect. */
+	const handleChange = (newValue: SingleValue<SelectOption>, actionMeta: ActionMeta<SelectOption>): void => {
+		console.log("New value: " + JSON.stringify(newValue) + ", actionMeta: " + JSON.stringify(actionMeta));
+
+		// Skip if setValue is null
+		if (setValue === undefined) {
+			return;
+		}
+
+		// Handle create
+		if (actionMeta.action === "create-option" && newValue != undefined) {
+			setValue(newValue.value);
+			setSelectedVal(newValue);
+			return;
+		}
+
+		// Handle clear
+		if (actionMeta.action === "clear") {
+			setValue("");
+			setSelectedVal(emptyOption);
+			return;
+		}
+	};
+
+	return (
+		<Form.Group as={Row} className="mb-3">
+			<Form.Label column sm="2" className={titleClass != undefined ? titleClass : ""}>
+				{title}
+			</Form.Label>
+			<Col sm="9">
+				<CreatableSelect<SelectOption, false, GroupBase<SelectOption>>
+					className="dark-creatable-select"
+					isClearable
+					onChange={handleChange}
+					options={options}
+					value={selectedVal}
+					isDisabled={disabled}
+					// unstyled
 				/>
 			</Col>
 		</Form.Group>
