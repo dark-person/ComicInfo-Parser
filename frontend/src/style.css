@@ -56,6 +56,22 @@ body {
 	color: lightgray;
 }
 
+.dark-creatable-select > div[class$="-control"] > div[class*="-ValueContainer2"] > div[class*="-multiValue"] {
+	--bs-bg-opacity: 1;
+	background-color: rgba(var(--bs-secondary-rgb), var(--bs-bg-opacity)) !important;
+	border: var(--bs-border-width) solid var(--bs-border-color);
+	border-radius: var(--bs-border-radius);
+}
+
+.dark-creatable-select
+	> div[class$="-control"]
+	> div[class*="-ValueContainer2"]
+	> div[class*="-multiValue"]
+	> div[class*="-MultiValueGeneric2"] {
+	color: var(--bs-body-color);
+	font-size: 90%;
+}
+
 .dark-creatable-select > div[class$="-menu"] {
 	background: var(--bs-gray-dark);
 	margin-top: 0.125rem;

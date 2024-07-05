@@ -5,7 +5,7 @@ import { ChangeEventHandler, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 
-import { ActionMeta, GroupBase, SingleValue } from "react-select";
+import { ActionMeta, GroupBase, MultiValue } from "react-select";
 import CreatableSelect from "react-select/creatable";
 
 /**
@@ -127,7 +127,7 @@ export function OptionFormRow({ title, titleClass, value, disabled, setValue }: 
 	}
 
 	/** Options for react-select, which contains no options (i.e. empty). */
-	const emptyOption: SelectOption = { label: "", value: "" };
+	const emptyOption: MultiValue<SelectOption> = [];
 
 	/** Default option for react-select component. */
 	const defaultOptions: SelectOption[] = [
@@ -137,10 +137,39 @@ export function OptionFormRow({ title, titleClass, value, disabled, setValue }: 
 
 	/** Options that used as default options. */
 	const [options, setOptions] = useState<SelectOption[]>(defaultOptions);
-	const [selectedVal, setSelectedVal] = useState<SelectOption>(emptyOption);
+
+	/**
+	 * Convert values from react-select to single string, joined by comma character.
+	 * @param opts options that retrieved from CreatableSelect
+	 * @returns string of values, joined by ',' character
+	 */
+	function concatOptions(opts: MultiValue<SelectOption>): string {
+		let simpleOptions = opts.map((item) => item.value);
+		return simpleOptions.join(",");
+	}
+
+	/**
+	 * Convert string (contain ',' or not), to MultiValue that is accepted by react-select components.
+	 * @param opt string to be converted to MultiValue
+	 * @returns
+	 * MultiValue that converted by string, separated by comma character.
+	 * Both `label` & `value` in `SelectOption` has same string value.
+	 */
+	function convert(opt?: string): MultiValue<SelectOption> {
+		// Prevent undefined
+		if (opt === undefined || opt === "") {
+			return [];
+		}
+
+		// Split options into string array
+		let splitOpts = opt.split(",");
+
+		// Convert to Multiple Values
+		return splitOpts.map((item) => ({ label: item, value: item }));
+	}
 
 	/** Method to handle onChange of CreatableSelect. */
-	const handleChange = (newValue: SingleValue<SelectOption>, actionMeta: ActionMeta<SelectOption>): void => {
+	const handleChange = (newValue: MultiValue<SelectOption>, actionMeta: ActionMeta<SelectOption>): void => {
 		console.log("New value: " + JSON.stringify(newValue) + ", actionMeta: " + JSON.stringify(actionMeta));
 
 		// Skip if setValue is null
@@ -150,15 +179,25 @@ export function OptionFormRow({ title, titleClass, value, disabled, setValue }: 
 
 		// Handle create
 		if (actionMeta.action === "create-option" && newValue != undefined) {
-			setValue(newValue.value);
-			setSelectedVal(newValue);
+			setValue(concatOptions(newValue));
 			return;
 		}
 
 		// Handle clear
 		if (actionMeta.action === "clear") {
 			setValue("");
-			setSelectedVal(emptyOption);
+			return;
+		}
+
+		// Handle Select
+		if (actionMeta.action === "select-option" && newValue != undefined) {
+			setValue(concatOptions(newValue));
+			return;
+		}
+
+		// Handle Remove
+		if (actionMeta.action === "remove-value" && actionMeta.removedValue != undefined) {
+			setValue(concatOptions(newValue));
 			return;
 		}
 	};
@@ -169,12 +208,13 @@ export function OptionFormRow({ title, titleClass, value, disabled, setValue }: 
 				{title}
 			</Form.Label>
 			<Col sm="9">
-				<CreatableSelect<SelectOption, false, GroupBase<SelectOption>>
+				<CreatableSelect<SelectOption, true, GroupBase<SelectOption>>
+					isMulti
 					className="dark-creatable-select"
 					isClearable
 					onChange={handleChange}
 					options={options}
-					value={selectedVal}
+					value={convert(value)}
 					isDisabled={disabled}
 					// unstyled
 				/>
