@@ -25,8 +25,8 @@ export function MangaSelect({ value, onChange }: Readonly<EnumSelectProps>) {
 	return (
 		<Form.Select value={value} title="Manga" onChange={onChange}>
 			<option value={""}></option>
-			{Object.values(comicinfo.Manga).map((item) => (
-				<EnumOptions value={item} />
+			{Object.values(comicinfo.Manga).map((item, idx) => (
+				<EnumOptions value={item} key={"manga-opt-" + idx} />
 			))}
 		</Form.Select>
 	);
@@ -37,8 +37,8 @@ export function AgeRatingSelect({ value, onChange }: Readonly<EnumSelectProps>) 
 	return (
 		<Form.Select value={value} title="AgeRating" onChange={onChange}>
 			<option value={""}></option>
-			{Object.values(comicinfo.AgeRating).map((item) => (
-				<EnumOptions value={item} />
+			{Object.values(comicinfo.AgeRating).map((item, idx) => (
+				<EnumOptions value={item} key={"age-opt-" + idx} />
 			))}
 		</Form.Select>
 	);

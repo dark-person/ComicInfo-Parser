@@ -39,7 +39,7 @@ export function TagsArea({ rawTags, handleDelete }: Readonly<TagsAreaProps>) {
 		<div className="tag-area text-start p-2  ">
 			<div className="d-inline-flex flex-wrap">
 				{getTagsList(rawTags).map((item, index) => (
-					<Tag tag={item} key={index} index={index} handleDelete={handleDelete} />
+					<Tag tag={item} key={"tags-" + index} index={index} handleDelete={handleDelete} />
 				))}
 			</div>
 		</div>
