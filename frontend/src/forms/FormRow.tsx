@@ -13,7 +13,7 @@ type FormRowProps = {
 	/** current inputted value */
 	value?: string | number;
 	/** number of row of textarea */
-	textareaRow?: number | undefined;
+	textareaRow?: number;
 	/** determines whether the input is disabled */
 	disabled?: boolean;
 	/** Handle value change of input field. */
@@ -40,7 +40,7 @@ export default function FormRow({
 }: Readonly<FormRowProps>) {
 	return (
 		<Form.Group as={Row} className="mb-3">
-			<Form.Label column sm="2" className={titleClass != undefined ? titleClass : ""}>
+			<Form.Label column sm="2" className={titleClass ?? ""}>
 				{title}
 			</Form.Label>
 			<Col sm="9">
@@ -50,7 +50,7 @@ export default function FormRow({
 					value={typeof value == "number" && value == 0 ? "" : value}
 					title={title}
 					onChange={onChange}
-					rows={textareaRow != undefined ? textareaRow : 1}
+					rows={textareaRow ?? 1}
 					disabled={disabled}
 				/>
 			</Col>

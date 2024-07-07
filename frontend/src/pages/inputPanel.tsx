@@ -217,7 +217,7 @@ function TagMetadata({ comicInfo: info, infoSetter }: Readonly<TagMetadataProps>
 
 	/** Function for handling delete button click */
 	function handleDelete(id: number) {
-		if (info === undefined || info.Tags === undefined) {
+		if (info?.Tags === undefined) {
 			return;
 		}
 

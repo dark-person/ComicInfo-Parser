@@ -48,7 +48,7 @@ function CollapseCard({ myKey, title, body }: Readonly<CardProps>) {
 	return (
 		<Card className="text-start">
 			<Card.Header onClick={handleCollapse} aria-controls={"collapse-text-" + String(myKey)} aria-expanded={open}>
-				<span className="me-2">{open == true ? "▼" : ">"}</span>
+				<span className="me-2">{open ? "▼" : ">"}</span>
 				{title}
 			</Card.Header>
 			<Collapse in={open}>

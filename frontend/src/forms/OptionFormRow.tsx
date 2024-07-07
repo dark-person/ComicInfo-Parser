@@ -192,7 +192,7 @@ export default function OptionFormRow({
 
 	return (
 		<Form.Group as={Row} className="mb-3">
-			<Form.Label column sm="2" className={titleClass != undefined ? titleClass : ""}>
+			<Form.Label column sm="2" className={titleClass ?? ""}>
 				{title}
 			</Form.Label>
 			<Col sm="9">
