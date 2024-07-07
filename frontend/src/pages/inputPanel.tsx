@@ -10,7 +10,10 @@ import Tabs from "react-bootstrap/Tabs";
 import { AgeRatingSelect, MangaSelect } from "../components/EnumSelect";
 import { TagsArea } from "../components/Tags";
 import { basename } from "../filename";
-import { FormDateRow, FormRow, FormSelectRow, OptionFormRow } from "../formRow";
+import FormDateRow from "../forms/FormDateRow";
+import FormRow from "../forms/FormRow";
+import FormSelectRow from "../forms/FormSelectRow";
+import OptionFormRow from "../forms/OptionFormRow";
 
 import { GetAllGenreInput } from "../../wailsjs/go/main/App";
 import { comicinfo } from "../../wailsjs/go/models";
