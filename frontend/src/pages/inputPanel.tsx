@@ -7,11 +7,13 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 
 // Project Specified Component
-import { comicinfo } from "../../wailsjs/go/models";
 import { AgeRatingSelect, MangaSelect } from "../components/EnumSelect";
 import { TagsArea } from "../components/Tags";
 import { basename } from "../filename";
-import { FormDateRow, FormRow, FormSelectRow } from "../formRow";
+import { FormDateRow, FormRow, FormSelectRow, OptionFormRow } from "../formRow";
+
+import { GetAllGenreInput } from "../../wailsjs/go/main/App";
+import { comicinfo } from "../../wailsjs/go/models";
 
 /** Props Interface for InputPanel */
 type InputProps = {
@@ -125,7 +127,12 @@ function SeriesMetadata({ comicInfo, infoSetter }: TagMetadataProps) {
 					title={"Manga"}
 					selectElement={<MangaSelect value={comicInfo?.Manga} onChange={handleChanges} />}
 				/>
-				<FormRow title={"Genre"} value={comicInfo?.Genre} onChange={handleChanges} />
+				<OptionFormRow
+					title={"Genre"}
+					value={comicInfo?.Genre}
+					setValue={(val) => infoSetter("Genre", val)}
+					getDefaultOpt={GetAllGenreInput}
+				/>
 				<FormRow title={"LanguageISO"} value={comicInfo?.LanguageISO} onChange={handleChanges} />
 			</Form>
 		</div>
