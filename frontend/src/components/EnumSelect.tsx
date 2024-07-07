@@ -8,7 +8,7 @@ type OptionProps = {
 };
 
 /** JSX element for `<option>`, designed to hold enum value. */
-function EnumOptions({ value }: OptionProps) {
+function EnumOptions({ value }: Readonly<OptionProps>) {
 	return <option value={value}>{value}</option>;
 }
 
@@ -21,7 +21,7 @@ type EnumSelectProps = {
 };
 
 /** Form Select Element specified for `Manga` enum. */
-export function MangaSelect({ value, onChange }: EnumSelectProps) {
+export function MangaSelect({ value, onChange }: Readonly<EnumSelectProps>) {
 	return (
 		<Form.Select value={value} title="Manga" onChange={onChange}>
 			<option value={""}></option>
@@ -33,7 +33,7 @@ export function MangaSelect({ value, onChange }: EnumSelectProps) {
 }
 
 /** Form Select Element specified for `AgeRating` enum. */
-export function AgeRatingSelect({ value, onChange }: EnumSelectProps) {
+export function AgeRatingSelect({ value, onChange }: Readonly<EnumSelectProps>) {
 	return (
 		<Form.Select value={value} title="AgeRating" onChange={onChange}>
 			<option value={""}></option>

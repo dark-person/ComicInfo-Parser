@@ -46,7 +46,7 @@ type MetadataProps = {
  * The interface for show/edit book metadata.
  * @returns JSX Element
  */
-function BookMetadata({ comicInfo: info, dataHandler }: MetadataProps) {
+function BookMetadata({ comicInfo: info, dataHandler }: Readonly<MetadataProps>) {
 	return (
 		<div>
 			<Form>
@@ -72,7 +72,7 @@ function BookMetadata({ comicInfo: info, dataHandler }: MetadataProps) {
  * The interface for show/edit creator metadata.
  * @returns JSX Element
  */
-function CreatorMetadata({ comicInfo: info, dataHandler }: MetadataProps) {
+function CreatorMetadata({ comicInfo: info, dataHandler }: Readonly<MetadataProps>) {
 	return (
 		<div>
 			<Form>
@@ -91,7 +91,7 @@ function CreatorMetadata({ comicInfo: info, dataHandler }: MetadataProps) {
 }
 
 /** The user interface for show/edit Series MetaData. */
-function SeriesMetadata({ comicInfo, infoSetter }: TagMetadataProps) {
+function SeriesMetadata({ comicInfo, infoSetter }: Readonly<TagMetadataProps>) {
 	/**
 	 * Handler for all input field in this panel.
 	 * This method will use <code>infoSetter</code> as core,
@@ -143,7 +143,7 @@ function SeriesMetadata({ comicInfo, infoSetter }: TagMetadataProps) {
 }
 
 /** The user interface for show/edit Collection & ReadList MetaData. */
-function MiscMetadata({ comicInfo, dataHandler }: MetadataProps) {
+function MiscMetadata({ comicInfo, dataHandler }: Readonly<MetadataProps>) {
 	return (
 		<div>
 			<Form>
@@ -171,7 +171,7 @@ type TagMetadataProps = {
  * The interface for show/edit tags metadata.
  * @returns JSX Element
  */
-function TagMetadata({ comicInfo: info, infoSetter }: TagMetadataProps) {
+function TagMetadata({ comicInfo: info, infoSetter }: Readonly<TagMetadataProps>) {
 	/** Hooks of tag that to be added. Only allow single tag to be added at a time. */
 	const [singleTag, setSingleTag] = useState<string>("");
 
@@ -277,7 +277,7 @@ function TagMetadata({ comicInfo: info, infoSetter }: TagMetadataProps) {
  * The panel for input/edit content of ComicInfo.xml
  * @returns JSX Element
  */
-export default function InputPanel({ comicInfo, folderName, exportFunc, infoSetter }: InputProps) {
+export default function InputPanel({ comicInfo, folderName, exportFunc, infoSetter }: Readonly<InputProps>) {
 	/**
 	 * Handler for all input field in this panel.
 	 * This method will use <code>infoSetter</code> as core,

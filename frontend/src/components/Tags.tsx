@@ -10,7 +10,7 @@ type TagsAreaProps = {
 };
 
 /** Area that holding for Tags. */
-export function TagsArea({ rawTags, handleDelete }: TagsAreaProps) {
+export function TagsArea({ rawTags, handleDelete }: Readonly<TagsAreaProps>) {
 	/**
 	 * Parse the raw string that contains tags into arrays.
 	 * <p>
@@ -57,7 +57,7 @@ type TagProps = {
 };
 
 /** Item for holding one Tag, include delete button in every tag. */
-export function Tag({ tag, index, handleDelete }: TagProps) {
+export function Tag({ tag, index, handleDelete }: Readonly<TagProps>) {
 	return (
 		<div className="me-1 mb-1 tag-item bg-secondary p-1">
 			<div className="d-flex align-items-center">
