@@ -1,5 +1,5 @@
 // React
-import { ChangeEventHandler, useState } from "react";
+import { ChangeEventHandler, useEffect, useState } from "react";
 
 // React Component
 import { Col, Row } from "react-bootstrap";
@@ -7,6 +7,8 @@ import Form from "react-bootstrap/Form";
 
 import { ActionMeta, GroupBase, MultiValue } from "react-select";
 import CreatableSelect from "react-select/creatable";
+
+import { main } from "../wailsjs/go/models";
 
 /**
  * Get an array that start with min value and end with max value.
@@ -116,10 +118,12 @@ type OptionFormRowProps = {
 	disabled?: boolean;
 	/** Function to set value back to primary comicinfo object. */
 	setValue?: (value: string) => void;
+	/** Function to get default values from wails backend. */
+	getDefaultOpt: () => Promise<main.HistoryResp>;
 };
 
 /** Create a uniform Form.Group Element as Row, which contains select component that allow create new options. */
-export function OptionFormRow({ title, titleClass, value, disabled, setValue }: OptionFormRowProps) {
+export function OptionFormRow({ title, titleClass, value, disabled, setValue, getDefaultOpt }: OptionFormRowProps) {
 	/** Interface for react-select option. */
 	interface SelectOption {
 		label: string; // Necessary field
@@ -166,6 +170,32 @@ export function OptionFormRow({ title, titleClass, value, disabled, setValue }: 
 
 		// Convert to Multiple Values
 		return splitOpts.map((item) => ({ label: item, value: item }));
+	}
+
+	// Init components
+	useEffect(() => {
+		getOptions();
+	}, []);
+
+	/** Get option for wails binding, which value came from database. */
+	function getOptions() {
+		// Get data from wails binding
+		getDefaultOpt().then((response) => {
+			console.log("[getOptions] " + JSON.stringify(response, null, 4));
+
+			if (response.ErrorMsg != "") {
+				return;
+			}
+
+			// Set options
+			let tmpOptions: SelectOption[] = [];
+
+			response.Inputs.forEach((item) => {
+				tmpOptions.push({ label: item, value: item });
+			});
+
+			setOptions(tmpOptions);
+		});
 	}
 
 	/** Method to handle onChange of CreatableSelect. */
