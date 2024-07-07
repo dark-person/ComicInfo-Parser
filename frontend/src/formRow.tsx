@@ -5,7 +5,7 @@ import { ChangeEventHandler, useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 
-import { ActionMeta, GroupBase, MultiValue } from "react-select";
+import { ActionMeta, GroupBase, MultiValue, StylesConfig } from "react-select";
 import CreatableSelect from "react-select/creatable";
 
 import { main } from "../wailsjs/go/models";
@@ -232,6 +232,53 @@ export function OptionFormRow({ title, titleClass, value, disabled, setValue, ge
 		}
 	};
 
+	// CSS options for components
+	const selectStyles: StylesConfig<SelectOption, true, GroupBase<SelectOption>> = {
+		container: (baseStyles) => ({
+			...baseStyles,
+			border: " var(--bs-border-width) solid var(--bs-border-color)",
+			borderRadius: "var(--bs-border-radius)",
+			transition: "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out",
+			textAlign: "left",
+		}),
+		control: (baseStyles) => ({
+			...baseStyles,
+			backgroundColor: "transparent",
+			borderStyle: "none",
+		}),
+		indicatorSeparator: (baseStyles) => ({
+			...baseStyles,
+			display: "none",
+		}),
+		input: (baseStyles) => ({
+			...baseStyles,
+			color: "lightgrey",
+		}),
+		multiValue: (baseStyles) => ({
+			...baseStyles,
+			backgroundColor: "#6c757d !important",
+			border: "1px solid #495057",
+			borderRadius: "0.375rem",
+		}),
+		multiValueLabel: (baseStyles) => ({
+			...baseStyles,
+			color: "lightgrey",
+			fontSize: "100%",
+			padding: "1px",
+		}),
+		menu: (baseStyles) => ({
+			...baseStyles,
+			background: "var(--bs-gray-dark)",
+			marginTop: "0.125rem",
+			border: "solid 1px",
+			borderColor: "var(--bs-border-color)",
+		}),
+		option: (baseStyles) => ({
+			...baseStyles,
+			backgroundColor: "inherit",
+		}),
+	};
+
 	return (
 		<Form.Group as={Row} className="mb-3">
 			<Form.Label column sm="2" className={titleClass != undefined ? titleClass : ""}>
@@ -246,7 +293,7 @@ export function OptionFormRow({ title, titleClass, value, disabled, setValue, ge
 					options={options}
 					value={convert(value)}
 					isDisabled={disabled}
-					// unstyled
+					styles={selectStyles}
 				/>
 			</Col>
 		</Form.Group>
