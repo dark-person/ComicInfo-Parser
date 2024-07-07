@@ -17,4 +17,5 @@ stretchr
 Tracef
 Valuesf
 wailsapp
+wailsjs
 Warnf
