@@ -7,11 +7,13 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 
 // Project Specified Component
-import { comicinfo } from "../../wailsjs/go/models";
-import { TagsArea } from "../components/Tags";
-import { FormDateRow, FormRow, FormSelectRow } from "../formRow";
 import { AgeRatingSelect, MangaSelect } from "../components/EnumSelect";
+import { TagsArea } from "../components/Tags";
 import { basename } from "../filename";
+import { FormDateRow, FormRow, FormSelectRow, OptionFormRow } from "../formRow";
+
+import { GetAllGenreInput } from "../../wailsjs/go/main/App";
+import { comicinfo } from "../../wailsjs/go/models";
 
 /** Props Interface for InputPanel */
 type InputProps = {
@@ -86,23 +88,52 @@ function CreatorMetadata({ comicInfo: info, dataHandler }: MetadataProps) {
 }
 
 /** The user interface for show/edit Series MetaData. */
-function SeriesMetadata({ comicInfo, dataHandler }: MetadataProps) {
+function SeriesMetadata({ comicInfo, infoSetter }: TagMetadataProps) {
+	/**
+	 * Handler for all input field in this panel.
+	 * This method will use <code>infoSetter</code> as core,
+	 * and apply change to comicInfo content.
+	 * <p>
+	 * This method will try to find the field is number input first,
+	 * if field name is number/related, then it will call Number() method before set to ComicInfo
+	 *
+	 * @param e the event object, for identify target element
+	 * @returns void
+	 */
+	function handleChanges(e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) {
+		console.log(e.target.title, e.target.value, e.target.type);
+
+		// Identify Number
+		if (e.target.type === "number") {
+			infoSetter(e.target.title, Number(e.target.value));
+			return;
+		}
+
+		// Normal Cases
+		infoSetter(e.target.title, e.target.value);
+	}
+
 	return (
 		<div>
 			<Form>
-				<FormRow title={"Series"} value={comicInfo?.Series} onChange={dataHandler} />
-				<FormRow title={"Volume"} value={comicInfo?.Volume} onChange={dataHandler} />
-				<FormRow title={"Count"} value={comicInfo?.Count} onChange={dataHandler} />
+				<FormRow title={"Series"} value={comicInfo?.Series} onChange={handleChanges} />
+				<FormRow title={"Volume"} value={comicInfo?.Volume} onChange={handleChanges} />
+				<FormRow title={"Count"} value={comicInfo?.Count} onChange={handleChanges} />
 				<FormSelectRow
 					title={"AgeRating"}
-					selectElement={<AgeRatingSelect value={comicInfo?.AgeRating} onChange={dataHandler} />}
+					selectElement={<AgeRatingSelect value={comicInfo?.AgeRating} onChange={handleChanges} />}
 				/>
 				<FormSelectRow
 					title={"Manga"}
-					selectElement={<MangaSelect value={comicInfo?.Manga} onChange={dataHandler} />}
+					selectElement={<MangaSelect value={comicInfo?.Manga} onChange={handleChanges} />}
 				/>
-				<FormRow title={"Genre"} value={comicInfo?.Genre} onChange={dataHandler} />
-				<FormRow title={"LanguageISO"} value={comicInfo?.LanguageISO} onChange={dataHandler} />
+				<OptionFormRow
+					title={"Genre"}
+					value={comicInfo?.Genre}
+					setValue={(val) => infoSetter("Genre", val)}
+					getDefaultOpt={GetAllGenreInput}
+				/>
+				<FormRow title={"LanguageISO"} value={comicInfo?.LanguageISO} onChange={handleChanges} />
 			</Form>
 		</div>
 	);
@@ -301,7 +332,7 @@ export default function InputPanel({ comicInfo, folderName, exportFunc, infoSett
 				</Tab>
 
 				<Tab eventKey="Series" title="Series">
-					<SeriesMetadata comicInfo={comicInfo} dataHandler={handleChanges} />
+					<SeriesMetadata comicInfo={comicInfo} infoSetter={infoSetter} />
 				</Tab>
 
 				<Tab eventKey="Misc" title="Collection & ReadList">

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"gui-comicinfo/internal/comicinfo"
 	"os"
 	"path/filepath"
@@ -201,6 +202,7 @@ func TestExportXml(t *testing.T) {
 
 	// Prepare dummy App
 	app := NewApp()
+	app.startup(context.TODO())
 
 	// Start test
 	for idx, tt := range tests {
@@ -268,6 +270,7 @@ func TestExportCbz_NoWrap(t *testing.T) {
 
 	// Create a new app
 	app := NewApp()
+	app.startup(context.TODO())
 
 	for idx, tt := range tests {
 		errMsg := app.ExportCbz(tt.inputDir, tt.exportDir, tt.comicInfo, false)
@@ -332,6 +335,7 @@ func TestExportCbz_Wrap(t *testing.T) {
 
 	// Create a new app
 	app := NewApp()
+	app.startup(context.TODO())
 
 	for idx, tt := range tests {
 		errMsg := app.ExportCbz(tt.inputDir, tt.exportDir, tt.comicInfo, true)

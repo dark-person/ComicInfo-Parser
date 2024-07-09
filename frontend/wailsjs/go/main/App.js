@@ -10,6 +10,10 @@ export function ExportXml(arg1, arg2) {
   return window['go']['main']['App']['ExportXml'](arg1, arg2);
 }
 
+export function GetAllGenreInput() {
+  return window['go']['main']['App']['GetAllGenreInput']();
+}
+
 export function GetComicInfo(arg1) {
   return window['go']['main']['App']['GetComicInfo'](arg1);
 }

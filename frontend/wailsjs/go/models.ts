@@ -215,6 +215,20 @@ export namespace main {
 		    return a;
 		}
 	}
+	export class HistoryResp {
+	    Inputs: string[];
+	    ErrorMsg: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new HistoryResp(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Inputs = source["Inputs"];
+	        this.ErrorMsg = source["ErrorMsg"];
+	    }
+	}
 
 }
 

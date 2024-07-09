@@ -26,6 +26,24 @@ Currently, this project supports fields:
 -   `AlternateNumber`, `AlternateCount`
 -   `StoryArc`, `StoryArcNumber`
 
+| ![Select Folder](screenshots/select.png)    | ![Preview Page](screenshots/input_book.png) |
+| ------------------------------------------- | ------------------------------------------- |
+| ![Enum Support](screenshots/input_enum.png) | ![Tag View](screenshots/input_tag.png)      |
+
+### Use inputted values
+
+Every timer user export comicinfo, the input value will be save to local database file automatically.
+
+User can use these values when they generate another comicinfo, with easy-to-use GUI.
+
+Currently, this feature support below fields:
+
+-   `Genre`
+
+More field will be added in near future.
+
+<img src="screenshots/select_ui_demo.gif" width="75%" height="75%">
+
 ### Option to Export ComicInfo
 
 After preview & press button to export, User can defined export folder, and export in following options:
@@ -34,6 +52,8 @@ After preview & press button to export, User can defined export folder, and expo
 -   `.cbz` file ONLY
 -   `ComicInfo.xml` ONLY
 
+<img src="screenshots/export.png" width="75%" height="75%">
+
 ### Quick Export (Komga Only)
 
 Ignore preview section and generate `.cbz` with `komga` folder structure directly.
@@ -41,10 +61,3 @@ Ignore preview section and generate `.cbz` with `komga` folder structure directl
 Already contains a `.cbz` archive and `ComicInfo.xml` at `{selected-folder}/{comic-title}` location, while export location can NOT be changed.
 
 User can directly copy exported folder to `komga` comic directory.
-
-## Screenshots
-
-| ![Select Folder](screenshots/select.png) | ![Preview Page](screenshots/input_book.png) |
-| ---------------------------------------- | ------------------------------------------- |
-| ![Tag View](screenshots/input_tag.png)   | ![Enum Support](screenshots/input_enum.png) |
-| ![Export](screenshots/export.png)        |                                             |
