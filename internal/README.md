@@ -12,6 +12,18 @@ The [ComicInfo.xml](https://anansi-project.github.io/docs/comicinfo/documentatio
 
 Current Schema version is `2.1`.
 
+## database
+
+The package to manipulate the database. Current `user_version` is `2`.
+
+## files
+
+The package contains multiple utility function for files system.
+
+## history
+
+The package to control record of database, specially user inputted values.
+
 ## parser
 
 Utils Package. Extract information from filename/directory name to comicInfo.
