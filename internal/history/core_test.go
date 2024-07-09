@@ -135,8 +135,11 @@ func TestInsertValue(t *testing.T) {
 }
 
 func TestGetHistory(t *testing.T) {
+	// Directory to store db files
+	dir := t.TempDir()
+
 	// Prepare a database with given data rows
-	a, err := createTestDB("testing/t.db")
+	a, err := createTestDB(filepath.Join(dir, "t.db"))
 	if err != nil {
 		panic("failed to create database: " + err.Error())
 	}
