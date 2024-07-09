@@ -54,6 +54,10 @@ func createTestDB(path string) (*database.AppDB, error) {
 	return a, nil
 }
 
+func getNilDatabase() *database.AppDB {
+	return nil
+}
+
 func TestInsertValue(t *testing.T) {
 	const db1 = "test1.db"
 
@@ -82,26 +86,41 @@ func TestInsertValue(t *testing.T) {
 		// Empty value
 		{"test3.db", "abc", []string{}, false, []int{}},
 		{"test4.db", "", []string{"123"}, false, []int{1}},
+
+		// Nil database
+		{"", "abc", []string{"123"}, true, []int{1}},
 	}
 
 	// Start testing
 	for idx, tt := range tests {
 		// Create new database
-		db, err := database.NewPathDB(filepath.Join(dir, tt.dbPath))
-		if err != nil {
-			t.Errorf("Failed to create database: %v", err)
-		}
+		var db *database.AppDB
+		var err error
 
-		// Connect database
-		db.Connect()
-		db.StepToLatest()
-		defer db.Close()
+		if tt.dbPath != "" {
+			db, err = database.NewPathDB(filepath.Join(dir, tt.dbPath))
+			if err != nil {
+				t.Errorf("Failed to create database: %v", err)
+			}
+
+			// Connect database
+			db.Connect()
+			db.StepToLatest()
+			defer db.Close()
+
+		} else {
+			// Use nil database if dbPath is empty
+			db = getNilDatabase()
+		}
 
 		// Perform function
 		err = insertValue(db, tt.category, tt.value...)
 
 		// Asset no error occur
 		assert.EqualValuesf(t, tt.wantErr, err != nil, "Case %d: Expected has error=%t, got %t", idx, tt.wantErr, err != nil)
+		if tt.wantErr {
+			continue
+		}
 
 		// Asset value has inserted
 		for i, val := range tt.value {
@@ -143,6 +162,36 @@ func TestGetHistory(t *testing.T) {
 
 		// Check error
 		assert.EqualValuesf(t, tt.wantErr, err != nil, "expected error=%v, but error=%v", tt.wantErr, err)
+
+		// Check values
+		assert.EqualValuesf(t, tt.result, results, "unexpected output, expect=%v, got=%v", tt.result, results)
+	}
+}
+
+func TestGetHistoryNilDB(t *testing.T) {
+	// Prepare a database with nil database
+	a := getNilDatabase()
+
+	// Prepare test case
+	type testCase struct {
+		category string
+		result   []string
+		wantErr  bool
+	}
+
+	tests := []testCase{
+		{"abc", []string{"123"}, true},
+	}
+
+	// Start Testing
+	for _, tt := range tests {
+		results, err := getHistory(a, tt.category)
+
+		// Check error
+		assert.EqualValuesf(t, tt.wantErr, err != nil, "expected error=%v, but error=%v", tt.wantErr, err)
+		if tt.wantErr {
+			continue
+		}
 
 		// Check values
 		assert.EqualValuesf(t, tt.result, results, "unexpected output, expect=%v, got=%v", tt.result, results)
