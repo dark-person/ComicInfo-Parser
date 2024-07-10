@@ -24,6 +24,8 @@ type OptionFormRowProps = {
 	setValue?: (value: string) => void;
 	/** Function to get default values from wails backend. */
 	getDefaultOpt: () => Promise<main.HistoryResp>;
+	/** Current height for menu list, same with css `height`. Default is `9em` */
+	height?: string;
 };
 
 /** Create a uniform Form.Group Element as Row, which contains select component that allow create new options. */
@@ -34,6 +36,7 @@ export default function OptionFormRow({
 	disabled,
 	setValue,
 	getDefaultOpt,
+	height,
 }: Readonly<OptionFormRowProps>) {
 	/** Interface for react-select option. */
 	interface SelectOption {
@@ -183,6 +186,10 @@ export default function OptionFormRow({
 			marginTop: "0.125rem",
 			border: "solid 1px",
 			borderColor: "var(--bs-border-color)",
+		}),
+		menuList: (baseStyles) => ({
+			...baseStyles,
+			height: height ?? "9em",
 		}),
 		option: (baseStyles) => ({
 			...baseStyles,
