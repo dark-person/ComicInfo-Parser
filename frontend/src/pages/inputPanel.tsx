@@ -33,36 +33,66 @@ type InputProps = {
 	infoSetter: (field: string, value: string | number) => void;
 };
 
-/** Props Interface for Metadata. */
+/** The Props for Metadata Component. */
 type MetadataProps = {
 	/** The comic info object. Accept undefined value. */
 	comicInfo: comicinfo.ComicInfo | undefined;
 
-	/** The method called when input field value is changed. */
-	dataHandler: (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => void;
+	/** The info Setter. This function should be doing setting value, but no verification. */
+	infoSetter: (field: string, value: string | number) => void;
 };
 
 /**
  * The interface for show/edit book metadata.
  * @returns JSX Element
  */
-function BookMetadata({ comicInfo: info, dataHandler }: Readonly<MetadataProps>) {
+function BookMetadata({ comicInfo: info, infoSetter }: Readonly<MetadataProps>) {
+	/**
+	 * Handler for all input field in this panel.
+	 * This method will use <code>infoSetter</code> as core,
+	 * and apply change to comicInfo content.
+	 * <p>
+	 * This method will try to find the field is number input first,
+	 * if field name is number/related, then it will call Number() method before set to ComicInfo
+	 *
+	 * @param e the event object, for identify target element
+	 * @returns void
+	 */
+	function handleChanges(e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) {
+		console.log(e.target.title, e.target.value, e.target.type);
+
+		// Identify Number & Year
+		if (e.target.type === "number" || e.target.type === "Year") {
+			infoSetter(e.target.title, Number(e.target.value));
+			return;
+		}
+
+		// Identify Month & Day
+		if (e.target.title === "Month" || e.target.title === "Day") {
+			infoSetter(e.target.title, Number(e.target.value));
+			return;
+		}
+
+		// Normal Cases
+		infoSetter(e.target.title, e.target.value);
+	}
+
 	return (
 		<div>
 			<Form>
-				<FormRow title={"Title"} value={info?.Title} onChange={dataHandler} />
-				<FormRow title={"Summary"} value={info?.Summary.InnerXML} textareaRow={3} onChange={dataHandler} />
-				<FormRow title={"Number"} value={info?.Number} onChange={dataHandler} />
+				<FormRow title={"Title"} value={info?.Title} onChange={handleChanges} />
+				<FormRow title={"Summary"} value={info?.Summary.InnerXML} textareaRow={3} onChange={handleChanges} />
+				<FormRow title={"Number"} value={info?.Number} onChange={handleChanges} />
 				<FormDateRow
 					title={"Year/Month/Day"}
 					year={info?.Year}
 					month={info?.Month}
 					day={info?.Day}
-					onYearChange={dataHandler}
-					onSelectChange={dataHandler}
+					onYearChange={handleChanges}
+					onSelectChange={handleChanges}
 				/>
-				<FormRow title={"Web"} value={info?.Web} onChange={dataHandler} />
-				<FormRow title={"GTIN"} value={info?.GTIN} onChange={dataHandler} />
+				<FormRow title={"Web"} value={info?.Web} onChange={handleChanges} />
+				<FormRow title={"GTIN"} value={info?.GTIN} onChange={handleChanges} />
 			</Form>
 		</div>
 	);
@@ -72,26 +102,56 @@ function BookMetadata({ comicInfo: info, dataHandler }: Readonly<MetadataProps>)
  * The interface for show/edit creator metadata.
  * @returns JSX Element
  */
-function CreatorMetadata({ comicInfo: info, dataHandler }: Readonly<MetadataProps>) {
+function CreatorMetadata({ comicInfo: info, infoSetter }: Readonly<MetadataProps>) {
+	/**
+	 * Handler for all input field in this panel.
+	 * This method will use <code>infoSetter</code> as core,
+	 * and apply change to comicInfo content.
+	 * <p>
+	 * This method will try to find the field is number input first,
+	 * if field name is number/related, then it will call Number() method before set to ComicInfo
+	 *
+	 * @param e the event object, for identify target element
+	 * @returns void
+	 */
+	function handleChanges(e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) {
+		console.log(e.target.title, e.target.value, e.target.type);
+
+		// Identify Number & Year
+		if (e.target.type === "number" || e.target.type === "Year") {
+			infoSetter(e.target.title, Number(e.target.value));
+			return;
+		}
+
+		// Identify Month & Day
+		if (e.target.title === "Month" || e.target.title === "Day") {
+			infoSetter(e.target.title, Number(e.target.value));
+			return;
+		}
+
+		// Normal Cases
+		infoSetter(e.target.title, e.target.value);
+	}
+
 	return (
 		<div>
 			<Form>
-				<FormRow title={"Writer"} value={info?.Writer} onChange={dataHandler} />
-				<FormRow title={"Penciller"} value={info?.Penciller} onChange={dataHandler} />
-				<FormRow title={"Inker"} value={info?.Inker} onChange={dataHandler} />
-				<FormRow title={"Colorist"} value={info?.Colorist} onChange={dataHandler} />
-				<FormRow title={"Letterer"} value={info?.Letterer} onChange={dataHandler} />
-				<FormRow title={"CoverArtist"} value={info?.CoverArtist} onChange={dataHandler} />
-				<FormRow title={"Editor"} value={info?.Editor} onChange={dataHandler} />
-				<FormRow title={"Translator"} value={info?.Translator} onChange={dataHandler} />
-				<FormRow title={"Publisher"} value={info?.Publisher} onChange={dataHandler} />
+				<FormRow title={"Writer"} value={info?.Writer} onChange={handleChanges} />
+				<FormRow title={"Penciller"} value={info?.Penciller} onChange={handleChanges} />
+				<FormRow title={"Inker"} value={info?.Inker} onChange={handleChanges} />
+				<FormRow title={"Colorist"} value={info?.Colorist} onChange={handleChanges} />
+				<FormRow title={"Letterer"} value={info?.Letterer} onChange={handleChanges} />
+				<FormRow title={"CoverArtist"} value={info?.CoverArtist} onChange={handleChanges} />
+				<FormRow title={"Editor"} value={info?.Editor} onChange={handleChanges} />
+				<FormRow title={"Translator"} value={info?.Translator} onChange={handleChanges} />
+				<FormRow title={"Publisher"} value={info?.Publisher} onChange={handleChanges} />
 			</Form>
 		</div>
 	);
 }
 
 /** The user interface for show/edit Series MetaData. */
-function SeriesMetadata({ comicInfo, infoSetter }: Readonly<TagMetadataProps>) {
+function SeriesMetadata({ comicInfo, infoSetter }: Readonly<MetadataProps>) {
 	/**
 	 * Handler for all input field in this panel.
 	 * This method will use <code>infoSetter</code> as core,
@@ -143,35 +203,56 @@ function SeriesMetadata({ comicInfo, infoSetter }: Readonly<TagMetadataProps>) {
 }
 
 /** The user interface for show/edit Collection & ReadList MetaData. */
-function MiscMetadata({ comicInfo, dataHandler }: Readonly<MetadataProps>) {
+function MiscMetadata({ comicInfo, infoSetter }: Readonly<MetadataProps>) {
+	/**
+	 * Handler for all input field in this panel.
+	 * This method will use <code>infoSetter</code> as core,
+	 * and apply change to comicInfo content.
+	 * <p>
+	 * This method will try to find the field is number input first,
+	 * if field name is number/related, then it will call Number() method before set to ComicInfo
+	 *
+	 * @param e the event object, for identify target element
+	 * @returns void
+	 */
+	function handleChanges(e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) {
+		console.log(e.target.title, e.target.value, e.target.type);
+
+		// Identify Number & Year
+		if (e.target.type === "number" || e.target.type === "Year") {
+			infoSetter(e.target.title, Number(e.target.value));
+			return;
+		}
+
+		// Identify Month & Day
+		if (e.target.title === "Month" || e.target.title === "Day") {
+			infoSetter(e.target.title, Number(e.target.value));
+			return;
+		}
+
+		// Normal Cases
+		infoSetter(e.target.title, e.target.value);
+	}
+
 	return (
 		<div>
 			<Form>
-				<FormRow title={"SeriesGroup"} value={comicInfo?.SeriesGroup} onChange={dataHandler} />
-				<FormRow title={"AlternateSeries"} value={comicInfo?.AlternateSeries} onChange={dataHandler} />
-				<FormRow title={"AlternateNumber "} value={comicInfo?.AlternateNumber} onChange={dataHandler} />
-				<FormRow title={"AlternateCount"} value={comicInfo?.AlternateCount} onChange={dataHandler} />
-				<FormRow title={"StoryArc"} value={comicInfo?.StoryArc} onChange={dataHandler} />
-				<FormRow title={"StoryArcNumber"} value={comicInfo?.StoryArcNumber} onChange={dataHandler} />
+				<FormRow title={"SeriesGroup"} value={comicInfo?.SeriesGroup} onChange={handleChanges} />
+				<FormRow title={"AlternateSeries"} value={comicInfo?.AlternateSeries} onChange={handleChanges} />
+				<FormRow title={"AlternateNumber "} value={comicInfo?.AlternateNumber} onChange={handleChanges} />
+				<FormRow title={"AlternateCount"} value={comicInfo?.AlternateCount} onChange={handleChanges} />
+				<FormRow title={"StoryArc"} value={comicInfo?.StoryArc} onChange={handleChanges} />
+				<FormRow title={"StoryArcNumber"} value={comicInfo?.StoryArcNumber} onChange={handleChanges} />
 			</Form>
 		</div>
 	);
 }
 
-/** The Props for Tag Metadata Component. */
-type TagMetadataProps = {
-	/** The comic info object. Accept undefined value. */
-	comicInfo: comicinfo.ComicInfo | undefined;
-
-	/** The info Setter. This function should be doing setting value, but no verification. */
-	infoSetter: (field: string, value: string | number) => void;
-};
-
 /**
  * The interface for show/edit tags metadata.
  * @returns JSX Element
  */
-function TagMetadata({ comicInfo: info, infoSetter }: Readonly<TagMetadataProps>) {
+function TagMetadata({ comicInfo: info, infoSetter }: Readonly<MetadataProps>) {
 	/** Hooks of tag that to be added. Only allow single tag to be added at a time. */
 	const [singleTag, setSingleTag] = useState<string>("");
 
@@ -323,11 +404,11 @@ export default function InputPanel({ comicInfo, folderName, exportFunc, infoSett
 			{/* The Tabs Group to display metadata. */}
 			<Tabs defaultActiveKey="Main" id="uncontrolled-tab-example" className="mb-3">
 				<Tab eventKey="Main" title="Book Metadata">
-					<BookMetadata comicInfo={comicInfo} dataHandler={handleChanges} />
+					<BookMetadata comicInfo={comicInfo} infoSetter={infoSetter} />
 				</Tab>
 
 				<Tab eventKey="Creator" title="Creator">
-					<CreatorMetadata comicInfo={comicInfo} dataHandler={handleChanges} />
+					<CreatorMetadata comicInfo={comicInfo} infoSetter={infoSetter} />
 				</Tab>
 
 				<Tab eventKey="Tags" title="Tags">
@@ -339,7 +420,7 @@ export default function InputPanel({ comicInfo, folderName, exportFunc, infoSett
 				</Tab>
 
 				<Tab eventKey="Misc" title="Collection & ReadList">
-					<MiscMetadata comicInfo={comicInfo} dataHandler={handleChanges} />
+					<MiscMetadata comicInfo={comicInfo} infoSetter={infoSetter} />
 				</Tab>
 			</Tabs>
 
