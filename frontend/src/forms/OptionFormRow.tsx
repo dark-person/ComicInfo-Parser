@@ -205,6 +205,7 @@ export default function OptionFormRow({
 			<Col sm="9">
 				<CreatableSelect<SelectOption, true, GroupBase<SelectOption>>
 					isMulti
+					menuPlacement="auto"
 					className="dark-creatable-select"
 					isClearable
 					onChange={handleChange}
