@@ -2,17 +2,17 @@
 import { useState } from "react";
 
 // Component
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Collapse from "react-bootstrap/Collapse";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
 
 // Project Specific Component
 import { CompleteModal, ErrorModal, LoadingModal } from "../components/modal";
 
 // Wails
-import { GetDirectory, QuickExportKomga, GetDirectoryWithDefault } from "../../wailsjs/go/main/App";
+import { GetDirectory, GetDirectoryWithDefault, QuickExportKomga } from "../../wailsjs/go/main/App";
 
 /** Props Interface for FolderSelect */
 type FolderProps = {
@@ -37,7 +37,7 @@ type CardProps = {
  * @param body the body inside the Card.Body
  * @returns a Card Component with Collapse ability for card body.
  */
-function CollapseCard({ myKey, title, body }: CardProps) {
+function CollapseCard({ myKey, title, body }: Readonly<CardProps>) {
 	const [open, setOpen] = useState(false);
 
 	/** Handler for user click card header. Collapse/Open the card. */
@@ -48,7 +48,7 @@ function CollapseCard({ myKey, title, body }: CardProps) {
 	return (
 		<Card className="text-start">
 			<Card.Header onClick={handleCollapse} aria-controls={"collapse-text-" + String(myKey)} aria-expanded={open}>
-				<span className="me-2">{open == true ? "▼" : ">"}</span>
+				<span className="me-2">{open ? "▼" : ">"}</span>
 				{title}
 			</Card.Header>
 			<Collapse in={open}>
@@ -71,7 +71,7 @@ function CollapseCard({ myKey, title, body }: CardProps) {
  * @param processFunc handler when process button is clicked
  * @returns Page for selecting Folder
  */
-export default function FolderSelect({ processFunc: handleFolder }: FolderProps) {
+export default function FolderSelect({ processFunc: handleFolder }: Readonly<FolderProps>) {
 	/** The Directory Absolute Path selected by User. */
 	const [directory, setDirectory] = useState("");
 

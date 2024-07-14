@@ -8,7 +8,7 @@ type OptionProps = {
 };
 
 /** JSX element for `<option>`, designed to hold enum value. */
-function EnumOptions({ value }: OptionProps) {
+function EnumOptions({ value }: Readonly<OptionProps>) {
 	return <option value={value}>{value}</option>;
 }
 
@@ -21,24 +21,24 @@ type EnumSelectProps = {
 };
 
 /** Form Select Element specified for `Manga` enum. */
-export function MangaSelect({ value, onChange }: EnumSelectProps) {
+export function MangaSelect({ value, onChange }: Readonly<EnumSelectProps>) {
 	return (
 		<Form.Select value={value} title="Manga" onChange={onChange}>
 			<option value={""}></option>
-			{Object.values(comicinfo.Manga).map((item) => (
-				<EnumOptions value={item} />
+			{Object.values(comicinfo.Manga).map((item, idx) => (
+				<EnumOptions value={item} key={"manga-opt-" + idx} />
 			))}
 		</Form.Select>
 	);
 }
 
 /** Form Select Element specified for `AgeRating` enum. */
-export function AgeRatingSelect({ value, onChange }: EnumSelectProps) {
+export function AgeRatingSelect({ value, onChange }: Readonly<EnumSelectProps>) {
 	return (
 		<Form.Select value={value} title="AgeRating" onChange={onChange}>
 			<option value={""}></option>
-			{Object.values(comicinfo.AgeRating).map((item) => (
-				<EnumOptions value={item} />
+			{Object.values(comicinfo.AgeRating).map((item, idx) => (
+				<EnumOptions value={item} key={"age-opt-" + idx} />
 			))}
 		</Form.Select>
 	);

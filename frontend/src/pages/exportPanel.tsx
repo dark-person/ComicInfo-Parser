@@ -2,15 +2,15 @@
 import { useEffect, useState } from "react";
 
 // React Component
+import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-import Button from "react-bootstrap/Button";
 
 // Project Component
-import { LoadingModal, CompleteModal, ErrorModal } from "../components/modal";
+import { CompleteModal, ErrorModal, LoadingModal } from "../components/modal";
 
 // Wails
-import { GetDirectory, GetDirectoryWithDefault, ExportXml, ExportCbz } from "../../wailsjs/go/main/App";
+import { ExportCbz, ExportXml, GetDirectory, GetDirectoryWithDefault } from "../../wailsjs/go/main/App";
 import { comicinfo } from "../../wailsjs/go/models";
 
 /** Props Interface for FolderSelect */
@@ -33,7 +33,7 @@ type buttonName = "xml" | "cbz" | undefined;
  * The panel to export comic info to cbz/xml file.
  * @returns JSX Component
  */
-export default function ExportPanel({ comicInfo: info, originalDirectory, backToHomeFunc }: ExportProps) {
+export default function ExportPanel({ comicInfo: info, originalDirectory, backToHomeFunc }: Readonly<ExportProps>) {
 	// Since this is the final step, could ignore the interaction with App.tsx
 	const [exportDir, setExportDir] = useState<string>("");
 

@@ -10,7 +10,7 @@ type TagsAreaProps = {
 };
 
 /** Area that holding for Tags. */
-export function TagsArea({ rawTags, handleDelete }: TagsAreaProps) {
+export function TagsArea({ rawTags, handleDelete }: Readonly<TagsAreaProps>) {
 	/**
 	 * Parse the raw string that contains tags into arrays.
 	 * <p>
@@ -39,7 +39,7 @@ export function TagsArea({ rawTags, handleDelete }: TagsAreaProps) {
 		<div className="tag-area text-start p-2  ">
 			<div className="d-inline-flex flex-wrap">
 				{getTagsList(rawTags).map((item, index) => (
-					<Tag tag={item} key={index} index={index} handleDelete={handleDelete} />
+					<Tag tag={item} key={"tags-" + index} index={index} handleDelete={handleDelete} />
 				))}
 			</div>
 		</div>
@@ -57,7 +57,7 @@ type TagProps = {
 };
 
 /** Item for holding one Tag, include delete button in every tag. */
-export function Tag({ tag, index, handleDelete }: TagProps) {
+export function Tag({ tag, index, handleDelete }: Readonly<TagProps>) {
 	return (
 		<div className="me-1 mb-1 tag-item bg-secondary p-1">
 			<div className="d-flex align-items-center">
