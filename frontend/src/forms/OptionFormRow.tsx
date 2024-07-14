@@ -26,6 +26,8 @@ type OptionFormRowProps = {
 	getDefaultOpt: () => Promise<application.HistoryResp>;
 	/** Max height for menu list, same with css `max-height`. Default is `9em` */
 	menuMaxHeight?: string;
+	/** Current height for component, same with css `height`.*/
+	componentHeight?: string;
 };
 
 /** Create a uniform Form.Group Element as Row, which contains select component that allow create new options. */
@@ -37,6 +39,7 @@ export default function OptionFormRow({
 	setValue,
 	getDefaultOpt,
 	menuMaxHeight,
+	componentHeight,
 }: Readonly<OptionFormRowProps>) {
 	/** Interface for react-select option. */
 	interface SelectOption {
@@ -159,6 +162,12 @@ export default function OptionFormRow({
 			...baseStyles,
 			backgroundColor: "transparent",
 			borderStyle: "none",
+			height: componentHeight ?? baseStyles.height,
+			alignItems: componentHeight === null ? baseStyles.alignItems : "flex-start",
+		}),
+		indicatorsContainer: (baseStyles) => ({
+			...baseStyles,
+			alignItems: componentHeight === null ? baseStyles.alignItems : "flex-start",
 		}),
 		indicatorSeparator: (baseStyles) => ({
 			...baseStyles,
