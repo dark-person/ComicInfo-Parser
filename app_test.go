@@ -181,6 +181,9 @@ func TestExportXml(t *testing.T) {
 	// Temp folder creation
 	tempFolder := t.TempDir()
 
+	// Test database
+	testDB := filepath.Join(tempFolder, "test_xml.db")
+
 	type testCase struct {
 		dir       string // Only final part of abs path, i.e. no need to include temp folder value
 		c         *comicinfo.ComicInfo
@@ -202,7 +205,7 @@ func TestExportXml(t *testing.T) {
 
 	// Prepare dummy App
 	app := NewApp()
-	app.startup(context.TODO())
+	app.testStartup(context.TODO(), testDB)
 
 	// Start test
 	for idx, tt := range tests {
@@ -225,6 +228,9 @@ func TestExportXml(t *testing.T) {
 		assert.EqualValuesf(t, removeExtraSpace(expectedXML), removeExtraSpace(string(b)),
 			"Case %d: unmatched XML.", idx)
 	}
+
+	// Close database file
+	app.DB.Close()
 }
 
 // Test `ExportCbz` function in `app`, which parameters of `isWrap` is false.
@@ -236,6 +242,9 @@ func TestExportCbz_NoWrap(t *testing.T) {
 	// Temp folder creation
 	tempFolder := t.TempDir()
 	// tempFolder := "testing"
+
+	// Test database
+	testDB := filepath.Join(tempFolder, "test_cbz1.db")
 
 	// Prepare test case struct
 	type testCase struct {
@@ -270,7 +279,7 @@ func TestExportCbz_NoWrap(t *testing.T) {
 
 	// Create a new app
 	app := NewApp()
-	app.startup(context.TODO())
+	app.testStartup(context.TODO(), testDB)
 
 	for idx, tt := range tests {
 		errMsg := app.ExportCbz(tt.inputDir, tt.exportDir, tt.comicInfo, false)
@@ -291,6 +300,9 @@ func TestExportCbz_NoWrap(t *testing.T) {
 			assert.Containsf(t, errMsg, tt.errMsg, "Case %d, unmatched error message", idx)
 		}
 	}
+
+	// Close database file
+	app.DB.Close()
 }
 
 // Test `ExportCbz` function in `app`, which parameters of `isWrap` is true.
@@ -301,6 +313,9 @@ func TestExportCbz_NoWrap(t *testing.T) {
 func TestExportCbz_Wrap(t *testing.T) {
 	// Temp folder creation
 	tempFolder := t.TempDir()
+
+	// Test database
+	testDB := filepath.Join(tempFolder, "test_cbz2.db")
 
 	// Prepare Test Case Struct
 	type testCase struct {
@@ -335,7 +350,7 @@ func TestExportCbz_Wrap(t *testing.T) {
 
 	// Create a new app
 	app := NewApp()
-	app.startup(context.TODO())
+	app.testStartup(context.TODO(), testDB)
 
 	for idx, tt := range tests {
 		errMsg := app.ExportCbz(tt.inputDir, tt.exportDir, tt.comicInfo, true)
@@ -356,6 +371,9 @@ func TestExportCbz_Wrap(t *testing.T) {
 			assert.Containsf(t, errMsg, tt.errMsg, "Case %d, unmatched error message", idx)
 		}
 	}
+
+	// Close database file
+	app.DB.Close()
 }
 
 const expectedXML = `<?xml version="1.0"?>

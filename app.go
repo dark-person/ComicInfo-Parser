@@ -52,6 +52,33 @@ func (a *App) startup(ctx context.Context) {
 	}
 }
 
+// Function that is almost same with `startup()`,
+// but different on database handling.
+//
+// This function MUST not used outside test purposes.
+func (a *App) testStartup(ctx context.Context, dbPath string) {
+	a.ctx = ctx
+
+	// Init Database
+	var err error
+	a.DB, err = database.NewPathDB(dbPath)
+	if err != nil {
+		panic(err)
+	}
+
+	// Perform connect & migration
+	err = a.DB.Connect()
+	if err != nil {
+		panic(err)
+	}
+
+	// Perform migration to database if needed
+	err = a.DB.StepToLatest()
+	if err != nil {
+		panic(err)
+	}
+}
+
 // Open a Dialog for user to select Directory.
 //
 // If Error is occur, then this function will return an empty string
