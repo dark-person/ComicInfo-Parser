@@ -186,13 +186,35 @@ func (a *App) QuickExportKomga(folder string) string {
 	return ""
 }
 
-// Save genre to database record.
-func (a *App) saveGenre(genre string) error {
-	// Split the genre into slice of string by comma
-	s := strings.Split(genre, ",")
+// Save user input to history database.
+// All comicinfo handling logic should be inside this function.
+func (a *App) saveToHistory(c *comicinfo.ComicInfo) error {
 
-	// Insert into database
-	return history.InsertGenre(a.DB, s...)
+	values := make([]history.HistoryVal, 0)
+
+	//  ------------- Genre ----------------
+
+	// Split the genre into slice of string by comma
+	s := strings.Split(c.Genre, ",")
+	for _, item := range s {
+		values = append(values, history.HistoryVal{
+			Category: history.Genre_Text,
+			Value:    item,
+		})
+	}
+
+	// ----------- Publisher ----------------
+	// Split the publisher into slice of string by comma
+	s = strings.Split(c.Publisher, ",")
+	for _, item := range s {
+		values = append(values, history.HistoryVal{
+			Category: history.Publisher_Text,
+			Value:    item,
+		})
+	}
+
+	// ----------- INSERT ----------------
+	return history.InsertMultiple(a.DB, values...)
 }
 
 // Export the ComicInfo struct to XML file.
@@ -219,7 +241,7 @@ func (a *App) ExportXml(originalDir string, c *comicinfo.ComicInfo) (errorMsg st
 	}
 
 	// Write to database
-	err = a.saveGenre(c.Genre)
+	err = a.saveToHistory(c)
 	if err != nil {
 		logrus.Error(err)
 	}
@@ -259,7 +281,7 @@ func (a *App) ExportCbz(inputDir string, exportDir string, c *comicinfo.ComicInf
 	}
 
 	// Write to database
-	err = a.saveGenre(c.Genre)
+	err = a.saveToHistory(c)
 	if err != nil {
 		logrus.Error(err)
 	}
@@ -286,6 +308,17 @@ type HistoryResp struct {
 // Get all user inputted genre from database.
 func (a *App) GetAllGenreInput() HistoryResp {
 	list, err := history.GetGenreList(a.DB)
+
+	if err != nil {
+		return HistoryResp{nil, err.Error()}
+	}
+
+	return HistoryResp{list, ""}
+}
+
+// Get all user inputted publisher from database.
+func (a *App) GetAllPublisherInput() HistoryResp {
+	list, err := history.GetPublisherList(a.DB)
 
 	if err != nil {
 		return HistoryResp{nil, err.Error()}

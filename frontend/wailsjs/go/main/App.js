@@ -14,6 +14,10 @@ export function GetAllGenreInput() {
   return window['go']['main']['App']['GetAllGenreInput']();
 }
 
+export function GetAllPublisherInput() {
+  return window['go']['main']['App']['GetAllPublisherInput']();
+}
+
 export function GetComicInfo(arg1) {
   return window['go']['main']['App']['GetComicInfo'](arg1);
 }
