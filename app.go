@@ -48,7 +48,12 @@ func (a *App) startup(ctx context.Context) {
 	// Perform migration to database if needed
 	err = a.DB.StepToLatest()
 	if err != nil {
-		panic(err)
+		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+			Type:    runtime.InfoDialog,
+			Title:   "Error",
+			Message: "Database version is corrupted, please fix database or remove current database file.",
+		})
+		os.Exit(1)
 	}
 }
 
@@ -75,7 +80,12 @@ func (a *App) testStartup(ctx context.Context, dbPath string) {
 	// Perform migration to database if needed
 	err = a.DB.StepToLatest()
 	if err != nil {
-		panic(err)
+		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+			Type:    runtime.InfoDialog,
+			Title:   "Error",
+			Message: "Database version is corrupted, please fix database or remove current database file.",
+		})
+		os.Exit(1)
 	}
 }
 
