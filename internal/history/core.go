@@ -27,6 +27,11 @@ func insertValue(db *database.AppDB, category string, value ...string) error {
 
 	// Insert multiple value
 	for _, item := range value {
+		// Skip empty string values
+		if item == "" {
+			continue
+		}
+
 		_, err = stmt.Exec(category, item)
 		if err != nil {
 			return err

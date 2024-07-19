@@ -6,7 +6,11 @@ import { Form } from "react-bootstrap";
 
 // Project Specified Component
 import FormRow from "../../forms/FormRow";
+import OptionFormRow from "../../forms/OptionFormRow";
 import { MetadataProps } from "./MetadataProps";
+
+// Wails binding
+import { GetAllPublisherInput } from "../../../wailsjs/go/main/App";
 
 /**
  * The interface for show/edit creator metadata.
@@ -54,7 +58,12 @@ export default function CreatorMetadata({ comicInfo: info, infoSetter }: Readonl
 				<FormRow title={"CoverArtist"} value={info?.CoverArtist} onChange={handleChanges} />
 				<FormRow title={"Editor"} value={info?.Editor} onChange={handleChanges} />
 				<FormRow title={"Translator"} value={info?.Translator} onChange={handleChanges} />
-				<FormRow title={"Publisher"} value={info?.Publisher} onChange={handleChanges} />
+				<OptionFormRow
+					title={"Publisher"}
+					value={info?.Publisher}
+					setValue={(val) => infoSetter("Publisher", val)}
+					getDefaultOpt={GetAllPublisherInput}
+				/>
 			</Form>
 		</div>
 	);

@@ -9,6 +9,8 @@ export function ExportXml(arg1:string,arg2:comicinfo.ComicInfo):Promise<string>;
 
 export function GetAllGenreInput():Promise<main.HistoryResp>;
 
+export function GetAllPublisherInput():Promise<main.HistoryResp>;
+
 export function GetComicInfo(arg1:string):Promise<main.ComicInfoResponse>;
 
 export function GetDirectory():Promise<string>;

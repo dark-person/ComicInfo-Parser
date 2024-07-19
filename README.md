@@ -39,6 +39,7 @@ User can use these values when they generate another comicinfo, with easy-to-use
 Currently, this feature support below fields:
 
 -   `Genre`
+-   `Publisher`
 
 More field will be added in near future.
 

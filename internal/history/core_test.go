@@ -87,6 +87,9 @@ func TestInsertValue(t *testing.T) {
 		{"test3.db", "abc", []string{}, false, []int{}},
 		{"test4.db", "", []string{"123"}, false, []int{1}},
 
+		// Empty string value
+		{"test5.db", "abc", []string{"123", ""}, false, []int{1, 0}},
+
 		// Nil database
 		{"", "abc", []string{"123"}, true, []int{1}},
 	}
