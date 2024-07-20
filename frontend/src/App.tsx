@@ -13,7 +13,7 @@ import FolderSelect from "./pages/folderSelect";
 import InputPanel from "./pages/inputPanel";
 
 // Wails
-import { GetComicInfo } from "../wailsjs/go/main/App";
+import { GetComicInfo } from "../wailsjs/go/application/App";
 import { comicinfo } from "../wailsjs/go/models";
 import ExportPanel from "./pages/exportPanel";
 

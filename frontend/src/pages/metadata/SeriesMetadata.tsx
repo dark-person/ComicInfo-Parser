@@ -12,7 +12,7 @@ import OptionFormRow from "../../forms/OptionFormRow";
 import { MetadataProps } from "./MetadataProps";
 
 // Wails binding
-import { GetAllGenreInput } from "../../../wailsjs/go/main/App";
+import { GetAllGenreInput } from "../../../wailsjs/go/application/App";
 
 export default /** The user interface for show/edit Series MetaData. */
 function SeriesMetadata({ comicInfo, infoSetter }: Readonly<MetadataProps>) {

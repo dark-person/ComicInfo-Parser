@@ -10,7 +10,7 @@ import OptionFormRow from "../../forms/OptionFormRow";
 import { MetadataProps } from "./MetadataProps";
 
 // Wails binding
-import { GetAllPublisherInput } from "../../../wailsjs/go/main/App";
+import { GetAllPublisherInput } from "../../../wailsjs/go/application/App";
 
 /**
  * The interface for show/edit creator metadata.
