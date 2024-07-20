@@ -5,5 +5,11 @@ CREATE TABLE "list_inputted" (
     PRIMARY KEY("category", "input")
 );
 
+-- Master table for tags.
+CREATE TABLE "tags" (
+    "input" TEXT NOT NULL,
+    PRIMARY KEY("input")
+);
+
 -- SQLite version
-PRAGMA user_version = 2
+PRAGMA user_version = 1
