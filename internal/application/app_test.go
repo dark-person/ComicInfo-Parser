@@ -1,4 +1,4 @@
-package main
+package application
 
 import (
 	"context"
@@ -205,7 +205,7 @@ func TestExportXml(t *testing.T) {
 
 	// Prepare dummy App
 	app := NewApp()
-	app.testStartup(context.TODO(), testDB)
+	app.StartUpTest(context.TODO(), testDB)
 
 	// Start test
 	for idx, tt := range tests {
@@ -279,7 +279,7 @@ func TestExportCbz_NoWrap(t *testing.T) {
 
 	// Create a new app
 	app := NewApp()
-	app.testStartup(context.TODO(), testDB)
+	app.StartUpTest(context.TODO(), testDB)
 
 	for idx, tt := range tests {
 		errMsg := app.ExportCbz(tt.inputDir, tt.exportDir, tt.comicInfo, false)
@@ -350,7 +350,7 @@ func TestExportCbz_Wrap(t *testing.T) {
 
 	// Create a new app
 	app := NewApp()
-	app.testStartup(context.TODO(), testDB)
+	app.StartUpTest(context.TODO(), testDB)
 
 	for idx, tt := range tests {
 		errMsg := app.ExportCbz(tt.inputDir, tt.exportDir, tt.comicInfo, true)

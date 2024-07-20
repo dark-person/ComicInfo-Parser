@@ -1,4 +1,4 @@
-package main
+package application
 
 import (
 	"context"
@@ -29,7 +29,7 @@ func NewApp() *App {
 
 // startup is called when the app starts. The context is saved
 // so we can call the runtime methods
-func (a *App) startup(ctx context.Context) {
+func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 
 	// Init Database
@@ -61,7 +61,7 @@ func (a *App) startup(ctx context.Context) {
 // but different on database handling.
 //
 // This function MUST not used outside test purposes.
-func (a *App) testStartup(ctx context.Context, dbPath string) {
+func (a *App) StartUpTest(ctx context.Context, dbPath string) {
 	a.ctx = ctx
 
 	// Init Database
