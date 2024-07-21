@@ -12,7 +12,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { CompleteModal, ErrorModal, LoadingModal } from "../components/modal";
 
 // Wails
-import { GetDirectory, GetDirectoryWithDefault, QuickExportKomga } from "../../wailsjs/go/main/App";
+import { GetDirectory, GetDirectoryWithDefault, QuickExportKomga } from "../../wailsjs/go/application/App";
 
 /** Props Interface for FolderSelect */
 type FolderProps = {

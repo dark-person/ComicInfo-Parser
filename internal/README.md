@@ -2,6 +2,10 @@
 
 This folder contains several Internal Package.
 
+## application
+
+Package for wails app.
+
 ## archive
 
 The package to convert image directory to `.zip` and `.cbz` file.
@@ -14,7 +18,7 @@ Current Schema version is `2.1`.
 
 ## database
 
-The package to manipulate the database. Current `user_version` is `2`.
+The package to manipulate the database. Current `user_version` is `1`.
 
 ## files
 

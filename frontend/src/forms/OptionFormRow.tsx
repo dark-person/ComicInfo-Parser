@@ -8,7 +8,7 @@ import Form from "react-bootstrap/Form";
 import { ActionMeta, GroupBase, MultiValue, StylesConfig } from "react-select";
 import CreatableSelect from "react-select/creatable";
 
-import { main } from "../../wailsjs/go/models";
+import { application } from "../../wailsjs/go/models";
 
 /** Props for `OptionFormRow`. */
 type OptionFormRowProps = {
@@ -23,7 +23,7 @@ type OptionFormRowProps = {
 	/** Function to set value back to primary comicinfo object. */
 	setValue?: (value: string) => void;
 	/** Function to get default values from wails backend. */
-	getDefaultOpt: () => Promise<main.HistoryResp>;
+	getDefaultOpt: () => Promise<application.HistoryResp>;
 	/** Current height for menu list, same with css `height`. Default is `9em` */
 	height?: string;
 };
@@ -104,7 +104,7 @@ export default function OptionFormRow({
 			// Set options
 			let tmpOptions: SelectOption[] = [];
 
-			response.Inputs.forEach((item) => {
+			response.Inputs.forEach((item: string) => {
 				tmpOptions.push({ label: item, value: item });
 			});
 

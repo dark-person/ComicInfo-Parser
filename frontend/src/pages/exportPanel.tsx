@@ -10,8 +10,8 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { CompleteModal, ErrorModal, LoadingModal } from "../components/modal";
 
 // Wails
-import { ExportCbz, ExportXml, GetDirectory, GetDirectoryWithDefault } from "../../wailsjs/go/main/App";
 import { comicinfo } from "../../wailsjs/go/models";
+import { ExportCbz, ExportXml, GetDirectory, GetDirectoryWithDefault } from "../../wailsjs/go/application/App";
 
 /** Props Interface for FolderSelect */
 type ExportProps = {
