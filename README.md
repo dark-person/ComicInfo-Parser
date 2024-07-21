@@ -40,6 +40,7 @@ Currently, this feature support below fields:
 
 -   `Genre`
 -   `Publisher`
+-   `Tags`
 
 More field will be added in near future.
 

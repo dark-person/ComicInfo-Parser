@@ -39,3 +39,9 @@ Currently Support `Author`, `Title`, also for identify special tags.
 The package for scanner image directory.
 
 This package will produce a `ComicInfo` Struct, which contains pages detail, and also information that extract from `parser` package.
+
+## tagger
+
+Package for handle tags record in database, include user inputted values.
+
+This package is separate from `history` package due to tags handling can be complex when compare with other user inputted values.
