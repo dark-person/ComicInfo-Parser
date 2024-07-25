@@ -6,6 +6,7 @@ import (
 	"gui-comicinfo/internal/comicinfo"
 	"gui-comicinfo/internal/history"
 	"gui-comicinfo/internal/scanner"
+	"gui-comicinfo/internal/tagger"
 	"os"
 	"path/filepath"
 	"strings"
@@ -68,13 +69,21 @@ func (a *App) QuickExportKomga(folder string) string {
 // Save user input to history database.
 // All comicinfo handling logic should be inside this function.
 func (a *App) saveToHistory(c *comicinfo.ComicInfo) error {
+	// ==================== Tags ====================
+	// Split the tags into slice of string by comma
+	s := strings.Split(c.Tags, ",")
+	err := tagger.AddTag(a.DB, s...)
 
+	if err != nil {
+		return err
+	}
+
+	// ========== For values supported by history pkg ============
 	values := make([]history.HistoryVal, 0)
 
 	//  ------------- Genre ----------------
-
 	// Split the genre into slice of string by comma
-	s := strings.Split(c.Genre, ",")
+	s = strings.Split(c.Genre, ",")
 	for _, item := range s {
 		values = append(values, history.HistoryVal{
 			Category: history.Genre_Text,

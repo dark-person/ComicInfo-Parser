@@ -18,6 +18,10 @@ export function GetAllPublisherInput() {
   return window['go']['application']['App']['GetAllPublisherInput']();
 }
 
+export function GetAllTagInput() {
+  return window['go']['application']['App']['GetAllTagInput']();
+}
+
 export function GetComicInfo(arg1) {
   return window['go']['application']['App']['GetComicInfo'](arg1);
 }
