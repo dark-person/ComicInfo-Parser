@@ -16,6 +16,7 @@ import InputPanel from "./pages/inputPanel";
 import { GetComicInfo } from "../wailsjs/go/application/App";
 import { comicinfo } from "../wailsjs/go/models";
 import ExportPanel from "./pages/exportPanel";
+import HelpPanel from "./pages/helpPanel";
 
 /** Const, for Display page of select folder */
 const mode_select_folder = 1;
@@ -23,6 +24,8 @@ const mode_select_folder = 1;
 const mode_input_data = 2;
 /** Const, for Display page of export panel */
 const mode_export = 3;
+/** Const, for Display Help Page. */
+const mode_help = -1;
 
 /**
  * The main component to be displayed. It will handle all pages data & timing to display.
@@ -80,6 +83,11 @@ function App() {
 	/** Change the panel in app to export panel. */
 	function showExportPanel() {
 		setMode(mode_export);
+	}
+
+	/** Show help panel in App. */
+	function showHelpPanel() {
+		setMode(mode_help);
 	}
 
 	/** Return to previous page. */
@@ -160,7 +168,9 @@ function App() {
 
 				{/* Area to display panel */}
 				<Col>
-					{mode == mode_select_folder && <FolderSelect processFunc={passingFolder} />}
+					{mode == mode_select_folder && (
+						<FolderSelect processFunc={passingFolder} showHelpPanel={showHelpPanel} />
+					)}
 					{mode == mode_input_data && (
 						<InputPanel
 							comicInfo={info}
@@ -172,6 +182,7 @@ function App() {
 					{mode == mode_export && (
 						<ExportPanel comicInfo={info} originalDirectory={inputDir} backToHomeFunc={backToHomePanel} />
 					)}
+					{mode == mode_help && <HelpPanel backToHome={backToHomePanel} />}
 				</Col>
 
 				{/* Use as alignment */}
