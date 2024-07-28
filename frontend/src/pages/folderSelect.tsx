@@ -22,9 +22,6 @@ type FolderProps = {
 /**
  * Page for Selecting Folder to process.
  * This page also contains some basic tutorial for folder structure.
- *
- * @param processFunc handler when process button is clicked
- * @returns Page for selecting Folder
  */
 export default function FolderSelect({ processFunc: handleFolder }: Readonly<FolderProps>) {
 	/** The Directory Absolute Path selected by User. */
@@ -91,6 +88,7 @@ export default function FolderSelect({ processFunc: handleFolder }: Readonly<Fol
 				}}
 			/>
 			<h5 className="mb-4">Select Folder to Start:</h5>
+
 			{/* Folder Chooser */}
 			<InputGroup className="mb-3">
 				<InputGroup.Text>Image Folder</InputGroup.Text>
@@ -105,19 +103,16 @@ export default function FolderSelect({ processFunc: handleFolder }: Readonly<Fol
 					Select Folder
 				</Button>
 			</InputGroup>
+
 			{/* Button Group */}
 			<Button variant="success" className="mx-2" id="btn-confirm-folder" onClick={handleProcess}>
 				Generate ComicInfo.xml
 			</Button>
+
 			<Button variant="outline-info" className="mx-2" id="btn-quick-export" onClick={handleQuickExport}>
 				Quick Export (Komga)
 			</Button>
-			{/* <Button
-				variant="secondary"
-				className="mx-2"
-				onClick={() => setErrMsg("Testing.")}>
-				Test
-			</Button> */}
+
 			{/* Tutorial/Instruction  */}
 			<div className="mt-5">
 				<CollapseCard

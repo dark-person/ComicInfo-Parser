@@ -82,9 +82,7 @@ function App() {
 		setMode(mode_export);
 	}
 
-	/**
-	 * Return to previous page.
-	 */
+	/** Return to previous page. */
 	function backward() {
 		// Get Current Mode
 		let temp = mode;
@@ -96,9 +94,7 @@ function App() {
 		setMode(temp);
 	}
 
-	/**
-	 * Return to the home panel. In current version, it is select folder panel.
-	 */
+	/** Return to the home panel. In current version, it is select folder panel. */
 	function backToHomePanel() {
 		setMode(mode_select_folder);
 	}
@@ -154,7 +150,8 @@ function App() {
 			<Row className="min-vh-100">
 				{/* Back Button, return to previous panel */}
 				<Col xs={1} className="mt-4">
-					{mode > 1 && (
+					{/* Only Allow backward when export page / input data page */}
+					{(mode == mode_export || mode == mode_input_data) && (
 						<Button variant="secondary" onClick={backward}>
 							{"<"}
 						</Button>
@@ -177,24 +174,8 @@ function App() {
 					)}
 				</Col>
 
-				{/* Button to next panel, development only, otherwise use as alignment */}
-				<Col xs={1} className="align-self-center">
-					{/* <Button
-						variant="danger"
-						onClick={() => {
-							// Perform Mode subtraction
-							let temp = Math.min(mode + 1, mode_export);
-
-							// Clear user input
-							setInfo(undefined);
-							setInputDir(undefined);
-
-							// Set Mode
-							setMode(temp);
-						}}>
-						{">"}
-					</Button> */}
-				</Col>
+				{/* Use as alignment */}
+				<Col xs={1} className="align-self-center"></Col>
 			</Row>
 		</div>
 	);
