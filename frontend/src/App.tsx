@@ -18,14 +18,17 @@ import { comicinfo } from "../wailsjs/go/models";
 import ExportPanel from "./pages/exportPanel";
 import HelpPanel from "./pages/helpPanel";
 
-/** Const, for Display page of select folder */
-const mode_select_folder = 1;
-/** Const, for Display page of input panel */
-const mode_input_data = 2;
-/** Const, for Display page of export panel */
-const mode_export = 3;
-/** Const, for Display Help Page. */
-const mode_help = -1;
+/** Enum to indicate display which page in App. */
+const enum AppMode {
+	/** Const, for Display page of select folder */
+	SELECT_FOLDER,
+	/** Const, for Display page of input panel */
+	INPUT_DATA,
+	/** Const, for Display page of export panel */
+	EXPORT,
+	/** Const, for Display Help Page. */
+	HELP,
+}
 
 /**
  * The main component to be displayed. It will handle all pages data & timing to display.
@@ -36,7 +39,7 @@ const mode_help = -1;
  */
 function App() {
 	/** Decide which panel will be displayed */
-	const [mode, setMode] = useState<number>(mode_select_folder);
+	const [mode, setMode] = useState<AppMode>(AppMode.SELECT_FOLDER);
 
 	/** True if need to display loading dialog. Should be show when change to another page. */
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -75,19 +78,19 @@ function App() {
 				setInputDir(folder);
 
 				// Pass to another panel
-				setMode(mode_input_data);
+				setMode(AppMode.INPUT_DATA);
 			}
 		});
 	}
 
 	/** Change the panel in app to export panel. */
 	function showExportPanel() {
-		setMode(mode_export);
+		setMode(AppMode.EXPORT);
 	}
 
 	/** Show help panel in App. */
 	function showHelpPanel() {
-		setMode(mode_help);
+		setMode(AppMode.HELP);
 	}
 
 	/** Return to previous page. */
@@ -104,7 +107,7 @@ function App() {
 
 	/** Return to the home panel. In current version, it is select folder panel. */
 	function backToHomePanel() {
-		setMode(mode_select_folder);
+		setMode(AppMode.SELECT_FOLDER);
 	}
 
 	/**
@@ -159,7 +162,7 @@ function App() {
 				{/* Back Button, return to previous panel */}
 				<Col xs={1} className="mt-4">
 					{/* Only Allow backward when export page / input data page */}
-					{(mode == mode_export || mode == mode_input_data) && (
+					{(mode == AppMode.EXPORT || mode == AppMode.INPUT_DATA) && (
 						<Button variant="secondary" onClick={backward}>
 							{"<"}
 						</Button>
@@ -168,10 +171,10 @@ function App() {
 
 				{/* Area to display panel */}
 				<Col>
-					{mode == mode_select_folder && (
+					{mode == AppMode.SELECT_FOLDER && (
 						<FolderSelect processFunc={passingFolder} showHelpPanel={showHelpPanel} />
 					)}
-					{mode == mode_input_data && (
+					{mode == AppMode.INPUT_DATA && (
 						<InputPanel
 							comicInfo={info}
 							exportFunc={showExportPanel}
@@ -179,10 +182,10 @@ function App() {
 							folderName={inputDir}
 						/>
 					)}
-					{mode == mode_export && (
+					{mode == AppMode.EXPORT && (
 						<ExportPanel comicInfo={info} originalDirectory={inputDir} backToHomeFunc={backToHomePanel} />
 					)}
-					{mode == mode_help && <HelpPanel backToHome={backToHomePanel} />}
+					{mode == AppMode.HELP && <HelpPanel backToHome={backToHomePanel} />}
 				</Col>
 
 				{/* Use as alignment */}
