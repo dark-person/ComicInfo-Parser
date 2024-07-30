@@ -1,6 +1,3 @@
-// React
-import { useState } from "react";
-
 // Component
 import Card from "react-bootstrap/Card";
 import Collapse from "react-bootstrap/Collapse";
@@ -13,30 +10,28 @@ type CardProps = {
 	title: string;
 	/** the body inside the Card.Body */
 	body?: React.ReactNode;
+	/** Flag control collapse part to be open or not. Should be React state.*/
+	isOpen: boolean;
+	/**
+	 * Function called when user clicked on card header.
+	 *
+	 * Developer are suggested to include set `isOpen` value inside.
+	 */
+	onClick: () => void;
 };
 
 /**
- * A Card with collapse functionality. The collapsed content will be shown/hidden when click the card title.
- * @param myKey the unique key for this component, used to generate id
- * @param title the title to display in Card.Title
- * @param body the body inside the Card.Body
- * @returns a Card Component with Collapse ability for card body.
+ * A Card with collapse functionality.
+ * The collapsed content will be shown/hidden when click the card title.
  */
-export default function CollapseCard({ myKey, title, body }: Readonly<CardProps>) {
-	const [open, setOpen] = useState(false);
-
-	/** Handler for user click card header. Collapse/Open the card. */
-	function handleCollapse() {
-		setOpen(!open);
-	}
-
+export default function CollapseCard({ myKey, title, body, isOpen, onClick }: Readonly<CardProps>) {
 	return (
 		<Card className="text-start">
-			<Card.Header onClick={handleCollapse} aria-controls={"collapse-text-" + String(myKey)} aria-expanded={open}>
-				<span className="me-2">{open ? "▼" : ">"}</span>
+			<Card.Header onClick={onClick} aria-controls={"collapse-text-" + String(myKey)} aria-expanded={isOpen}>
+				<span className="me-2">{isOpen ? "▼" : ">"}</span>
 				{title}
 			</Card.Header>
-			<Collapse in={open}>
+			<Collapse in={isOpen}>
 				<div>
 					<Card.Body id={"collapse-text-" + String(myKey)}>
 						<Card.Text as="div" className="newLine">
