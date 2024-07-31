@@ -69,6 +69,33 @@ export default function HelpPanel({ backToHome }: Readonly<HelpPanelProps>) {
 					isOpen={active === 1}
 					onClick={() => handleClick(1)}
 				/>
+				<CollapseCard
+					myKey={2}
+					title={"Where my data stored?"}
+					body={
+						<>
+							<p>The record input will be stored in folder "comicinfo-parser".</p>
+							<p>
+								For example, if you are using Window, you will find your data in
+								"C:/Users/YOUR_NAME/comicinfo-parser/storage.db"
+							</p>
+						</>
+					}
+					isOpen={active === 2}
+					onClick={() => handleClick(2)}
+				/>
+				<CollapseCard
+					myKey={3}
+					title={"How can I manage my data? For example, delete/insert?"}
+					body={
+						<>
+							<p>Currently this program not having feature for handle user data.</p>
+							<p>However, user may use other software to manage your database file "storage.db"</p>
+						</>
+					}
+					isOpen={active === 3}
+					onClick={() => handleClick(3)}
+				/>
 
 				{/** Back to Home page */}
 				<Button variant="success" id="btn-return" onClick={backToHome} className="mt-5">
