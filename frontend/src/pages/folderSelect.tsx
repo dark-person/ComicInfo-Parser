@@ -3,8 +3,6 @@ import { useState } from "react";
 
 // Component
 import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import Collapse from "react-bootstrap/Collapse";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 
@@ -18,60 +16,13 @@ import { GetDirectory, GetDirectoryWithDefault, QuickExportKomga } from "../../w
 type FolderProps = {
 	/** function called when process to next step. This function is not applied to Quick Export.*/
 	processFunc: (folder: string) => void;
+
+	/** Function to called when help button clicked. */
+	showHelpPanel: () => void;
 };
 
-/** Props Interface for CollapseCard */
-type CardProps = {
-	/** the unique key for this component, used to generate id*/
-	myKey: number;
-	/** the title to display in Card.Title */
-	title: string;
-	/** the body inside the Card.Body */
-	body?: React.ReactNode;
-};
-
-/**
- * A Card with collapse functionality. The collapsed content will be shown/hidden when click the card title.
- * @param myKey the unique key for this component, used to generate id
- * @param title the title to display in Card.Title
- * @param body the body inside the Card.Body
- * @returns a Card Component with Collapse ability for card body.
- */
-function CollapseCard({ myKey, title, body }: Readonly<CardProps>) {
-	const [open, setOpen] = useState(false);
-
-	/** Handler for user click card header. Collapse/Open the card. */
-	function handleCollapse() {
-		setOpen(!open);
-	}
-
-	return (
-		<Card className="text-start">
-			<Card.Header onClick={handleCollapse} aria-controls={"collapse-text-" + String(myKey)} aria-expanded={open}>
-				<span className="me-2">{open ? "▼" : ">"}</span>
-				{title}
-			</Card.Header>
-			<Collapse in={open}>
-				<div>
-					<Card.Body id={"collapse-text-" + String(myKey)}>
-						<Card.Text as="div" className="newLine">
-							{body}
-						</Card.Text>
-					</Card.Body>
-				</div>
-			</Collapse>
-		</Card>
-	);
-}
-
-/**
- * Page for Selecting Folder to process.
- * This page also contains some basic tutorial for folder structure.
- *
- * @param processFunc handler when process button is clicked
- * @returns Page for selecting Folder
- */
-export default function FolderSelect({ processFunc: handleFolder }: Readonly<FolderProps>) {
+/** Page for Selecting Folder to process. */
+export default function FolderSelect({ processFunc: handleFolder, showHelpPanel }: Readonly<FolderProps>) {
 	/** The Directory Absolute Path selected by User. */
 	const [directory, setDirectory] = useState("");
 
@@ -136,6 +87,7 @@ export default function FolderSelect({ processFunc: handleFolder }: Readonly<Fol
 				}}
 			/>
 			<h5 className="mb-4">Select Folder to Start:</h5>
+
 			{/* Folder Chooser */}
 			<InputGroup className="mb-3">
 				<InputGroup.Text>Image Folder</InputGroup.Text>
@@ -150,49 +102,21 @@ export default function FolderSelect({ processFunc: handleFolder }: Readonly<Fol
 					Select Folder
 				</Button>
 			</InputGroup>
+
 			{/* Button Group */}
-			<Button variant="success" className="mx-2" id="btn-confirm-folder" onClick={handleProcess}>
-				Generate ComicInfo.xml
-			</Button>
-			<Button variant="outline-info" className="mx-2" id="btn-quick-export" onClick={handleQuickExport}>
-				Quick Export (Komga)
-			</Button>
-			{/* <Button
-				variant="secondary"
-				className="mx-2"
-				onClick={() => setErrMsg("Testing.")}>
-				Test
-			</Button> */}
-			{/* Tutorial/Instruction  */}
-			<div className="mt-5">
-				<CollapseCard
-					myKey={0}
-					title={"Example of Your Image Folder"}
-					body={
-						<>
-							<p>{" 📦 <Manga Name>\n" + " ┣ 📜01.jpg\n" + " ┣ 📜02.jpg\n" + " ┗ <other images>"}</p>
-							<p>No ComicInfo.xml is needed. It will be overwrite if exist.</p>
-						</>
-					}
-				/>
-				<CollapseCard
-					myKey={1}
-					title={"Quick Export (Komga)"}
-					body={
-						<>
-							<p>Directly Export .cbz file with ComicInfo.xml inside. The generated file with be like:</p>
-							<p>
-								{" 📦 <Manga Name>\n" +
-									" ┣ 📦 <Manga Name>  <-- Copy This Folder into Komga Comic Library\n" +
-									" ┃  ┣  📜<Manga Name>.cbz    <--- Generated .cbz\n" +
-									" ┣ 📜01.jpg\n" +
-									" ┣ 📜02.jpg\n" +
-									" ┣ <other images>\n" +
-									" ┗ 📜ComicInfo.xml\n"}
-							</p>
-						</>
-					}
-				/>
+			<div className="w-25 mx-auto d-grid gap-2">
+				<Button variant="success" id="btn-confirm-folder" onClick={handleProcess}>
+					Generate ComicInfo.xml
+				</Button>
+
+				<Button variant="outline-info" id="btn-quick-export" onClick={handleQuickExport}>
+					Quick Export (Komga)
+				</Button>
+
+				{/* Tutorial/Instruction */}
+				<Button variant="outline-warning" id="btn-help" onClick={showHelpPanel}>
+					Help
+				</Button>
 			</div>
 		</div>
 	);
