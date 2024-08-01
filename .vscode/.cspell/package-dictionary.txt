@@ -1,16 +1,22 @@
 # Dictionary for imported packages
 assetserver
+AUTOINCREMENT
 Colour
 Containsf
 Debugf
 Equalf
 Infof
 innerxml
+iofs
 Komga
 logrus
+mattn
 Nilf
 sirupsen
 stretchr
+Struct
+Tracef
 Valuesf
 wailsapp
+wailsjs
 Warnf

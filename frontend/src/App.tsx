@@ -13,16 +13,22 @@ import FolderSelect from "./pages/folderSelect";
 import InputPanel from "./pages/inputPanel";
 
 // Wails
-import { GetComicInfo } from "../wailsjs/go/main/App";
+import { GetComicInfo } from "../wailsjs/go/application/App";
 import { comicinfo } from "../wailsjs/go/models";
 import ExportPanel from "./pages/exportPanel";
+import HelpPanel from "./pages/helpPanel";
 
-/** Const, for Display page of select folder */
-const mode_select_folder = 1;
-/** Const, for Display page of input panel */
-const mode_input_data = 2;
-/** Const, for Display page of export panel */
-const mode_export = 3;
+/** Enum to indicate display which page in App. */
+const enum AppMode {
+	/** Const, for Display page of select folder */
+	SELECT_FOLDER,
+	/** Const, for Display page of input panel */
+	INPUT_DATA,
+	/** Const, for Display page of export panel */
+	EXPORT,
+	/** Const, for Display Help Page. */
+	HELP,
+}
 
 /**
  * The main component to be displayed. It will handle all pages data & timing to display.
@@ -33,7 +39,7 @@ const mode_export = 3;
  */
 function App() {
 	/** Decide which panel will be displayed */
-	const [mode, setMode] = useState<number>(mode_select_folder);
+	const [mode, setMode] = useState<AppMode>(AppMode.SELECT_FOLDER);
 
 	/** True if need to display loading dialog. Should be show when change to another page. */
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -72,19 +78,22 @@ function App() {
 				setInputDir(folder);
 
 				// Pass to another panel
-				setMode(mode_input_data);
+				setMode(AppMode.INPUT_DATA);
 			}
 		});
 	}
 
 	/** Change the panel in app to export panel. */
 	function showExportPanel() {
-		setMode(mode_export);
+		setMode(AppMode.EXPORT);
 	}
 
-	/**
-	 * Return to previous page.
-	 */
+	/** Show help panel in App. */
+	function showHelpPanel() {
+		setMode(AppMode.HELP);
+	}
+
+	/** Return to previous page. */
 	function backward() {
 		// Get Current Mode
 		let temp = mode;
@@ -96,11 +105,9 @@ function App() {
 		setMode(temp);
 	}
 
-	/**
-	 * Return to the home panel. In current version, it is select folder panel.
-	 */
+	/** Return to the home panel. In current version, it is select folder panel. */
 	function backToHomePanel() {
-		setMode(mode_select_folder);
+		setMode(AppMode.SELECT_FOLDER);
 	}
 
 	/**
@@ -154,7 +161,8 @@ function App() {
 			<Row className="min-vh-100">
 				{/* Back Button, return to previous panel */}
 				<Col xs={1} className="mt-4">
-					{mode > 1 && (
+					{/* Only Allow backward when export page / input data page */}
+					{(mode == AppMode.EXPORT || mode == AppMode.INPUT_DATA) && (
 						<Button variant="secondary" onClick={backward}>
 							{"<"}
 						</Button>
@@ -163,8 +171,10 @@ function App() {
 
 				{/* Area to display panel */}
 				<Col>
-					{mode == mode_select_folder && <FolderSelect processFunc={passingFolder} />}
-					{mode == mode_input_data && (
+					{mode == AppMode.SELECT_FOLDER && (
+						<FolderSelect processFunc={passingFolder} showHelpPanel={showHelpPanel} />
+					)}
+					{mode == AppMode.INPUT_DATA && (
 						<InputPanel
 							comicInfo={info}
 							exportFunc={showExportPanel}
@@ -172,29 +182,14 @@ function App() {
 							folderName={inputDir}
 						/>
 					)}
-					{mode == mode_export && (
+					{mode == AppMode.EXPORT && (
 						<ExportPanel comicInfo={info} originalDirectory={inputDir} backToHomeFunc={backToHomePanel} />
 					)}
+					{mode == AppMode.HELP && <HelpPanel backToHome={backToHomePanel} />}
 				</Col>
 
-				{/* Button to next panel, development only, otherwise use as alignment */}
-				<Col xs={1} className="align-self-center">
-					{/* <Button
-						variant="danger"
-						onClick={() => {
-							// Perform Mode subtraction
-							let temp = Math.min(mode + 1, mode_export);
-
-							// Clear user input
-							setInfo(undefined);
-							setInputDir(undefined);
-
-							// Set Mode
-							setMode(temp);
-						}}>
-						{">"}
-					</Button> */}
-				</Col>
+				{/* Use as alignment */}
+				<Col xs={1} className="align-self-center"></Col>
 			</Row>
 		</div>
 	);

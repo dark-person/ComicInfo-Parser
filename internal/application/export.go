@@ -1,117 +1,20 @@
-package main
+package application
 
 import (
-	"context"
 	"fmt"
 	"gui-comicinfo/internal/archive"
 	"gui-comicinfo/internal/comicinfo"
+	"gui-comicinfo/internal/history"
 	"gui-comicinfo/internal/scanner"
+	"gui-comicinfo/internal/tagger"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/sirupsen/logrus"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-// App struct
-type App struct {
-	ctx context.Context
-}
-
-// NewApp creates a new App application struct
-func NewApp() *App {
-	return &App{}
-}
-
-// startup is called when the app starts. The context is saved
-// so we can call the runtime methods
-func (a *App) startup(ctx context.Context) {
-	a.ctx = ctx
-}
-
-// Open a Dialog for user to select Directory.
-//
-// If Error is occur, then this function will return an empty string
-func (a *App) GetDirectory() string {
-	directory, err := runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{
-		Title: "Select Directory",
-	})
-
-	if err != nil {
-		logrus.Warnf("Error when getting directory from user: %v\n", err)
-		return ""
-	}
-	return directory
-}
-
-// Open a Dialog for user to select Directory, this dialog will show default directory when open.
-//
-// If Error is occur, then this function will return an empty string
-func (a *App) GetDirectoryWithDefault(defaultDirectory string) string {
-	// Try to get parent of default directory
-	dir := filepath.Dir(defaultDirectory)
-
-	directory, err := runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{
-		Title:            "Select Directory",
-		DefaultDirectory: dir,
-	})
-
-	if err != nil {
-		logrus.Warnf("Error when getting directory from user: %v\n", err)
-		return ""
-	}
-	return directory
-}
-
-type ComicInfoResponse struct {
-	ComicInfo    *comicinfo.ComicInfo `json:"ComicInfo"`
-	ErrorMessage string               `json:"ErrorMessage"`
-}
-
-// Get the comic info by scan the given folder.
-// This function will not create/modify the comicinfo xml.
-//
-// This function will return a comicInfo struct, with error message in string.
-func (a *App) GetComicInfo(folder string) ComicInfoResponse {
-	absPath := folder
-
-	// Check Absolute path is empty or not
-	if absPath == "" {
-		return ComicInfoResponse{
-			ComicInfo:    nil,
-			ErrorMessage: "folder cannot be empty",
-		}
-	}
-
-	// Validate the directory
-	isValid, err := scanner.CheckFolder(absPath, scanner.ScanOpt{SubFolder: scanner.Reject, Image: scanner.Allow})
-	if err != nil {
-		return ComicInfoResponse{
-			ComicInfo:    nil,
-			ErrorMessage: err.Error(),
-		}
-	} else if !isValid {
-		return ComicInfoResponse{
-			ComicInfo:    nil,
-			ErrorMessage: "folder structure is not correct",
-		}
-	}
-
-	// Load Abs Path
-	c, err := scanner.ScanBooks(absPath)
-	if err != nil {
-		return ComicInfoResponse{
-			ComicInfo:    nil,
-			ErrorMessage: err.Error(),
-		}
-	}
-
-	// Return result
-	return ComicInfoResponse{
-		ComicInfo:    c,
-		ErrorMessage: "",
-	}
-}
+const comicInfoFile = "ComicInfo.xml"
 
 // Perform Quick Export Action,
 // where ComicInfo.xml file can not be modified before archived.
@@ -147,7 +50,7 @@ func (a *App) QuickExportKomga(folder string) string {
 	}
 
 	// Write ComicInfo.xml
-	err = comicinfo.Save(c, filepath.Join(absPath, "ComicInfo.xml"))
+	err = comicinfo.Save(c, filepath.Join(absPath, comicInfoFile))
 	if err != nil {
 		fmt.Printf("error when saving: %v\n", err)
 		return err.Error()
@@ -157,10 +60,49 @@ func (a *App) QuickExportKomga(folder string) string {
 	filename, _ := archive.CreateZip(absPath)
 	err = archive.RenameZip(filename, true)
 	if err != nil {
-		fmt.Printf("error: %v\n", err)
+		fmt.Printf("error when archive: %v\n", err)
 		return err.Error()
 	}
 	return ""
+}
+
+// Save user input to history database.
+// All comicinfo handling logic should be inside this function.
+func (a *App) saveToHistory(c *comicinfo.ComicInfo) error {
+	// ==================== Tags ====================
+	// Split the tags into slice of string by comma
+	s := strings.Split(c.Tags, ",")
+	err := tagger.AddTag(a.DB, s...)
+
+	if err != nil {
+		return err
+	}
+
+	// ========== For values supported by history pkg ============
+	values := make([]history.HistoryVal, 0)
+
+	//  ------------- Genre ----------------
+	// Split the genre into slice of string by comma
+	s = strings.Split(c.Genre, ",")
+	for _, item := range s {
+		values = append(values, history.HistoryVal{
+			Category: history.Genre_Text,
+			Value:    item,
+		})
+	}
+
+	// ----------- Publisher ----------------
+	// Split the publisher into slice of string by comma
+	s = strings.Split(c.Publisher, ",")
+	for _, item := range s {
+		values = append(values, history.HistoryVal{
+			Category: history.Publisher_Text,
+			Value:    item,
+		})
+	}
+
+	// ----------- INSERT ----------------
+	return history.InsertMultiple(a.DB, values...)
 }
 
 // Export the ComicInfo struct to XML file.
@@ -180,10 +122,16 @@ func (a *App) ExportXml(originalDir string, c *comicinfo.ComicInfo) (errorMsg st
 	}
 
 	// Save ComicInfo.xml
-	err := comicinfo.Save(c, filepath.Join(originalDir, "ComicInfo.xml"))
+	err := comicinfo.Save(c, filepath.Join(originalDir, comicInfoFile))
 	if err != nil {
-		fmt.Printf("error: %v\n", err)
+		fmt.Printf("error when save xml: %v\n", err)
 		return err.Error()
+	}
+
+	// Write to database
+	err = a.saveToHistory(c)
+	if err != nil {
+		logrus.Error(err)
 	}
 
 	return ""
@@ -218,6 +166,12 @@ func (a *App) ExportCbz(inputDir string, exportDir string, c *comicinfo.ComicInf
 	if err != nil {
 		fmt.Printf("error: %v\n", err)
 		return err.Error()
+	}
+
+	// Write to database
+	err = a.saveToHistory(c)
+	if err != nil {
+		logrus.Error(err)
 	}
 
 	// Start Archive

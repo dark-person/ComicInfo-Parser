@@ -1,5 +1,5 @@
-import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 type LoadingModalProps = {
 	/** determine the modal to display or not */
@@ -10,7 +10,7 @@ type LoadingModalProps = {
  * A Modal that display "Please wait..." message and block output.
  * @returns React Function Component
  */
-export function LoadingModal({ show }: LoadingModalProps) {
+export function LoadingModal({ show }: Readonly<LoadingModalProps>) {
 	return (
 		<Modal
 			show={show}
@@ -43,7 +43,7 @@ type CompleteModalProps = {
  * @param disposeFunc
  * @returns React Function Component
  */
-export function CompleteModal({ show, disposeFunc }: CompleteModalProps) {
+export function CompleteModal({ show, disposeFunc }: Readonly<CompleteModalProps>) {
 	return (
 		<Modal
 			show={show}
@@ -81,7 +81,7 @@ type ErrorModalProps = {
  * A Modal that display Success Error Message.
  * @returns React Function Component
  */
-export function ErrorModal({ show, errorMessage, disposeFunc }: ErrorModalProps) {
+export function ErrorModal({ show, errorMessage, disposeFunc }: Readonly<ErrorModalProps>) {
 	/**
 	 * Convert Error Message Text to Human readable string with foot stop & Capital Letter
 	 * @param msg the original Error Message
@@ -93,12 +93,7 @@ export function ErrorModal({ show, errorMessage, disposeFunc }: ErrorModalProps)
 	}
 
 	return (
-		<Modal
-			show={show}
-			aria-labelledby="contained-modal-title-vcenter"
-			backdrop="static"
-			keyboard={false}
-			centered>
+		<Modal show={show} aria-labelledby="contained-modal-title-vcenter" backdrop="static" keyboard={false} centered>
 			<Modal.Header className="justify-content-center text-danger-emphasis">
 				<Modal.Title id="contained-modal-title-vcenter">Failed!</Modal.Title>
 			</Modal.Header>
