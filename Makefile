@@ -3,8 +3,13 @@ default: help
 # Help Menu for makefile
 .PHONY: help
 help:	## List all available commands
-	@echo 'Available commands:'
+	@echo '--- Available commands ----'
 	@sed -ne '/@sed/!s/## //p' $(MAKEFILE_LIST) 
+	@echo
+	@echo '--- Build/Run program ---'
+	@echo 'Please use wails command to build/run program.'
+	@echo ' - Use "wails build" to build executable'
+	@echo ' - Use "wails dev" to Runs the application in development mode'
 
 .PHONY: clean 
 clean: 	## Remove distribution of both frontend and backend

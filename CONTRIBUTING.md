@@ -45,16 +45,23 @@ The code is hosted at github, which performs:
 
 ### Git workflows
 
-We have two branches for working:
+We have only one main branch `master`.
 
--   `main` : act as release control
--   `develop` : feature developing
+This project will use `git` tag for marking release version, format SHOULD be:
 
-### Version Release
+-   For stable version: `v1.2.3`
+-   For pre-release version: `v1.2.3-alpha20231228`
 
-This project will use `git` tag for marking release version, in branch `main` ONLY.
+### Hotfix
 
-The version tag should be in this format: `v1.2.3`. For pre-release version, use format `v1.2.3-alpha20231228` instead.
+Hotfix will be created on BOTH target version & developing version.
+
+For example, `v1.4.0` has CVE issue, current developing `v1.5.0-alpha20250228` in `master`, Then:
+
+1. Create branch `v1.4` on tag `v1.4.0`
+2. Fix issue in single commit `bce4df1`
+3. Tag `v1.4.1` on commit `bce4df1`
+4. Cherry-pick `bce4df1` into `master` branch
 
 ### Use a Consistent Coding Style
 
@@ -70,7 +77,7 @@ Before start coding, developers SHOULD refer to `DEVELOPMENT.md` for development
 
 After have a self-review for your code, you are free to create a new pull request with below steps:
 
-1. Fork the repo and create your branch from `develop` / `main`.
+1. Fork the repo and create your branch from `master`.
 2. Make modification to your branch.
 3. Create a new pull request in Github, with template provided. Depend on your code:
     1. Create normal pull request, if code fulfills the requirements in checklist.
@@ -80,4 +87,4 @@ After have a self-review for your code, you are free to create a new pull reques
 
 This document was adapted from the open-source contribution guidelines for [Facebook's Draft](https://github.com/facebook/draft-js/blob/a9316a723f9e918afde44dea68b5f9f39b7d9b00/CONTRIBUTING.md)
 
-_Last updated: 2024-03-09_
+_Last updated: 2024-08-03_
