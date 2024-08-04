@@ -93,16 +93,21 @@ function App() {
 		setMode(AppMode.HELP);
 	}
 
-	/** Return to previous page. */
+	/**
+	 * Return to previous page.
+	 * Only `AppMode.INPUT_DATA` & `AppMode.EXPORT` is supported.
+	 */
 	function backward() {
-		// Get Current Mode
-		let temp = mode;
-
-		// Perform Mode subtraction
-		temp = Math.max(1, temp - 1);
-
-		// Set Mode
-		setMode(temp);
+		switch (mode) {
+			case AppMode.INPUT_DATA:
+				setMode(AppMode.SELECT_FOLDER);
+				return;
+			case AppMode.EXPORT:
+				setMode(AppMode.INPUT_DATA);
+				return;
+			default:
+				throw new Error("Invalid mode");
+		}
 	}
 
 	/** Return to the home panel. In current version, it is select folder panel. */
