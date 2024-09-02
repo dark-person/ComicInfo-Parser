@@ -18,13 +18,25 @@ func CreateZip(folderToAdd string) (dest string, err error) {
 func CreateZipTo(inputDir string, destDir string) (dest string, err error) {
 	destFileName := filepath.Base(inputDir)
 
-	// Create ZIP File
-	destFile, err := createArchive(inputDir, destDir, destFileName)
+	// Create temp directory
+	tmpDir, err := os.MkdirTemp("", "comicinfo-zip-*")
 	if err != nil {
-		return destFile, err
+		panic(err)
+	}
+	defer os.RemoveAll(tmpDir)
+
+	// Create ZIP File
+	tmpFile, err := createArchive(inputDir, tmpDir, destFileName)
+	if err != nil {
+		return tmpFile, err
 	}
 
-	return filepath.Join(destDir, destFileName+".zip"), nil
+	// Move zip in temp folder to dest directory
+	newPath := filepath.Join(destDir, destFileName+".zip")
+	os.Rename(tmpFile, newPath)
+
+	// Return dest file path
+	return newPath, nil
 }
 
 // Create archive to temporary directory by given input directory & its content.
