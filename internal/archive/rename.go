@@ -1,6 +1,7 @@
 package archive
 
 import (
+	"fmt"
 	"gui-comicinfo/internal/files"
 	"os"
 	"path/filepath"
@@ -34,4 +35,17 @@ func RenameZip(absPath string, isWrap bool) error {
 
 	// Rename
 	return os.Rename(absPath, filepath.Join(wrappedDir, name+".cbz"))
+}
+
+// Rename .cbz file to .zip, for easier analysis.
+func RenameCbz(absPath string) error {
+	originalDir := filepath.Dir(absPath)
+	originalFile := filepath.Base(absPath)
+	name := files.TrimExt(originalFile)
+
+	if filepath.Ext(originalFile) != ".cbz" {
+		return fmt.Errorf("Unsupported file extension " + filepath.Ext(originalFile))
+	}
+
+	return os.Rename(absPath, filepath.Join(originalDir, name+".zip"))
 }

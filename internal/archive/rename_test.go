@@ -68,3 +68,33 @@ func TestRenameZipNoWrap(t *testing.T) {
 	}
 	defer dest.Close()
 }
+
+// Test Rename .cbz archive to .zip archive.
+func TestRenameCbz(t *testing.T) {
+	// Create a temp directory
+	tempDir := t.TempDir()
+
+	// Set value
+	subFolder := "tmp"
+	original := "hello.cbz"
+
+	// Create a folder inside temp directory
+	os.MkdirAll(filepath.Join(tempDir, subFolder), 0755)
+
+	// Create a zip file
+	file1, _ := os.Create(filepath.Join(tempDir, subFolder, original))
+	file1.Close()
+
+	// Test Function
+	err := RenameCbz(filepath.Join(tempDir, subFolder, original))
+	if err != nil {
+		t.Error(err)
+	}
+
+	// Result Verify
+	dest, openErr := os.Open(filepath.Join(tempDir, subFolder, "hello.zip"))
+	if openErr != nil {
+		t.Error(openErr)
+	}
+	defer dest.Close()
+}
