@@ -19,15 +19,32 @@ func CreateZipTo(inputDir string, destDir string) (dest string, err error) {
 	destFileName := filepath.Base(inputDir)
 
 	// Create ZIP File
-	destFile, err := os.Create(filepath.Join(destDir, destFileName+".zip"))
+	destFile, err := createArchive(inputDir, destDir, destFileName)
+	if err != nil {
+		return destFile, err
+	}
+
+	return filepath.Join(destDir, destFileName+".zip"), nil
+}
+
+// Create archive to temporary directory by given input directory & its content.
+// Destination file will be named with "{destFileName}.zip".
+//
+// Please note that, "zipFilename" is not include file extension, e.g. "zip".
+//
+// This function will return path of created zip file.
+// If any error occur, this function will return that error directly.
+func createArchive(inputDir, destDir, zipFilename string) (createdZip string, err error) {
+	// Create ZIP File
+	f, err := os.Create(filepath.Join(destDir, zipFilename+".zip"))
 	if err != nil {
 		return "", err
 	}
-	defer destFile.Close()
+	defer f.Close()
 
 	// Zip Writer
-	destZip := zip.NewWriter(destFile)
-	defer destZip.Close()
+	w := zip.NewWriter(f)
+	defer w.Close()
 
 	// Load File Entries inside folderToAdd
 	entries, err := os.ReadDir(inputDir)
@@ -40,12 +57,12 @@ func CreateZipTo(inputDir string, destDir string) (dest string, err error) {
 		filename := entry.Name()
 
 		// Skip Zip file
-		if filename == destFileName+".zip" {
+		if filename == zipFilename+".zip" {
 			continue
 		}
 
 		// Create File inside zip
-		zipFile, err := destZip.Create(filename)
+		fileInside, err := w.Create(filename)
 		if err != nil {
 			return "", err
 		}
@@ -58,11 +75,11 @@ func CreateZipTo(inputDir string, destDir string) (dest string, err error) {
 		defer file.Close()
 
 		// Copy file content
-		_, err = io.Copy(zipFile, file)
+		_, err = io.Copy(fileInside, file)
 		if err != nil {
 			return "", err
 		}
 	}
 
-	return filepath.Join(destDir, destFileName+".zip"), nil
+	return f.Name(), nil
 }
