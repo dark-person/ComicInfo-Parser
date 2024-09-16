@@ -2,6 +2,7 @@ package archive
 
 import (
 	"archive/zip"
+	"gui-comicinfo/internal/files"
 	"io"
 	"os"
 	"path/filepath"
@@ -33,10 +34,9 @@ func CreateZipTo(inputDir string, destDir string) (dest string, err error) {
 
 	// Move zip in temp folder to dest directory
 	newPath := filepath.Join(destDir, destFileName+".zip")
-	os.Rename(tmpFile, newPath)
 
 	// Return dest file path
-	return newPath, nil
+	return newPath, files.MoveFile(tmpFile, newPath)
 }
 
 // Create archive to temporary directory by given input directory & its content.

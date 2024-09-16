@@ -2,6 +2,7 @@
 package files
 
 import (
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -55,4 +56,62 @@ func IsPathValid(path string) bool {
 // but not a path which contains parent directory.
 func TrimExt(fileName string) string {
 	return strings.TrimSuffix(fileName, filepath.Ext(fileName))
+}
+
+// Move File from target to dest.
+//
+// This function will create all necessary folder & file that necessary to copy.
+func MoveFile(target, dest string) error {
+	// Already same location
+	if target == dest {
+		return nil
+	}
+
+	// Use rename if volume is same
+	if filepath.VolumeName(target) == filepath.VolumeName(dest) {
+		logrus.Info("Same volume in copy & dest, use rename")
+		return os.Rename(target, dest)
+	}
+
+	// -------------- Standard io.Copy ---------------------
+	srcFile, err := os.Open(target)
+	if err != nil {
+		return err
+	}
+
+	// Create Folder if necessary
+	err = os.MkdirAll(filepath.Dir(dest), 0755)
+	if err != nil {
+		return err
+	}
+
+	// Get file mode
+	info, err := srcFile.Stat()
+	if err != nil {
+		return err
+	}
+
+	// creates if file doesn't exist
+	destFile, err := os.OpenFile(dest, os.O_RDWR|os.O_CREATE|os.O_TRUNC, info.Mode())
+	if err != nil {
+		return err
+	}
+	defer destFile.Close()
+
+	// check first var for number of bytes copied
+	_, err = io.Copy(destFile, srcFile)
+	if err != nil {
+		return err
+	}
+
+	err = destFile.Sync()
+	if err != nil {
+		return err
+	}
+
+	// ---------------- Standard Copy END -------------------------
+
+	// Delete target file
+	srcFile.Close()
+	return os.Remove(target)
 }
