@@ -13,7 +13,7 @@
 export function basename(absPath: string): string {
 	const temp = (" " + absPath).slice(1);
 
-	if (temp.split("\\") == undefined) {
+	if (temp.split("\\") === undefined) {
 		return "";
 	}
 

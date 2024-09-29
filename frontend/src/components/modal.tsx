@@ -88,8 +88,7 @@ export function ErrorModal({ show, errorMessage, disposeFunc }: Readonly<ErrorMo
 	 * @returns the human readable with foot stop & Capital Letter
 	 */
 	function humanReadable(msg: string): string {
-		let result = msg.charAt(0).toUpperCase() + msg.slice(1) + ".";
-		return result;
+		return `${msg.charAt(0).toUpperCase() + msg.slice(1)}.`;
 	}
 
 	return (

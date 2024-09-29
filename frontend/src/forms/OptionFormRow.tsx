@@ -65,7 +65,7 @@ export default function OptionFormRow({
 	 * @returns string of values, joined by ',' character
 	 */
 	function concatOptions(opts: MultiValue<SelectOption>): string {
-		let simpleOptions = opts.map((item) => item.value);
+		const simpleOptions = opts.map((item) => item.value);
 		return simpleOptions.join(",");
 	}
 
@@ -83,7 +83,7 @@ export default function OptionFormRow({
 		}
 
 		// Split options into string array
-		let splitOpts = opt.split(",");
+		const splitOpts = opt.split(",");
 
 		// Convert to Multiple Values
 		return splitOpts.map((item) => ({ label: item, value: item }));
@@ -100,12 +100,12 @@ export default function OptionFormRow({
 		getDefaultOpt().then((response) => {
 			console.log("[getOptions] " + JSON.stringify(response, null, 4));
 
-			if (response.ErrorMsg != "") {
+			if (response.ErrorMsg !== "") {
 				return;
 			}
 
 			// Set options
-			let tmpOptions: SelectOption[] = [];
+			const tmpOptions: SelectOption[] = [];
 
 			response.Inputs.forEach((item: string) => {
 				tmpOptions.push({ label: item, value: item });
@@ -117,7 +117,7 @@ export default function OptionFormRow({
 
 	/** Method to handle onChange of CreatableSelect. */
 	const handleChange = (newValue: MultiValue<SelectOption>, actionMeta: ActionMeta<SelectOption>): void => {
-		console.log("New value: " + JSON.stringify(newValue) + ", actionMeta: " + JSON.stringify(actionMeta));
+		console.log(`New value: ${JSON.stringify(newValue)}, actionMeta: ${JSON.stringify(actionMeta)}`);
 
 		// Skip if setValue is null
 		if (setValue === undefined) {
@@ -125,7 +125,7 @@ export default function OptionFormRow({
 		}
 
 		// Handle create
-		if (actionMeta.action === "create-option" && newValue != undefined) {
+		if (actionMeta.action === "create-option" && newValue !== undefined) {
 			setValue(concatOptions(newValue));
 			return;
 		}
@@ -137,13 +137,13 @@ export default function OptionFormRow({
 		}
 
 		// Handle Select
-		if (actionMeta.action === "select-option" && newValue != undefined) {
+		if (actionMeta.action === "select-option" && newValue !== undefined) {
 			setValue(concatOptions(newValue));
 			return;
 		}
 
 		// Handle Remove
-		if (actionMeta.action === "remove-value" && actionMeta.removedValue != undefined) {
+		if (actionMeta.action === "remove-value" && actionMeta.removedValue !== undefined) {
 			setValue(concatOptions(newValue));
 			return;
 		}

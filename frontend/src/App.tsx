@@ -68,8 +68,8 @@ function App() {
 			// Remove loading modal
 			setIsLoading(false);
 
-			let error = response.ErrorMessage;
-			if (error != "") {
+			const error = response.ErrorMessage;
+			if (error !== "") {
 				// Print Error Message
 				setErrMsg(error);
 			} else {
@@ -121,7 +121,7 @@ function App() {
 	 * @param key  the field name
 	 * @param value new value of that field
 	 */
-	function setValue<T, K extends keyof T>(data: T, key: K, value: any) {
+	function setValue<T, K extends keyof T>(data: T, key: K, value: T[K]) {
 		data[key] = value;
 	}
 
@@ -134,14 +134,14 @@ function App() {
 	 */
 	function infoSetter(field: string, value: string | number) {
 		// Prepare an object of ComicInfo
-		let temp = { ...info } as comicinfo.ComicInfo;
+		const temp = { ...info } as comicinfo.ComicInfo;
 
 		// Treat Summary field name as special case
 		if (field === "Summary" && typeof value === "string") {
 			temp["Summary"]["InnerXML"] = value;
 		} else {
 			// Normal Change
-			let key = field as keyof comicinfo.ComicInfo;
+			const key = field as keyof comicinfo.ComicInfo;
 			setValue(temp, key, value);
 		}
 
@@ -154,7 +154,7 @@ function App() {
 			{/* Modal Part */}
 			<LoadingModal show={isLoading} />
 			<ErrorModal
-				show={errMsg != ""}
+				show={errMsg !== ""}
 				errorMessage={errMsg}
 				disposeFunc={() => {
 					setErrMsg("");
@@ -167,7 +167,7 @@ function App() {
 				{/* Back Button, return to previous panel */}
 				<Col xs={1} className="mt-4">
 					{/* Only Allow backward when export page / input data page */}
-					{(mode == AppMode.EXPORT || mode == AppMode.INPUT_DATA) && (
+					{(mode === AppMode.EXPORT || mode === AppMode.INPUT_DATA) && (
 						<Button variant="secondary" onClick={backward}>
 							{"<"}
 						</Button>
@@ -176,10 +176,10 @@ function App() {
 
 				{/* Area to display panel */}
 				<Col>
-					{mode == AppMode.SELECT_FOLDER && (
+					{mode === AppMode.SELECT_FOLDER && (
 						<FolderSelect processFunc={passingFolder} showHelpPanel={showHelpPanel} />
 					)}
-					{mode == AppMode.INPUT_DATA && (
+					{mode === AppMode.INPUT_DATA && (
 						<InputPanel
 							comicInfo={info}
 							exportFunc={showExportPanel}
@@ -187,10 +187,10 @@ function App() {
 							folderName={inputDir}
 						/>
 					)}
-					{mode == AppMode.EXPORT && (
+					{mode === AppMode.EXPORT && (
 						<ExportPanel comicInfo={info} originalDirectory={inputDir} backToHomeFunc={backToHomePanel} />
 					)}
-					{mode == AppMode.HELP && <HelpPanel backToHome={backToHomePanel} />}
+					{mode === AppMode.HELP && <HelpPanel backToHome={backToHomePanel} />}
 				</Col>
 
 				{/* Use as alignment */}

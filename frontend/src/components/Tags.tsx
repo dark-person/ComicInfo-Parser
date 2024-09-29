@@ -22,12 +22,14 @@ export function TagsArea({ rawTags, handleDelete }: Readonly<TagsAreaProps>) {
 	 * @returns array of tags, e.g. `["tag1", "tag2"]`
 	 */
 	function getTagsList(raw: string | undefined): string[] {
-		if (raw === undefined) return [];
+		if (raw === undefined) {
+			return [];
+		}
 
-		let temp = raw.split(",");
+		const temp = raw.split(",");
 
 		// Prevent Empty Tag list
-		if (temp.length === 1 && temp[0].length == 0) {
+		if (temp.length === 1 && temp[0].length === 0) {
 			console.log("empty tag list");
 			return [];
 		}

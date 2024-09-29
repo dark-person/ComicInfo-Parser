@@ -37,7 +37,7 @@ export default function FolderSelect({ processFunc: handleFolder, showHelpPanel 
 
 	/** Handler when user clicked select folder. It will use different function depend on there are already selected folder or not */
 	function handleSelect() {
-		if (directory != "") {
+		if (directory !== "") {
 			GetDirectoryWithDefault(directory).then((input) => {
 				setDirectory(input);
 			});
@@ -54,7 +54,7 @@ export default function FolderSelect({ processFunc: handleFolder, showHelpPanel 
 
 		QuickExportKomga(directory).then((err) => {
 			setIsLoading(false);
-			if (err != "") {
+			if (err !== "") {
 				setErrMsg(err);
 			} else {
 				setIsCompleted(true);
@@ -79,7 +79,7 @@ export default function FolderSelect({ processFunc: handleFolder, showHelpPanel 
 				}}
 			/>
 			<ErrorModal
-				show={errMsg != ""}
+				show={errMsg !== ""}
 				errorMessage={errMsg}
 				disposeFunc={() => {
 					setErrMsg("");
