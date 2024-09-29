@@ -45,9 +45,9 @@ export default function FormRow({
 			</Form.Label>
 			<Col sm="9">
 				<Form.Control
-					as={textareaRow != undefined ? "textarea" : undefined}
+					as={textareaRow !== undefined ? "textarea" : undefined}
 					type={typeof value == "number" ? "number" : inputType}
-					value={typeof value == "number" && value == 0 ? "" : value}
+					value={typeof value == "number" && value === 0 ? "" : value}
 					title={title}
 					onChange={onChange}
 					rows={textareaRow ?? 1}

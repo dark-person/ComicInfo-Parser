@@ -46,14 +46,14 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, backTo
 
 	// Set the export directory to input directory if it exists
 	useEffect(() => {
-		if (originalDirectory != undefined) {
+		if (originalDirectory !== undefined) {
 			setExportDir(originalDirectory);
 		}
 	}, []);
 
 	/** Handler for click "Select Folder". This will open file chooser for choose a file. */
 	function handleSelect() {
-		if (exportDir != "") {
+		if (exportDir !== "") {
 			GetDirectoryWithDefault(exportDir).then((input) => {
 				setExportDir(input);
 			});
@@ -66,10 +66,12 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, backTo
 
 	/** Handler for click export XML only, export path will be the folder chosen by file chooser. */
 	function handleExportXml() {
-		if (originalDirectory == undefined) {
+		if (originalDirectory === undefined) {
 			console.log("[ERR] No original directory");
 			return;
-		} else if (info == undefined) {
+		}
+
+		if (info === undefined) {
 			console.log("[ERR] No original comicinfo");
 			return;
 		}
@@ -82,14 +84,14 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, backTo
 
 		// Start Running
 		ExportXml(originalDirectory, info).then((msg) => {
-			if (msg != "") {
+			if (msg !== "") {
 				setErrMsg(msg);
 				setModalState(undefined);
 			} else {
 				setModalState("complete");
 			}
 
-			console.log("xml return: '" + msg + "'");
+			console.log(`xml return: '${msg}'`);
 		});
 	}
 
@@ -99,10 +101,12 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, backTo
 	 * @returns nothing
 	 */
 	function handleExportCbz(isWrap: boolean) {
-		if (originalDirectory == undefined) {
+		if (originalDirectory === undefined) {
 			console.log("[ERR] No original directory");
 			return;
-		} else if (info == undefined) {
+		}
+
+		if (info === undefined) {
 			console.log("[ERR] No original comicinfo");
 			return;
 		}
@@ -115,13 +119,13 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, backTo
 
 		// Start Running
 		ExportCbz(originalDirectory, exportDir, info, isWrap).then((msg) => {
-			if (msg != "") {
+			if (msg !== "") {
 				setErrMsg(msg);
 				setModalState(undefined);
 			} else {
 				setModalState("complete");
 			}
-			console.log("cbz return: '" + msg + "'");
+			console.log(`cbz return: '${msg}'`);
 		});
 	}
 
@@ -134,14 +138,14 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, backTo
 				disposeFunc={() => {
 					setModalState(undefined);
 					// Redirect to first page only if export cbz is clicked
-					if (btnClicked == "cbz") {
+					if (btnClicked === "cbz") {
 						backToHomeFunc();
 					}
 					return {};
 				}}
 			/>
 			<ErrorModal
-				show={errMsg != ""}
+				show={errMsg !== ""}
 				errorMessage={errMsg}
 				disposeFunc={() => {
 					setErrMsg("");

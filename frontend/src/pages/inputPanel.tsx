@@ -43,7 +43,7 @@ export default function InputPanel({ comicInfo, folderName, exportFunc, infoSett
 			<FormRow
 				title={"Folder Name"}
 				titleClass="fst-italic"
-				value={folderName != undefined ? basename(folderName) : "(N/A)"}
+				value={folderName !== undefined ? basename(folderName) : "(N/A)"}
 				disabled
 			/>
 
