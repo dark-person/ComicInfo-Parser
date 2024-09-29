@@ -57,6 +57,11 @@ tag-dev: 	## Create local git tag for current time, with timezone in UTC+0
 	git tag -a "dev/$${TIME_STR}" -m "development build" -f;\
 	echo "Development tag completed: 'dev/$${TIME_STR}'."
 
+.PHONY: tag-clear
+tag-clear: 	## Remove all dev/* tag locally
+	@git tag -d $$(git tag -l "dev/*")
+	@echo "All development tag removed."
+
 .PHONY: test
 test:		## Perform all tests of golang
 	go test ./... -count=1
