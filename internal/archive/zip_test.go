@@ -7,16 +7,23 @@ import (
 	"testing"
 )
 
+const (
+	_img1File = "image1.jpg"
+	_img2File = "image2.jpg"
+	_img3File = "image3.jpg"
+	_xmlFile  = "test.xml"
+)
+
 // Test Create Zip from folder
 func TestCreateZip(t *testing.T) {
 	// Create a temp directory
 	tempDir := t.TempDir()
 
 	// Create a set of file
-	file1, _ := os.Create(filepath.Join(tempDir, "image1.jpg"))
-	file2, _ := os.Create(filepath.Join(tempDir, "image2.jpg"))
-	file3, _ := os.Create(filepath.Join(tempDir, "image3.jpg"))
-	file4, _ := os.Create(filepath.Join(tempDir, "test.xml"))
+	file1, _ := os.Create(filepath.Join(tempDir, _img1File))
+	file2, _ := os.Create(filepath.Join(tempDir, _img2File))
+	file3, _ := os.Create(filepath.Join(tempDir, _img3File))
+	file4, _ := os.Create(filepath.Join(tempDir, _xmlFile))
 	defer file1.Close()
 	defer file2.Close()
 	defer file3.Close()
@@ -46,18 +53,24 @@ func TestCreateZip(t *testing.T) {
 		list[f.Name] = 1
 	}
 
-	_, exist1 := list["test.xml"]
-	_, exist2 := list["image1.jpg"]
-	_, exist3 := list["image2.jpg"]
-	_, exist4 := list["image3.jpg"]
+	_, exist1 := list[_xmlFile]
+	_, exist2 := list[_img1File]
+	_, exist3 := list[_img2File]
+	_, exist4 := list[_img3File]
 
 	if !exist1 {
 		t.Error("Content 1 missing in zip")
-	} else if !exist2 {
+	}
+
+	if !exist2 {
 		t.Error("Content 2 missing in zip")
-	} else if !exist3 {
+	}
+
+	if !exist3 {
 		t.Error("Content 3 missing in zip")
-	} else if !exist4 {
+	}
+
+	if !exist4 {
 		t.Error("Content 4 missing in zip")
 	}
 }
@@ -75,10 +88,10 @@ func TestCreateZipTo(t *testing.T) {
 	os.MkdirAll(outputDir, 0755)
 
 	// Create a set of file
-	file1, _ := os.Create(filepath.Join(inputDir, "image1.jpg"))
-	file2, _ := os.Create(filepath.Join(inputDir, "image2.jpg"))
-	file3, _ := os.Create(filepath.Join(inputDir, "image3.jpg"))
-	file4, _ := os.Create(filepath.Join(inputDir, "test.xml"))
+	file1, _ := os.Create(filepath.Join(inputDir, _img1File))
+	file2, _ := os.Create(filepath.Join(inputDir, _img2File))
+	file3, _ := os.Create(filepath.Join(inputDir, _img3File))
+	file4, _ := os.Create(filepath.Join(inputDir, _xmlFile))
 	defer file1.Close()
 	defer file2.Close()
 	defer file3.Close()
@@ -108,18 +121,24 @@ func TestCreateZipTo(t *testing.T) {
 		list[f.Name] = 1
 	}
 
-	_, exist1 := list["test.xml"]
-	_, exist2 := list["image1.jpg"]
-	_, exist3 := list["image2.jpg"]
-	_, exist4 := list["image3.jpg"]
+	_, exist1 := list[_xmlFile]
+	_, exist2 := list[_img1File]
+	_, exist3 := list[_img2File]
+	_, exist4 := list[_img3File]
 
 	if !exist1 {
 		t.Error("Content 1 missing in zip")
-	} else if !exist2 {
+	}
+
+	if !exist2 {
 		t.Error("Content 2 missing in zip")
-	} else if !exist3 {
+	}
+
+	if !exist3 {
 		t.Error("Content 3 missing in zip")
-	} else if !exist4 {
+	}
+
+	if !exist4 {
 		t.Error("Content 4 missing in zip")
 	}
 }

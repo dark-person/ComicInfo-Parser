@@ -164,7 +164,7 @@ func (a *App) ExportCbz(inputDir string, exportDir string, c *comicinfo.ComicInf
 	// Save ComicInfo.xml
 	err := comicinfo.Save(c, filepath.Join(inputDir, "ComicInfo.xml"))
 	if err != nil {
-		fmt.Printf("error: %v\n", err)
+		fmt.Printf("error when save: %v\n", err)
 		return err.Error()
 	}
 
@@ -175,10 +175,16 @@ func (a *App) ExportCbz(inputDir string, exportDir string, c *comicinfo.ComicInf
 	}
 
 	// Start Archive
-	filename, _ := archive.CreateZipTo(inputDir, exportDir)
+	filename, err := archive.CreateZipTo(inputDir, exportDir)
+	if err != nil {
+		fmt.Printf("error when zip: %v\n", err)
+		return err.Error()
+	}
+	fmt.Printf("Filename: %s\n", filename)
+
 	err = archive.RenameZip(filename, isWrap)
 	if err != nil {
-		fmt.Printf("error: %v\n", err)
+		fmt.Printf("error when rename: %v\n", err)
 		return err.Error()
 	}
 	return ""
