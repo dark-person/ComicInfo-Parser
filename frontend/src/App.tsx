@@ -142,14 +142,7 @@ function App() {
 		<div id="App" className="container-fluid">
 			{/* Modal Part */}
 			<LoadingModal show={isLoading} />
-			<ErrorModal
-				show={errMsg !== ""}
-				errorMessage={errMsg}
-				disposeFunc={() => {
-					setErrMsg("");
-					return {};
-				}}
-			/>
+			<ErrorModal show={errMsg !== ""} errorMessage={errMsg} disposeFunc={() => setErrMsg("")} />
 
 			{/* Main Panel of this app */}
 			<Row className="min-vh-100">

@@ -34,7 +34,7 @@ type CompleteModalProps = {
 	/**  determine the modal to show or not*/
 	show: boolean;
 	/** the function to dispose this modal. Usually like setShow(false). */
-	disposeFunc: () => {};
+	disposeFunc: () => void;
 };
 
 /**
@@ -74,7 +74,7 @@ type ErrorModalProps = {
 	/** the error message to displayed */
 	errorMessage: string;
 	/** the function to dispose this modal. Usually like setShow(false) */
-	disposeFunc: () => {};
+	disposeFunc: () => void;
 };
 
 /**

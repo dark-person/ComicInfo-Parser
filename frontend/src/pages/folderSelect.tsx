@@ -71,21 +71,10 @@ export default function FolderSelect({ processFunc: handleFolder, showHelpPanel 
 		<div id="Folder-Select" className="mt-5">
 			{/* Model Part */}
 			<LoadingModal show={isLoading} />
-			<CompleteModal
-				show={isCompleted}
-				disposeFunc={() => {
-					setIsCompleted(false);
-					return {};
-				}}
-			/>
-			<ErrorModal
-				show={errMsg !== ""}
-				errorMessage={errMsg}
-				disposeFunc={() => {
-					setErrMsg("");
-					return {};
-				}}
-			/>
+			<CompleteModal show={isCompleted} disposeFunc={() => setIsCompleted(false)} />
+			<ErrorModal show={errMsg !== ""} errorMessage={errMsg} disposeFunc={() => setErrMsg("")} />
+
+			{/* Main Content Start*/}
 			<h5 className="mb-4">Select Folder to Start:</h5>
 
 			{/* Folder Chooser */}

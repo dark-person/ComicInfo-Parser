@@ -141,17 +141,9 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, backTo
 					if (btnClicked === "cbz") {
 						backToHomeFunc();
 					}
-					return {};
 				}}
 			/>
-			<ErrorModal
-				show={errMsg !== ""}
-				errorMessage={errMsg}
-				disposeFunc={() => {
-					setErrMsg("");
-					return {};
-				}}
-			/>
+			<ErrorModal show={errMsg !== ""} errorMessage={errMsg} disposeFunc={() => setErrMsg("")} />
 
 			{/* Main Content of this panel */}
 			<h5 className="mb-4">Export to .cbz</h5>
