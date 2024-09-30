@@ -10,6 +10,8 @@ import Button from "react-bootstrap/Button";
 // Project Specified Component
 import { ErrorModal, LoadingModal } from "./components/modal";
 import { AppMode } from "./controls/AppMode";
+import { ModalControl } from "./controls/ModalControl";
+import { defaultModalState, ModalState } from "./controls/ModalState";
 import ExportPanel from "./pages/exportPanel";
 import FolderSelect from "./pages/folderSelect";
 import HelpPanel from "./pages/helpPanel";
@@ -30,17 +32,23 @@ function App() {
 	/** Decide which panel will be displayed */
 	const [mode, setMode] = useState<AppMode>(AppMode.SELECT_FOLDER);
 
-	/** True if need to display loading dialog. Should be show when change to another page. */
-	const [isLoading, setIsLoading] = useState<boolean>(false);
-
-	/** Error Message, will modal be display when not empty string. Empty Strings mean not error at all. */
-	const [errMsg, setErrMsg] = useState<string>("");
+	/** Modal State to control display which dialog. */
+	const [modalState, setModalState] = useState<ModalState>(defaultModalState);
 
 	/** The ComicInfo model. For communicate with different panel. */
 	const [info, setInfo] = useState<comicinfo.ComicInfo | undefined>(undefined);
 
 	/** The directory of initial input, which is the folder contain image. */
 	const [inputDir, setInputDir] = useState<string | undefined>(undefined);
+
+	/** Controller of modal. */
+	const modalController: ModalControl = {
+		showErr: (err) => setModalState({ ...defaultModalState, errMsg: err }),
+		loading: () => setModalState({ ...defaultModalState, isLoading: true }),
+		complete: () => setModalState({ ...defaultModalState, isCompleted: true }),
+		completeAndReset: () => setModalState({ ...defaultModalState, isCompleted: true, resetOnComplete: true }),
+		closeAll: () => setModalState({ ...defaultModalState }),
+	};
 
 	/**
 	 * Set value of selected folder, then pass selected folder to next panel.
@@ -50,18 +58,19 @@ function App() {
 		console.log("passing folder: " + folder);
 
 		// Set Loading Modal
-		setIsLoading(true);
+		modalController.loading();
 
 		// Get ComicInfo
 		GetComicInfo(folder).then((response) => {
-			// Remove loading modal
-			setIsLoading(false);
-
 			const error = response.ErrorMessage;
+
 			if (error !== "") {
 				// Print Error Message
-				setErrMsg(error);
+				modalController.showErr(error);
 			} else {
+				// Reset all modal
+				modalController.closeAll();
+
 				// Set data with info
 				setInfo(response.ComicInfo);
 				setInputDir(folder);
@@ -141,8 +150,12 @@ function App() {
 	return (
 		<div id="App" className="container-fluid">
 			{/* Modal Part */}
-			<LoadingModal show={isLoading} />
-			<ErrorModal show={errMsg !== ""} errorMessage={errMsg} disposeFunc={() => setErrMsg("")} />
+			<LoadingModal show={modalState.isLoading} />
+			<ErrorModal
+				show={modalState.errMsg !== ""}
+				errorMessage={modalState.errMsg}
+				disposeFunc={modalController.closeAll}
+			/>
 
 			{/* Main Panel of this app */}
 			<Row className="min-vh-100">
