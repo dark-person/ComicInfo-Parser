@@ -200,7 +200,7 @@ function App() {
 						/>
 					)}
 					{mode === AppMode.EXPORT && (
-						<ExportPanel comicInfo={info} originalDirectory={inputDir} backToHomeFunc={backToHomePanel} />
+						<ExportPanel comicInfo={info} originalDirectory={inputDir} modalControl={modalController} />
 					)}
 					{mode === AppMode.HELP && <HelpPanel backToHome={backToHomePanel} />}
 				</Col>
