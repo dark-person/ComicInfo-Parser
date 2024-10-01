@@ -13,6 +13,7 @@ import SeriesMetadata from "./metadata/SeriesMetadata";
 import TagMetadata from "./metadata/TagMetadata";
 
 // Wails binding
+import { ExportXml } from "../../wailsjs/go/application/App";
 import { comicinfo } from "../../wailsjs/go/models";
 
 /** Props Interface for InputPanel */
@@ -35,6 +36,24 @@ type InputProps = {
  * @returns JSX Element
  */
 export default function InputPanel({ comicInfo, folderPath, toExport, infoSetter }: Readonly<InputProps>) {
+	/** Save current comic information to xml file. */
+	function save() {
+		if (folderPath === undefined) {
+			console.error("Folder path is not defined");
+			return;
+		}
+
+		if (comicInfo === undefined) {
+			console.error("Empty comicinfo");
+			return;
+		}
+
+		// Start Running
+		ExportXml(folderPath, comicInfo).then((msg) => {
+			console.log(`xml return: '${msg}'`);
+		});
+	}
+
 	return (
 		<div id="Input-Panel" className="mt-5">
 			<h5 className="mb-4">Modify ComicInfo.xml</h5>
@@ -72,7 +91,7 @@ export default function InputPanel({ comicInfo, folderPath, toExport, infoSetter
 
 			{/* The button that will always at the bottom of screen. Should ensure there has enough space */}
 			<div className="fixed-bottom mb-3">
-				<Button variant="outline-light" className="mx-2" id="btn-save">
+				<Button variant="outline-light" className="mx-2" id="btn-save" onClick={save}>
 					Save
 				</Button>
 				<Button variant="success" className="mx-2 " id="btn-export-cbz" onClick={toExport}>
