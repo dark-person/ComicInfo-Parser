@@ -30,6 +30,8 @@ Currently, this project supports fields:
 | ------------------------------------------- | ------------------------------------------- |
 | ![Enum Support](screenshots/input_enum.png) | ![Tag View](screenshots/input_tag.png)      |
 
+By "Save" button, you can generate `ComicInfo.xml` file in selected folder automatically.
+
 ### Use inputted values
 
 Every timer user export comicinfo, the input value will be save to local database file automatically.
@@ -52,7 +54,6 @@ After preview & press button to export, User can defined export folder, and expo
 
 -   `.cbz` with `komga` folder structure
 -   `.cbz` file ONLY
--   `ComicInfo.xml` ONLY
 
 <img src="screenshots/export.png" width="75%" height="75%">
 

@@ -10,7 +10,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { ModalControl } from "../controls/ModalControl";
 
 // Wails
-import { ExportCbz, ExportXml, GetDirectory, GetDirectoryWithDefault } from "../../wailsjs/go/application/App";
+import { ExportCbz, GetDirectory, GetDirectoryWithDefault } from "../../wailsjs/go/application/App";
 import { comicinfo } from "../../wailsjs/go/models";
 
 /** Props Interface for FolderSelect */
@@ -49,33 +49,6 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, modalC
 				setExportDir(input);
 			});
 		}
-	}
-
-	/** Handler for click export XML only, export path will be the folder chosen by file chooser. */
-	function handleExportXml() {
-		if (originalDirectory === undefined) {
-			console.log("[ERR] No original directory");
-			return;
-		}
-
-		if (info === undefined) {
-			console.log("[ERR] No original comicinfo");
-			return;
-		}
-
-		// Open Modal
-		modalControl.loading();
-
-		// Start Running
-		ExportXml(originalDirectory, info).then((msg) => {
-			if (msg !== "") {
-				modalControl.showErr(msg);
-			} else {
-				modalControl.complete();
-			}
-
-			console.log(`xml return: '${msg}'`);
-		});
 	}
 
 	/**
@@ -130,10 +103,6 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, modalC
 
 			{/* Button to Export. Use d-grid to create block button, use w-25 to smaller size. */}
 			<div className="w-25 mx-auto d-grid gap-2">
-				<Button variant="outline-light" id="btn-export-xml" onClick={handleExportXml}>
-					Export ComicInfo.xml Only
-				</Button>
-
 				<Button variant="outline-warning" id="btn-export-xml" onClick={() => handleExportCbz(false)}>
 					Export .cbz file only
 				</Button>
