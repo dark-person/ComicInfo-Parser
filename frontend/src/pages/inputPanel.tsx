@@ -4,6 +4,7 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 
 // Project Specified Component
+import { ModalControl } from "../controls/ModalControl";
 import { basename } from "../filename";
 import FormRow from "../forms/FormRow";
 import BookMetadata from "./metadata/BookMetadata";
@@ -29,28 +30,42 @@ type InputProps = {
 
 	/** The info Setter. This function should be doing setting value, but no verification. */
 	infoSetter: (field: string, value: string | number) => void;
+
+	/** Modal Controller. */
+	modalControl: ModalControl;
 };
 
 /**
  * The panel for input/edit content of ComicInfo.xml
  * @returns JSX Element
  */
-export default function InputPanel({ comicInfo, folderPath, toExport, infoSetter }: Readonly<InputProps>) {
+export default function InputPanel({
+	comicInfo,
+	folderPath,
+	toExport,
+	infoSetter,
+	modalControl,
+}: Readonly<InputProps>) {
 	/** Save current comic information to xml file. */
 	function save() {
 		if (folderPath === undefined) {
-			console.error("Folder path is not defined");
+			modalControl.showErr("Folder path is not defined. Please try again.");
 			return;
 		}
 
 		if (comicInfo === undefined) {
-			console.error("Empty comicinfo");
+			modalControl.showErr("Empty comicinfo. Please try again.");
 			return;
 		}
 
 		// Start Running
 		ExportXml(folderPath, comicInfo).then((msg) => {
 			console.log(`xml return: '${msg}'`);
+			if (msg === "") {
+				modalControl.complete();
+			} else {
+				modalControl.showErr(msg);
+			}
 		});
 	}
 

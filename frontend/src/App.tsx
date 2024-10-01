@@ -197,6 +197,7 @@ function App() {
 							toExport={showExportPanel}
 							infoSetter={infoSetter}
 							folderPath={inputDir}
+							modalControl={modalController}
 						/>
 					)}
 					{mode === AppMode.EXPORT && (
