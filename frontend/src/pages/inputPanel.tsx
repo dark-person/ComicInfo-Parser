@@ -20,11 +20,11 @@ type InputProps = {
 	/** The comic info object. Accept undefined value. */
 	comicInfo: comicinfo.ComicInfo | undefined;
 
-	/** The folder name for reference. */
-	folderName?: string;
+	/** Complete folder path, for reference. */
+	folderPath?: string;
 
 	/** The function to change display panel to export panel. */
-	exportFunc: () => void;
+	toExport: () => void;
 
 	/** The info Setter. This function should be doing setting value, but no verification. */
 	infoSetter: (field: string, value: string | number) => void;
@@ -34,7 +34,7 @@ type InputProps = {
  * The panel for input/edit content of ComicInfo.xml
  * @returns JSX Element
  */
-export default function InputPanel({ comicInfo, folderName, exportFunc, infoSetter }: Readonly<InputProps>) {
+export default function InputPanel({ comicInfo, folderPath, toExport, infoSetter }: Readonly<InputProps>) {
 	return (
 		<div id="Input-Panel" className="mt-5">
 			<h5 className="mb-4">Modify ComicInfo.xml</h5>
@@ -43,7 +43,7 @@ export default function InputPanel({ comicInfo, folderName, exportFunc, infoSett
 			<FormRow
 				title={"Folder Name"}
 				titleClass="fst-italic"
-				value={folderName !== undefined ? basename(folderName) : "(N/A)"}
+				value={folderPath !== undefined ? basename(folderPath) : "(N/A)"}
 				disabled
 			/>
 
@@ -72,7 +72,7 @@ export default function InputPanel({ comicInfo, folderName, exportFunc, infoSett
 
 			{/* The button that will always at the bottom of screen. Should ensure there has enough space */}
 			<div className="fixed-bottom mb-3">
-				<Button variant="success" className="mx-2 " id="btn-export-cbz" onClick={exportFunc}>
+				<Button variant="success" className="mx-2 " id="btn-export-cbz" onClick={toExport}>
 					Export to .cbz
 				</Button>
 			</div>

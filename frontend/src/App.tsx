@@ -194,9 +194,9 @@ function App() {
 					{mode === AppMode.INPUT_DATA && (
 						<InputPanel
 							comicInfo={info}
-							exportFunc={showExportPanel}
+							toExport={showExportPanel}
 							infoSetter={infoSetter}
-							folderName={inputDir}
+							folderPath={inputDir}
 						/>
 					)}
 					{mode === AppMode.EXPORT && (
