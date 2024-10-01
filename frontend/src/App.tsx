@@ -8,7 +8,7 @@ import { Col, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 
 // Project Specified Component
-import { ErrorModal, LoadingModal } from "./components/modal";
+import { CompleteModal, ErrorModal, LoadingModal } from "./components/modal";
 import { AppMode } from "./controls/AppMode";
 import { ModalControl } from "./controls/ModalControl";
 import { defaultModalState, ModalState } from "./controls/ModalState";
@@ -151,10 +151,23 @@ function App() {
 		<div id="App" className="container-fluid">
 			{/* Modal Part */}
 			<LoadingModal show={modalState.isLoading} />
+
 			<ErrorModal
 				show={modalState.errMsg !== ""}
 				errorMessage={modalState.errMsg}
 				disposeFunc={modalController.closeAll}
+			/>
+
+			<CompleteModal
+				show={modalState.isCompleted}
+				disposeFunc={() => {
+					modalController.closeAll();
+
+					// Redirect to first page only if export cbz is clicked
+					if (modalState.resetOnComplete) {
+						backToHomePanel();
+					}
+				}}
 			/>
 
 			{/* Main Panel of this app */}
