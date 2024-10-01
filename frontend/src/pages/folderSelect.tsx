@@ -7,7 +7,7 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 
 // Project Specific Component
-import { CompleteModal, ErrorModal, LoadingModal } from "../components/modal";
+import { ModalControl } from "../controls/ModalControl";
 
 // Wails
 import { GetDirectory, GetDirectoryWithDefault, QuickExportKomga } from "../../wailsjs/go/application/App";
@@ -19,21 +19,15 @@ type FolderProps = {
 
 	/** Function to called when help button clicked. */
 	showHelpPanel: () => void;
+
+	/** Modal controller. */
+	modalControl: ModalControl;
 };
 
 /** Page for Selecting Folder to process. */
-export default function FolderSelect({ handleFolder, showHelpPanel }: Readonly<FolderProps>) {
+export default function FolderSelect({ handleFolder, showHelpPanel, modalControl }: Readonly<FolderProps>) {
 	/** The Directory Absolute Path selected by User. */
 	const [directory, setDirectory] = useState("");
-
-	/** True if loading screen should appear */
-	const [isLoading, setIsLoading] = useState(false);
-
-	/** True if completed screen should appear */
-	const [isCompleted, setIsCompleted] = useState(false);
-
-	/** Error Message for completed process. If has string, then appear modal for display message. */
-	const [errMsg, setErrMsg] = useState("");
 
 	/** Handler when user clicked select folder. It will use different function depend on there are already selected folder or not */
 	function handleSelect() {
@@ -50,14 +44,13 @@ export default function FolderSelect({ handleFolder, showHelpPanel }: Readonly<F
 
 	/** Handler when user clicked Quick Export Komga Button. Start quick export process. */
 	function handleQuickExport() {
-		setIsLoading(true);
+		modalControl.loading();
 
 		QuickExportKomga(directory).then((err) => {
-			setIsLoading(false);
 			if (err !== "") {
-				setErrMsg(err);
+				modalControl.showErr(err);
 			} else {
-				setIsCompleted(true);
+				modalControl.complete();
 			}
 		});
 	}
@@ -69,11 +62,6 @@ export default function FolderSelect({ handleFolder, showHelpPanel }: Readonly<F
 
 	return (
 		<div id="Folder-Select" className="mt-5">
-			{/* Model Part */}
-			<LoadingModal show={isLoading} />
-			<CompleteModal show={isCompleted} disposeFunc={() => setIsCompleted(false)} />
-			<ErrorModal show={errMsg !== ""} errorMessage={errMsg} disposeFunc={() => setErrMsg("")} />
-
 			{/* Main Content Start*/}
 			<h5 className="mb-4">Select Folder to Start:</h5>
 
