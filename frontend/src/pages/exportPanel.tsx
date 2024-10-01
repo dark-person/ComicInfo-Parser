@@ -7,11 +7,11 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 
 // Project Component
-import { CompleteModal, ErrorModal, LoadingModal } from "../components/modal";
+import { ModalControl } from "../controls/ModalControl";
 
 // Wails
-import { comicinfo } from "../../wailsjs/go/models";
 import { ExportCbz, ExportXml, GetDirectory, GetDirectoryWithDefault } from "../../wailsjs/go/application/App";
+import { comicinfo } from "../../wailsjs/go/models";
 
 /** Props Interface for FolderSelect */
 type ExportProps = {
@@ -19,30 +19,17 @@ type ExportProps = {
 	comicInfo: comicinfo.ComicInfo | undefined;
 	/** The directory of original input, contains comic images. */
 	originalDirectory: string | undefined;
-	/** The function to change current panel to home panel, which defined by App.tsx */
-	backToHomeFunc: () => void;
+	/** Modal Controller. */
+	modalControl: ModalControl;
 };
-
-/** The modal state constant. */
-type ModalState = "loading" | "complete" | undefined;
-
-/** The button name state constant, for last clicked button */
-type buttonName = "xml" | "cbz" | undefined;
 
 /**
  * The panel to export comic info to cbz/xml file.
  * @returns JSX Component
  */
-export default function ExportPanel({ comicInfo: info, originalDirectory, backToHomeFunc }: Readonly<ExportProps>) {
+export default function ExportPanel({ comicInfo: info, originalDirectory, modalControl }: Readonly<ExportProps>) {
 	// Since this is the final step, could ignore the interaction with App.tsx
 	const [exportDir, setExportDir] = useState<string>("");
-
-	// Modal Controller
-	const [modalState, setModalState] = useState<ModalState>(undefined);
-	const [errMsg, setErrMsg] = useState<string>("");
-
-	// The button name of last clicked button
-	const [btnClicked, setBtnClicked] = useState<buttonName>(undefined);
 
 	// Set the export directory to input directory if it exists
 	useEffect(() => {
@@ -77,18 +64,14 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, backTo
 		}
 
 		// Open Modal
-		setModalState("loading");
-
-		// Set button state
-		setBtnClicked("xml");
+		modalControl.loading();
 
 		// Start Running
 		ExportXml(originalDirectory, info).then((msg) => {
 			if (msg !== "") {
-				setErrMsg(msg);
-				setModalState(undefined);
+				modalControl.showErr(msg);
 			} else {
-				setModalState("complete");
+				modalControl.complete();
 			}
 
 			console.log(`xml return: '${msg}'`);
@@ -112,18 +95,14 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, backTo
 		}
 
 		// Open Modal
-		setModalState("loading");
-
-		// Set button state
-		setBtnClicked("cbz");
+		modalControl.loading();
 
 		// Start Running
 		ExportCbz(originalDirectory, exportDir, info, isWrap).then((msg) => {
 			if (msg !== "") {
-				setErrMsg(msg);
-				setModalState(undefined);
+				modalControl.showErr(msg);
 			} else {
-				setModalState("complete");
+				modalControl.completeAndReset();
 			}
 			console.log(`cbz return: '${msg}'`);
 		});
@@ -131,20 +110,6 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, backTo
 
 	return (
 		<div id="Export-Panel" className="mt-5">
-			{/* Modal Part */}
-			<LoadingModal show={modalState === "loading"} />
-			<CompleteModal
-				show={modalState === "complete"}
-				disposeFunc={() => {
-					setModalState(undefined);
-					// Redirect to first page only if export cbz is clicked
-					if (btnClicked === "cbz") {
-						backToHomeFunc();
-					}
-				}}
-			/>
-			<ErrorModal show={errMsg !== ""} errorMessage={errMsg} disposeFunc={() => setErrMsg("")} />
-
 			{/* Main Content of this panel */}
 			<h5 className="mb-4">Export to .cbz</h5>
 
