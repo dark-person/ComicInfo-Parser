@@ -98,7 +98,7 @@ export function ErrorModal({ show, errorMessage, disposeFunc }: Readonly<ErrorMo
 			</Modal.Header>
 			<Modal.Body className="text-nowrap text-start">
 				<p>The Process is failed because: </p>
-				<p>{humanReadable(errorMessage)}</p>
+				<p className="text-wrap">{humanReadable(errorMessage)}</p>
 			</Modal.Body>
 			<Modal.Footer className="justify-content-center">
 				<Button variant="secondary" onClick={disposeFunc}>
