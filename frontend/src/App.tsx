@@ -159,7 +159,7 @@ function App() {
 				{/* Area to display panel */}
 				<Col>
 					{mode === AppMode.SELECT_FOLDER && (
-						<FolderSelect processFunc={passingFolder} showHelpPanel={showHelpPanel} />
+						<FolderSelect handleFolder={passingFolder} showHelpPanel={showHelpPanel} />
 					)}
 					{mode === AppMode.INPUT_DATA && (
 						<InputPanel

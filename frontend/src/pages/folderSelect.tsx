@@ -15,14 +15,14 @@ import { GetDirectory, GetDirectoryWithDefault, QuickExportKomga } from "../../w
 /** Props Interface for FolderSelect */
 type FolderProps = {
 	/** function called when process to next step. This function is not applied to Quick Export.*/
-	processFunc: (folder: string) => void;
+	handleFolder: (folder: string) => void;
 
 	/** Function to called when help button clicked. */
 	showHelpPanel: () => void;
 };
 
 /** Page for Selecting Folder to process. */
-export default function FolderSelect({ processFunc: handleFolder, showHelpPanel }: Readonly<FolderProps>) {
+export default function FolderSelect({ handleFolder, showHelpPanel }: Readonly<FolderProps>) {
 	/** The Directory Absolute Path selected by User. */
 	const [directory, setDirectory] = useState("");
 
