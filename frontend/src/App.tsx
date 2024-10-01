@@ -9,26 +9,15 @@ import Button from "react-bootstrap/Button";
 
 // Project Specified Component
 import { ErrorModal, LoadingModal } from "./components/modal";
+import { AppMode } from "./controls/AppMode";
+import ExportPanel from "./pages/exportPanel";
 import FolderSelect from "./pages/folderSelect";
+import HelpPanel from "./pages/helpPanel";
 import InputPanel from "./pages/inputPanel";
 
 // Wails
 import { GetComicInfo } from "../wailsjs/go/application/App";
 import { comicinfo } from "../wailsjs/go/models";
-import ExportPanel from "./pages/exportPanel";
-import HelpPanel from "./pages/helpPanel";
-
-/** Enum to indicate display which page in App. */
-const enum AppMode {
-	/** Const, for Display page of select folder */
-	SELECT_FOLDER,
-	/** Const, for Display page of input panel */
-	INPUT_DATA,
-	/** Const, for Display page of export panel */
-	EXPORT,
-	/** Const, for Display Help Page. */
-	HELP,
-}
 
 /**
  * The main component to be displayed. It will handle all pages data & timing to display.
@@ -153,14 +142,7 @@ function App() {
 		<div id="App" className="container-fluid">
 			{/* Modal Part */}
 			<LoadingModal show={isLoading} />
-			<ErrorModal
-				show={errMsg !== ""}
-				errorMessage={errMsg}
-				disposeFunc={() => {
-					setErrMsg("");
-					return {};
-				}}
-			/>
+			<ErrorModal show={errMsg !== ""} errorMessage={errMsg} disposeFunc={() => setErrMsg("")} />
 
 			{/* Main Panel of this app */}
 			<Row className="min-vh-100">
@@ -177,7 +159,7 @@ function App() {
 				{/* Area to display panel */}
 				<Col>
 					{mode === AppMode.SELECT_FOLDER && (
-						<FolderSelect processFunc={passingFolder} showHelpPanel={showHelpPanel} />
+						<FolderSelect handleFolder={passingFolder} showHelpPanel={showHelpPanel} />
 					)}
 					{mode === AppMode.INPUT_DATA && (
 						<InputPanel
