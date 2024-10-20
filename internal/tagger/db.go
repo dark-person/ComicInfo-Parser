@@ -10,16 +10,16 @@ import (
 // Error blocks
 var (
 	// Error when trying to use nil database in this module.
-	ErrAppDBNil = fmt.Errorf("AppDB cannot be nil")
+	ErrDatabaseNil = fmt.Errorf("Database cannot be nil")
 )
 
-// Add tags to given AppDB. This function support multiple tags insert at once.
+// Add tags to given LazyDB. This function support multiple tags insert at once.
 //
 // If tag value is empty string, then it will be skipped.
 func AddTag(db *lazydb.LazyDB, tags ...string) error {
 	// Prevent nil database
 	if db == nil {
-		return ErrAppDBNil
+		return ErrDatabaseNil
 	}
 
 	// Prepare statement
@@ -42,11 +42,11 @@ func AddTag(db *lazydb.LazyDB, tags ...string) error {
 	return err
 }
 
-// Get all tags from given AppDB.
+// Get all tags from given LazyDB.
 func GetAllTags(db *lazydb.LazyDB) ([]string, error) {
 	// Prevent nil database
 	if db == nil {
-		return []string{}, ErrAppDBNil
+		return []string{}, ErrDatabaseNil
 	}
 
 	// Prepare SQL & its args

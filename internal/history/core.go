@@ -10,14 +10,14 @@ import (
 // Error blocks
 var (
 	// Error when trying to use nil database in this module.
-	ErrAppDBNil = fmt.Errorf("AppDB cannot be nil")
+	ErrDatabaseNil = fmt.Errorf("Database cannot be nil")
 )
 
 // Insert value into database. This function is allowed to insert multiple values at once.
 func insertValue(db *lazydb.LazyDB, category string, value ...string) error {
 	// Prevent nil database
 	if db == nil {
-		return ErrAppDBNil
+		return ErrDatabaseNil
 	}
 
 	// Prepare statement
@@ -45,7 +45,7 @@ func insertValue(db *lazydb.LazyDB, category string, value ...string) error {
 func getHistory(db *lazydb.LazyDB, category string) ([]string, error) {
 	// Prevent nil database
 	if db == nil {
-		return []string{}, ErrAppDBNil
+		return []string{}, ErrDatabaseNil
 	}
 
 	// Execute query

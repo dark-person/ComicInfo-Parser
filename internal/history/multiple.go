@@ -10,7 +10,7 @@ import "github.com/dark-person/lazydb"
 func InsertMultiple(db *lazydb.LazyDB, values ...HistoryVal) error {
 	// Prevent nil database
 	if db == nil {
-		return ErrAppDBNil
+		return ErrDatabaseNil
 	}
 
 	// Loop value item with core function
