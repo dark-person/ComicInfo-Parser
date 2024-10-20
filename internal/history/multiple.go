@@ -1,13 +1,13 @@
 package history
 
-import "gui-comicinfo/internal/database"
+import "github.com/dark-person/lazydb"
 
 // Insert values to database, which can include multiple record with different categories.
 //
 // The string values & category values should be wrapped in `HistoryObj`.
 //
 // If any error is occur during insert, the insert process will stop and return its error.
-func InsertMultiple(db *database.AppDB, values ...HistoryVal) error {
+func InsertMultiple(db *lazydb.LazyDB, values ...HistoryVal) error {
 	// Prevent nil database
 	if db == nil {
 		return ErrAppDBNil

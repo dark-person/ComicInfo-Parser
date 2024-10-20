@@ -1,10 +1,10 @@
 package history
 
 import (
-	"gui-comicinfo/internal/database"
 	"path/filepath"
 	"testing"
 
+	"github.com/dark-person/lazydb"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -52,18 +52,14 @@ func TestInsertMultiple(t *testing.T) {
 	// Start testing
 	for idx, tt := range tests {
 		// Create new database
-		var db *database.AppDB
+		var db *lazydb.LazyDB
 		var err error
 
 		if tt.dbPath != "" {
-			db, err = database.NewPathDB(filepath.Join(dir, tt.dbPath))
+			db, err = createTestDB(filepath.Join(dir, tt.dbPath), false)
 			if err != nil {
 				t.Errorf("Failed to create database: %v", err)
 			}
-
-			// Connect database
-			db.Connect()
-			db.StepToLatest()
 			defer db.Close()
 
 		} else {

@@ -2,23 +2,18 @@
 package history
 
 import (
-	"gui-comicinfo/internal/database"
+	"gui-comicinfo/internal/assets"
 	"path/filepath"
 	"testing"
 
+	"github.com/dark-person/lazydb"
 	"github.com/stretchr/testify/assert"
 )
 
 // Function to check how many rows in db has given category & value.
-func checkRowCount(a *database.AppDB, category string, value string) (int, error) {
+func checkRowCount(a *lazydb.LazyDB, category string, value string) (int, error) {
 	// Get Inserted rows
-	stmt, err := a.Prepare("SELECT COUNT(*) FROM list_inputted WHERE category=? AND input=?")
-	if err != nil {
-		return -1, err
-	}
-
-	// Execute query
-	rows, err := stmt.Query(category, value)
+	rows, err := a.Query("SELECT COUNT(*) FROM list_inputted WHERE category=? AND input=?", category, value)
 	if err != nil {
 		return -1, err
 	}
@@ -32,29 +27,37 @@ func checkRowCount(a *database.AppDB, category string, value string) (int, error
 	return count, nil
 }
 
-func createTestDB(path string) (*database.AppDB, error) {
-	a, err := database.NewPathDB(path)
+// Create a opened connection lazydb for testing purposes.
+// This database is using almost default migration setting, and have some test data inserted already.
+func createTestDB(path string, withData bool) (*lazydb.LazyDB, error) {
+	a := assets.DefaultDb(path)
+	err := a.Connect()
 	if err != nil {
 		return nil, err
 	}
 
-	a.Connect()
-	a.StepToLatest()
-	defer a.Close()
+	_, err = a.Migrate()
+	if err != nil {
+		return nil, err
+	}
+
+	// Early return if no need to insert data
+	if !withData {
+		return a, nil
+	}
 
 	// Insert data rows
 	sql := `INSERT INTO list_inputted (category, input) VALUES ('abc','123'), ('def', '123'), ('def', '456')`
-	stmt, err := a.Prepare(sql)
+	_, err = a.Exec(sql)
 	if err != nil {
 		return nil, err
 	}
-	stmt.Exec()
 
-	// Return closed db object
+	// Return db object
 	return a, nil
 }
 
-func getNilDatabase() *database.AppDB {
+func getNilDatabase() *lazydb.LazyDB {
 	return nil
 }
 
@@ -97,18 +100,14 @@ func TestInsertValue(t *testing.T) {
 	// Start testing
 	for idx, tt := range tests {
 		// Create new database
-		var db *database.AppDB
+		var db *lazydb.LazyDB
 		var err error
 
 		if tt.dbPath != "" {
-			db, err = database.NewPathDB(filepath.Join(dir, tt.dbPath))
+			db, err = createTestDB(filepath.Join(dir, tt.dbPath), false)
 			if err != nil {
-				t.Errorf("Failed to create database: %v", err)
+				t.Errorf("Failed to create database for case %d: %v", idx, err)
 			}
-
-			// Connect database
-			db.Connect()
-			db.StepToLatest()
 			defer db.Close()
 
 		} else {
@@ -142,11 +141,10 @@ func TestGetHistory(t *testing.T) {
 	dir := t.TempDir()
 
 	// Prepare a database with given data rows
-	a, err := createTestDB(filepath.Join(dir, "t.db"))
+	a, err := createTestDB(filepath.Join(dir, "t.db"), true)
 	if err != nil {
 		panic("failed to create database: " + err.Error())
 	}
-	a.Connect()
 	defer a.Close()
 
 	// Prepare test case

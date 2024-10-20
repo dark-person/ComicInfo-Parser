@@ -3,7 +3,8 @@ package history
 
 import (
 	"fmt"
-	"gui-comicinfo/internal/database"
+
+	"github.com/dark-person/lazydb"
 )
 
 // Error blocks
@@ -13,55 +14,42 @@ var (
 )
 
 // Insert value into database. This function is allowed to insert multiple values at once.
-func insertValue(db *database.AppDB, category string, value ...string) error {
+func insertValue(db *lazydb.LazyDB, category string, value ...string) error {
 	// Prevent nil database
 	if db == nil {
 		return ErrAppDBNil
 	}
 
 	// Prepare statement
-	stmt, err := db.Prepare("INSERT OR IGNORE INTO list_inputted (category, input) VALUES (?, ?)")
-	if err != nil {
-		return err
-	}
+	prepared := make([]lazydb.ParamQuery, 0)
 
-	// Insert multiple value
 	for _, item := range value {
 		// Skip empty string values
 		if item == "" {
 			continue
 		}
 
-		_, err = stmt.Exec(category, item)
-		if err != nil {
-			return err
-		}
+		prepared = append(prepared,
+			lazydb.Param(
+				"INSERT OR IGNORE INTO list_inputted (category, input) VALUES (?, ?)",
+				category, item,
+			))
 	}
 
-	return nil
+	// Execute
+	_, err := db.ExecMultiple(prepared)
+	return err
 }
 
 // Get inputted list from database, by given category.
-func getHistory(db *database.AppDB, category string) ([]string, error) {
+func getHistory(db *lazydb.LazyDB, category string) ([]string, error) {
 	// Prevent nil database
 	if db == nil {
 		return []string{}, ErrAppDBNil
 	}
 
-	// Prepare SQL & its args
-	query := "SELECT input FROM list_inputted WHERE category = ?"
-
-	var args []any
-	args = append(args, category)
-
-	// Prepare query
-	stmt, err := db.Prepare(query)
-	if err != nil {
-		return nil, err
-	}
-
 	// Execute query
-	rows, err := stmt.Query(args...)
+	rows, err := db.Query("SELECT input FROM list_inputted WHERE category = ?", category)
 	if err != nil {
 		return nil, err
 	}
