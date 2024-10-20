@@ -3,7 +3,8 @@ package tagger
 
 import (
 	"fmt"
-	"gui-comicinfo/internal/database"
+
+	"github.com/dark-person/lazydb"
 )
 
 // Error blocks
@@ -15,36 +16,34 @@ var (
 // Add tags to given AppDB. This function support multiple tags insert at once.
 //
 // If tag value is empty string, then it will be skipped.
-func AddTag(db *database.AppDB, tags ...string) error {
+func AddTag(db *lazydb.LazyDB, tags ...string) error {
 	// Prevent nil database
 	if db == nil {
 		return ErrAppDBNil
 	}
 
 	// Prepare statement
-	stmt, err := db.Prepare("INSERT OR IGNORE INTO tags (input) VALUES (?)")
-	if err != nil {
-		return err
-	}
+	prepared := make([]lazydb.ParamQuery, 0)
 
-	// Insert multiple value
 	for _, item := range tags {
 		// Skip empty string values
 		if item == "" {
 			continue
 		}
 
-		_, err = stmt.Exec(item)
-		if err != nil {
-			return err
-		}
+		prepared = append(prepared, lazydb.Param(
+			"INSERT OR IGNORE INTO tags (input) VALUES (?)",
+			item,
+		))
 	}
 
-	return nil
+	// Execute
+	_, err := db.ExecMultiple(prepared)
+	return err
 }
 
 // Get all tags from given AppDB.
-func GetAllTags(db *database.AppDB) ([]string, error) {
+func GetAllTags(db *lazydb.LazyDB) ([]string, error) {
 	// Prevent nil database
 	if db == nil {
 		return []string{}, ErrAppDBNil
@@ -53,14 +52,8 @@ func GetAllTags(db *database.AppDB) ([]string, error) {
 	// Prepare SQL & its args
 	query := "SELECT input FROM tags ORDER BY input"
 
-	// Prepare query
-	stmt, err := db.Prepare(query)
-	if err != nil {
-		return nil, err
-	}
-
 	// Execute query
-	rows, err := stmt.Query()
+	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
 	}
