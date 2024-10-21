@@ -1,6 +1,7 @@
 package application
 
 import (
+	"gui-comicinfo/internal/assets"
 	"gui-comicinfo/internal/comicinfo"
 	"os"
 	"path/filepath"
@@ -82,7 +83,7 @@ func TestGetComicInfo(t *testing.T) {
 	}
 
 	// Create a new app
-	app := NewApp()
+	app := NewApp(assets.DefaultDb("test.db"))
 
 	// Start Test
 	for idx, tt := range tests {

@@ -9,6 +9,7 @@ Infof
 innerxml
 iofs
 Komga
+lazydb
 logrus
 mattn
 Nilf

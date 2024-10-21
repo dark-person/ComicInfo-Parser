@@ -2,33 +2,38 @@
 package tagger
 
 import (
-	"gui-comicinfo/internal/database"
+	"gui-comicinfo/internal/assets"
 	"path/filepath"
 	"testing"
 
+	"github.com/dark-person/lazydb"
 	"github.com/stretchr/testify/assert"
 )
 
-// Create a new AppDB with database file,
-// and ensure that AppDB is connected & update to latest schema.
+// Create a new LazyDB with database file,
+// and ensure that LazyDB is connected & update to latest schema.
 //
-// Developer should ensure returned AppDB will be closed after usage.
+// Developer should ensure returned LazyDB will be closed after usage.
 //
-// If filename is empty string, a nil AppDB will be returned.
-func getAppDB(dir, filename string) (*database.AppDB, error) {
+// If filename is empty string, a nil LazyDB will be returned.
+func getLazyDB(dir, filename string) (*lazydb.LazyDB, error) {
 	// Return nil if filename is empty string
 	if filename == "" {
 		return nil, nil
 	}
 
-	db, err := database.NewPathDB(filepath.Join(dir, filename))
+	db := assets.DefaultDb(filepath.Join(dir, filename))
+
+	// Connect database
+	err := db.Connect()
 	if err != nil {
 		return nil, err
 	}
 
-	// Connect database
-	db.Connect()
-	db.StepToLatest()
+	_, err = db.Migrate()
+	if err != nil {
+		return nil, err
+	}
 
 	// Return db
 	return db, nil
@@ -36,38 +41,35 @@ func getAppDB(dir, filename string) (*database.AppDB, error) {
 
 // Create a test database with some value inserted.
 //
-// // Developer should ensure returned AppDB will be closed after usage.
-func createTestDB(path string) (*database.AppDB, error) {
-	a, err := database.NewPathDB(path)
+// Developer should ensure returned LazyDB will be closed after usage.
+func createTestDB(path string) (*lazydb.LazyDB, error) {
+	db := assets.DefaultDb(path)
+
+	// Connect database
+	err := db.Connect()
 	if err != nil {
 		return nil, err
 	}
 
-	a.Connect()
-	a.StepToLatest()
+	_, err = db.Migrate()
+	if err != nil {
+		return nil, err
+	}
 
 	// Insert data rows
-	sql := `INSERT INTO tags (input) VALUES ('abc'), ('def'), ('ghi')`
-	stmt, err := a.Prepare(sql)
+	_, err = db.Exec(`INSERT INTO tags (input) VALUES ('abc'), ('def'), ('ghi')`)
 	if err != nil {
 		return nil, err
 	}
-	stmt.Exec()
 
 	// Return closed db object
-	return a, nil
+	return db, nil
 }
 
 // Function to check how many rows in db has given tag.
-func checkRowCount(a *database.AppDB, value string) (int, error) {
-	// Get Inserted rows
-	stmt, err := a.Prepare("SELECT COUNT(*) FROM tags WHERE input=?")
-	if err != nil {
-		return -1, err
-	}
-
+func checkRowCount(a *lazydb.LazyDB, value string) (int, error) {
 	// Execute query
-	rows, err := stmt.Query(value)
+	rows, err := a.Query("SELECT COUNT(*) FROM tags WHERE input=?", value)
 	if err != nil {
 		return -1, err
 	}
@@ -111,7 +113,7 @@ func TestAddTag(t *testing.T) {
 
 	for idx, tt := range tests {
 		// Create new database
-		db, err := getAppDB(dir, tt.dbPath)
+		db, err := getLazyDB(dir, tt.dbPath)
 		if err != nil {
 			t.Errorf("Failed to create database: %v", err)
 		}
@@ -156,20 +158,21 @@ func TestGetAllTags(t *testing.T) {
 	}
 
 	// Empty database
-	empty, err := database.NewPathDB(filepath.Join(dir, "test_get_empty.db"))
+	empty := assets.DefaultDb(filepath.Join(dir, "test_get_empty.db"))
+	err = empty.Connect()
 	if err != nil {
-		t.Errorf("Failed to create db: %v", err)
+		t.Errorf("Failed to connect db: %v", err)
 	}
+	defer empty.Close()
 
-	if empty != nil {
-		empty.Connect()
-		empty.StepToLatest()
-		defer empty.Close()
+	_, err = empty.Migrate()
+	if err != nil {
+		t.Errorf("Failed to migrate db: %v", err)
 	}
 
 	// Test case
 	type testCase struct {
-		db      *database.AppDB
+		db      *lazydb.LazyDB
 		results []string
 		wantErr bool
 	}

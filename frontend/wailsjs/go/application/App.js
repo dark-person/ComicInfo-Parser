@@ -37,7 +37,3 @@ export function GetDirectoryWithDefault(arg1) {
 export function QuickExportKomga(arg1) {
   return window['go']['application']['App']['QuickExportKomga'](arg1);
 }
-
-export function StartUpTest(arg1, arg2) {
-  return window['go']['application']['App']['StartUpTest'](arg1, arg2);
-}

@@ -2,6 +2,7 @@ package application
 
 import (
 	"context"
+	"gui-comicinfo/internal/assets"
 	"gui-comicinfo/internal/comicinfo"
 	"os"
 	"path/filepath"
@@ -48,7 +49,7 @@ func TestQuickExportKomga(t *testing.T) {
 	}
 
 	// Prepare new app
-	app := NewApp()
+	app := NewApp(assets.DefaultDb("testing.db"))
 
 	// Looping
 	for idx, tt := range tests {
@@ -107,8 +108,8 @@ func TestExportXml(t *testing.T) {
 	}
 
 	// Prepare dummy App
-	app := NewApp()
-	app.StartUpTest(context.TODO(), testDB)
+	app := NewApp(assets.DefaultDb(testDB))
+	app.Startup(context.TODO())
 
 	// Start test
 	for idx, tt := range tests {
@@ -181,8 +182,8 @@ func TestExportCbzNoWrap(t *testing.T) {
 	}
 
 	// Create a new app
-	app := NewApp()
-	app.StartUpTest(context.TODO(), testDB)
+	app := NewApp(assets.DefaultDb(testDB))
+	app.Startup(context.TODO())
 
 	for idx, tt := range tests {
 		errMsg := app.ExportCbz(tt.inputDir, tt.exportDir, tt.comicInfo, false)
@@ -252,8 +253,8 @@ func TestExportCbzWithWrap(t *testing.T) {
 	}
 
 	// Create a new app
-	app := NewApp()
-	app.StartUpTest(context.TODO(), testDB)
+	app := NewApp(assets.DefaultDb(testDB))
+	app.Startup(context.TODO())
 
 	for idx, tt := range tests {
 		errMsg := app.ExportCbz(tt.inputDir, tt.exportDir, tt.comicInfo, true)
