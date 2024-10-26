@@ -10,15 +10,15 @@ Package for wails app.
 
 The package to convert image directory to `.zip` and `.cbz` file.
 
+## assets
+
+Package to control database & schema, and some fixed environment constants.
+
 ## comicinfo
 
 The [ComicInfo.xml](https://anansi-project.github.io/docs/comicinfo/documentation) Structure in `Go`, Converted from `ComicInfo.xsd`.
 
 Current Schema version is `2.1`.
-
-## database
-
-The package to manipulate the database. Current `user_version` is `1`.
 
 ## files
 
