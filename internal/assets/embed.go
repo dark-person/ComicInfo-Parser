@@ -21,6 +21,6 @@ func DefaultDb(path string) *lazydb.LazyDB {
 	return lazydb.New(
 		lazydb.DbPath(path),
 		lazydb.Migrate(schema, "schema"),
-		lazydb.Version(0),
+		lazydb.Version(1),
 	)
 }
