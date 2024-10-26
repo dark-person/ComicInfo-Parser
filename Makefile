@@ -21,11 +21,11 @@ binding:	## Generate wails binding
 .PHONY: clean 
 clean: 		## Remove distribution of both frontend and backend
 	cd frontend; rm -rf dist
-	rm build/bin/*.exe
+	rm -f build/bin/*.exe
 
 .PHONY: dist
 dist:		## Create a wails executeable distribution
-	rm build/bin/*.*
+	rm -f build/bin/*.*
 	wails build
 	@CURRENT_TAG=$$(git tag --points-at);\
 	CURRENT_TAG=$$(echo "$${CURRENT_TAG////-}");\

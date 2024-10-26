@@ -35,25 +35,4 @@ The git branch management should be followed below principle:
 3. File changes in each commit should be as few as possible. This is to prevent `rebase` difficulty.
     - i.e. if you change `module1` & `module2`, you should not use one commit ONLY to conclude both changes, instead use >2 commits depend on complexity of these changes.
 
-### Suggestion for commit
-
-**_The below guidelines is for suggestion ONLY_**.
-
-For source code changes, always include changes & `changed module`.
-
-`Changed Module` usually represent scope of changes, Here is some example:
-
--   `comicinfo`
--   `app.go`
--   `makefile`
--   `vscode`
--   `frontend/input`
--   `frontend/App`
-
-Developer can ignore above format when **Necessary**, e.g.
-
--   `Update DEVELOPMENT.md`
--   `Update dependencies for ...`
--   `Move package ... to ...`
-
 _Last updated: 2024-08-03_
