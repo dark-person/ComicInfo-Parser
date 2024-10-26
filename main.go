@@ -4,7 +4,6 @@ import (
 	"embed"
 	"gui-comicinfo/internal/application"
 	"gui-comicinfo/internal/assets"
-	"gui-comicinfo/internal/constant"
 	"os"
 	"path/filepath"
 
@@ -24,7 +23,7 @@ func main() {
 	}
 
 	// Get database path
-	path := filepath.Join(home, constant.RootDir, constant.DatabaseFile)
+	path := filepath.Join(home, assets.RootDir, assets.DatabaseFile)
 
 	// Prepare lazydb
 	l := assets.DefaultDb(path)

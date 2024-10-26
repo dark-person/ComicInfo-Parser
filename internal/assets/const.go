@@ -1,8 +1,4 @@
-// Package for storing constants for whole project.
-//
-// Constants are include:
-//   - default file location of database file
-package constant
+package assets
 
 // Root Directory to storing all config files.
 const RootDir = "comicInfo-parser"
