@@ -2,6 +2,7 @@ package application
 
 import (
 	"context"
+	"fmt"
 	"os"
 
 	"github.com/dark-person/lazydb"
@@ -32,7 +33,9 @@ func (a *App) Startup(ctx context.Context) {
 	}
 
 	// Perform migration to database if needed
-	_, err = a.DB.Migrate()
+	tmpPath, err := a.DB.Migrate()
+	fmt.Println("Backup Path: " + tmpPath)
+
 	if err != nil {
 		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
 			Type:    runtime.InfoDialog,
