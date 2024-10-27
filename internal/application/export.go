@@ -86,7 +86,7 @@ func (a *App) saveToHistory(c *comicinfo.ComicInfo) error {
 	s = strings.Split(c.Genre, ",")
 	for _, item := range s {
 		values = append(values, history.HistoryVal{
-			Category: history.Genre_Text,
+			Category: history.CategoryGenre,
 			Value:    item,
 		})
 	}
@@ -96,7 +96,7 @@ func (a *App) saveToHistory(c *comicinfo.ComicInfo) error {
 	s = strings.Split(c.Publisher, ",")
 	for _, item := range s {
 		values = append(values, history.HistoryVal{
-			Category: history.Publisher_Text,
+			Category: history.CategoryPublisher,
 			Value:    item,
 		})
 	}

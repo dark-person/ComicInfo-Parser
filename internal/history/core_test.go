@@ -11,7 +11,7 @@ import (
 )
 
 // Function to check how many rows in db has given category & value.
-func checkRowCount(a *lazydb.LazyDB, category string, value string) (int, error) {
+func checkRowCount(a *lazydb.LazyDB, category categoryType, value string) (int, error) {
 	// Get Inserted rows
 	rows, err := a.Query("SELECT COUNT(*) FROM list_inputted WHERE category=? AND input=?", category, value)
 	if err != nil {
@@ -47,7 +47,7 @@ func createTestDB(path string, withData bool) (*lazydb.LazyDB, error) {
 	}
 
 	// Insert data rows
-	sql := `INSERT INTO list_inputted (category, input) VALUES ('abc','123'), ('def', '123'), ('def', '456')`
+	sql := `INSERT INTO list_inputted (category, input) VALUES (45,'123'), (56, '123'), (56, '456')`
 	_, err = a.Exec(sql)
 	if err != nil {
 		return nil, err
@@ -70,31 +70,31 @@ func TestInsertValue(t *testing.T) {
 	// Test case
 	type testCase struct {
 		dbPath      string
-		category    string
+		category    categoryType
 		value       []string
 		wantErr     bool
 		insertedRow []int // Should have same order as `value`
 	}
 
 	tests := []testCase{
-		// Normal test in  same db
-		{db1, "abc", []string{"123"}, false, []int{1}},
-		{db1, "abc", []string{"123"}, false, []int{1}},
-		{db1, "def", []string{"123"}, false, []int{1}},
+		// Normal test in same db
+		{db1, 45, []string{"123"}, false, []int{1}},
+		{db1, 45, []string{"123"}, false, []int{1}},
+		{db1, 56, []string{"123"}, false, []int{1}},
 
 		// Duplicate Test
-		{"test2.db", "abc", []string{"123", "123"}, false, []int{1, 1}},
-		{"test2.db", "abc", []string{"123", "456"}, false, []int{1, 1}},
+		{"test2.db", 45, []string{"123", "123"}, false, []int{1, 1}},
+		{"test2.db", 45, []string{"123", "456"}, false, []int{1, 1}},
 
 		// Empty value
-		{"test3.db", "abc", []string{}, false, []int{}},
-		{"test4.db", "", []string{"123"}, false, []int{1}},
+		{"test3.db", 45, []string{}, false, []int{}},
+		{"test4.db", 0, []string{"123"}, false, []int{1}},
 
 		// Empty string value
-		{"test5.db", "abc", []string{"123", ""}, false, []int{1, 0}},
+		{"test5.db", 45, []string{"123", ""}, false, []int{1, 0}},
 
 		// Nil database
-		{"", "abc", []string{"123"}, true, []int{1}},
+		{"", 45, []string{"123"}, true, []int{1}},
 	}
 
 	// Start testing
@@ -149,15 +149,15 @@ func TestGetHistory(t *testing.T) {
 
 	// Prepare test case
 	type testCase struct {
-		category string
+		category categoryType
 		result   []string
 		wantErr  bool
 	}
 
 	tests := []testCase{
-		{"abc", []string{"123"}, false},
-		{"def", []string{"123", "456"}, false},
-		{"kk", []string{}, false},
+		{45, []string{"123"}, false},
+		{56, []string{"123", "456"}, false},
+		{77, []string{}, false},
 	}
 
 	// Start Testing
@@ -178,13 +178,13 @@ func TestGetHistoryNilDB(t *testing.T) {
 
 	// Prepare test case
 	type testCase struct {
-		category string
+		category categoryType
 		result   []string
 		wantErr  bool
 	}
 
 	tests := []testCase{
-		{"abc", []string{"123"}, true},
+		{45, []string{"123"}, true},
 	}
 
 	// Start Testing

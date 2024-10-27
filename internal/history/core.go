@@ -14,7 +14,7 @@ var (
 )
 
 // Insert value into database. This function is allowed to insert multiple values at once.
-func insertValue(db *lazydb.LazyDB, category string, value ...string) error {
+func insertValue(db *lazydb.LazyDB, category categoryType, value ...string) error {
 	// Prevent nil database
 	if db == nil {
 		return ErrDatabaseNil
@@ -42,7 +42,7 @@ func insertValue(db *lazydb.LazyDB, category string, value ...string) error {
 }
 
 // Get inputted list from database, by given category.
-func getHistory(db *lazydb.LazyDB, category string) ([]string, error) {
+func getHistory(db *lazydb.LazyDB, category categoryType) ([]string, error) {
 	// Prevent nil database
 	if db == nil {
 		return []string{}, ErrDatabaseNil

@@ -27,26 +27,25 @@ func TestInsertMultiple(t *testing.T) {
 
 	tests := []testCase{
 		// Normal test in same db
-		{db1, []HistoryVal{{"abc", "123"}}, false, []int{1}},
-		{db1, []HistoryVal{{"abc", "123"}}, false, []int{1}},
-		{db1, []HistoryVal{{"def", "123"}}, false, []int{1}},
+		{db1, []HistoryVal{{34, "123"}}, false, []int{1}},
+		{db1, []HistoryVal{{34, "123"}}, false, []int{1}},
+		{db1, []HistoryVal{{45, "123"}}, false, []int{1}},
 
 		// Different values in same time
-		{"test2.db", []HistoryVal{{"abc", "123"}, {"def", "123"}}, false, []int{1, 1}},
+		{"test2.db", []HistoryVal{{34, "123"}, {45, "123"}}, false, []int{1, 1}},
 
 		// Duplicate Test
-		{"test3.db", []HistoryVal{{"abc", "123"}, {"abc", "123"}}, false, []int{1, 1}},
-		{"test3.db", []HistoryVal{{"abc", "123"}, {"abc", "456"}}, false, []int{1, 1}},
+		{"test3.db", []HistoryVal{{34, "123"}, {34, "123"}}, false, []int{1, 1}},
+		{"test3.db", []HistoryVal{{34, "123"}, {34, "456"}}, false, []int{1, 1}},
 
 		// Empty value
-		{"test4.db", []HistoryVal{{"abc", ""}}, false, []int{0}},
-		{"test5.db", []HistoryVal{{"", "123"}}, false, []int{1}},
+		{"test4.db", []HistoryVal{{34, ""}}, false, []int{0}},
 
 		// Empty string value
-		{"test6.db", []HistoryVal{{"abc", "123"}, {"abc", ""}}, false, []int{1, 0}},
+		{"test6.db", []HistoryVal{{34, "123"}, {34, ""}}, false, []int{1, 0}},
 
 		// Nil database
-		{"", []HistoryVal{{"abc", "123"}}, true, []int{1}},
+		{"", []HistoryVal{{34, "123"}}, true, []int{1}},
 	}
 
 	// Start testing
