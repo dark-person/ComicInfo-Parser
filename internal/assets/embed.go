@@ -4,6 +4,7 @@
 //   - default file location of database file.
 //   - database schema version
 //   - database type
+//   - default backup location of database file
 package assets
 
 import (
@@ -32,5 +33,15 @@ func DefaultDb(path string) *lazydb.LazyDB {
 		lazydb.DbPath(path),
 		lazydb.Migrate(schema, "schema"),
 		lazydb.Version(supportedSchemaVersion),
+	)
+}
+
+// Return default lazydb that allow auto-backup when schema version changed.
+func DefaultDbWithBackup(path string, backupDir string) *lazydb.LazyDB {
+	return lazydb.New(
+		lazydb.DbPath(path),
+		lazydb.Migrate(schema, "schema"),
+		lazydb.Version(supportedSchemaVersion),
+		lazydb.BackupDir(backupDir),
 	)
 }

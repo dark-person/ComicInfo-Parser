@@ -24,9 +24,10 @@ func main() {
 
 	// Get database path
 	path := filepath.Join(home, assets.RootDir, assets.DatabaseFile)
+	backupDir := filepath.Join(home, assets.RootDir, assets.BackupDir)
 
 	// Prepare lazydb
-	l := assets.DefaultDb(path)
+	l := assets.DefaultDbWithBackup(path, backupDir)
 
 	// Create an instance of the app structure
 	app := application.NewApp(l)

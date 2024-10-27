@@ -64,3 +64,11 @@ Ignore preview section and generate `.cbz` with `komga` folder structure directl
 Already contains a `.cbz` archive and `ComicInfo.xml` at `{selected-folder}/{comic-title}` location, while export location can NOT be changed.
 
 User can directly copy exported folder to `komga` comic directory.
+
+## Data
+
+All data will be stored in sqlite3 database, which located at `{Home Directory}/comicInfo-parser/storage.db`.
+
+### Backup
+
+When database schema upgrade (e.g. v1 -> v2), a auto backup will be created in `{Home Directory}/comicInfo-parser/backup` folder.
