@@ -5,6 +5,6 @@ package history
 //
 // This type is designed for insert value with different category at a time.
 type HistoryVal struct {
-	Category string // category to be inserted
-	Value    string // value to be inserted
+	Category categoryType // category to be inserted
+	Value    string       // value to be inserted
 }
