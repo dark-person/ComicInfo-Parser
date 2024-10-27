@@ -72,3 +72,14 @@ All data will be stored in sqlite3 database, which located at `{Home Directory}/
 ### Backup
 
 When database schema upgrade (e.g. v1 -> v2), a auto backup will be created in `{Home Directory}/comicInfo-parser/backup` folder.
+
+### Important Notes on Downgrade Migration Scripts
+
+Please be aware that all downgrade scripts are not guaranteed to have correct & complete data due to:
+
+-   Unsupported Values: Some values may not be compatible with the older schema.
+-   Corrupted Data: Corrupted values may fail to convert properly during the downgrade process.
+
+All downgrade scripts are intended for developer use only, and should not be used by end-users.
+
+Developer should always ensure backup are taken before executing any downgrade operations.

@@ -19,7 +19,7 @@ var schema embed.FS
 // Supported database schema version.
 //
 // Developer should change this value when any schema update performed.
-const supportedSchemaVersion = 1
+const supportedSchemaVersion = 2
 
 // Get embedded schema from filesystem.
 // Used for database schema migrations.
