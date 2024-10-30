@@ -27,7 +27,7 @@ clean: 		## Remove distribution of both frontend and backend
 dist:		## Create a wails executeable distribution
 	rm -f build/bin/*.*
 	wails build
-	@CURRENT_TAG=$$(git tag --points-at);\
+	@CURRENT_TAG=$$(git tag --points-at | head -n 1);\
 	CURRENT_TAG=$$(echo "$${CURRENT_TAG////-}");\
 	if [ ! -z "$${CURRENT_TAG}" ]; then\
 		cd build/bin; mv ComicInfo-Parser.exe "ComicInfo-Parser-$${CURRENT_TAG}.exe";\
