@@ -26,6 +26,10 @@ export function GetComicInfo(arg1) {
   return window['go']['application']['App']['GetComicInfo'](arg1);
 }
 
+export function GetDefaultOutputDirectory(arg1) {
+  return window['go']['application']['App']['GetDefaultOutputDirectory'](arg1);
+}
+
 export function GetDirectory() {
   return window['go']['application']['App']['GetDirectory']();
 }

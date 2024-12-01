@@ -25,3 +25,6 @@ go.work
 build/bin
 node_modules
 frontend/dist
+
+# Configuration file
+config.yaml

@@ -10,7 +10,12 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { ModalControl } from "../controls/ModalControl";
 
 // Wails
-import { ExportCbz, GetDirectory, GetDirectoryWithDefault } from "../../wailsjs/go/application/App";
+import {
+	ExportCbz,
+	GetDefaultOutputDirectory,
+	GetDirectory,
+	GetDirectoryWithDefault,
+} from "../../wailsjs/go/application/App";
 import { comicinfo } from "../../wailsjs/go/models";
 
 /** Props Interface for FolderSelect */
@@ -34,7 +39,10 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, modalC
 	// Set the export directory to input directory if it exists
 	useEffect(() => {
 		if (originalDirectory !== undefined) {
-			setExportDir(originalDirectory);
+			// Load config from file
+			GetDefaultOutputDirectory(originalDirectory).then((dir) => {
+				setExportDir(dir);
+			});
 		}
 	}, []);
 

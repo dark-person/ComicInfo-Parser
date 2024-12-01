@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/dark-person/comicinfo-parser/internal/assets"
+	"github.com/dark-person/comicinfo-parser/internal/config"
 	"github.com/dark-person/lazydb"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -13,11 +15,12 @@ import (
 type App struct {
 	DB  *lazydb.LazyDB
 	ctx context.Context
+	cfg *config.ProgramConfig
 }
 
 // NewApp creates a new App application struct
 func NewApp(db *lazydb.LazyDB) *App {
-	return &App{DB: db}
+	return &App{DB: db, cfg: assets.Config()}
 }
 
 // startup is called when the app starts. The context is saved
