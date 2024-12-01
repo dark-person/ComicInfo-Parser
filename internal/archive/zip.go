@@ -9,11 +9,6 @@ import (
 	"github.com/dark-person/comicinfo-parser/internal/files"
 )
 
-// Create ZIP File inside folderToAdd.
-func CreateZip(folderToAdd string) (dest string, err error) {
-	return CreateZipTo(folderToAdd, folderToAdd)
-}
-
 // Create ZIP File of inputDir, and output the zip to destDir.
 //
 // This function is a variant of CreateZip(), purpose to provide flexibility.
