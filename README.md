@@ -65,6 +65,31 @@ Already contains a `.cbz` archive and `ComicInfo.xml` at `{selected-folder}/{com
 
 User can directly copy exported folder to `komga` comic directory.
 
+## Configuration
+
+This program support some customizations by `.yaml` file configuration.
+
+Your configuration file should like:
+
+```
+your-folder/
+├─ ComicInfo-Parser.exe
+├─ config.yaml
+```
+
+If no configuration is found, program will NOT create for yourself. Instead, it will use its default behavior.
+
+You may found a sample of configuration file in `config-example.yaml`.
+
+### Configuration Options
+
+You should use absolute paths as possible. If folder is missing, then program will try to create for all folders.
+
+| Field            | Type   | Usage                                                                           |
+| ---------------- | ------ | ------------------------------------------------------------------------------- |
+| `default`        | struct | storing default values for program                                              |
+| `default.export` | string | default export folder path, if empty string, then create inside input directory |
+
 ## Data
 
 All data will be stored in sqlite3 database, which located at `{Home Directory}/comicInfo-parser/storage.db`.

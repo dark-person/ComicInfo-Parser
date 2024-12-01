@@ -8,6 +8,8 @@ Equalf
 Infof
 innerxml
 iofs
+knadh
+koanf
 Komga
 lazydb
 logrus
