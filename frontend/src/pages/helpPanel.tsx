@@ -56,13 +56,13 @@ export default function HelpPanel({ backToHome }: Readonly<HelpPanelProps>) {
 						<>
 							<p>Directly Export .cbz file with ComicInfo.xml inside. The generated file with be like:</p>
 							<p>
-								{" 📦 <Manga Name>\n" +
+								{" 📦 <Manga Name> OR <Default Export Directory>\n" +
 									" ┣ 📦 <Manga Name>  <-- Copy This Folder into Komga Comic Library\n" +
 									" ┃  ┣  📜<Manga Name>.cbz    <--- Generated .cbz\n" +
-									" ┣ 📜01.jpg\n" +
-									" ┣ 📜02.jpg\n" +
-									" ┣ <other images>\n" +
-									" ┗ 📜ComicInfo.xml\n"}
+									" ┃  ┃  ┣ 📜01.jpg\n" +
+									" ┃  ┃  ┣ 📜02.jpg\n" +
+									" ┃  ┃  ┣  <other images>\n" +
+									" ┗  ┗  ┗ 📜ComicInfo.xml\n"}
 							</p>
 						</>
 					}

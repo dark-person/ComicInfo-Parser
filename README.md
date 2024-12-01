@@ -61,9 +61,19 @@ After preview & press button to export, User can defined export folder, and expo
 
 Ignore preview section and generate `.cbz` with `komga` folder structure directly.
 
-Already contains a `.cbz` archive and `ComicInfo.xml` at `{selected-folder}/{comic-title}` location, while export location can NOT be changed.
+Default export location is inside selected folder. Export location can be changed by configuration ONLY.
 
-User can directly copy exported folder to `komga` comic directory.
+The file structure will be:
+
+```
+{export-folder OR selected folder}/
+├─ {comic-title}/
+│  ├─ {comic-title}.cbz
+│  │  ├─ {...images file}
+│  │  ├─ ComicInfo.xml
+```
+
+User can directly copy `{comic-title}/` folder to `komga` comic directory.
 
 ## Configuration
 
