@@ -2,12 +2,13 @@ package scanner
 
 import (
 	"fmt"
-	"gui-comicinfo/internal/comicinfo"
-	"gui-comicinfo/internal/files"
-	"gui-comicinfo/internal/parser"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
+	"github.com/dark-person/comicinfo-parser/internal/files"
+	"github.com/dark-person/comicinfo-parser/internal/parser"
 )
 
 // Scan all image in the Directory. Sorted by filename.

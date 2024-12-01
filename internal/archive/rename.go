@@ -1,9 +1,10 @@
 package archive
 
 import (
-	"gui-comicinfo/internal/files"
 	"os"
 	"path/filepath"
+
+	"github.com/dark-person/comicinfo-parser/internal/files"
 )
 
 // Rename zip file to cbz file.

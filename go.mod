@@ -1,4 +1,4 @@
-module gui-comicinfo
+module github.com/dark-person/comicinfo-parser
 
 go 1.23.1
 

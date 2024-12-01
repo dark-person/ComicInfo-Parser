@@ -1,8 +1,8 @@
 package application
 
 import (
-	"gui-comicinfo/internal/history"
-	"gui-comicinfo/internal/tagger"
+	"github.com/dark-person/comicinfo-parser/internal/history"
+	"github.com/dark-person/comicinfo-parser/internal/tagger"
 )
 
 // Struct that designed for

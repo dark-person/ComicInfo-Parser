@@ -1,8 +1,8 @@
 package application
 
 import (
-	"gui-comicinfo/internal/comicinfo"
-	"gui-comicinfo/internal/scanner"
+	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
+	"github.com/dark-person/comicinfo-parser/internal/scanner"
 )
 
 type ComicInfoResponse struct {

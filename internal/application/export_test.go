@@ -2,12 +2,12 @@ package application
 
 import (
 	"context"
-	"gui-comicinfo/internal/assets"
-	"gui-comicinfo/internal/comicinfo"
 	"os"
 	"path/filepath"
 	"testing"
 
+	"github.com/dark-person/comicinfo-parser/internal/assets"
+	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
 	"github.com/stretchr/testify/assert"
 )
 

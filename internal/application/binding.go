@@ -1,6 +1,6 @@
 package application
 
-import "gui-comicinfo/internal/comicinfo"
+import "github.com/dark-person/comicinfo-parser/internal/comicinfo"
 
 // The value of `Manga` const to use in wails binding.
 var AllMangaValue = []struct {

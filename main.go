@@ -2,11 +2,11 @@ package main
 
 import (
 	"embed"
-	"gui-comicinfo/internal/application"
-	"gui-comicinfo/internal/assets"
 	"os"
 	"path/filepath"
 
+	"github.com/dark-person/comicinfo-parser/internal/application"
+	"github.com/dark-person/comicinfo-parser/internal/assets"
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
@@ -34,7 +34,7 @@ func main() {
 
 	// Create application with options
 	err = wails.Run(&options.App{
-		Title:  "Gui-comicInfo-Parser",
+		Title:  "github.com/dark-person/comicinfo-parser-Parser",
 		Width:  1200,
 		Height: 810,
 		AssetServer: &assetserver.Options{

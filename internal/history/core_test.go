@@ -2,10 +2,10 @@
 package history
 
 import (
-	"gui-comicinfo/internal/assets"
 	"path/filepath"
 	"testing"
 
+	"github.com/dark-person/comicinfo-parser/internal/assets"
 	"github.com/dark-person/lazydb"
 	"github.com/stretchr/testify/assert"
 )

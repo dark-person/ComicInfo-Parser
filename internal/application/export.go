@@ -2,15 +2,15 @@ package application
 
 import (
 	"fmt"
-	"gui-comicinfo/internal/archive"
-	"gui-comicinfo/internal/comicinfo"
-	"gui-comicinfo/internal/history"
-	"gui-comicinfo/internal/scanner"
-	"gui-comicinfo/internal/tagger"
 	"os"
 	"path/filepath"
 	"strings"
 
+	"github.com/dark-person/comicinfo-parser/internal/archive"
+	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
+	"github.com/dark-person/comicinfo-parser/internal/history"
+	"github.com/dark-person/comicinfo-parser/internal/scanner"
+	"github.com/dark-person/comicinfo-parser/internal/tagger"
 	"github.com/sirupsen/logrus"
 )
 

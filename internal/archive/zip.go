@@ -2,10 +2,11 @@ package archive
 
 import (
 	"archive/zip"
-	"gui-comicinfo/internal/files"
 	"io"
 	"os"
 	"path/filepath"
+
+	"github.com/dark-person/comicinfo-parser/internal/files"
 )
 
 // Create ZIP File inside folderToAdd.

@@ -1,12 +1,12 @@
 package main
 
 // import (
-// 	"gui-comicinfo/internal/archive"
-// 	"gui-comicinfo/internal/comicinfo"
+// 	"github.com/dark-person/comicinfo-parser/internal/archive"
+// 	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
 
 // 	"encoding/xml"
 // 	"fmt"
-// 	"gui-comicinfo/internal/scanner"
+// 	"github.com/dark-person/comicinfo-parser/internal/scanner"
 // 	"os"
 // 	"path/filepath"
 // 	"testing"
