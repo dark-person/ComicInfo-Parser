@@ -40,3 +40,13 @@ func (a *App) GetDirectoryWithDefault(defaultDirectory string) string {
 	}
 	return directory
 }
+
+// Attempt to load default output directory.
+// If no default directory is set, then return input directory instead.
+func (a *App) GetDefaultOutputDirectory(inputDir string) string {
+	if a.cfg.DefaultExport == "" {
+		return inputDir
+	}
+
+	return a.cfg.DefaultExport
+}
