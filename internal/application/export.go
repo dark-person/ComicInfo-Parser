@@ -56,7 +56,7 @@ func (a *App) QuickExportKomga(inputDir string) string {
 	}
 
 	// Start Archive
-	filename, _ := archive.CreateZip(inputDir)
+	filename, _ := archive.CreateZipTo(inputDir, inputDir)
 	err = archive.RenameZip(filename, true)
 	if err != nil {
 		fmt.Printf("error when archive: %v\n", err)
