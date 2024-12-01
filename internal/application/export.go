@@ -18,6 +18,7 @@ const comicInfoFile = "ComicInfo.xml"
 
 // Perform Quick Export Action,
 // where ComicInfo.xml file can not be modified before archived.
+// The input directory MUST be absolute path.
 //
 // If error is occur, then return a string containing the error message.
 // Otherwise, return empty string.
@@ -28,15 +29,13 @@ const comicInfoFile = "ComicInfo.xml"
 //  3. Wrap the .cbz file with a folder to copy to komga
 //
 // This function is specific designed for komga folder structure.
-func (a *App) QuickExportKomga(folder string) string {
-	absPath := folder
-
-	if absPath == "" {
+func (a *App) QuickExportKomga(inputDir string) string {
+	if inputDir == "" {
 		return "folder cannot be empty"
 	}
 
 	// Validate the directory
-	isValid, err := scanner.CheckFolder(absPath, scanner.ScanOpt{SubFolder: scanner.Reject, Image: scanner.Allow})
+	isValid, err := scanner.CheckFolder(inputDir, scanner.ScanOpt{SubFolder: scanner.Reject, Image: scanner.Allow})
 	if err != nil {
 		return err.Error()
 	} else if !isValid {
@@ -44,20 +43,20 @@ func (a *App) QuickExportKomga(folder string) string {
 	}
 
 	// Load Abs Path
-	c, err := scanner.ScanBooks(absPath)
+	c, err := scanner.ScanBooks(inputDir)
 	if err != nil {
 		return err.Error()
 	}
 
 	// Write ComicInfo.xml
-	err = comicinfo.Save(c, filepath.Join(absPath, comicInfoFile))
+	err = comicinfo.Save(c, filepath.Join(inputDir, comicInfoFile))
 	if err != nil {
 		fmt.Printf("error when saving: %v\n", err)
 		return err.Error()
 	}
 
 	// Start Archive
-	filename, _ := archive.CreateZip(absPath)
+	filename, _ := archive.CreateZip(inputDir)
 	err = archive.RenameZip(filename, true)
 	if err != nil {
 		fmt.Printf("error when archive: %v\n", err)
