@@ -34,7 +34,7 @@ func main() {
 
 	// Create application with options
 	err = wails.Run(&options.App{
-		Title:  "github.com/dark-person/comicinfo-parser-Parser",
+		Title:  "Comicinfo Parser GUI",
 		Width:  1200,
 		Height: 810,
 		AssetServer: &assetserver.Options{
