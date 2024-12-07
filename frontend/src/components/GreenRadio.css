@@ -1,0 +1,26 @@
+/** Enlarge radio button size */
+input[type="radio"] {
+	transform: scale(1.25);
+}
+
+/* -------------------------------------------------------  */
+
+/* Green theme for checkbox/radio button.*/
+.green > .form-check-input:checked {
+	background-color: green;
+	border-color: green;
+}
+
+.green > .form-check-input:focus {
+	border-color: green;
+	outline: 0;
+	box-shadow: none;
+}
+
+/* -------------------------------------------------------  */
+
+/** Show pointer cursor for form check. */
+.cursor-pointer > .form-check-input:hover,
+.cursor-pointer > .form-check-label:hover {
+	cursor: pointer;
+}
