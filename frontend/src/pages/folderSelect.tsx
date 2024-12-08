@@ -3,14 +3,13 @@ import { useState } from "react";
 
 // Component
 import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
 
 // Project Specific Component
+import FolderSelector from "../components/FolderSelector";
 import { ModalControl } from "../controls/ModalControl";
 
 // Wails
-import { GetDirectory, GetDirectoryWithDefault, QuickExportKomga } from "../../wailsjs/go/application/App";
+import { QuickExportKomga } from "../../wailsjs/go/application/App";
 
 /** Props Interface for FolderSelect */
 type FolderProps = {
@@ -28,19 +27,6 @@ type FolderProps = {
 export default function FolderSelect({ handleFolder, showHelpPanel, modalControl }: Readonly<FolderProps>) {
 	/** The Directory Absolute Path selected by User. */
 	const [directory, setDirectory] = useState("");
-
-	/** Handler when user clicked select folder. It will use different function depend on there are already selected folder or not */
-	function handleSelect() {
-		if (directory !== "") {
-			GetDirectoryWithDefault(directory).then((input) => {
-				setDirectory(input);
-			});
-		} else {
-			GetDirectory().then((input) => {
-				setDirectory(input);
-			});
-		}
-	}
 
 	/** Handler when user clicked Quick Export Komga Button. Start quick export process. */
 	function handleQuickExport() {
@@ -66,19 +52,13 @@ export default function FolderSelect({ handleFolder, showHelpPanel, modalControl
 			<h5 className="mb-4">Select Folder to Start:</h5>
 
 			{/* Folder Chooser */}
-			<InputGroup className="mb-3">
-				<InputGroup.Text>Image Folder</InputGroup.Text>
-				<Form.Control
-					aria-describedby="btn-select-folder"
-					type="text"
-					placeholder="select folder.."
-					value={directory}
-					readOnly
-				/>
-				<Button variant="secondary" id="btn-select-folder" onClick={handleSelect}>
-					Select Folder
-				</Button>
-			</InputGroup>
+			<FolderSelector
+				className="mb-3"
+				label="Image Folder"
+				buttonId="btn-select-folder"
+				directory={directory}
+				setDirectory={setDirectory}
+			/>
 
 			{/* Button Group */}
 			<div className="w-25 mx-auto d-grid gap-2">

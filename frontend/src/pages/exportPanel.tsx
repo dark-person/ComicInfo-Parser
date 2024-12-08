@@ -3,19 +3,13 @@ import { useEffect, useState } from "react";
 
 // React Component
 import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
 
 // Project Component
+import FolderSelector from "../components/FolderSelector";
 import { ModalControl } from "../controls/ModalControl";
 
 // Wails
-import {
-	ExportCbz,
-	GetDefaultOutputDirectory,
-	GetDirectory,
-	GetDirectoryWithDefault,
-} from "../../wailsjs/go/application/App";
+import { ExportCbz, GetDefaultOutputDirectory } from "../../wailsjs/go/application/App";
 import { comicinfo } from "../../wailsjs/go/models";
 
 /** Props Interface for FolderSelect */
@@ -45,19 +39,6 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, modalC
 			});
 		}
 	}, []);
-
-	/** Handler for click "Select Folder". This will open file chooser for choose a file. */
-	function handleSelect() {
-		if (exportDir !== "") {
-			GetDirectoryWithDefault(exportDir).then((input) => {
-				setExportDir(input);
-			});
-		} else {
-			GetDirectory().then((input) => {
-				setExportDir(input);
-			});
-		}
-	}
 
 	/**
 	 * Handler for click export .cbz only, export path will be the folder chosen by file chooser.
@@ -95,19 +76,12 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, modalC
 			<h5 className="mb-4">Export to .cbz</h5>
 
 			{/* File Chooser */}
-			<InputGroup className="mb-3">
-				<InputGroup.Text>Export Folder</InputGroup.Text>
-				<Form.Control
-					aria-describedby="btn-select-export-folder"
-					type="text"
-					placeholder="select folder.."
-					value={exportDir}
-					readOnly
-				/>
-				<Button variant="secondary" id="btn-select-export-folder" onClick={handleSelect}>
-					Select Folder
-				</Button>
-			</InputGroup>
+			<FolderSelector
+				className={"mb-3"}
+				label={"Export Folder"}
+				directory={exportDir}
+				setDirectory={setExportDir}
+			/>
 
 			{/* Button to Export. Use d-grid to create block button, use w-25 to smaller size. */}
 			<div className="w-25 mx-auto d-grid gap-2">
