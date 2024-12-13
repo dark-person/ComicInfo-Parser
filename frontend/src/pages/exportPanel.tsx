@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 // Project Component
 import FolderSelector from "../components/FolderSelector";
 import { ModalControl } from "../controls/ModalControl";
+import ColoredRadio from "../components/ColoredRadio";
 
 // Wails
 import { ExportCbz, GetDefaultOutputDirectory } from "../../wailsjs/go/application/App";
@@ -22,6 +23,14 @@ type ExportProps = {
 	modalControl: ModalControl;
 };
 
+/** Method for export comicinfo cbz. */
+enum ExportMethod {
+	/** Only export single cbz file. */
+	CBZ_ONLY,
+	/** Export cbz file with a folder wrapped. */
+	FOLDER_WRAP_CBZ,
+}
+
 /**
  * The panel to export comic info to cbz/xml file.
  * @returns JSX Component
@@ -29,6 +38,7 @@ type ExportProps = {
 export default function ExportPanel({ comicInfo: info, originalDirectory, modalControl }: Readonly<ExportProps>) {
 	// Since this is the final step, could ignore the interaction with App.tsx
 	const [exportDir, setExportDir] = useState<string>("");
+	const [exportMethod, setExportMethod] = useState<ExportMethod>(ExportMethod.FOLDER_WRAP_CBZ);
 
 	// Set the export directory to input directory if it exists
 	useEffect(() => {
@@ -45,14 +55,14 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, modalC
 	 * @param isWrap is using wrap folder. If true, then export will include a folder warping cbz file, otherwise only cbz file will be exported.
 	 * @returns nothing
 	 */
-	function handleExportCbz(isWrap: boolean) {
+	function handleExportCbz() {
 		if (originalDirectory === undefined) {
-			console.log("[ERR] No original directory");
+			console.error("No original directory");
 			return;
 		}
 
 		if (info === undefined) {
-			console.log("[ERR] No original comicinfo");
+			console.error("No original comicinfo");
 			return;
 		}
 
@@ -60,7 +70,7 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, modalC
 		modalControl.loading();
 
 		// Start Running
-		ExportCbz(originalDirectory, exportDir, info, isWrap).then((msg) => {
+		ExportCbz(originalDirectory, exportDir, info, exportMethod === ExportMethod.FOLDER_WRAP_CBZ).then((msg) => {
 			if (msg !== "") {
 				modalControl.showErr(msg);
 			} else {
@@ -83,14 +93,30 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, modalC
 				setDirectory={setExportDir}
 			/>
 
-			{/* Button to Export. Use d-grid to create block button, use w-25 to smaller size. */}
-			<div className="w-25 mx-auto d-grid gap-2">
-				<Button variant="outline-warning" id="btn-export-xml" onClick={() => handleExportCbz(false)}>
-					Export .cbz file only
-				</Button>
+			{/* Radio Buttons */}
+			<div className="w-50 mx-auto d-grid justify-content-center">
+				<ColoredRadio
+					id="export-type-cbz"
+					name="export-type"
+					color="saddlebrown"
+					label={"Export .cbz file only"}
+					checked={exportMethod === ExportMethod.CBZ_ONLY}
+					onChange={() => setExportMethod(ExportMethod.CBZ_ONLY)}
+				/>
+				<ColoredRadio
+					id="export-type-wrapped"
+					name="export-type"
+					color="green"
+					label={"Export .cbz wrapped by folder"}
+					checked={exportMethod === ExportMethod.FOLDER_WRAP_CBZ}
+					onChange={() => setExportMethod(ExportMethod.FOLDER_WRAP_CBZ)}
+				/>
+			</div>
 
-				<Button variant="outline-info" id="btn-export-xml" onClick={() => handleExportCbz(true)}>
-					Export whole .cbz folder
+			{/* Button to Export. Use d-grid to create block button, use w-25 to smaller size. */}
+			<div className="w-25 mx-auto d-grid gap-2 mt-4">
+				<Button variant="success" id="btn-export" onClick={() => handleExportCbz()}>
+					Export
 				</Button>
 			</div>
 		</div>
