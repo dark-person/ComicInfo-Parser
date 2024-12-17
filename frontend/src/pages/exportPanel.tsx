@@ -12,6 +12,7 @@ import ColoredRadio from "../components/ColoredRadio";
 // Wails
 import { ExportCbz, GetDefaultOutputDirectory } from "../../wailsjs/go/application/App";
 import { comicinfo } from "../../wailsjs/go/models";
+import { ExportMethod } from "../App";
 
 /** Props Interface for FolderSelect */
 type ExportProps = {
@@ -21,24 +22,24 @@ type ExportProps = {
 	originalDirectory: string | undefined;
 	/** Modal Controller. */
 	modalControl: ModalControl;
-};
 
-/** Method for export comicinfo cbz. */
-enum ExportMethod {
-	/** Only export single cbz file. */
-	CBZ_ONLY,
-	/** Export cbz file with a folder wrapped. */
-	FOLDER_WRAP_CBZ,
-}
+	exportMethod: ExportMethod;
+	setExportMethod: (val: ExportMethod) => void;
+};
 
 /**
  * The panel to export comic info to cbz/xml file.
  * @returns JSX Component
  */
-export default function ExportPanel({ comicInfo: info, originalDirectory, modalControl }: Readonly<ExportProps>) {
+export default function ExportPanel({
+	comicInfo: info,
+	originalDirectory,
+	modalControl,
+	exportMethod,
+	setExportMethod,
+}: Readonly<ExportProps>) {
 	// Since this is the final step, could ignore the interaction with App.tsx
 	const [exportDir, setExportDir] = useState<string>("");
-	const [exportMethod, setExportMethod] = useState<ExportMethod>(ExportMethod.FOLDER_WRAP_CBZ);
 
 	// Set the export directory to input directory if it exists
 	useEffect(() => {

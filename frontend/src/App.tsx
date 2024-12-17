@@ -21,6 +21,19 @@ import InputPanel from "./pages/inputPanel";
 import { GetComicInfo } from "../wailsjs/go/application/App";
 import { comicinfo } from "../wailsjs/go/models";
 
+/** Method for export comicinfo cbz. */
+export enum ExportMethod {
+	/** Only export single cbz file. */
+	CBZ_ONLY,
+	/** Export cbz file with a folder wrapped. */
+	FOLDER_WRAP_CBZ,
+}
+
+export type SessionData = {
+	/** Method to export. This will keep save last option until program close. */
+	exportMethod: ExportMethod;
+};
+
 /**
  * The main component to be displayed. It will handle all pages data & timing to display.
  *
@@ -40,6 +53,10 @@ function App() {
 
 	/** The directory of initial input, which is the folder contain image. */
 	const [inputDir, setInputDir] = useState<string | undefined>(undefined);
+
+	const [sessionData, setSessionData] = useState<SessionData>({
+		exportMethod: ExportMethod.FOLDER_WRAP_CBZ,
+	});
 
 	/** Controller of modal. */
 	const modalController: ModalControl = {
@@ -147,6 +164,13 @@ function App() {
 		setInfo(temp);
 	}
 
+	function handleExportMethodChange(val: ExportMethod) {
+		setSessionData({
+			...sessionData,
+			exportMethod: val,
+		});
+	}
+
 	return (
 		<div id="App" className="container-fluid">
 			{/* Modal Part */}
@@ -201,7 +225,13 @@ function App() {
 						/>
 					)}
 					{mode === AppMode.EXPORT && (
-						<ExportPanel comicInfo={info} originalDirectory={inputDir} modalControl={modalController} />
+						<ExportPanel
+							comicInfo={info}
+							originalDirectory={inputDir}
+							modalControl={modalController}
+							exportMethod={sessionData.exportMethod}
+							setExportMethod={handleExportMethodChange}
+						/>
 					)}
 					{mode === AppMode.HELP && <HelpPanel backToHome={backToHomePanel} />}
 				</Col>
