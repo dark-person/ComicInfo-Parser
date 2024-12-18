@@ -1,6 +1,4 @@
-/**
- * This file contains filename utilities.
- */
+/** This file contains filename utilities. */
 
 /**
  * Function for get basename in absolute path, or empty string if error occurs.

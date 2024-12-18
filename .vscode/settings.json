@@ -1,44 +1,11 @@
 {
-	"cSpell.customDictionaries": {
-		"package-dictionary": {
-			"name": "package dictionary",
-			"path": "./.vscode/.cspell/package-dictionary.txt",
-			"addWords": true,
-			"scope": "workspace"
-		},
-		"comicinfo-dictionary": {
-			"name": "ComicInfo.xml dictionary",
-			"path": "./.vscode/.cspell/comicinfo-dictionary.txt",
-			"addWords": true,
-			"scope": "workspace"
-		}
-	},
-	"cSpell.languageSettings": [
-		{ "languageId": "go", "allowCompoundWords": false, "dictionaries": ["go"] },
-		{ "languageId": "typescriptreact", "dictionaries": ["typescript", "node"] },
-		{ "languageId": "css", "dictionaries": ["fonts", "css"] }
-	],
-	"cSpell.ignorePaths": [
-		"package-lock.json",
-		"node_modules",
-		"vscode-extension",
-		".git/objects",
-		".vscode",
-		".vscode-insiders",
-		"wailsjs"
-	],
-	"editor.formatOnSave": true,
-	"editor.unicodeHighlight.includeStrings": false,
-	"[typescriptreact]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
 	"[css]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
-	"[javascriptreact]": {
+	"[html]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
-	"[html]": {
+	"[javascriptreact]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"[json]": {
@@ -50,16 +17,65 @@
 	"[sql]": {
 		"editor.defaultFormatter": "adpyke.vscode-sql-formatter"
 	},
-	"editor.tabSize": 4,
-	"editor.detectIndentation": true,
-	"prettier.tabWidth": 4,
-	"prettier.useTabs": true,
-	"prettier.bracketSameLine": true,
-	"prettier.singleAttributePerLine": false,
-	"prettier.printWidth": 120,
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"cSpell.customDictionaries": {
+		"comicinfo-dictionary": {
+			"addWords": true,
+			"name": "ComicInfo.xml dictionary",
+			"path": "./.vscode/.cspell/comicinfo-dictionary.txt",
+			"scope": "workspace"
+		},
+		"package-dictionary": {
+			"addWords": true,
+			"name": "package dictionary",
+			"path": "./.vscode/.cspell/package-dictionary.txt",
+			"scope": "workspace"
+		}
+	},
+	"cSpell.ignorePaths": [
+		"package-lock.json",
+		"node_modules",
+		"vscode-extension",
+		".git/objects",
+		".vscode",
+		".vscode-insiders",
+		"wailsjs"
+	],
+	"cSpell.languageSettings": [
+		{
+			"allowCompoundWords": false,
+			"dictionaries": ["go"],
+			"languageId": "go"
+		},
+		{
+			"dictionaries": ["typescript", "node"],
+			"languageId": "typescriptreact"
+		},
+		{
+			"dictionaries": ["fonts", "css"],
+			"languageId": "css"
+		}
+	],
+	"code-runner.clearPreviousOutput": true,
 	"code-runner.executorMap": {
 		"go": "wails dev"
 	},
-	"code-runner.clearPreviousOutput": true,
-	"code-runner.runInTerminal": true
+	"code-runner.runInTerminal": true,
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": "always"
+	},
+	"editor.detectIndentation": true,
+	"editor.formatOnSave": true,
+	"editor.tabSize": 4,
+	"editor.unicodeHighlight.includeStrings": false,
+	"prettier.bracketSameLine": true,
+	"prettier.printWidth": 120,
+	"prettier.singleAttributePerLine": false,
+	"prettier.tabWidth": 4,
+	"prettier.useTabs": true
 }
