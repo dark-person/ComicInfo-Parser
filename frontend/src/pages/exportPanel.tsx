@@ -5,14 +5,14 @@ import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 
 // Project Component
+import ColoredRadio from "../components/ColoredRadio";
 import FolderSelector from "../components/FolderSelector";
 import { ModalControl } from "../controls/ModalControl";
-import ColoredRadio from "../components/ColoredRadio";
 
 // Wails
 import { ExportCbz, GetDefaultOutputDirectory } from "../../wailsjs/go/application/App";
 import { comicinfo } from "../../wailsjs/go/models";
-import { ExportMethod } from "../App";
+import { ExportMethod } from "../controls/SessionData";
 
 /** Props Interface for FolderSelect */
 type ExportProps = {

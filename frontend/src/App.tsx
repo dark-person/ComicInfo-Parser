@@ -12,6 +12,7 @@ import { CompleteModal, ErrorModal, LoadingModal } from "./components/modal";
 import { AppMode } from "./controls/AppMode";
 import { ModalControl } from "./controls/ModalControl";
 import { defaultModalState, ModalState } from "./controls/ModalState";
+import { ExportMethod, SessionData } from "./controls/SessionData";
 import ExportPanel from "./pages/exportPanel";
 import FolderSelect from "./pages/folderSelect";
 import HelpPanel from "./pages/helpPanel";
@@ -20,19 +21,6 @@ import InputPanel from "./pages/inputPanel";
 // Wails
 import { GetComicInfo } from "../wailsjs/go/application/App";
 import { comicinfo } from "../wailsjs/go/models";
-
-/** Method for export comicinfo cbz. */
-export enum ExportMethod {
-	/** Only export single cbz file. */
-	CBZ_ONLY,
-	/** Export cbz file with a folder wrapped. */
-	FOLDER_WRAP_CBZ,
-}
-
-export type SessionData = {
-	/** Method to export. This will keep save last option until program close. */
-	exportMethod: ExportMethod;
-};
 
 /**
  * The main component to be displayed. It will handle all pages data & timing to display.
