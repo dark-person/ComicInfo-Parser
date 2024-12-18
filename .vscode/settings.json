@@ -29,6 +29,9 @@
 	],
 	"editor.formatOnSave": true,
 	"editor.unicodeHighlight.includeStrings": false,
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": "always"
+	},
 	"[typescriptreact]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
