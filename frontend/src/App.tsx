@@ -43,7 +43,7 @@ function App() {
 	const [inputDir, setInputDir] = useState<string | undefined>(undefined);
 
 	const [sessionData, setSessionData] = useState<SessionData>({
-		exportMethod: ExportMethod.FOLDER_WRAP_CBZ,
+		exportMethod: ExportMethod.DEFAULT_WRAP_CBZ,
 	});
 
 	/** Controller of modal. */

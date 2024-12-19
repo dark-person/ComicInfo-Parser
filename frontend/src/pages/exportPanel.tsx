@@ -71,7 +71,7 @@ export default function ExportPanel({
 		modalControl.loading();
 
 		// Start Running
-		ExportCbz(originalDirectory, exportDir, info, exportMethod === ExportMethod.FOLDER_WRAP_CBZ).then((msg) => {
+		ExportCbz(originalDirectory, exportDir, info, exportMethod === ExportMethod.DEFAULT_WRAP_CBZ).then((msg) => {
 			if (msg !== "") {
 				modalControl.showErr(msg);
 			} else {
@@ -99,7 +99,7 @@ export default function ExportPanel({
 				<ColoredRadio
 					id="export-type-cbz"
 					name="export-type"
-					color="saddlebrown"
+					color="dark-orange"
 					label={"Export .cbz file only"}
 					checked={exportMethod === ExportMethod.CBZ_ONLY}
 					onChange={() => setExportMethod(ExportMethod.CBZ_ONLY)}
@@ -107,11 +107,20 @@ export default function ExportPanel({
 				<ColoredRadio
 					id="export-type-wrapped"
 					name="export-type"
-					color="green"
-					label={"Export .cbz wrapped by folder"}
-					checked={exportMethod === ExportMethod.FOLDER_WRAP_CBZ}
-					onChange={() => setExportMethod(ExportMethod.FOLDER_WRAP_CBZ)}
+					color="dark-green"
+					label={"Export .cbz wrapped by default folder"}
+					checked={exportMethod === ExportMethod.DEFAULT_WRAP_CBZ}
+					onChange={() => setExportMethod(ExportMethod.DEFAULT_WRAP_CBZ)}
 				/>
+				<ColoredRadio
+					id="export-type-custom-wrapped"
+					name="export-type"
+					color="dark-blue"
+					label={"Export .cbz wrapped by custom folder"}
+					checked={exportMethod === ExportMethod.CUSTOM_WRAP_CBZ}
+					onChange={() => setExportMethod(ExportMethod.CUSTOM_WRAP_CBZ)}
+				/>
+				{exportMethod === ExportMethod.CUSTOM_WRAP_CBZ && <input></input>}
 			</div>
 
 			{/* Button to Export. Use d-grid to create block button, use w-25 to smaller size. */}
