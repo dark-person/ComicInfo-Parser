@@ -5,28 +5,55 @@ input[type="radio"] {
 
 /* -------------------------------------------------------  */
 
-/* Green theme for checkbox/radio button.*/
-.green > .form-check-input:checked {
-	background-color: green;
-	border-color: green;
-}
-
-.green > .form-check-input:focus {
-	border-color: green;
+.hide-focus > .form-check-input:focus {
 	outline: 0;
 	box-shadow: none;
 }
 
-/* Saddlebrown theme for checkbox/radio button */
-.saddlebrown > .form-check-input:checked {
-	background-color: saddlebrown;
-	border-color: saddlebrown;
+/* -------------------------------------------------------  */
+.dark-red > .form-check-input:checked,
+.dark-red > .form-check-input:focus {
+	border-color: #980000;
 }
 
-.saddlebrown > .form-check-input:focus {
-	border-color: saddlebrown;
-	outline: 0;
-	box-shadow: none;
+.dark-red > .form-check-input:checked {
+	background-color: #980000;
+}
+
+.dark-orange > .form-check-input:checked,
+.dark-orange > .form-check-input:focus {
+	border-color: #984500;
+}
+
+.dark-orange > .form-check-input:checked {
+	background-color: #984500;
+}
+
+.dark-yellow > .form-check-input:checked,
+.dark-yellow > .form-check-input:focus {
+	border-color: #a77f03;
+}
+
+.dark-yellow > .form-check-input:checked {
+	background-color: #a77f03;
+}
+
+.dark-green > .form-check-input:checked,
+.dark-green > .form-check-input:focus {
+	border-color: #0c8900;
+}
+
+.dark-green > .form-check-input:checked {
+	background-color: #0c8900;
+}
+
+.dark-blue > .form-check-input:checked,
+.dark-blue > .form-check-input:focus {
+	border-color: #333edb;
+}
+
+.dark-blue > .form-check-input:checked {
+	background-color: #333edb;
 }
 
 /* -------------------------------------------------------  */
