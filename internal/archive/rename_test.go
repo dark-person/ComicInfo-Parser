@@ -11,7 +11,36 @@ const (
 	_testCbz = "hello.cbz"
 )
 
-// Test Rename Zip archive to .cbz archive, with wrap option is enabled.
+// Test Rename Zip archive to .cbz archive, with custom wrap option is enabled.
+func TestRenameZipCustomWrap(t *testing.T) {
+	// Create a temp directory
+	tempDir := t.TempDir()
+
+	// Create a folder inside temp directory
+	os.MkdirAll(filepath.Join(tempDir, "tmp"), 0755)
+
+	// Prepare zip path
+	zipPath := filepath.Join(tempDir, "tmp", _testZip)
+
+	// Create a zip file
+	file1, _ := os.Create(zipPath)
+	file1.Close()
+
+	// Test Function
+	err := RenameZip(zipPath, UseCustomWrap("abc"))
+	if err != nil {
+		t.Error(err)
+	}
+
+	// Result Verify
+	dest, openErr := os.Open(filepath.Join(tempDir, "tmp", "abc", _testCbz))
+	if openErr != nil {
+		t.Error(openErr)
+	}
+	defer dest.Close()
+}
+
+// Test Rename Zip archive to .cbz archive, with default wrap option is enabled.
 func TestRenameZipWrap(t *testing.T) {
 	// Create a temp directory
 	tempDir := t.TempDir()
@@ -27,7 +56,7 @@ func TestRenameZipWrap(t *testing.T) {
 	file1.Close()
 
 	// Test Function
-	err := RenameZip(zipPath, true)
+	err := RenameZip(zipPath, UseDefaultWrap())
 	if err != nil {
 		t.Error(err)
 	}
@@ -40,7 +69,7 @@ func TestRenameZipWrap(t *testing.T) {
 	defer dest.Close()
 }
 
-// Test Rename Zip archive to .cbz archive, with wrap options is disabled
+// Test Rename Zip archive to .cbz archive, with all wrap options is disabled
 func TestRenameZipNoWrap(t *testing.T) {
 	// Create a temp directory
 	tempDir := t.TempDir()
@@ -56,7 +85,7 @@ func TestRenameZipNoWrap(t *testing.T) {
 	file1.Close()
 
 	// Test Function
-	err := RenameZip(zipPath, false)
+	err := RenameZip(zipPath, NoWrap())
 	if err != nil {
 		t.Error(err)
 	}

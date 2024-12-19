@@ -60,7 +60,7 @@ func (a *App) QuickExportKomga(inputDir string) string {
 
 	// Start Archive
 	filename, _ := archive.CreateZipTo(inputDir, destDir)
-	err = archive.RenameZip(filename, true)
+	err = archive.RenameZip(filename, archive.UseDefaultWrap())
 	if err != nil {
 		fmt.Printf("error when archive: %v\n", err)
 		return err.Error()
@@ -184,7 +184,13 @@ func (a *App) ExportCbz(inputDir string, exportDir string, c *comicinfo.ComicInf
 	}
 	fmt.Printf("Filename: %s\n", filename)
 
-	err = archive.RenameZip(filename, isWrap)
+	// Depend on isWrap value, use different rename option
+	if isWrap {
+		err = archive.RenameZip(filename, archive.UseDefaultWrap())
+	} else {
+		err = archive.RenameZip(filename, archive.NoWrap())
+	}
+
 	if err != nil {
 		fmt.Printf("error when rename: %v\n", err)
 		return err.Error()
