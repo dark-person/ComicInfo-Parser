@@ -150,6 +150,14 @@ func (a *App) ExportXml(originalDir string, c *comicinfo.ComicInfo) (errorMsg st
 //
 // Both input directory and output directory MUST be absolute paths.
 func (a *App) ExportCbz(inputDir string, exportDir string, c *comicinfo.ComicInfo, isWrap bool) (errMsg string) {
+	if isWrap {
+		return a.exportCbz(inputDir, exportDir, c, archive.UseDefaultWrap())
+	} else {
+		return a.exportCbz(inputDir, exportDir, c, archive.NoWrap())
+	}
+}
+
+func (a *App) exportCbz(inputDir string, exportDir string, c *comicinfo.ComicInfo, opt archive.RenameOption) (errMsg string) {
 	// Check parameters first
 	if _, err := os.Stat(inputDir); os.IsNotExist(err) {
 		return "input directory does not exist"
@@ -185,12 +193,7 @@ func (a *App) ExportCbz(inputDir string, exportDir string, c *comicinfo.ComicInf
 	fmt.Printf("Filename: %s\n", filename)
 
 	// Depend on isWrap value, use different rename option
-	if isWrap {
-		err = archive.RenameZip(filename, archive.UseDefaultWrap())
-	} else {
-		err = archive.RenameZip(filename, archive.NoWrap())
-	}
-
+	err = archive.RenameZip(filename, opt)
 	if err != nil {
 		fmt.Printf("error when rename: %v\n", err)
 		return err.Error()
