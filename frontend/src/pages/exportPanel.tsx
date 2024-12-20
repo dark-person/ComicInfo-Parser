@@ -10,7 +10,7 @@ import FolderSelector from "../components/FolderSelector";
 import { ModalControl } from "../controls/ModalControl";
 
 // Wails
-import { ExportCbz, GetDefaultOutputDirectory } from "../../wailsjs/go/application/App";
+import { ExportCbzOnly, ExportCbzWithDefaultWrap, GetDefaultOutputDirectory } from "../../wailsjs/go/application/App";
 import { comicinfo } from "../../wailsjs/go/models";
 import { ExportMethod } from "../controls/SessionData";
 
@@ -70,8 +70,29 @@ export default function ExportPanel({
 		// Open Modal
 		modalControl.loading();
 
-		// Start Running
-		ExportCbz(originalDirectory, exportDir, info, exportMethod === ExportMethod.DEFAULT_WRAP_CBZ).then((msg) => {
+		// Decide which promise to use
+		let promise: Promise<string>;
+
+		switch (exportMethod) {
+			case ExportMethod.CBZ_ONLY:
+				promise = ExportCbzOnly(originalDirectory, exportDir, info);
+				break;
+
+			case ExportMethod.DEFAULT_WRAP_CBZ:
+				promise = ExportCbzWithDefaultWrap(originalDirectory, exportDir, info);
+				break;
+
+			case ExportMethod.CUSTOM_WRAP_CBZ:
+				// TODO: Modify to custom wrap
+				promise = ExportCbzWithDefaultWrap(originalDirectory, exportDir, info);
+				break;
+
+			default:
+				throw new Error("Unhandled export method");
+		}
+
+		// Start running
+		promise.then((msg) => {
 			if (msg !== "") {
 				modalControl.showErr(msg);
 			} else {
