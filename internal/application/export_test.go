@@ -186,7 +186,7 @@ func TestExportCbzNoWrap(t *testing.T) {
 	app.Startup(context.TODO())
 
 	for idx, tt := range tests {
-		errMsg := app.ExportCbz(tt.inputDir, tt.exportDir, tt.comicInfo, false)
+		errMsg := app.ExportCbzOnly(tt.inputDir, tt.exportDir, tt.comicInfo)
 
 		if tt.errMsg == "" {
 			// Check if error message is empty
@@ -257,7 +257,7 @@ func TestExportCbzWithWrap(t *testing.T) {
 	app.Startup(context.TODO())
 
 	for idx, tt := range tests {
-		errMsg := app.ExportCbz(tt.inputDir, tt.exportDir, tt.comicInfo, true)
+		errMsg := app.ExportCbzWithDefaultWrap(tt.inputDir, tt.exportDir, tt.comicInfo)
 
 		if tt.errMsg == "" {
 			// Check if error message is empty
