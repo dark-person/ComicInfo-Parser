@@ -1,0 +1,65 @@
+/** Enlarge radio button size */
+input[type="radio"] {
+	transform: scale(1.25);
+}
+
+/* -------------------------------------------------------  */
+
+.hide-focus > .form-check-input:focus {
+	outline: 0;
+	box-shadow: none;
+}
+
+/* -------------------------------------------------------  */
+.dark-red > .form-check-input:checked,
+.dark-red > .form-check-input:focus {
+	border-color: #980000;
+}
+
+.dark-red > .form-check-input:checked {
+	background-color: #980000;
+}
+
+.dark-orange > .form-check-input:checked,
+.dark-orange > .form-check-input:focus {
+	border-color: #984500;
+}
+
+.dark-orange > .form-check-input:checked {
+	background-color: #984500;
+}
+
+.dark-yellow > .form-check-input:checked,
+.dark-yellow > .form-check-input:focus {
+	border-color: #a77f03;
+}
+
+.dark-yellow > .form-check-input:checked {
+	background-color: #a77f03;
+}
+
+.dark-green > .form-check-input:checked,
+.dark-green > .form-check-input:focus {
+	border-color: #0c8900;
+}
+
+.dark-green > .form-check-input:checked {
+	background-color: #0c8900;
+}
+
+.dark-blue > .form-check-input:checked,
+.dark-blue > .form-check-input:focus {
+	border-color: #333edb;
+}
+
+.dark-blue > .form-check-input:checked {
+	background-color: #333edb;
+}
+
+/* -------------------------------------------------------  */
+
+/** Show pointer cursor for form check. */
+.cursor-pointer > .form-check-input:hover,
+.cursor-pointer > .form-check-label:hover {
+	cursor: pointer;
+}
