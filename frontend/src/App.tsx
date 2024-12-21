@@ -152,6 +152,10 @@ function App() {
 		setInfo(temp);
 	}
 
+	/**
+	 * Handle change for export method.
+	 * @param val the new value of export method
+	 */
 	function handleExportMethodChange(val: ExportMethod) {
 		setSessionData({
 			...sessionData,
