@@ -9,7 +9,7 @@ import FolderSelector from "../components/FolderSelector";
 import { ModalControl } from "../controls/ModalControl";
 
 // Wails
-import { ExportCbz, GetDefaultOutputDirectory } from "../../wailsjs/go/application/App";
+import { ExportCbzOnly, ExportCbzWithDefaultWrap, GetDefaultOutputDirectory } from "../../wailsjs/go/application/App";
 import { comicinfo } from "../../wailsjs/go/models";
 
 /** Props Interface for FolderSelect */
@@ -59,8 +59,17 @@ export default function ExportPanel({ comicInfo: info, originalDirectory, modalC
 		// Open Modal
 		modalControl.loading();
 
-		// Start Running
-		ExportCbz(originalDirectory, exportDir, info, isWrap).then((msg) => {
+		// Decide which promise to use
+		let promise: Promise<string>;
+
+		if (!isWrap) {
+			promise = ExportCbzOnly(originalDirectory, exportDir, info);
+		} else {
+			promise = ExportCbzWithDefaultWrap(originalDirectory, exportDir, info);
+		}
+
+		// Start running
+		promise.then((msg) => {
 			if (msg !== "") {
 				modalControl.showErr(msg);
 			} else {
