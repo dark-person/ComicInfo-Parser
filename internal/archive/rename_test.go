@@ -11,7 +11,7 @@ const (
 	_testCbz = "hello.cbz"
 )
 
-// Test Rename Zip archive to .cbz archive, with wrap option is enabled.
+// Test Rename Zip archive to .cbz archive, with default wrap option is enabled.
 func TestRenameZipWrap(t *testing.T) {
 	// Create a temp directory
 	tempDir := t.TempDir()
@@ -27,7 +27,7 @@ func TestRenameZipWrap(t *testing.T) {
 	file1.Close()
 
 	// Test Function
-	err := RenameZip(zipPath, true)
+	err := RenameZip(zipPath, UseDefaultWrap())
 	if err != nil {
 		t.Error(err)
 	}
@@ -40,7 +40,7 @@ func TestRenameZipWrap(t *testing.T) {
 	defer dest.Close()
 }
 
-// Test Rename Zip archive to .cbz archive, with wrap options is disabled
+// Test Rename Zip archive to .cbz archive, with all wrap options is disabled
 func TestRenameZipNoWrap(t *testing.T) {
 	// Create a temp directory
 	tempDir := t.TempDir()
@@ -56,7 +56,7 @@ func TestRenameZipNoWrap(t *testing.T) {
 	file1.Close()
 
 	// Test Function
-	err := RenameZip(zipPath, false)
+	err := RenameZip(zipPath, NoWrap())
 	if err != nil {
 		t.Error(err)
 	}
