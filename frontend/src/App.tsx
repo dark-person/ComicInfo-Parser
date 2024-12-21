@@ -12,6 +12,7 @@ import { CompleteModal, ErrorModal, LoadingModal } from "./components/modal";
 import { AppMode } from "./controls/AppMode";
 import { ModalControl } from "./controls/ModalControl";
 import { defaultModalState, ModalState } from "./controls/ModalState";
+import { ExportMethod, SessionData } from "./controls/SessionData";
 import ExportPanel from "./pages/exportPanel";
 import FolderSelect from "./pages/folderSelect";
 import HelpPanel from "./pages/helpPanel";
@@ -40,6 +41,10 @@ function App() {
 
 	/** The directory of initial input, which is the folder contain image. */
 	const [inputDir, setInputDir] = useState<string | undefined>(undefined);
+
+	const [sessionData, setSessionData] = useState<SessionData>({
+		exportMethod: ExportMethod.DEFAULT_WRAP_CBZ,
+	});
 
 	/** Controller of modal. */
 	const modalController: ModalControl = {
@@ -145,6 +150,13 @@ function App() {
 
 		// Set the changed value to data
 		setInfo(temp);
+	}
+
+	function handleExportMethodChange(val: ExportMethod) {
+		setSessionData({
+			...sessionData,
+			exportMethod: val,
+		});
 	}
 
 	return (
