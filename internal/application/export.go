@@ -49,9 +49,8 @@ func (a *App) QuickExportKomga(inputDir string) string {
 	}
 
 	// Write ComicInfo.xml
-	err = comicinfo.Save(c, filepath.Join(inputDir, comicInfoFile))
+	err = a.saveComicInfo(inputDir, c)
 	if err != nil {
-		fmt.Printf("error when saving: %v\n", err)
 		return err.Error()
 	}
 
@@ -109,31 +108,44 @@ func (a *App) saveToHistory(c *comicinfo.ComicInfo) error {
 
 // Export the ComicInfo struct to XML file.
 // This will create/overwrite ComicInfo.xml inside originalDir.
-// If the process success, then function will output empty string.
-// Otherwise, function will return the reason for error.
+//
+// OriginalDir & comicinfo MUST be valid, or an error will be returned.
 //
 // The originalDir MUST be absolute path to write it precisely.
-func (a *App) ExportXml(originalDir string, c *comicinfo.ComicInfo) (errorMsg string) {
-	// Check if comic info is nil value
+func (a *App) saveComicInfo(originalDir string, c *comicinfo.ComicInfo) error {
+	// Check parameter values
 	if c == nil {
-		return "comicinfo is nil value"
+		return fmt.Errorf("comicinfo is nil value")
 	}
 
 	if originalDir == "" {
-		return "empty folder path"
+		return fmt.Errorf("empty folder path")
 	}
 
 	// Save ComicInfo.xml
 	err := comicinfo.Save(c, filepath.Join(originalDir, comicInfoFile))
 	if err != nil {
-		fmt.Printf("error when save xml: %v\n", err)
-		return err.Error()
+		return err
 	}
 
 	// Write to database
 	err = a.saveToHistory(c)
 	if err != nil {
+		// This is consider as additional part, consider no error here
 		logrus.Error(err)
+	}
+
+	return nil
+}
+
+// API for export comicinfo to original directory.
+//
+// If the process success, then function will output empty string.
+// Otherwise, function will return the reason for error.
+func (a *App) ExportXml(originalDir string, c *comicinfo.ComicInfo) (errorMsg string) {
+	err := a.saveComicInfo(originalDir, c)
+	if err != nil {
+		return err.Error()
 	}
 
 	return ""
@@ -164,16 +176,9 @@ func (a *App) ExportCbz(inputDir string, exportDir string, c *comicinfo.ComicInf
 	}
 
 	// Save ComicInfo.xml
-	err := comicinfo.Save(c, filepath.Join(inputDir, "ComicInfo.xml"))
+	err := a.saveComicInfo(inputDir, c)
 	if err != nil {
-		fmt.Printf("error when save: %v\n", err)
 		return err.Error()
-	}
-
-	// Write to database
-	err = a.saveToHistory(c)
-	if err != nil {
-		logrus.Error(err)
 	}
 
 	// Start Archive
