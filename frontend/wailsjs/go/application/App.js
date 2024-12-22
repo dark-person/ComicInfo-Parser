@@ -10,6 +10,10 @@ export function ExportCbzWithDefaultWrap(arg1, arg2, arg3) {
   return window['go']['application']['App']['ExportCbzWithDefaultWrap'](arg1, arg2, arg3);
 }
 
+export function ExportCbzWithWrap(arg1, arg2, arg3, arg4) {
+  return window['go']['application']['App']['ExportCbzWithWrap'](arg1, arg2, arg3, arg4);
+}
+
 export function ExportXml(arg1, arg2) {
   return window['go']['application']['App']['ExportXml'](arg1, arg2);
 }
