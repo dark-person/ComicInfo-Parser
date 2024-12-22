@@ -1,8 +1,11 @@
+import "./exportPanel.css";
+
 // React
 import { useEffect, useState } from "react";
 
 // React Component
 import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 
 // Project Component
 import ColoredRadio from "../components/ColoredRadio";
@@ -10,9 +13,15 @@ import FolderSelector from "../components/FolderSelector";
 import { ModalControl } from "../controls/ModalControl";
 
 // Wails
-import { ExportCbzOnly, ExportCbzWithDefaultWrap, GetDefaultOutputDirectory } from "../../wailsjs/go/application/App";
+import {
+	ExportCbzOnly,
+	ExportCbzWithDefaultWrap,
+	ExportCbzWithWrap,
+	GetDefaultOutputDirectory,
+} from "../../wailsjs/go/application/App";
 import { comicinfo } from "../../wailsjs/go/models";
 import { ExportMethod } from "../controls/SessionData";
+import { basename } from "../filename";
 
 /** Props Interface for FolderSelect */
 type ExportProps = {
@@ -41,6 +50,7 @@ export default function ExportPanel({
 }: Readonly<ExportProps>) {
 	// Since this is the final step, could ignore the interaction with App.tsx
 	const [exportDir, setExportDir] = useState<string>("");
+	const [customWrap, setCustomWrap] = useState<string>("");
 
 	// Set the export directory to input directory if it exists
 	useEffect(() => {
@@ -49,6 +59,9 @@ export default function ExportPanel({
 			GetDefaultOutputDirectory(originalDirectory).then((dir) => {
 				setExportDir(dir);
 			});
+
+			// Set custom wrap value
+			setCustomWrap(basename(originalDirectory));
 		}
 	}, []);
 
@@ -83,8 +96,18 @@ export default function ExportPanel({
 				promise = ExportCbzWithDefaultWrap(originalDirectory, exportDir, info);
 				break;
 
+			case ExportMethod.CUSTOM_WRAP_CBZ:
+				if (customWrap === "") {
+					modalControl.showErr("Custom Wrap folder cannot be empty");
+					return;
+				}
+
+				promise = ExportCbzWithWrap(originalDirectory, exportDir, customWrap, info);
+				break;
+
 			default:
-				throw new Error("Unhandled export method");
+				modalControl.showErr("Unhandled export method");
+				return;
 		}
 
 		// Start running
@@ -112,7 +135,7 @@ export default function ExportPanel({
 			/>
 
 			{/* Radio Buttons */}
-			<div className="w-50 mx-auto d-grid justify-content-center">
+			<div className="mx-auto ps-9em pe-3em">
 				<ColoredRadio
 					id="export-type-cbz"
 					name="export-type"
@@ -129,6 +152,23 @@ export default function ExportPanel({
 					checked={exportMethod === ExportMethod.DEFAULT_WRAP_CBZ}
 					onChange={() => setExportMethod(ExportMethod.DEFAULT_WRAP_CBZ)}
 				/>
+				<ColoredRadio
+					id="export-type-custom-wrapped"
+					name="export-type"
+					color="dark-blue"
+					label={"Export .cbz wrapped by custom folder"}
+					checked={exportMethod === ExportMethod.CUSTOM_WRAP_CBZ}
+					onChange={() => setExportMethod(ExportMethod.CUSTOM_WRAP_CBZ)}
+				/>
+
+				{exportMethod === ExportMethod.CUSTOM_WRAP_CBZ && (
+					<Form.Control
+						className="ms-1-5em"
+						type="text"
+						value={customWrap}
+						onChange={(e) => setCustomWrap(e.currentTarget.value)}
+					/>
+				)}
 			</div>
 
 			{/* Button to Export. Use d-grid to create block button, use w-25 to smaller size. */}

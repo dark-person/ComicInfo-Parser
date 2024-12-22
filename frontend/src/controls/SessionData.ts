@@ -4,6 +4,8 @@ export enum ExportMethod {
 	CBZ_ONLY,
 	/** Export cbz file with a folder wrapped. */
 	DEFAULT_WRAP_CBZ,
+	/** Export cbz file with a folder wrapped. */
+	CUSTOM_WRAP_CBZ,
 }
 
 export type SessionData = {
