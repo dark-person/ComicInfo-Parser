@@ -132,8 +132,8 @@ export default function ExportPanel({
 			</div>
 
 			{/* Button to Export. Use d-grid to create block button, use w-25 to smaller size. */}
-			<div className="w-25 mx-auto d-grid gap-2 mt-4">
-				<Button variant="success" id="btn-export" onClick={() => handleExportCbz()}>
+			<div className="mt-4">
+				<Button variant="success" id="btn-export" className="w-25" onClick={() => handleExportCbz()}>
 					Export
 				</Button>
 			</div>
