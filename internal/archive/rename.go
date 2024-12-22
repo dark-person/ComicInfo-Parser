@@ -12,8 +12,9 @@ type RenameOption renameOption
 
 // Unexported type, option for rename .cbz files.
 type renameOption struct {
-	isWrap        bool // Wrap .cbz file with a folder if true
-	isDefaultWrap bool // Use cbz filename as wrap folder name if true
+	isWrap           bool   // Wrap .cbz file with a folder if true
+	isDefaultWrap    bool   // Use cbz filename as wrap folder name if true
+	customWrapFolder string // custom wrap folder name
 }
 
 // Use default wrap option, which use .cbz filename as wrap folder.
@@ -25,16 +26,27 @@ type renameOption struct {
 //	{bookName}/{bookName}.cbz
 func UseDefaultWrap() RenameOption {
 	return RenameOption{
-		isWrap:        true,
-		isDefaultWrap: true,
+		isWrap:           true,
+		isDefaultWrap:    true,
+		customWrapFolder: "",
+	}
+}
+
+// Custom wrap folder name, which allow different with .cbz filename.
+func UseCustomWrap(folder string) RenameOption {
+	return RenameOption{
+		isWrap:           true,
+		isDefaultWrap:    false,
+		customWrapFolder: folder,
 	}
 }
 
 // Not use any wrap method, only single .cbz file will be created.
 func NoWrap() RenameOption {
 	return RenameOption{
-		isWrap:        false,
-		isDefaultWrap: false,
+		isWrap:           false,
+		isDefaultWrap:    false,
+		customWrapFolder: "",
 	}
 }
 
@@ -44,6 +56,7 @@ func NoWrap() RenameOption {
 //
 //	RenameZip(absPath, NoWrap()) // No Wrap method
 //	RenameZip(absPath, UseDefaultWrap()) // Default wrap with .cbz filename
+//	RenameZip(absPath, UseCustomWrap("someFolder")) // Wrap with custom folder name
 func RenameZip(absPath string, opt RenameOption) error {
 	originalDir := filepath.Dir(absPath)
 	originalFile := filepath.Base(absPath)
@@ -58,6 +71,8 @@ func RenameZip(absPath string, opt RenameOption) error {
 	var wrappedDir string
 	if opt.isDefaultWrap {
 		wrappedDir = filepath.Join(originalDir, name)
+	} else {
+		wrappedDir = filepath.Join(originalDir, opt.customWrapFolder)
 	}
 
 	err := os.Mkdir(wrappedDir, 0755)

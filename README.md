@@ -52,10 +52,12 @@ More field will be added in near future.
 
 After preview & press button to export, User can defined export folder, and export in following options:
 
--   `.cbz` with `komga` folder structure
 -   `.cbz` file ONLY
+-   `.cbz` with `komga` folder structure, using book name as folder name
+-   `.cbz` with `komga` folder structure, using custom folder name
 
-<img src="screenshots/export.png" width="75%" height="75%">
+| ![Export UI](screenshots/export.png) | ![Custom Export](screenshots/export_custom.png) |
+| ------------------------------------ | ----------------------------------------------- |
 
 ### Quick Export (Komga Only)
 

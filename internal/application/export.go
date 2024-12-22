@@ -172,6 +172,17 @@ func (a *App) ExportCbzWithDefaultWrap(inputDir string, exportDir string, c *com
 	return a.exportCbz(inputDir, exportDir, c, archive.UseDefaultWrap())
 }
 
+// Export the .cbz (contains images & comicInfo) file to destination,
+// wrapped with folder name specified by user.
+//
+// If the process success, then function will output empty string.
+// Otherwise, function will return the reason for error.
+//
+// Both input directory and output directory MUST be absolute paths.
+func (a *App) ExportCbzWithWrap(inputDir string, exportDir string, wrapFolder string, c *comicinfo.ComicInfo) (errMsg string) {
+	return a.exportCbz(inputDir, exportDir, c, archive.UseCustomWrap(wrapFolder))
+}
+
 // Core function to export a .cbz file with comicinfo file.
 func (a *App) exportCbz(inputDir string, exportDir string, c *comicinfo.ComicInfo, opt archive.RenameOption) (errMsg string) {
 	// Check parameters first
