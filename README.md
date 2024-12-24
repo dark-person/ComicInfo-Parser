@@ -91,7 +91,7 @@ your-folder/
 
 If no configuration is found, program will NOT create for yourself. Instead, it will use its default behavior.
 
-You may found a sample of configuration file in `config-example.yaml`.
+You may found a sample of configuration file in `config-example.yaml`, and default values in `config-default.yaml`.
 
 ### Configuration Options
 

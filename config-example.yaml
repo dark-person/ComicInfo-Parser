@@ -1,5 +1,2 @@
 default:
     export: ./my-export
-export:
-    - ./folder1
-    - ./folder2
