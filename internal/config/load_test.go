@@ -25,6 +25,7 @@ func TestLoadYaml(t *testing.T) {
 		{"mock/case-normal.yaml", &ProgramConfig{DefaultExport: filepath.Join(exPath, "./my-export")}, false},
 		{"mock/case-typo1.yaml", &ProgramConfig{DefaultExport: ""}, false},
 		{"mock/case-typo2.yaml", &ProgramConfig{DefaultExport: ""}, false},
+		{"mock/case-empty.yaml", &ProgramConfig{DefaultExport: ""}, false},
 		{"mock/not-exist.yaml", nil, true},
 	}
 

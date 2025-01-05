@@ -1,2 +1,2 @@
 default:
-    exports: ./my-export
+    exports-folder: ./my-export

@@ -4,7 +4,7 @@ package config
 
 // Config for this program.
 type ProgramConfig struct {
-	DefaultExport string `koanf:"default.export"` // Default export folder, apply to both quick & standard
+	DefaultExport string `koanf:"default.export-folder"` // Default export folder, apply to both quick & standard
 }
 
 // Default config struct for this program.

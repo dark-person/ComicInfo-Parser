@@ -91,16 +91,16 @@ your-folder/
 
 If no configuration is found, program will NOT create for yourself. Instead, it will use its default behavior.
 
-You may found a sample of configuration file in `config-example.yaml`.
+You may found a sample of configuration file in `config-example.yaml`, and default values in `config-default.yaml`.
 
 ### Configuration Options
 
 You should use absolute paths as possible. If folder is missing, then program will try to create for all folders.
 
-| Field            | Type   | Usage                                                                           |
-| ---------------- | ------ | ------------------------------------------------------------------------------- |
-| `default`        | struct | storing default values for program                                              |
-| `default.export` | string | default export folder path, if empty string, then create inside input directory |
+| Field                   | Type   | Usage                                                                           |
+| ----------------------- | ------ | ------------------------------------------------------------------------------- |
+| `default`               | struct | storing default values for program                                              |
+| `default.export-folder` | string | default export folder path, if empty string, then create inside input directory |
 
 ## Data
 
