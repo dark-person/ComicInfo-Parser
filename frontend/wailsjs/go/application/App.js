@@ -46,6 +46,10 @@ export function GetDirectoryWithDefault(arg1) {
   return window['go']['application']['App']['GetDirectoryWithDefault'](arg1);
 }
 
+export function OpenFolder(arg1) {
+  return window['go']['application']['App']['OpenFolder'](arg1);
+}
+
 export function QuickExportKomga(arg1) {
   return window['go']['application']['App']['QuickExportKomga'](arg1);
 }
