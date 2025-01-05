@@ -1,5 +1,5 @@
 // React Component
-import { Col, Row } from "react-bootstrap";
+import { Button, Col, InputGroup, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 
 // Project Specified Component
@@ -14,17 +14,23 @@ type FolderNameDisplayProps = {
 /** A UI component for display folder name. */
 export default function FolderNameDisplay({ folderPath }: Readonly<FolderNameDisplayProps>) {
 	return (
-		<Form.Group as={Row} className="mb-3">
-			<Form.Label column sm="2" className={"fst-italic"}>
-				{"Folder Name"}
-			</Form.Label>
-			<Col sm="9">
-				<Form.Control
-					value={folderPath !== undefined ? basename(folderPath) : "(N/A)"}
-					title={"Folder Name"}
-					disabled={true}
-				/>
+		<Row className="mb-3">
+			<Col sm="11">
+				<InputGroup>
+					<InputGroup.Text id="folder-display-label" className={"fst-italic"}>
+						{"Folder Name"}
+					</InputGroup.Text>
+					<Form.Control
+						id="folder-display-text"
+						value={folderPath !== undefined ? basename(folderPath) : "(N/A)"}
+						title={"Folder Name"}
+						disabled={true}
+					/>
+					<Button variant="secondary" id="folder-display-open">
+						{"🗁"}
+					</Button>
+				</InputGroup>
 			</Col>
-		</Form.Group>
+		</Row>
 	);
 }
