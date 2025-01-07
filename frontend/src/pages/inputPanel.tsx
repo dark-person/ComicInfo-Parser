@@ -4,9 +4,8 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 
 // Project Specified Component
+import FolderNameDisplay from "../components/FolderDisplay";
 import { ModalControl } from "../controls/ModalControl";
-import { basename } from "../filename";
-import FormRow from "../forms/FormRow";
 import BookMetadata from "./metadata/BookMetadata";
 import CreatorMetadata from "./metadata/CreatorMetadata";
 import MiscMetadata from "./metadata/MiscMetadata";
@@ -74,12 +73,7 @@ export default function InputPanel({
 			<h5 className="mb-4">Modify ComicInfo.xml</h5>
 
 			{/* Component for showing folder name (with basename only) */}
-			<FormRow
-				title={"Folder Name"}
-				titleClass="fst-italic"
-				value={folderPath !== undefined ? basename(folderPath) : "(N/A)"}
-				disabled
-			/>
+			<FolderNameDisplay folderPath={folderPath} />
 
 			{/* The Tabs Group to display metadata. */}
 			<Tabs defaultActiveKey="Main" id="uncontrolled-tab-example" className="mb-3">
