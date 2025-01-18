@@ -76,7 +76,7 @@ func RenameZip(absPath string, opt RenameOption) error {
 	}
 
 	err := os.Mkdir(wrappedDir, 0755)
-	if err != nil {
+	if err != nil && !os.IsExist(err) { // Folder already exist is not an error
 		return err
 	}
 

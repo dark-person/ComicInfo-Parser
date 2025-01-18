@@ -38,6 +38,28 @@ func TestRenameZipCustomWrap(t *testing.T) {
 		t.Error(openErr)
 	}
 	defer dest.Close()
+
+	// ========= Test again with another zip file but same path =========
+
+	// Prepare zip path
+	zipPath2 := filepath.Join(tempDir, "tmp", "hello2.zip")
+
+	// Create a zip file
+	file2, _ := os.Create(zipPath2)
+	file2.Close()
+
+	// Test Function
+	err = RenameZip(zipPath2, UseCustomWrap("abc"))
+	if err != nil {
+		t.Error(err)
+	}
+
+	// Result Verify
+	dest2, openErr := os.Open(filepath.Join(tempDir, "tmp", "abc", "hello2.cbz"))
+	if openErr != nil {
+		t.Error(openErr)
+	}
+	defer dest2.Close()
 }
 
 // Test Rename Zip archive to .cbz archive, with default wrap option is enabled.
