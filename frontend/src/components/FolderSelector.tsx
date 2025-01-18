@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 
-import { GetDirectory, GetDirectoryWithDefault } from "../../wailsjs/go/application/App";
+import { GetDirectory } from "../../wailsjs/go/application/App";
 
 type FolderSelectorProps = {
 	/** ID of root element. */
@@ -34,15 +34,13 @@ type FolderSelectorProps = {
 export default function FolderSelector(props: Readonly<FolderSelectorProps>) {
 	/** Handler for click "Select Folder". This will open file chooser for choose a file. */
 	function handleSelect() {
-		if (props.directory !== "") {
-			GetDirectoryWithDefault(props.directory).then((input) => {
-				props.setDirectory(input);
-			});
-		} else {
-			GetDirectory().then((input) => {
-				props.setDirectory(input);
-			});
-		}
+		GetDirectory(props.directory).then((resp) => {
+			if (resp.ErrMsg !== "") {
+				console.error(resp.ErrMsg);
+			}
+
+			props.setDirectory(resp.SelectedDir);
+		});
 	}
 
 	return (

@@ -38,12 +38,8 @@ export function GetDefaultOutputDirectory(arg1) {
   return window['go']['application']['App']['GetDefaultOutputDirectory'](arg1);
 }
 
-export function GetDirectory() {
-  return window['go']['application']['App']['GetDirectory']();
-}
-
-export function GetDirectoryWithDefault(arg1) {
-  return window['go']['application']['App']['GetDirectoryWithDefault'](arg1);
+export function GetDirectory(arg1) {
+  return window['go']['application']['App']['GetDirectory'](arg1);
 }
 
 export function OpenFolder(arg1) {

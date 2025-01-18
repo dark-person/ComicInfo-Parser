@@ -32,6 +32,20 @@ export namespace application {
 		    return a;
 		}
 	}
+	export class DirectoryResp {
+	    SelectedDir: string;
+	    ErrMsg: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new DirectoryResp(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.SelectedDir = source["SelectedDir"];
+	        this.ErrMsg = source["ErrMsg"];
+	    }
+	}
 	export class HistoryResp {
 	    Inputs: string[];
 	    ErrorMsg: string;
