@@ -16,6 +16,8 @@ type FolderSelectorProps = {
 	directory: string;
 	/** React state hook setter for selected directory. */
 	setDirectory: (value: string) => void;
+	/** Default directory to open if no directory selected. */
+	defaultDirectory?: string;
 
 	/** ID of readonly input element, that display selected directory. */
 	inputId?: string;
@@ -34,12 +36,26 @@ type FolderSelectorProps = {
 export default function FolderSelector(props: Readonly<FolderSelectorProps>) {
 	/** Handler for click "Select Folder". This will open file chooser for choose a file. */
 	function handleSelect() {
-		GetDirectory(props.directory).then((resp) => {
+		let dir = props.directory;
+
+		// Use default directory if no directory selected.
+		if (dir === "" && props.defaultDirectory !== undefined) {
+			dir = props.defaultDirectory;
+		}
+
+		GetDirectory(dir).then((resp) => {
 			if (resp.ErrMsg !== "") {
 				console.error(resp.ErrMsg);
 			}
 
-			props.setDirectory(resp.SelectedDir);
+			let dirToUse = resp.SelectedDir;
+
+			// When user failed to select/cancel, enfore to use default directory if any
+			if (dirToUse === "" && props.defaultDirectory !== undefined) {
+				dirToUse = props.defaultDirectory;
+			}
+
+			props.setDirectory(dirToUse);
 		});
 	}
 
