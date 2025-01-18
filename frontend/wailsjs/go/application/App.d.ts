@@ -17,6 +17,8 @@ export function GetAllPublisherInput():Promise<application.HistoryResp>;
 
 export function GetAllTagInput():Promise<application.HistoryResp>;
 
+export function GetComicFolder():Promise<string>;
+
 export function GetComicInfo(arg1:string):Promise<application.ComicInfoResponse>;
 
 export function GetDefaultOutputDirectory(arg1:string):Promise<string>;

@@ -45,3 +45,13 @@ func (a *App) GetDefaultOutputDirectory(inputDir string) string {
 
 	return a.cfg.DefaultExport
 }
+
+// Attempt to load default comic folder.
+// If config is not set, then return a empty string instead.
+func (a *App) GetComicFolder() string {
+	if a.cfg == nil {
+		return ""
+	}
+
+	return a.cfg.DefaultComicDir
+}
