@@ -1,5 +1,5 @@
 // React
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Component
 import Button from "react-bootstrap/Button";
@@ -9,7 +9,7 @@ import FolderSelector from "../components/FolderSelector";
 import { ModalControl } from "../controls/ModalControl";
 
 // Wails
-import { QuickExportKomga } from "../../wailsjs/go/application/App";
+import { GetComicFolder, QuickExportKomga } from "../../wailsjs/go/application/App";
 
 /** Props Interface for FolderSelect */
 type FolderProps = {
@@ -27,6 +27,13 @@ type FolderProps = {
 export default function FolderSelect({ handleFolder, showHelpPanel, modalControl }: Readonly<FolderProps>) {
 	/** The Directory Absolute Path selected by User. */
 	const [directory, setDirectory] = useState("");
+
+	/** Default directory for comic folder. */
+	const [comicFolder, setComicFolder] = useState<string | undefined>(undefined);
+
+	useEffect(() => {
+		GetComicFolder().then((dir) => setComicFolder(dir));
+	}, []);
 
 	/** Handler when user clicked Quick Export Komga Button. Start quick export process. */
 	function handleQuickExport() {
@@ -58,6 +65,7 @@ export default function FolderSelect({ handleFolder, showHelpPanel, modalControl
 				buttonId="btn-select-folder"
 				directory={directory}
 				setDirectory={setDirectory}
+				defaultDirectory={comicFolder}
 			/>
 
 			{/* Button Group */}
