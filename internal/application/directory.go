@@ -1,44 +1,39 @@
 package application
 
 import (
-	"path/filepath"
-
-	"github.com/sirupsen/logrus"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-// Open a Dialog for user to select Directory.
-//
-// If Error is occur, then this function will return an empty string
-func (a *App) GetDirectory() string {
-	directory, err := runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{
-		Title: "Select Directory",
-	})
-
-	if err != nil {
-		logrus.Warnf("Error when getting directory from user: %v\n", err)
-		return ""
-	}
-	return directory
+// Response for get directory method. Designed due to wails API only allow single return.
+type DirectoryResp struct {
+	SelectedDir string
+	ErrMsg      string
 }
 
-// Open a Dialog for user to select Directory, this dialog will show default directory when open.
+// Open directory dialog for wails, allow user to select one directory.
 //
-// If Error is occur, then this function will return an empty string
-func (a *App) GetDirectoryWithDefault(defaultDirectory string) string {
-	// Try to get parent of default directory
-	dir := filepath.Dir(defaultDirectory)
+// If given directory is empty, then default directory will be handled by wails.
+// Otherwise, it will open given directory.
+//
+// If any error occur, the error message will be also returned in 2nd argument.
+// Empty string indicate no error occur.
+func (a *App) GetDirectory(dir string) DirectoryResp {
+	const title = "Select Directory"
 
-	directory, err := runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{
-		Title:            "Select Directory",
-		DefaultDirectory: dir,
-	})
+	var opt runtime.OpenDialogOptions
 
-	if err != nil {
-		logrus.Warnf("Error when getting directory from user: %v\n", err)
-		return ""
+	if dir == "" {
+		opt = runtime.OpenDialogOptions{Title: title}
+	} else {
+		opt = runtime.OpenDialogOptions{Title: title, DefaultDirectory: dir}
 	}
-	return directory
+
+	directory, err := runtime.OpenDirectoryDialog(a.ctx, opt)
+	if err != nil {
+		return DirectoryResp{SelectedDir: "", ErrMsg: err.Error()}
+	}
+
+	return DirectoryResp{SelectedDir: directory, ErrMsg: ""}
 }
 
 // Attempt to load default output directory.

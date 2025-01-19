@@ -21,9 +21,7 @@ export function GetComicInfo(arg1:string):Promise<application.ComicInfoResponse>
 
 export function GetDefaultOutputDirectory(arg1:string):Promise<string>;
 
-export function GetDirectory():Promise<string>;
-
-export function GetDirectoryWithDefault(arg1:string):Promise<string>;
+export function GetDirectory(arg1:string):Promise<application.DirectoryResp>;
 
 export function OpenFolder(arg1:string):Promise<void>;
 
