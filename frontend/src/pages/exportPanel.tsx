@@ -49,6 +49,7 @@ export default function ExportPanel({
 	setExportMethod,
 }: Readonly<ExportProps>) {
 	// Since this is the final step, could ignore the interaction with App.tsx
+	const [defaultDir, setDefaultDir] = useState<string>("");
 	const [exportDir, setExportDir] = useState<string>("");
 	const [customWrap, setCustomWrap] = useState<string>("");
 
@@ -57,6 +58,7 @@ export default function ExportPanel({
 		if (originalDirectory !== undefined) {
 			// Load config from file
 			GetDefaultOutputDirectory(originalDirectory).then((dir) => {
+				setDefaultDir(dir);
 				setExportDir(dir);
 			});
 
@@ -132,6 +134,7 @@ export default function ExportPanel({
 				label={"Export Folder"}
 				directory={exportDir}
 				setDirectory={setExportDir}
+				defaultDirectory={defaultDir}
 			/>
 
 			{/* Radio Buttons */}
