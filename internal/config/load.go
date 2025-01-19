@@ -41,6 +41,11 @@ func LoadYaml(path string) (*ProgramConfig, error) {
 		return Default(), err
 	}
 
+	out.DefaultComicDir, err = parsePath(out.DefaultComicDir)
+	if err != nil {
+		return Default(), err
+	}
+
 	return &out, nil
 }
 

@@ -30,6 +30,10 @@ export function GetAllTagInput() {
   return window['go']['application']['App']['GetAllTagInput']();
 }
 
+export function GetComicFolder() {
+  return window['go']['application']['App']['GetComicFolder']();
+}
+
 export function GetComicInfo(arg1) {
   return window['go']['application']['App']['GetComicInfo'](arg1);
 }

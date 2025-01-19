@@ -1,2 +1,3 @@
 defaults:
     export-folder: ./my-export
+    comic-folder: ./my-input
