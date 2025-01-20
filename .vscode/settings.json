@@ -23,6 +23,9 @@
 	"[typescriptreact]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
+	"[yaml]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
 	"cSpell.customDictionaries": {
 		"comicinfo-dictionary": {
 			"addWords": true,
