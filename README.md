@@ -102,6 +102,8 @@ You should use absolute paths as possible. If folder is missing, then program wi
 | `default`               | struct | storing default values for program                                              |
 | `default.export-folder` | string | default export folder path, if empty string, then create inside input directory |
 | `default.comic-folder`  | string | default folder location when choose folder to create comicinfo                  |
+| `trash-bin`             | struct | Store trash bin definition for soft-deletion                                    |
+| `trash-bin.path`        | string | path of program trash bin, if empty string, then no soft-deletion operation     |
 
 ## Data
 

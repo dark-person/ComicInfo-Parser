@@ -26,5 +26,10 @@ func (cfg *ProgramConfig) parse() error {
 		return err
 	}
 
+	cfg.TrashBin, err = parsePath(cfg.TrashBin)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
