@@ -28,3 +28,5 @@ export function GetDirectory(arg1:string):Promise<application.DirectoryResp>;
 export function OpenFolder(arg1:string):Promise<void>;
 
 export function QuickExportKomga(arg1:string):Promise<string>;
+
+export function RunSoftDelete():Promise<string>;

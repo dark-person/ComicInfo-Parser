@@ -3,7 +3,6 @@ package config
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 
 	"github.com/knadh/koanf/parsers/yaml"
 	"github.com/knadh/koanf/providers/file"
@@ -36,25 +35,10 @@ func LoadYaml(path string) (*ProgramConfig, error) {
 	}
 
 	// Parse path due to relative path issue
-	out.DefaultExport, err = parsePath(out.DefaultExport)
-	if err != nil {
-		return Default(), err
-	}
-
-	out.DefaultComicDir, err = parsePath(out.DefaultComicDir)
+	err = out.parse()
 	if err != nil {
 		return Default(), err
 	}
 
 	return &out, nil
-}
-
-// Convert relative path to absolute path.
-// If path passed is empty string, then it perform nothing.
-func parsePath(relativePath string) (absPath string, err error) {
-	if relativePath == "" {
-		return "", nil
-	}
-
-	return filepath.Abs(relativePath)
 }

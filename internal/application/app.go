@@ -16,6 +16,8 @@ type App struct {
 	DB  *lazydb.LazyDB
 	ctx context.Context
 	cfg *config.ProgramConfig
+
+	lastExportedComic string // last exported comic folder path, for soft delete purpose
 }
 
 // NewApp creates a new App application struct

@@ -4,10 +4,12 @@ import (
 	"context"
 	"os"
 	"path/filepath"
+	"strconv"
 	"testing"
 
 	"github.com/dark-person/comicinfo-parser/internal/assets"
 	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
+	"github.com/dark-person/comicinfo-parser/internal/config"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -273,6 +275,70 @@ func TestExportCbzWithWrap(t *testing.T) {
 		} else {
 			// Check error message contains
 			assert.Containsf(t, errMsg, tt.errMsg, "Case %d, unmatched error message", idx)
+		}
+	}
+
+	// Close database file
+	app.DB.Close()
+}
+
+func TestSoftDelete(t *testing.T) {
+	// Temp folder creation
+	tempFolder := t.TempDir()
+
+	// Test database
+	testDB := filepath.Join(tempFolder, "test_soft_delete.db")
+
+	// Create a new app
+	app := NewApp(assets.DefaultDb(testDB))
+	app.Startup(context.TODO())
+
+	type testcase struct {
+		isInputExist bool
+		isExported   bool
+		hasTrashBin  bool
+		wantErr      bool
+	}
+
+	tests := []testcase{
+		// Normal
+		{true, true, true, false},
+
+		// Not exported
+		{true, false, true, true},
+
+		// Without trash bin
+		{true, true, false, true},
+
+		// Input directory not exist
+		{false, true, true, true},
+	}
+
+	// Start test
+	for idx, tt := range tests {
+		app.cfg = config.Default()
+		inputDir := filepath.Join(tempFolder, "case-"+strconv.Itoa(idx))
+
+		// Prepare state for test case
+		if tt.isInputExist {
+			os.MkdirAll(inputDir, 0755)
+		}
+
+		if tt.isExported {
+			app.lastExportedComic = inputDir
+		}
+
+		if tt.hasTrashBin {
+			app.cfg.TrashBin = filepath.Join(tempFolder, "trash")
+		}
+
+		// Run function
+		msg := app.RunSoftDelete()
+
+		if tt.wantErr {
+			assert.NotEmpty(t, msg, "Case %d should be not empty", idx)
+		} else {
+			assert.Empty(t, msg, "Case %d should be empty", idx)
 		}
 	}
 

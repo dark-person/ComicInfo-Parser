@@ -11,4 +11,6 @@ export enum ExportMethod {
 export type SessionData = {
 	/** Method to export. This will keep save last option until program close. */
 	exportMethod: ExportMethod;
+	/** Delete input folder after export */
+	deleteAfterExport: boolean;
 };

@@ -22,10 +22,14 @@ func TestLoadYaml(t *testing.T) {
 	t.Log(exPath)
 
 	tests := []testCase{
-		{"mock/case-normal.yaml", &ProgramConfig{DefaultExport: filepath.Join(exPath, "./my-export"), DefaultComicDir: filepath.Join(exPath, "./my-input")}, false},
-		{"mock/case-typo1.yaml", &ProgramConfig{DefaultExport: "", DefaultComicDir: ""}, false},
-		{"mock/case-typo2.yaml", &ProgramConfig{DefaultExport: "", DefaultComicDir: ""}, false},
-		{"mock/case-empty.yaml", &ProgramConfig{DefaultExport: "", DefaultComicDir: ""}, false},
+		{"mock/case-normal.yaml", &ProgramConfig{
+			DefaultExport:   filepath.Join(exPath, "./my-export"),
+			DefaultComicDir: filepath.Join(exPath, "./my-input"),
+			TrashBin:        filepath.Join(exPath, "./.trash"),
+		}, false},
+		{"mock/case-typo1.yaml", Default(), false},
+		{"mock/case-typo2.yaml", Default(), false},
+		{"mock/case-empty.yaml", Default(), false},
 		{"mock/not-exist.yaml", nil, true},
 	}
 
