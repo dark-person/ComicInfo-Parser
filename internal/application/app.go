@@ -43,9 +43,9 @@ func (a *App) Startup(ctx context.Context) {
 
 	if err != nil {
 		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-			Type:    runtime.InfoDialog,
+			Type:    runtime.ErrorDialog,
 			Title:   "Error",
-			Message: "Database version is corrupted, please fix database or remove current database file.",
+			Message: "Database version is corrupted. To fix this issue, you can:\n\n1. Change database by config.yaml.\n2. Backup and remove the database file.\n3. Fix your database (Advanced User ONLY).",
 		})
 		os.Exit(1)
 	}
