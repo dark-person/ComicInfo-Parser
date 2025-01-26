@@ -185,6 +185,9 @@ func (a *App) ExportCbzWithWrap(inputDir string, exportDir string, wrapFolder st
 
 // Core function to export a .cbz file with comicinfo file.
 func (a *App) exportCbz(inputDir string, exportDir string, c *comicinfo.ComicInfo, opt archive.RenameOption) (errMsg string) {
+	// Reset last export path
+	a.lastExportedComic = ""
+
 	// Check parameters first
 	if _, err := os.Stat(inputDir); os.IsNotExist(err) {
 		return "input directory does not exist"
@@ -216,6 +219,39 @@ func (a *App) exportCbz(inputDir string, exportDir string, c *comicinfo.ComicInf
 	err = archive.RenameZip(filename, opt)
 	if err != nil {
 		fmt.Printf("error when rename: %v\n", err)
+		return err.Error()
+	}
+
+	// Mark last sucessful export path
+	a.lastExportedComic = inputDir
+	return ""
+}
+
+// Run soft delet process,
+// which will move the last exported comic folder to trash bin in config file.
+//
+// This function only effect when one export function is run successfully.
+// If trash bin is not defined, then error will be returned.
+func (a *App) RunSoftDelete() (errMsg string) {
+	// Ensure config exist
+	if a.cfg == nil {
+		return "config is corrupted"
+	}
+
+	// Ensure last exported path is not empty
+	if a.lastExportedComic == "" {
+		return "no last exported path"
+	}
+
+	// Ensure soft delete is allowed
+	trashBin := a.cfg.TrashBin
+	if trashBin == "" {
+		return "soft delete is not allowed"
+	}
+
+	// Run soft delete
+	err := archive.SoftDeleteComic(a.lastExportedComic, trashBin)
+	if err != nil {
 		return err.Error()
 	}
 	return ""

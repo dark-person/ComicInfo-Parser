@@ -53,3 +53,7 @@ export function OpenFolder(arg1) {
 export function QuickExportKomga(arg1) {
   return window['go']['application']['App']['QuickExportKomga'](arg1);
 }
+
+export function RunSoftDelete() {
+  return window['go']['application']['App']['RunSoftDelete']();
+}
