@@ -11,6 +11,13 @@ import (
 	"github.com/dark-person/comicinfo-parser/internal/parser"
 )
 
+// Check if image file extension is supported.
+func isSupportedImg(filename string) bool {
+	ext := filepath.Ext(filename)
+	ext = strings.ToLower(ext)
+	return ext == ".jpg" || ext == ".png" || ext == ".jpeg"
+}
+
 // Scan all image in the Directory. Sorted by filename.
 func GetPageInfo(absPath string) (pages []comicinfo.ComicPageInfo, err error) {
 	entries, err := os.ReadDir(absPath)
@@ -23,10 +30,7 @@ func GetPageInfo(absPath string) (pages []comicinfo.ComicPageInfo, err error) {
 	// Image must be re-scan due to image contents may changed
 	imageIdx := 0
 	for _, entry := range entries {
-		ext := filepath.Ext(entry.Name())
-		ext = strings.ToLower(ext)
-
-		if ext != ".jpg" && ext != ".png" && ext != ".jpeg" {
+		if !isSupportedImg(entry.Name()) {
 			continue
 		}
 
@@ -138,9 +142,7 @@ func CheckFolder(folderPath string, opt ScanOpt) (bool, error) {
 		}
 
 		// Image Extension check
-		ext := filepath.Ext(entry.Name())
-		ext = strings.ToLower(ext)
-		if ext == ".jpg" || ext == ".png" || ext == ".jpeg" {
+		if isSupportedImg(entry.Name()) {
 			imageCount++
 			continue
 		}
