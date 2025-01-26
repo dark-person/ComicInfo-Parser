@@ -36,6 +36,10 @@ type ExportProps = {
 	exportMethod: ExportMethod;
 	/** Method to set export method as react hook. */
 	setExportMethod: (val: ExportMethod) => void;
+	/** Delete after export. */
+	deleteAfterExport: boolean;
+	/** Method to set delete after export as react hook. */
+	setDeleteAfterExport: (val: boolean) => void;
 };
 
 /**
@@ -48,13 +52,13 @@ export default function ExportPanel({
 	modalControl,
 	exportMethod,
 	setExportMethod,
+	deleteAfterExport,
+	setDeleteAfterExport,
 }: Readonly<ExportProps>) {
 	// Since this is the final step, could ignore the interaction with App.tsx
 	const [defaultDir, setDefaultDir] = useState<string>("");
 	const [exportDir, setExportDir] = useState<string>("");
 	const [customWrap, setCustomWrap] = useState<string>("");
-
-	const [deleteAfterExport, setDeleteAfterExport] = useState<boolean>(false);
 
 	// Set the export directory to input directory if it exists
 	useEffect(() => {

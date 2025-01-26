@@ -44,6 +44,7 @@ function App() {
 
 	const [sessionData, setSessionData] = useState<SessionData>({
 		exportMethod: ExportMethod.DEFAULT_WRAP_CBZ,
+		deleteAfterExport: false,
 	});
 
 	/** Controller of modal. */
@@ -152,17 +153,6 @@ function App() {
 		setInfo(temp);
 	}
 
-	/**
-	 * Handle change for export method.
-	 * @param val the new value of export method
-	 */
-	function handleExportMethodChange(val: ExportMethod) {
-		setSessionData({
-			...sessionData,
-			exportMethod: val,
-		});
-	}
-
 	return (
 		<div id="App" className="container-fluid">
 			{/* Modal Part */}
@@ -222,7 +212,9 @@ function App() {
 							originalDirectory={inputDir}
 							modalControl={modalController}
 							exportMethod={sessionData.exportMethod}
-							setExportMethod={handleExportMethodChange}
+							setExportMethod={(val) => setSessionData({ ...sessionData, exportMethod: val })}
+							deleteAfterExport={sessionData.deleteAfterExport}
+							setDeleteAfterExport={(val) => setSessionData({ ...sessionData, deleteAfterExport: val })}
 						/>
 					)}
 					{mode === AppMode.HELP && <HelpPanel backToHome={backToHomePanel} />}
