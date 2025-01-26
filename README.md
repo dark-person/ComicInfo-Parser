@@ -59,6 +59,12 @@ After preview & press button to export, User can defined export folder, and expo
 | ![Export UI](screenshots/export.png) | ![Custom Export](screenshots/export_custom.png) |
 | ------------------------------------ | ----------------------------------------------- |
 
+#### Soft Delete after export
+
+If user has configured a trash bin (specified for this program), then they can tick "Soft delete after export" option.
+
+This option will move current working comic folder to user defined trash bin when a successful export process completed.
+
 ### Quick Export (Komga Only)
 
 Ignore preview section and generate `.cbz` with `komga` folder structure directly.
