@@ -8,7 +8,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 // Project Component
-import ColoredRadio from "../components/ColoredRadio";
+import { ColoredRadio } from "../components/ColoredFormCheck";
 import FolderSelector from "../components/FolderSelector";
 import { ModalControl } from "../controls/ModalControl";
 

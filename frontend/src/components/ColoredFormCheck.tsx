@@ -1,10 +1,10 @@
 import { ChangeEvent } from "react";
 import { Form } from "react-bootstrap";
-import "./ColoredRadio.css";
+import "./ColoredFormCheck.css";
 
 type supportedColors = "dark-red" | "dark-orange" | "dark-yellow" | "dark-green" | "dark-blue";
 
-type ColoredRadioProps = {
+type ColoredFormCheckProps = {
 	/** HTML element ID. */
 	id?: string;
 	/** Radio button group usage. */
@@ -21,11 +21,11 @@ type ColoredRadioProps = {
 	onChange?: (evt: ChangeEvent<HTMLInputElement>) => void;
 };
 
-/** Component of a colored radio button. */
-export default function ColoredRadio(props: Readonly<ColoredRadioProps>) {
+/** Form check element with custom color. */
+function ColoredFormCheck(props: Readonly<ColoredFormCheckProps & { type: "radio" | "checkbox" }>) {
 	return (
 		<Form.Check
-			type={"radio"}
+			type={props.type}
 			label={props.label}
 			name={props.name}
 			id={props.id}
@@ -34,4 +34,14 @@ export default function ColoredRadio(props: Readonly<ColoredRadioProps>) {
 			onChange={props.onChange}
 		/>
 	);
+}
+
+/** Component of a colored radio button. */
+export function ColoredRadio(props: Readonly<ColoredFormCheckProps>) {
+	return <ColoredFormCheck {...props} type="radio" />;
+}
+
+/** Component of a colored checkbox. */
+export function ColoredCheckBox(props: Readonly<ColoredFormCheckProps>) {
+	return <ColoredFormCheck {...props} type="checkbox" />;
 }
