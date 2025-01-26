@@ -8,7 +8,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 // Project Component
-import { ColoredRadio } from "../components/ColoredFormCheck";
+import { ColoredCheckBox, ColoredRadio } from "../components/ColoredFormCheck";
 import FolderSelector from "../components/FolderSelector";
 import { ModalControl } from "../controls/ModalControl";
 
@@ -18,6 +18,7 @@ import {
 	ExportCbzWithDefaultWrap,
 	ExportCbzWithWrap,
 	GetDefaultOutputDirectory,
+	RunSoftDelete,
 } from "../../wailsjs/go/application/App";
 import { comicinfo } from "../../wailsjs/go/models";
 import { ExportMethod } from "../controls/SessionData";
@@ -52,6 +53,8 @@ export default function ExportPanel({
 	const [defaultDir, setDefaultDir] = useState<string>("");
 	const [exportDir, setExportDir] = useState<string>("");
 	const [customWrap, setCustomWrap] = useState<string>("");
+
+	const [deleteAfterExport, setDeleteAfterExport] = useState<boolean>(false);
 
 	// Set the export directory to input directory if it exists
 	useEffect(() => {
@@ -114,12 +117,32 @@ export default function ExportPanel({
 
 		// Start running
 		promise.then((msg) => {
+			console.log(`cbz return: '${msg}'`);
+
 			if (msg !== "") {
 				modalControl.showErr(msg);
-			} else {
-				modalControl.completeAndReset();
+				return;
 			}
-			console.log(`cbz return: '${msg}'`);
+
+			// Early return if no need to do anything
+			if (!deleteAfterExport) {
+				modalControl.completeAndReset();
+				return;
+			}
+
+			// Run soft deletion if necessary
+			if (deleteAfterExport) {
+				console.log("Start soft deletion");
+
+				RunSoftDelete().then((errMsg) => {
+					if (errMsg !== "") {
+						modalControl.showErr(errMsg);
+						return;
+					}
+
+					modalControl.completeAndReset();
+				});
+			}
 		});
 	}
 
@@ -179,6 +202,18 @@ export default function ExportPanel({
 				<Button variant="success" id="btn-export" className="w-25" onClick={() => handleExportCbz()}>
 					Export
 				</Button>
+			</div>
+
+			{/* Checkbox to soft deletion */}
+			<div className="d-flex justify-content-center mt-2">
+				<ColoredCheckBox
+					id="soft-deletion"
+					name="soft-deletion"
+					color="dark-red"
+					label="Soft Delete after export"
+					checked={deleteAfterExport}
+					onChange={() => setDeleteAfterExport(!deleteAfterExport)}
+				/>
 			</div>
 		</div>
 	);
