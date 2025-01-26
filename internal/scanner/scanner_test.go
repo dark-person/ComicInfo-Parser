@@ -238,9 +238,9 @@ func TestIsSupportedImg(t *testing.T) {
 		{"foo/image1.jpg", true},
 		{"foo/image2.png", true},
 		{"foo/image3.jpeg", true},
+		{"foo/image4.webp", true},
 
 		// Not Supported
-		{"foo/image4.webp", false},
 		{"foo/abc/", false},
 		{"foo/abc.txt", false},
 		{"foo/abc.docx", false},

@@ -15,7 +15,7 @@ import (
 func isSupportedImg(filename string) bool {
 	ext := filepath.Ext(filename)
 	ext = strings.ToLower(ext)
-	return ext == ".jpg" || ext == ".png" || ext == ".jpeg"
+	return ext == ".jpg" || ext == ".png" || ext == ".jpeg" || ext == ".webp"
 }
 
 // Scan all image in the Directory. Sorted by filename.
