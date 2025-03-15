@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"testing"
 
+	"github.com/dark-person/comicinfo-parser/internal/archive"
 	"github.com/dark-person/comicinfo-parser/internal/assets"
 	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
 	"github.com/dark-person/comicinfo-parser/internal/config"
@@ -20,7 +21,6 @@ import (
 func TestQuickExportKomga(t *testing.T) {
 	// Temp folder creation
 	tempFolder := t.TempDir()
-	// tempFolder := "testing"
 
 	// Prepare Test Case
 	type testCase struct {
@@ -139,143 +139,136 @@ func TestExportXml(t *testing.T) {
 	app.DB.Close()
 }
 
-// Test `ExportCbz` function in `app`, which parameters of `isWrap` is false.
-//
-// There has some assumptions for this test:
-//  1. The content of comicInfo is always correct
-//  2. The zip file always content correct image (although this test will check its size)
-func TestExportCbzNoWrap(t *testing.T) {
+func TestExportCbzNoErr(t *testing.T) {
 	// Temp folder creation
 	tempFolder := t.TempDir()
-	// tempFolder := "testing"
 
 	// Test database
-	testDB := filepath.Join(tempFolder, "test_cbz1.db")
+	testDB := filepath.Join(tempFolder, "test_cbz_ok.db")
+
+	// ComicInfo Content
+	validInfo := comicinfo.New()
+	const expectedFileSize = int64(889)
 
 	// Prepare test case struct
 	type testCase struct {
-		inputDir  string
-		exportDir string
-		comicInfo *comicinfo.ComicInfo
-		errMsg    string
+		inputBaseDir  string // base folder for input
+		outputBaseDir string // base folder for output
+		opt           archive.RenameOption
+		expectedPath  string // expected filepath for output cbz
 	}
-
-	// Prepare Paths
-	invalidPath := filepath.Join(tempFolder, "invalid")
-	validInputPath := filepath.Join(tempFolder, "validIn")
-	validOutputPath := filepath.Join(tempFolder, "validOut")
-	os.MkdirAll(validOutputPath, 0755)
-
-	// Create Content
-	createFolderContent(validInputPath, false)
-	validInfo := comicinfo.New()
-	expectedFileSize := int64(889)
 
 	// Prepare Tests
 	tests := []testCase{
-		// When input dir is invalid (os.Create fails)
-		{invalidPath, validOutputPath, &validInfo, "input directory does not exist"},
-		// When export dir is invalid (os.Create fails)
-		{validInputPath, invalidPath, &validInfo, "export directory does not exist"},
-		// When comic info is nil value
-		{validInputPath, validOutputPath, nil, "empty comic info"},
-		// Normal value
-		{validInputPath, validOutputPath, &validInfo, ""},
+		{"input1", "output1", archive.NoWrap(), "output1/input1.cbz"},
+		{"input2", "output2", archive.UseDefaultWrap(), "output2/input2/input2.cbz"},
+		{"input3", "output3", archive.UseCustomWrap("abc"), "output3/abc/input3.cbz"},
 	}
 
 	// Create a new app
 	app := NewApp(assets.DefaultDb(testDB))
 	app.Startup(context.TODO())
 
+	// Test case for normal situation
 	for idx, tt := range tests {
-		errMsg := app.ExportCbzOnly(tt.inputDir, tt.exportDir, tt.comicInfo)
+		inputDir := filepath.Join(tempFolder, tt.inputBaseDir)
+		outputDir := filepath.Join(tempFolder, tt.outputBaseDir)
 
-		if tt.errMsg == "" {
-			// Check if error message is empty
-			assert.EqualValuesf(t, tt.errMsg, errMsg, "Case %d, expected empty error message but got non empty", idx)
+		// Prepare content
+		createFolderContent(inputDir, false)
+		os.MkdirAll(outputDir, 0755)
 
-			// Special Handling for Normal case
-			cbzPath := filepath.Join(tt.exportDir, "validIn.cbz")
-			stat, err := os.Stat(cbzPath)
+		// RUN test case
+		errMsg := app.exportCbz(inputDir, outputDir, &validInfo, tt.opt)
 
-			// Check file is exist & archive size is matched with expected
-			assert.EqualValuesf(t, false, os.IsNotExist(err), "Case %d, file is not generated in path=%s", idx, cbzPath)
-			assert.EqualValuesf(t, expectedFileSize, stat.Size(), "Case %d, unexpected file size for cbz", idx)
-		} else {
-			// Check error message contains
-			assert.Containsf(t, errMsg, tt.errMsg, "Case %d, unmatched error message", idx)
-		}
+		// Check if error message is empty
+		assert.EqualValuesf(t, "", errMsg, "Case %d, expected empty error message but got non empty", idx)
+
+		// Special Handling for Normal case
+		cbzPath := filepath.Join(tempFolder, tt.expectedPath)
+		stat, err := os.Stat(cbzPath)
+
+		// Check file is exist & archive size is matched with expected
+		assert.EqualValuesf(t, false, os.IsNotExist(err), "Case %d, file is not generated in path=%s", idx, cbzPath)
+		assert.EqualValuesf(t, expectedFileSize, stat.Size(), "Case %d, unexpected file size for cbz", idx)
 	}
 
 	// Close database file
 	app.DB.Close()
 }
 
-// Test `ExportCbz` function in `app`, which parameters of `isWrap` is true.
-//
-// There has some assumptions for this test:
-//  1. The content of comicInfo is always correct
-//  2. The zip file always content correct image (although this test will check its size)
-func TestExportCbzWithWrap(t *testing.T) {
+func TestExportCbzNilInfo(t *testing.T) {
 	// Temp folder creation
 	tempFolder := t.TempDir()
 
 	// Test database
-	testDB := filepath.Join(tempFolder, "test_cbz2.db")
-
-	// Prepare Test Case Struct
-	type testCase struct {
-		inputDir  string
-		exportDir string
-		comicInfo *comicinfo.ComicInfo
-		errMsg    string
-	}
-
-	// Prepare Paths
-	invalidPath := filepath.Join(tempFolder, "invalid")
-	validInputPath := filepath.Join(tempFolder, "validIn")
-	validOutputPath := filepath.Join(tempFolder, "validOut")
-	os.MkdirAll(validOutputPath, 0755)
-
-	// Create Content
-	createFolderContent(validInputPath, false)
-	validInfo := comicinfo.New()
-	expectedFileSize := int64(889)
-
-	// Prepare Tests
-	tests := []testCase{
-		// When input dir is invalid (os.Create fails)
-		{invalidPath, validOutputPath, &validInfo, "input directory does not exist"},
-		// When export dir is invalid (os.Create fails)
-		{validInputPath, invalidPath, &validInfo, "export directory does not exist"},
-		// When comic info is nil value
-		{validInputPath, validOutputPath, nil, "empty comic info"},
-		// Normal value
-		{validInputPath, validOutputPath, &validInfo, ""},
-	}
+	testDB := filepath.Join(tempFolder, "test_cbz_nil.db")
 
 	// Create a new app
 	app := NewApp(assets.DefaultDb(testDB))
 	app.Startup(context.TODO())
 
+	// Prepare content
+	inputDir := filepath.Join(tempFolder, "input")
+	outputDir := filepath.Join(tempFolder, "output")
+	createFolderContent(inputDir, false)
+	os.MkdirAll(outputDir, 0755)
+
+	// Test for nil comicinfo
+	errMsg := app.exportCbz(inputDir, outputDir, nil, archive.NoWrap())
+
+	// Check error message
+	assert.EqualValuesf(t, "empty comic info", errMsg, "Unmatched error message")
+
+	// Close database file
+	app.DB.Close()
+}
+
+func TestExportCbzErrOs(t *testing.T) {
+	// Temp folder creation
+	tempFolder := t.TempDir()
+
+	// Test database
+	testDB := filepath.Join(tempFolder, "test_cbz_os.db")
+
+	// Prepare folders
+	inputDir := filepath.Join(tempFolder, "input")
+	outputDir := filepath.Join(tempFolder, "output")
+	invalidDir := filepath.Join(tempFolder, "invalid")
+
+	// Create contents
+	createFolderContent(inputDir, false)
+	os.MkdirAll(outputDir, 0755)
+
+	// ComicInfo Content
+	validInfo := comicinfo.New()
+
+	// Create a new app
+	app := NewApp(assets.DefaultDb(testDB))
+	app.Startup(context.TODO())
+
+	// Prepare test case struct
+	type testCase struct {
+		input  string
+		output string
+		errMsg string
+	}
+
+	// Prepare Tests
+	tests := []testCase{
+		// When input dir is invalid (os.Create fails)
+		{invalidDir, outputDir, "input directory does not exist"},
+		// When export dir is invalid (os.Create fails)
+		{inputDir, invalidDir, "export directory does not exist"},
+	}
+
+	// Start Test
 	for idx, tt := range tests {
-		errMsg := app.ExportCbzWithDefaultWrap(tt.inputDir, tt.exportDir, tt.comicInfo)
+		// RUN test case
+		errMsg := app.exportCbz(tt.input, tt.output, &validInfo, archive.NoWrap())
 
-		if tt.errMsg == "" {
-			// Check if error message is empty
-			assert.EqualValuesf(t, tt.errMsg, errMsg, "Case %d, expected empty error message but got non empty", idx)
-
-			// Special Handling for Normal case
-			cbzPath := filepath.Join(tt.exportDir, "validIn", "validIn.cbz")
-			stat, err := os.Stat(cbzPath)
-
-			// Check file is exist & archive size is matched with expected
-			assert.EqualValuesf(t, false, os.IsNotExist(err), "Case %d, file is not generated in path=%s", idx, cbzPath)
-			assert.EqualValuesf(t, expectedFileSize, stat.Size(), "Case %d, unexpected file size for cbz", idx)
-		} else {
-			// Check error message contains
-			assert.Containsf(t, errMsg, tt.errMsg, "Case %d, unmatched error message", idx)
-		}
+		// Check error message contains
+		assert.Containsf(t, errMsg, tt.errMsg, "Case %d, unmatched error message", idx)
 	}
 
 	// Close database file
