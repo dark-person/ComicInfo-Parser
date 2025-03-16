@@ -4,7 +4,10 @@ import (
 	"archive/zip"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 const (
@@ -14,19 +17,13 @@ const (
 	_xmlFile  = "test.xml"
 )
 
-// Test Create Zip to destination from input folder.
-func TestCreateZipTo(t *testing.T) {
-	// Create a temp directory
-	tempDir := t.TempDir()
+func createDummyFolder(inputDir string) {
+	inputDir = strings.TrimSpace(inputDir)
 
-	// Separate two folder
-	inputDir := filepath.Join(tempDir, "input")
+	// Create folder
 	os.MkdirAll(inputDir, 0755)
 
-	outputDir := filepath.Join(tempDir, "output")
-	os.MkdirAll(outputDir, 0755)
-
-	// Create a set of file
+	// Create files
 	file1, _ := os.Create(filepath.Join(inputDir, _img1File))
 	file2, _ := os.Create(filepath.Join(inputDir, _img2File))
 	file3, _ := os.Create(filepath.Join(inputDir, _img3File))
@@ -35,49 +32,60 @@ func TestCreateZipTo(t *testing.T) {
 	defer file2.Close()
 	defer file3.Close()
 	defer file4.Close()
+}
 
-	// Start Testing Functions
-	dest, err := CreateZipTo(inputDir, outputDir)
-	if err != nil {
-		t.Error(err)
+// Test Create Zip to destination from input folder.
+func TestCreateZipTo(t *testing.T) {
+	// Create a temp directory
+	tempDir := t.TempDir()
+
+	// Prepare test case
+	type testCase struct {
+		inputDir  string
+		outputDir string
+		destZip   string
 	}
 
-	// Check Dest Filename
-	destFileName := filepath.Base(inputDir)
-	if dest != filepath.Join(outputDir, destFileName+".zip") {
-		t.Errorf("Error Destination file: %v", dest)
+	tests := []testCase{
+		{"input1", "output1", "output1/input1.zip"},
 	}
 
-	// Check Zip Content
-	reader, err := zip.OpenReader(dest)
-	if err != nil {
-		t.Error(err)
-	}
-	defer reader.Close()
+	for _, tt := range tests {
+		// Create input
+		inputDir := filepath.Join(tempDir, tt.inputDir)
+		createDummyFolder(inputDir)
 
-	list := make(map[string]int, 0)
-	for _, f := range reader.File {
-		list[f.Name] = 1
-	}
+		// Create destination
+		outputDir := filepath.Join(tempDir, tt.outputDir)
+		os.MkdirAll(outputDir, 0755)
 
-	_, exist1 := list[_xmlFile]
-	_, exist2 := list[_img1File]
-	_, exist3 := list[_img2File]
-	_, exist4 := list[_img3File]
+		// Start Testing Functions
+		dest, err := CreateZipTo(inputDir, outputDir)
+		assert.Nil(t, err, "Unexpected error")
 
-	if !exist1 {
-		t.Error("Content 1 missing in zip")
-	}
+		// Check Dest Filename
+		assert.EqualValuesf(t, dest, filepath.Join(tempDir, tt.destZip), "Error destination file.")
 
-	if !exist2 {
-		t.Error("Content 2 missing in zip")
-	}
+		// Check Zip Content
+		reader, err := zip.OpenReader(dest)
+		if err != nil {
+			t.Error(err)
+		}
+		defer reader.Close()
 
-	if !exist3 {
-		t.Error("Content 3 missing in zip")
-	}
+		list := make(map[string]int, 0)
+		for _, f := range reader.File {
+			list[f.Name] = 1
+		}
 
-	if !exist4 {
-		t.Error("Content 4 missing in zip")
+		_, exist1 := list[_xmlFile]
+		_, exist2 := list[_img1File]
+		_, exist3 := list[_img2File]
+		_, exist4 := list[_img3File]
+
+		assert.True(t, exist1, "XML missing in zip")
+		assert.True(t, exist2, "content 2 missing in zip")
+		assert.True(t, exist3, "content 3 missing in zip")
+		assert.True(t, exist4, "content 4 missing in zip")
 	}
 }
