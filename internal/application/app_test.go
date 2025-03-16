@@ -21,6 +21,8 @@ import (
 //
 // Please note that this function will try to create all necessary folders.
 func createFolderContent(tempDir string, withXml bool) {
+	tempDir = strings.TrimSpace(tempDir)
+
 	// Create folder first
 	os.MkdirAll(tempDir, 0755)
 

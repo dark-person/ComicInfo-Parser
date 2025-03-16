@@ -47,13 +47,7 @@ func TestSoftDeleteComic(t *testing.T) {
 
 		// Check if directory moved successfully
 		expectedDest := filepath.Join(tt.trashBin, filepath.Base(tt.originDir))
-
-		if _, err := os.Stat(expectedDest); os.IsNotExist(err) {
-			t.Errorf("Case %d :original directory should not exist", idx)
-		}
-
-		if _, err := os.Stat(tt.originDir); !os.IsNotExist(err) {
-			t.Errorf("Case %d :original directory should not exist", idx)
-		}
+		assert.DirExists(t, expectedDest)
+		assert.NoDirExists(t, tt.originDir)
 	}
 }
