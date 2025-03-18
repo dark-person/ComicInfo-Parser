@@ -47,9 +47,6 @@ export default function OptionFormRow({
 		value: string; // Necessary field
 	}
 
-	/** Options for react-select, which contains no options (i.e. empty). */
-	const emptyOption: MultiValue<SelectOption> = [];
-
 	/** Default option for react-select component. */
 	const defaultOptions: SelectOption[] = [
 		{ label: "hello", value: "hello" },
