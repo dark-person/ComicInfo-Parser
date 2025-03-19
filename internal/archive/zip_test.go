@@ -48,6 +48,7 @@ func TestCreateZipTo(t *testing.T) {
 
 	tests := []testCase{
 		{"input1", "output1", "output1/input1.zip"},
+		{"input2 ", "output2", "output2/input2.zip"},
 	}
 
 	for _, tt := range tests {

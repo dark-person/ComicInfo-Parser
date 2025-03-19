@@ -3,6 +3,7 @@ package archive
 import (
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/dark-person/comicinfo-parser/internal/files"
 )
@@ -72,7 +73,7 @@ func RenameZip(absPath string, opt RenameOption) error {
 	if opt.isDefaultWrap {
 		wrappedDir = filepath.Join(originalDir, name)
 	} else {
-		wrappedDir = filepath.Join(originalDir, opt.customWrapFolder)
+		wrappedDir = filepath.Join(originalDir, strings.TrimSpace(opt.customWrapFolder))
 	}
 
 	err := os.Mkdir(wrappedDir, 0755)

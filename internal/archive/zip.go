@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/dark-person/comicinfo-parser/internal/files"
 )
@@ -13,7 +14,12 @@ import (
 //
 // This function is a variant of CreateZip(), purpose to provide flexibility.
 func CreateZipTo(inputDir string, destDir string) (dest string, err error) {
-	destFileName := filepath.Base(inputDir)
+	// Prevent space include in paths
+	inputDir = strings.TrimSpace(inputDir)
+	destDir = strings.TrimSpace(destDir)
+
+	// Get destination zip filename
+	destFileName := strings.TrimSpace(filepath.Base(inputDir))
 
 	// Create temp directory
 	tmpDir, err := os.MkdirTemp("", "comicinfo-zip-*")
@@ -43,6 +49,11 @@ func CreateZipTo(inputDir string, destDir string) (dest string, err error) {
 // This function will return path of created zip file.
 // If any error occur, this function will return that error directly.
 func createArchive(inputDir, destDir, zipFilename string) (createdZip string, err error) {
+	// Ensure all input not contains spaces
+	inputDir = strings.TrimSpace(inputDir)
+	destDir = strings.TrimSpace(destDir)
+	zipFilename = strings.TrimSpace(zipFilename)
+
 	// Create ZIP File
 	f, err := os.Create(filepath.Join(destDir, zipFilename+".zip"))
 	if err != nil {
