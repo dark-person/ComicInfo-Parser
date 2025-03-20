@@ -1,19 +1,19 @@
 html {
-	background-color: var(--bs-body-bg);
-	text-align: center;
-	color: white;
+    background-color: var(--bs-body-bg);
+    text-align: center;
+    color: white;
 }
 
 body {
-	margin: 0;
-	color: white;
+    margin: 0;
+    color: white;
 }
 
 #app {
-	height: 100vh;
-	text-align: center;
+    height: 100vh;
+    text-align: center;
 }
 
 .newLine {
-	white-space: pre;
+    white-space: pre;
 }
