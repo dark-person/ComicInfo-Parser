@@ -12,6 +12,7 @@ import { AppMode } from "@/controls/AppMode";
 import { ModalControl } from "@/controls/ModalControl";
 import { defaultModalState, ModalState } from "@/controls/ModalState";
 import CreateCbzView from "@/views/CreateCbzView";
+import HelpView from "@/views/HelpView";
 
 /**
  * The main component to be displayed. It will handle all pages data & timing to display.
@@ -67,6 +68,9 @@ function App() {
             <Tabs className="mt-2 mb-3">
                 <Tab eventKey={"create"} title={"Create CBZ"}>
                     <CreateCbzView mode={createMode} setMode={setCreateMode} modalController={modalController} />
+                </Tab>
+                <Tab eventKey={"help"} title={"Help"}>
+                    <HelpView />
                 </Tab>
             </Tabs>
         </div>

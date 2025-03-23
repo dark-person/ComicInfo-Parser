@@ -9,7 +9,6 @@ import { ModalControl } from "@/controls/ModalControl";
 import { ExportMethod, SessionData } from "@/controls/SessionData";
 import ExportPanel from "@/pages/exportPanel";
 import FolderSelect from "@/pages/folderSelect";
-import HelpPanel from "@/pages/helpPanel";
 import InputPanel from "@/pages/inputPanel";
 
 // Wails
@@ -74,11 +73,6 @@ export default function CreateCbzView({ mode, setMode, modalController }: Readon
         setMode(AppMode.EXPORT);
     }
 
-    /** Show help panel in App. */
-    function showHelpPanel() {
-        setMode(AppMode.HELP);
-    }
-
     /**
      * Return to previous page.
      * Only `AppMode.INPUT_DATA` & `AppMode.EXPORT` is supported.
@@ -94,11 +88,6 @@ export default function CreateCbzView({ mode, setMode, modalController }: Readon
             default:
                 throw new Error("Invalid mode");
         }
-    }
-
-    /** Return to the home panel. In current version, it is select folder panel. */
-    function backToHomePanel() {
-        setMode(AppMode.SELECT_FOLDER);
     }
 
     /**
@@ -150,11 +139,7 @@ export default function CreateCbzView({ mode, setMode, modalController }: Readon
             {/* Area to display panel */}
             <Col>
                 {mode === AppMode.SELECT_FOLDER && (
-                    <FolderSelect
-                        handleFolder={passingFolder}
-                        showHelpPanel={showHelpPanel}
-                        modalControl={modalController}
-                    />
+                    <FolderSelect handleFolder={passingFolder} modalControl={modalController} />
                 )}
                 {mode === AppMode.INPUT_DATA && (
                     <InputPanel
@@ -176,7 +161,6 @@ export default function CreateCbzView({ mode, setMode, modalController }: Readon
                         setDeleteAfterExport={(val) => setSessionData({ ...sessionData, deleteAfterExport: val })}
                     />
                 )}
-                {mode === AppMode.HELP && <HelpPanel backToHome={backToHomePanel} />}
             </Col>
 
             {/* Use as alignment */}
