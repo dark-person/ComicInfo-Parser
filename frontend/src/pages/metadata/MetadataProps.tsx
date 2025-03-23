@@ -1,4 +1,4 @@
-import { comicinfo } from "../../../wailsjs/go/models";
+import { comicinfo } from "@wailsjs/go/models";
 
 /** The Props for Metadata Component. */
 export type MetadataProps = {

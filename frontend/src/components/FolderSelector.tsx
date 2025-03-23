@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 
-import { GetDirectory } from "../../wailsjs/go/application/App";
+import { GetDirectory } from "@wailsjs/go/application/App";
 
 type FolderSelectorProps = {
     /** ID of root element. */

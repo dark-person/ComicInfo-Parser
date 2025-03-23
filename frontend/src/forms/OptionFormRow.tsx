@@ -8,7 +8,7 @@ import Form from "react-bootstrap/Form";
 import { ActionMeta, GroupBase, MultiValue, StylesConfig } from "react-select";
 import CreatableSelect from "react-select/creatable";
 
-import { application } from "../../wailsjs/go/models";
+import { application } from "@wailsjs/go/models";
 
 /** Props for `OptionFormRow`. */
 type OptionFormRowProps = {

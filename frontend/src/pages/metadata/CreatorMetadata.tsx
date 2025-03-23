@@ -5,12 +5,12 @@ import { ChangeEvent } from "react";
 import { Form } from "react-bootstrap";
 
 // Project Specified Component
-import FormRow from "../../forms/FormRow";
-import OptionFormRow from "../../forms/OptionFormRow";
-import { MetadataProps } from "./MetadataProps";
+import FormRow from "@/forms/FormRow";
+import OptionFormRow from "@/forms/OptionFormRow";
+import { MetadataProps } from "@/pages/metadata/MetadataProps";
 
 // Wails binding
-import { GetAllPublisherInput } from "../../../wailsjs/go/application/App";
+import { GetAllPublisherInput } from "@wailsjs/go/application/App";
 
 /**
  * The interface for show/edit creator metadata.

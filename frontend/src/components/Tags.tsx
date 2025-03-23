@@ -1,5 +1,6 @@
+import "@/components/Tags.css";
+
 import { Button } from "react-bootstrap";
-import "./Tags.css";
 
 /** The props of `TagsArea` */
 type TagsAreaProps = {
