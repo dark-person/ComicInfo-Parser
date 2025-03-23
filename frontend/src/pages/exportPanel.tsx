@@ -72,7 +72,7 @@ export default function ExportPanel({
             // Set custom wrap value
             setCustomWrap(basename(originalDirectory));
         }
-    }, []);
+    }, [originalDirectory]);
 
     /**
      * Handler for click export .cbz only, export path will be the folder chosen by file chooser.
@@ -151,7 +151,7 @@ export default function ExportPanel({
     }
 
     return (
-        <div id="Export-Panel" className="mt-5">
+        <div id="Export-Panel" className="mt-2">
             {/* Main Content of this panel */}
             <h5 className="mb-4">Export to .cbz</h5>
 

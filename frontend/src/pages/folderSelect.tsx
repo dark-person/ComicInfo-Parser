@@ -54,7 +54,7 @@ export default function FolderSelect({ handleFolder, showHelpPanel, modalControl
     }
 
     return (
-        <div id="Folder-Select" className="mt-5">
+        <div id="Folder-Select" className="mt-2">
             {/* Main Content Start*/}
             <h5 className="mb-4">Select Folder to Start:</h5>
 

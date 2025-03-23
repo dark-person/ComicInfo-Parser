@@ -136,9 +136,9 @@ export default function CreateCbzView({ mode, setMode, modalController }: Readon
     }
 
     return (
-        <Row className="min-vh-100">
+        <Row>
             {/* Back Button, return to previous panel */}
-            <Col xs={1} className="mt-4">
+            <Col xs={1} className="mt-2">
                 {/* Only Allow backward when export page / input data page */}
                 {(mode === AppMode.EXPORT || mode === AppMode.INPUT_DATA) && (
                     <Button variant="secondary" onClick={backward}>

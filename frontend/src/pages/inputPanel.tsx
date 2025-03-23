@@ -69,7 +69,7 @@ export default function InputPanel({
     }
 
     return (
-        <div id="Input-Panel" className="mt-5">
+        <div id="Input-Panel" className="mt-2">
             <h5 className="mb-4">Modify ComicInfo.xml</h5>
 
             {/* Component for showing folder name (with basename only) */}

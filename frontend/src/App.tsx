@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 // React Component
 import { useState } from "react";
+import { Tab, Tabs } from "react-bootstrap";
 
 // Project Specified Component
 import { CompleteModal, ErrorModal, LoadingModal } from "@/components/modal";
@@ -63,7 +64,11 @@ function App() {
             />
 
             {/* Main Panel of this app */}
-            <CreateCbzView mode={createMode} setMode={setCreateMode} modalController={modalController} />
+            <Tabs className="mt-2 mb-3">
+                <Tab eventKey={"create"} title={"Create CBZ"}>
+                    <CreateCbzView mode={createMode} setMode={setCreateMode} modalController={modalController} />
+                </Tab>
+            </Tabs>
         </div>
     );
 }
