@@ -5,9 +5,9 @@ import { ChangeEvent } from "react";
 import { Form } from "react-bootstrap";
 
 // Project Specified Component
-import FormDateRow from "../../forms/FormDateRow";
-import FormRow from "../../forms/FormRow";
-import { MetadataProps } from "./MetadataProps";
+import FormDateRow from "@/forms/FormDateRow";
+import FormRow from "@/forms/FormRow";
+import { MetadataProps } from "@/pages/metadata/MetadataProps";
 
 /**
  * The interface for show/edit book metadata.

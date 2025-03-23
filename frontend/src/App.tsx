@@ -1,6 +1,6 @@
 // CSS Import
+import "@/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
 
 // React Component
 import { useState } from "react";
@@ -8,19 +8,19 @@ import { Col, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 
 // Project Specified Component
-import { CompleteModal, ErrorModal, LoadingModal } from "./components/modal";
-import { AppMode } from "./controls/AppMode";
-import { ModalControl } from "./controls/ModalControl";
-import { defaultModalState, ModalState } from "./controls/ModalState";
-import { ExportMethod, SessionData } from "./controls/SessionData";
-import ExportPanel from "./pages/exportPanel";
-import FolderSelect from "./pages/folderSelect";
-import HelpPanel from "./pages/helpPanel";
-import InputPanel from "./pages/inputPanel";
+import { CompleteModal, ErrorModal, LoadingModal } from "@/components/modal";
+import { AppMode } from "@/controls/AppMode";
+import { ModalControl } from "@/controls/ModalControl";
+import { defaultModalState, ModalState } from "@/controls/ModalState";
+import { ExportMethod, SessionData } from "@/controls/SessionData";
+import ExportPanel from "@/pages/exportPanel";
+import FolderSelect from "@/pages/folderSelect";
+import HelpPanel from "@/pages/helpPanel";
+import InputPanel from "@/pages/inputPanel";
 
 // Wails
-import { GetComicInfo } from "../wailsjs/go/application/App";
-import { comicinfo } from "../wailsjs/go/models";
+import { GetComicInfo } from "@wailsjs/go/application/App";
+import { comicinfo } from "@wailsjs/go/models";
 
 /**
  * The main component to be displayed. It will handle all pages data & timing to display.

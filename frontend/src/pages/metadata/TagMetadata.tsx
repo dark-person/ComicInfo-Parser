@@ -2,11 +2,11 @@
 import { Form } from "react-bootstrap";
 
 // Project Specified Component
-import OptionFormRow from "../../forms/OptionFormRow";
-import { MetadataProps } from "./MetadataProps";
+import OptionFormRow from "@/forms/OptionFormRow";
+import { MetadataProps } from "@/pages/metadata/MetadataProps";
 
 // Wails binding
-import { GetAllTagInput } from "../../../wailsjs/go/application/App";
+import { GetAllTagInput } from "@wailsjs/go/application/App";
 
 /**
  * The interface for show/edit tags metadata.

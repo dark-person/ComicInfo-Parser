@@ -4,17 +4,17 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 
 // Project Specified Component
-import FolderNameDisplay from "../components/FolderDisplay";
-import { ModalControl } from "../controls/ModalControl";
-import BookMetadata from "./metadata/BookMetadata";
-import CreatorMetadata from "./metadata/CreatorMetadata";
-import MiscMetadata from "./metadata/MiscMetadata";
-import SeriesMetadata from "./metadata/SeriesMetadata";
-import TagMetadata from "./metadata/TagMetadata";
+import FolderNameDisplay from "@/components/FolderDisplay";
+import { ModalControl } from "@/controls/ModalControl";
+import BookMetadata from "@/pages/metadata/BookMetadata";
+import CreatorMetadata from "@/pages/metadata/CreatorMetadata";
+import MiscMetadata from "@/pages/metadata/MiscMetadata";
+import SeriesMetadata from "@/pages/metadata/SeriesMetadata";
+import TagMetadata from "@/pages/metadata/TagMetadata";
 
 // Wails binding
-import { ExportXml } from "../../wailsjs/go/application/App";
-import { comicinfo } from "../../wailsjs/go/models";
+import { ExportXml } from "@wailsjs/go/application/App";
+import { comicinfo } from "@wailsjs/go/models";
 
 /** Props Interface for InputPanel */
 type InputProps = {

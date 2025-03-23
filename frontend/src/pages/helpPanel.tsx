@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 
-import CollapseCard from "../components/CollapseCard";
+import CollapseCard from "@/components/CollapseCard";
 
 /** Props Interface for FolderSelect */
 type HelpPanelProps = {

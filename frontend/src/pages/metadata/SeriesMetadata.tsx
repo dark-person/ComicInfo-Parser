@@ -5,14 +5,14 @@ import { ChangeEvent } from "react";
 import { Form } from "react-bootstrap";
 
 // Project Specified Component
-import { AgeRatingSelect, MangaSelect } from "../../components/EnumSelect";
-import FormRow from "../../forms/FormRow";
-import FormSelectRow from "../../forms/FormSelectRow";
-import OptionFormRow from "../../forms/OptionFormRow";
-import { MetadataProps } from "./MetadataProps";
+import { AgeRatingSelect, MangaSelect } from "@/components/EnumSelect";
+import FormRow from "@/forms/FormRow";
+import FormSelectRow from "@/forms/FormSelectRow";
+import OptionFormRow from "@/forms/OptionFormRow";
+import { MetadataProps } from "@/pages/metadata/MetadataProps";
 
 // Wails binding
-import { GetAllGenreInput } from "../../../wailsjs/go/application/App";
+import { GetAllGenreInput } from "@wailsjs/go/application/App";
 
 export default /** The user interface for show/edit Series MetaData. */
 function SeriesMetadata({ comicInfo, infoSetter }: Readonly<MetadataProps>) {

@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 
 // Project Specific Component
-import FolderSelector from "../components/FolderSelector";
-import { ModalControl } from "../controls/ModalControl";
+import FolderSelector from "@/components/FolderSelector";
+import { ModalControl } from "@/controls/ModalControl";
 
 // Wails
-import { GetComicFolder, QuickExportKomga } from "../../wailsjs/go/application/App";
+import { GetComicFolder, QuickExportKomga } from "@wailsjs/go/application/App";
 
 /** Props Interface for FolderSelect */
 type FolderProps = {

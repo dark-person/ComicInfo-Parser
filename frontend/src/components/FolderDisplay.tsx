@@ -4,8 +4,8 @@ import { Button, Col, InputGroup, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 
 // Project Specified Component
-import { OpenFolder } from "../../wailsjs/go/application/App";
-import { basename } from "../filename";
+import { basename } from "@/filename";
+import { OpenFolder } from "@wailsjs/go/application/App";
 
 /** Props for FolderNameDisplay. */
 type FolderNameDisplayProps = {

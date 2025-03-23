@@ -8,9 +8,11 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 // Project Component
-import { ColoredCheckBox, ColoredRadio } from "../components/ColoredFormCheck";
-import FolderSelector from "../components/FolderSelector";
-import { ModalControl } from "../controls/ModalControl";
+import { ColoredCheckBox, ColoredRadio } from "@/components/ColoredFormCheck";
+import FolderSelector from "@/components/FolderSelector";
+import { ModalControl } from "@/controls/ModalControl";
+import { ExportMethod } from "@/controls/SessionData";
+import { basename } from "@/filename";
 
 // Wails
 import {
@@ -19,10 +21,8 @@ import {
     ExportCbzWithWrap,
     GetDefaultOutputDirectory,
     RunSoftDelete,
-} from "../../wailsjs/go/application/App";
-import { comicinfo } from "../../wailsjs/go/models";
-import { ExportMethod } from "../controls/SessionData";
-import { basename } from "../filename";
+} from "@wailsjs/go/application/App";
+import { comicinfo } from "@wailsjs/go/models";
 
 /** Props Interface for FolderSelect */
 type ExportProps = {

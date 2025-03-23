@@ -1,5 +1,6 @@
 import { Form } from "react-bootstrap";
-import { comicinfo } from "../../wailsjs/go/models";
+
+import { comicinfo } from "@wailsjs/go/models";
 
 /** Props for `EnumOptions` */
 type OptionProps = {

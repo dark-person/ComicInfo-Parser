@@ -2,7 +2,7 @@
 import { Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 
-import RangeSelect from "./RangeSelect";
+import RangeSelect from "@/forms/RangeSelect";
 
 /** Props for FormDateRow */
 type FormDateRowProps = {
