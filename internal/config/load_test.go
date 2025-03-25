@@ -25,6 +25,7 @@ func TestLoadYaml(t *testing.T) {
 		{"mock/case-normal.yaml", &ProgramConfig{
 			DefaultExport:   filepath.Join(exPath, "./my-export"),
 			DefaultComicDir: filepath.Join(exPath, "./my-input"),
+			DatabasePath:    filepath.Join(exPath, "./my-data.db"),
 			TrashBin:        filepath.Join(exPath, "./.trash"),
 		}, false},
 		{"mock/case-typo1.yaml", Default(), false},
