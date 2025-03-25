@@ -11,8 +11,8 @@ import { ModalControl } from "@/controls/ModalControl";
 // Wails
 import { GetComicFolder, QuickExportKomga } from "@wailsjs/go/application/App";
 
-/** Props Interface for FolderSelect */
-type FolderProps = {
+/** Props Interface for FolderSelectPage */
+type FolderSelectPageProps = {
     /** function called when process to next step. This function is not applied to Quick Export.*/
     handleFolder: (folder: string) => void;
 
@@ -21,7 +21,7 @@ type FolderProps = {
 };
 
 /** Page for Selecting Folder to process. */
-export default function FolderSelect({ handleFolder, modalControl }: Readonly<FolderProps>) {
+export default function FolderSelectPage({ handleFolder, modalControl }: Readonly<FolderSelectPageProps>) {
     /** The Directory Absolute Path selected by User. */
     const [directory, setDirectory] = useState("");
 

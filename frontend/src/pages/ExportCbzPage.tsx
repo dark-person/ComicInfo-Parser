@@ -1,4 +1,4 @@
-import "./exportPanel.css";
+import "./ExportCbzPage.css";
 
 // React
 import { useEffect, useState } from "react";
@@ -24,8 +24,8 @@ import {
 } from "@wailsjs/go/application/App";
 import { comicinfo } from "@wailsjs/go/models";
 
-/** Props Interface for FolderSelect */
-type ExportProps = {
+/** Props Interface for ExportCbzPage */
+type ExportCbzPageProps = {
     /** The comic info content. */
     comicInfo: comicinfo.ComicInfo | undefined;
     /** The directory of original input, contains comic images. */
@@ -42,11 +42,8 @@ type ExportProps = {
     setDeleteAfterExport: (val: boolean) => void;
 };
 
-/**
- * The panel to export comic info to cbz/xml file.
- * @returns JSX Component
- */
-export default function ExportPanel({
+/** The page to export comic info to cbz/xml file. */
+export default function ExportCbzPage({
     comicInfo: info,
     originalDirectory,
     modalControl,
@@ -54,7 +51,7 @@ export default function ExportPanel({
     setExportMethod,
     deleteAfterExport,
     setDeleteAfterExport,
-}: Readonly<ExportProps>) {
+}: Readonly<ExportCbzPageProps>) {
     // Since this is the final step, could ignore the interaction with App.tsx
     const [defaultDir, setDefaultDir] = useState<string>("");
     const [exportDir, setExportDir] = useState<string>("");

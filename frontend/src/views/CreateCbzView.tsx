@@ -7,9 +7,9 @@ import Button from "react-bootstrap/Button";
 import { AppMode } from "@/controls/AppMode";
 import { ModalControl } from "@/controls/ModalControl";
 import { ExportMethod, SessionData } from "@/controls/SessionData";
-import ExportPanel from "@/pages/exportPanel";
-import FolderSelect from "@/pages/folderSelect";
-import InputPanel from "@/pages/inputPanel";
+import ExportCbzPage from "@/pages/ExportCbzPage";
+import FolderSelectPage from "@/pages/FolderSelectPage";
+import InputComicInfoPage from "@/pages/InputComicInfoPage";
 
 // Wails
 import { GetComicInfo } from "@wailsjs/go/application/App";
@@ -139,10 +139,10 @@ export default function CreateCbzView({ mode, setMode, modalController }: Readon
             {/* Area to display panel */}
             <Col>
                 {mode === AppMode.SELECT_FOLDER && (
-                    <FolderSelect handleFolder={passingFolder} modalControl={modalController} />
+                    <FolderSelectPage handleFolder={passingFolder} modalControl={modalController} />
                 )}
                 {mode === AppMode.INPUT_DATA && (
-                    <InputPanel
+                    <InputComicInfoPage
                         comicInfo={info}
                         toExport={showExportPanel}
                         infoSetter={infoSetter}
@@ -151,7 +151,7 @@ export default function CreateCbzView({ mode, setMode, modalController }: Readon
                     />
                 )}
                 {mode === AppMode.EXPORT && (
-                    <ExportPanel
+                    <ExportCbzPage
                         comicInfo={info}
                         originalDirectory={inputDir}
                         modalControl={modalController}
