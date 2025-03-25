@@ -16,15 +16,12 @@ type FolderProps = {
     /** function called when process to next step. This function is not applied to Quick Export.*/
     handleFolder: (folder: string) => void;
 
-    /** Function to called when help button clicked. */
-    showHelpPanel: () => void;
-
     /** Modal controller. */
     modalControl: ModalControl;
 };
 
 /** Page for Selecting Folder to process. */
-export default function FolderSelect({ handleFolder, showHelpPanel, modalControl }: Readonly<FolderProps>) {
+export default function FolderSelect({ handleFolder, modalControl }: Readonly<FolderProps>) {
     /** The Directory Absolute Path selected by User. */
     const [directory, setDirectory] = useState("");
 
@@ -54,7 +51,7 @@ export default function FolderSelect({ handleFolder, showHelpPanel, modalControl
     }
 
     return (
-        <div id="Folder-Select" className="mt-5">
+        <div id="Folder-Select" className="mt-2">
             {/* Main Content Start*/}
             <h5 className="mb-4">Select Folder to Start:</h5>
 
@@ -76,11 +73,6 @@ export default function FolderSelect({ handleFolder, showHelpPanel, modalControl
 
                 <Button variant="outline-info" id="btn-quick-export" onClick={handleQuickExport}>
                     Quick Export (Komga)
-                </Button>
-
-                {/* Tutorial/Instruction */}
-                <Button variant="outline-warning" id="btn-help" onClick={showHelpPanel}>
-                    Help
                 </Button>
             </div>
         </div>

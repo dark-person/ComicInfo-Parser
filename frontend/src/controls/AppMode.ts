@@ -6,6 +6,4 @@ export const enum AppMode {
     INPUT_DATA,
     /** Const, for Display page of export panel */
     EXPORT,
-    /** Const, for Display Help Page. */
-    HELP,
 }

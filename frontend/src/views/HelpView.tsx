@@ -1,16 +1,9 @@
 import { useState } from "react";
-import { Button } from "react-bootstrap";
 
 import CollapseCard from "@/components/CollapseCard";
 
-/** Props Interface for FolderSelect */
-type HelpPanelProps = {
-    /** Function for back to home page */
-    backToHome: () => void;
-};
-
 /** Page for common FAQ / Help section. */
-export default function HelpPanel({ backToHome }: Readonly<HelpPanelProps>) {
+export default function HelpView() {
     const NONE_ACTIVE = -1;
 
     /** React state for panel index that is currently active. */
@@ -30,7 +23,7 @@ export default function HelpPanel({ backToHome }: Readonly<HelpPanelProps>) {
     }
 
     return (
-        <div id="Help-Panel" className="mt-5">
+        <div id="Help-Panel" className="mt-2 mx-5">
             {/* Main Content of this panel */}
             <h5 className="mb-4">Common FAQ</h5>
 
@@ -96,11 +89,6 @@ export default function HelpPanel({ backToHome }: Readonly<HelpPanelProps>) {
                     isOpen={active === 3}
                     onClick={() => handleClick(3)}
                 />
-
-                {/** Back to Home page */}
-                <Button variant="success" id="btn-return" onClick={backToHome} className="mt-5">
-                    Back to Select Folder
-                </Button>
             </div>
         </div>
     );
