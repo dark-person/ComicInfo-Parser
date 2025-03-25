@@ -20,8 +20,15 @@ type App struct {
 	lastExportedComic string // last exported comic folder path, for soft delete purpose
 }
 
-// NewApp creates a new App application struct
-func NewApp(db *lazydb.LazyDB) *App {
+// Creare a new app with specified config.
+// This function is designed to run in production.
+func NewApp(cfg *config.ProgramConfig, db *lazydb.LazyDB) *App {
+	return &App{DB: db, cfg: cfg}
+}
+
+// Create a new app with default configuration.
+// Suggested to use in testing only.
+func NewAppWithDefaultConfig(db *lazydb.LazyDB) *App {
 	return &App{DB: db, cfg: assets.Config()}
 }
 

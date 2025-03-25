@@ -22,15 +22,27 @@ func main() {
 		panic(err)
 	}
 
+	// Load Config
+	cfg := assets.Config()
+
+	// ------------------------------------------------------
+
 	// Get database path
 	path := filepath.Join(home, assets.RootDir, assets.DatabaseFile)
 	backupDir := filepath.Join(home, assets.RootDir, assets.BackupDir)
 
+	// Replace path to create database if config specified path
+	if cfg.DatabasePath != "" {
+		path = cfg.DatabasePath
+	}
+
 	// Prepare lazydb
 	l := assets.DefaultDbWithBackup(path, backupDir)
 
+	// ------------------------------------------------------
+
 	// Create an instance of the app structure
-	app := application.NewApp(l)
+	app := application.NewApp(cfg, l)
 
 	// Create application with options
 	err = wails.Run(&options.App{
