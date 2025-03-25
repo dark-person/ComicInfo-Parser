@@ -8,9 +8,9 @@ import { Tab, Tabs } from "react-bootstrap";
 
 // Project Specified Component
 import { CompleteModal, ErrorModal, LoadingModal } from "@/components/modal";
-import { AppMode } from "@/controls/AppMode";
 import { ModalControl } from "@/controls/ModalControl";
 import { defaultModalState, ModalState } from "@/controls/ModalState";
+import { CreateCbzStatus } from "@/status/CreateCbzStatus";
 import CreateCbzView from "@/views/CreateCbzView";
 import HelpView from "@/views/HelpView";
 
@@ -22,7 +22,7 @@ import HelpView from "@/views/HelpView";
  * There has a return button at the top-left corner in this window.
  */
 function App() {
-    const [createMode, setCreateMode] = useState<AppMode>(AppMode.SELECT_FOLDER);
+    const [createMode, setCreateMode] = useState<CreateCbzStatus>(CreateCbzStatus.SELECT_FOLDER);
 
     /** Modal State to control display which dialog. */
     const [modalState, setModalState] = useState<ModalState>(defaultModalState);
@@ -38,7 +38,7 @@ function App() {
 
     /** Return to the home. In current version, it is select folder panel. */
     function backToCreateHome() {
-        setCreateMode(AppMode.SELECT_FOLDER);
+        setCreateMode(CreateCbzStatus.SELECT_FOLDER);
     }
 
     return (
