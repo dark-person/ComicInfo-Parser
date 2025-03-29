@@ -8,6 +8,7 @@ import (
 
 	"github.com/dark-person/comicinfo-parser/internal/archive"
 	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
+	"github.com/dark-person/comicinfo-parser/internal/definitions"
 	"github.com/dark-person/comicinfo-parser/internal/history"
 	"github.com/dark-person/comicinfo-parser/internal/scanner"
 	"github.com/dark-person/comicinfo-parser/internal/tagger"
@@ -87,7 +88,7 @@ func (a *App) saveToHistory(c *comicinfo.ComicInfo) error {
 	s = strings.Split(c.Genre, ",")
 	for _, item := range s {
 		values = append(values, history.HistoryVal{
-			Category: history.CategoryGenre,
+			Category: definitions.CategoryGenre,
 			Value:    item,
 		})
 	}
@@ -97,7 +98,7 @@ func (a *App) saveToHistory(c *comicinfo.ComicInfo) error {
 	s = strings.Split(c.Publisher, ",")
 	for _, item := range s {
 		values = append(values, history.HistoryVal{
-			Category: history.CategoryPublisher,
+			Category: definitions.CategoryPublisher,
 			Value:    item,
 		})
 	}
