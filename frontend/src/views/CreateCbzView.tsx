@@ -4,12 +4,12 @@ import { Col, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 
 // Project Specified Component
-import { AppMode } from "@/controls/AppMode";
 import { ModalControl } from "@/controls/ModalControl";
 import { ExportMethod, SessionData } from "@/controls/SessionData";
-import ExportPanel from "@/pages/exportPanel";
-import FolderSelect from "@/pages/folderSelect";
-import InputPanel from "@/pages/inputPanel";
+import ExportCbzPage from "@/pages/ExportCbzPage";
+import FolderSelectPage from "@/pages/FolderSelectPage";
+import InputComicInfoPage from "@/pages/InputComicInfoPage";
+import { CreateCbzStatus } from "@/status/CreateCbzStatus";
 
 // Wails
 import { GetComicInfo } from "@wailsjs/go/application/App";
@@ -17,9 +17,9 @@ import { comicinfo } from "@wailsjs/go/models";
 
 type CreateCbzViewProps = {
     /** Decide which panel will be displayed. */
-    mode: AppMode;
+    mode: CreateCbzStatus;
     /** Hooks for decide which panel will be displayed. */
-    setMode: (mode: AppMode) => void;
+    setMode: (mode: CreateCbzStatus) => void;
     /** Modal State to control display which dialog. */
     modalController: ModalControl;
 };
@@ -63,27 +63,27 @@ export default function CreateCbzView({ mode, setMode, modalController }: Readon
                 setInputDir(folder);
 
                 // Pass to another panel
-                setMode(AppMode.INPUT_DATA);
+                setMode(CreateCbzStatus.INPUT_DATA);
             }
         });
     }
 
     /** Change the panel in app to export panel. */
     function showExportPanel() {
-        setMode(AppMode.EXPORT);
+        setMode(CreateCbzStatus.EXPORT);
     }
 
     /**
      * Return to previous page.
-     * Only `AppMode.INPUT_DATA` & `AppMode.EXPORT` is supported.
+     * Only `CreateCbzStatus.INPUT_DATA` & `CreateCbzStatus.EXPORT` is supported.
      */
     function backward() {
         switch (mode) {
-            case AppMode.INPUT_DATA:
-                setMode(AppMode.SELECT_FOLDER);
+            case CreateCbzStatus.INPUT_DATA:
+                setMode(CreateCbzStatus.SELECT_FOLDER);
                 return;
-            case AppMode.EXPORT:
-                setMode(AppMode.INPUT_DATA);
+            case CreateCbzStatus.EXPORT:
+                setMode(CreateCbzStatus.INPUT_DATA);
                 return;
             default:
                 throw new Error("Invalid mode");
@@ -129,7 +129,7 @@ export default function CreateCbzView({ mode, setMode, modalController }: Readon
             {/* Back Button, return to previous panel */}
             <Col xs={1} className="mt-2">
                 {/* Only Allow backward when export page / input data page */}
-                {(mode === AppMode.EXPORT || mode === AppMode.INPUT_DATA) && (
+                {(mode === CreateCbzStatus.EXPORT || mode === CreateCbzStatus.INPUT_DATA) && (
                     <Button variant="secondary" onClick={backward}>
                         {"<"}
                     </Button>
@@ -138,11 +138,11 @@ export default function CreateCbzView({ mode, setMode, modalController }: Readon
 
             {/* Area to display panel */}
             <Col>
-                {mode === AppMode.SELECT_FOLDER && (
-                    <FolderSelect handleFolder={passingFolder} modalControl={modalController} />
+                {mode === CreateCbzStatus.SELECT_FOLDER && (
+                    <FolderSelectPage handleFolder={passingFolder} modalControl={modalController} />
                 )}
-                {mode === AppMode.INPUT_DATA && (
-                    <InputPanel
+                {mode === CreateCbzStatus.INPUT_DATA && (
+                    <InputComicInfoPage
                         comicInfo={info}
                         toExport={showExportPanel}
                         infoSetter={infoSetter}
@@ -150,8 +150,8 @@ export default function CreateCbzView({ mode, setMode, modalController }: Readon
                         modalControl={modalController}
                     />
                 )}
-                {mode === AppMode.EXPORT && (
-                    <ExportPanel
+                {mode === CreateCbzStatus.EXPORT && (
+                    <ExportCbzPage
                         comicInfo={info}
                         originalDirectory={inputDir}
                         modalControl={modalController}

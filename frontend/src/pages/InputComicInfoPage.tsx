@@ -16,8 +16,8 @@ import TagMetadata from "@/pages/metadata/TagMetadata";
 import { ExportXml } from "@wailsjs/go/application/App";
 import { comicinfo } from "@wailsjs/go/models";
 
-/** Props Interface for InputPanel */
-type InputProps = {
+/** Props Interface for InputComicInfoPage */
+type InputComicInfoPageProps = {
     /** The comic info object. Accept undefined value. */
     comicInfo: comicinfo.ComicInfo | undefined;
 
@@ -34,17 +34,14 @@ type InputProps = {
     modalControl: ModalControl;
 };
 
-/**
- * The panel for input/edit content of ComicInfo.xml
- * @returns JSX Element
- */
-export default function InputPanel({
+/** The page for input/edit content of ComicInfo.xml */
+export default function InputComicInfoPage({
     comicInfo,
     folderPath,
     toExport,
     infoSetter,
     modalControl,
-}: Readonly<InputProps>) {
+}: Readonly<InputComicInfoPageProps>) {
     /** Save current comic information to xml file. */
     function save() {
         if (folderPath === undefined) {

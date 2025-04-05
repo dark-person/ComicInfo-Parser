@@ -1,5 +1,5 @@
-/** Enum to indicate display which page in App. */
-export const enum AppMode {
+/** Enum to indicate display which page in create CBZ. */
+export const enum CreateCbzStatus {
     /** Const, for Display page of select folder */
     SELECT_FOLDER,
     /** Const, for Display page of input panel */
