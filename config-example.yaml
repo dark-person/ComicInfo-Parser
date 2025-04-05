@@ -2,5 +2,8 @@ default:
     export-folder: ./my-export
     comic-folder: ./my-input
 
+database:
+    path: "./my-data.db"
+
 trash-bin:
     path: "./.trash"

@@ -31,5 +31,6 @@ func (cfg *ProgramConfig) parse() error {
 		return err
 	}
 
-	return nil
+	cfg.DatabasePath, err = parsePath(cfg.DatabasePath)
+	return err
 }

@@ -103,17 +103,20 @@ You may found a sample of configuration file in `config-example.yaml`, and defau
 
 You should use absolute paths as possible. If folder is missing, then program will try to create for all folders.
 
-| Field                   | Type   | Usage                                                                           |
-| ----------------------- | ------ | ------------------------------------------------------------------------------- |
-| `default`               | struct | storing default values for program                                              |
-| `default.export-folder` | string | default export folder path, if empty string, then create inside input directory |
-| `default.comic-folder`  | string | default folder location when choose folder to create comicinfo                  |
-| `trash-bin`             | struct | Store trash bin definition for soft-deletion                                    |
-| `trash-bin.path`        | string | path of program trash bin, if empty string, then no soft-deletion operation     |
+| Field                   | Type   | Usage                                                          | When value is empty                                |
+| ----------------------- | ------ | -------------------------------------------------------------- | -------------------------------------------------- |
+| `default`               | struct | storing default values for program                             | N/a                                                |
+| `default.export-folder` | string | default export folder path                                     | create inside input directory                      |
+| `default.comic-folder`  | string | default folder location when choose folder to create comicinfo | Folder select UI will be empty                     |
+| `trash-bin`             | struct | Store trash bin definition for soft-deletion                   | N/a                                                |
+| `trash-bin.path`        | string | path of program trash bin                                      | no soft-deletion operation                         |
+| `database`              | struct | Database related settings                                      | N/a                                                |
+| `database.path`         | string | path of database                                               | use `{Home Directory}/comicInfo-parser/storage.db` |
 
 ## Data
 
-All data will be stored in sqlite3 database, which located at `{Home Directory}/comicInfo-parser/storage.db`.
+All data will be stored in sqlite3 database, default location is at `{Home Directory}/comicInfo-parser/storage.db`.
+User can specify database to use by config `database.path`.
 
 ### Backup
 

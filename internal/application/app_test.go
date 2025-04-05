@@ -85,7 +85,7 @@ func TestGetComicInfo(t *testing.T) {
 	}
 
 	// Create a new app
-	app := NewApp(assets.DefaultDb("test.db"))
+	app := NewAppWithDefaultConfig(assets.DefaultDb("test.db"))
 
 	// Start Test
 	for idx, tt := range tests {
