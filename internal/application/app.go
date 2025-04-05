@@ -20,7 +20,7 @@ type App struct {
 	lastExportedComic string // last exported comic folder path, for soft delete purpose
 }
 
-// Creare a new app with specified config.
+// Create a new app with specified config.
 // This function is designed to run in production.
 func NewApp(cfg *config.ProgramConfig, db *lazydb.LazyDB) *App {
 	return &App{DB: db, cfg: cfg}
