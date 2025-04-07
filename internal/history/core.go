@@ -4,6 +4,7 @@ package history
 import (
 	"fmt"
 
+	"github.com/dark-person/comicinfo-parser/internal/definitions"
 	"github.com/dark-person/lazydb"
 )
 
@@ -14,7 +15,7 @@ var (
 )
 
 // Insert value into database. This function is allowed to insert multiple values at once.
-func insertValue(db *lazydb.LazyDB, category categoryType, value ...string) error {
+func insertValue(db *lazydb.LazyDB, category definitions.CategoryType, value ...string) error {
 	// Prevent nil database
 	if db == nil {
 		return ErrDatabaseNil
@@ -42,7 +43,7 @@ func insertValue(db *lazydb.LazyDB, category categoryType, value ...string) erro
 }
 
 // Get inputted list from database, by given category.
-func getHistory(db *lazydb.LazyDB, category categoryType) ([]string, error) {
+func getHistory(db *lazydb.LazyDB, category definitions.CategoryType) ([]string, error) {
 	// Prevent nil database
 	if db == nil {
 		return []string{}, ErrDatabaseNil

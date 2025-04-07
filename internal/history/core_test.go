@@ -6,12 +6,13 @@ import (
 	"testing"
 
 	"github.com/dark-person/comicinfo-parser/internal/assets"
+	"github.com/dark-person/comicinfo-parser/internal/definitions"
 	"github.com/dark-person/lazydb"
 	"github.com/stretchr/testify/assert"
 )
 
 // Function to check how many rows in db has given category & value.
-func checkRowCount(a *lazydb.LazyDB, category categoryType, value string) (int, error) {
+func checkRowCount(a *lazydb.LazyDB, category definitions.CategoryType, value string) (int, error) {
 	// Get Inserted rows
 	rows, err := a.Query("SELECT COUNT(*) FROM list_inputted WHERE category=? AND input=?", category, value)
 	if err != nil {
@@ -70,7 +71,7 @@ func TestInsertValue(t *testing.T) {
 	// Test case
 	type testCase struct {
 		dbPath      string
-		category    categoryType
+		category    definitions.CategoryType
 		value       []string
 		wantErr     bool
 		insertedRow []int // Should have same order as `value`
@@ -149,7 +150,7 @@ func TestGetHistory(t *testing.T) {
 
 	// Prepare test case
 	type testCase struct {
-		category categoryType
+		category definitions.CategoryType
 		result   []string
 		wantErr  bool
 	}
@@ -178,7 +179,7 @@ func TestGetHistoryNilDB(t *testing.T) {
 
 	// Prepare test case
 	type testCase struct {
-		category categoryType
+		category definitions.CategoryType
 		result   []string
 		wantErr  bool
 	}
