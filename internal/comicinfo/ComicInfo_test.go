@@ -61,7 +61,7 @@ func TestAddTags(t *testing.T) {
 		tt.c.AddTags(tt.tags...)
 
 		// Validate valid
-		assert.EqualValuesf(t, tt.c.Tags, tt.wantedTags, "Case %d: not expected value.", idx)
+		assert.EqualValuesf(t, tt.wantedTags, tt.c.Tags, "Case %d: not expected value.", idx)
 	}
 }
 

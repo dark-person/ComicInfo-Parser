@@ -2,7 +2,6 @@ package comicinfo
 
 import (
 	"encoding/xml"
-	"strings"
 )
 
 // Schema Version of Current ComicInfo Structure
@@ -72,19 +71,7 @@ type ComicInfo struct {
 // Add Tags to the comic info container.
 // This function will handle the comma separation automatically.
 func (c *ComicInfo) AddTags(tags ...string) {
-	original := strings.Split(c.Tags, ",")
-	new := append(original, tags...)
-
-	temp := make([]string, 0)
-	for _, tag := range new {
-		// Prevent Empty Strings
-		if strings.TrimSpace(tag) == "" {
-			continue
-		}
-		temp = append(temp, tag)
-	}
-
-	c.Tags = strings.Join(temp, ",")
+	c.Tags = AddValue(c.Tags, tags...)
 }
 
 // The Go Struct Version for ComicPageInfo, used to store page information.
