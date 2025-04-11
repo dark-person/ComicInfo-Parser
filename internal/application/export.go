@@ -103,6 +103,16 @@ func (a *App) saveToHistory(c *comicinfo.ComicInfo) error {
 		})
 	}
 
+	// ----------- Translator ----------------
+	// Split the translator into slice of string by comma
+	s = strings.Split(c.Translator, ",")
+	for _, item := range s {
+		values = append(values, history.HistoryVal{
+			Category: definitions.CategoryTranslator,
+			Value:    item,
+		})
+	}
+
 	// ----------- INSERT ----------------
 	return history.InsertMultiple(a.DB, values...)
 }
