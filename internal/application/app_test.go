@@ -87,6 +87,13 @@ func TestGetComicInfo(t *testing.T) {
 	// Create a new app
 	app := NewAppWithDefaultConfig(assets.DefaultDb("test.db"))
 
+	// Connect to database
+	app.DB.Connect()
+	defer func() {
+		app.DB.Close()
+		os.Remove("test.db")
+	}()
+
 	// Start Test
 	for idx, tt := range tests {
 		temp := app.GetComicInfo(tt.folder)
