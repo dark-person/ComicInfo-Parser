@@ -1,7 +1,12 @@
 package application
 
 import (
+	"fmt"
+	"path/filepath"
+
+	"github.com/dark-person/comicinfo-parser/internal/autofill"
 	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
+	"github.com/dark-person/comicinfo-parser/internal/definitions"
 	"github.com/dark-person/comicinfo-parser/internal/scanner"
 )
 
@@ -47,6 +52,26 @@ func (a *App) GetComicInfo(folder string) ComicInfoResponse {
 			ErrorMessage: err.Error(),
 		}
 	}
+
+	// Autofill by file base name
+	r := autofill.New(a.DB)
+	result, err := r.Run(filepath.Base(absPath))
+
+	// Consider as acceptable error
+	if err != nil {
+		fmt.Println(err)
+
+		return ComicInfoResponse{
+			ComicInfo:    c,
+			ErrorMessage: "",
+		}
+	}
+
+	// Use autofill result
+	c.AddTags(result.Tags...)
+	c.AddGenre(result.Inputted[definitions.CategoryGenre]...)
+	c.AddPublisher(result.Inputted[definitions.CategoryPublisher]...)
+	c.AddTranslator(result.Inputted[definitions.CategoryTranslator]...)
 
 	// Return result
 	return ComicInfoResponse{
