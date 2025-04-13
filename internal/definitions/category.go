@@ -9,3 +9,8 @@ const (
 	CategoryPublisher                          // Database value for Publisher.
 	CategoryTranslator                         // Database value for Translator.
 )
+
+// Return a slices of category type.
+func Categories() []CategoryType {
+	return []CategoryType{CategoryGenre, CategoryPublisher, CategoryTranslator}
+}
