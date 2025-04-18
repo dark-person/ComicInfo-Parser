@@ -68,12 +68,6 @@ type ComicInfo struct {
 	GTIN                string          `xml:"GTIN,omitempty" json:"GTIN"`
 }
 
-// Add Tags to the comic info container.
-// This function will handle the comma separation automatically.
-func (c *ComicInfo) AddTags(tags ...string) {
-	c.Tags = AddValue(c.Tags, tags...)
-}
-
 // The Go Struct Version for ComicPageInfo, used to store page information.
 type ComicPageInfo struct {
 	XMLName xml.Name `xml:"Page"`

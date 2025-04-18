@@ -48,6 +48,20 @@ More field will be added in near future.
 
 <img src="screenshots/select_ui_demo.gif" width="75%" height="75%">
 
+### Auto fill values
+
+Each time when generate comicinfo file, program will try to auto fill some values depends on folder name of selected folder.
+
+Folder name will be split to some keywords by space characters, and only fill value when keywords is same with inputted values in local database .
+
+Currently, this feature support below fields:
+
+-   `Genre`
+-   `Publisher`
+-   `Tags`
+
+More field will be added in near future.
+
 ### Option to Export ComicInfo
 
 After preview & press button to export, User can defined export folder, and export in following options:
