@@ -14,6 +14,12 @@ The package to convert image directory to `.zip` and `.cbz` file.
 
 Package to control database & schema, and some fixed environment constants.
 
+## Autofill
+
+Package to control autofill behavior for comicinfo, based on database record and bookname.
+
+Bookname will be separate to multiple keyword by space, while database store user inputted record.
+
 ## comicinfo
 
 The [ComicInfo.xml](https://anansi-project.github.io/docs/comicinfo/documentation) Structure in `Go`, Converted from `ComicInfo.xsd`.
