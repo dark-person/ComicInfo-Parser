@@ -101,10 +101,6 @@ func ScanBooks(folderPath string) (*comicinfo.ComicInfo, error) {
 		c.AddTags(market)
 	}
 
-	// Add Special Tags
-	tags := parser.GetSpecialTags(folderName)
-	c.AddTags(tags...)
-
 	// Get Pages
 	pages, err := GetPageInfo(folderPath)
 
