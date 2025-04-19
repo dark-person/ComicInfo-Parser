@@ -7,7 +7,7 @@ type FormSelectRowProps = {
     /** the title/label of this input group */
     title: string;
     /** The JSX.Element of `<select>`. */
-    selectElement: JSX.Element;
+    selectElement: React.JSX.Element;
 };
 
 /**
