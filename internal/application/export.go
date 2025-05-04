@@ -255,7 +255,7 @@ func (a *App) RunSoftDelete() (errMsg string) {
 	}
 
 	// Ensure soft delete is allowed
-	trashBin := a.cfg.TrashBin
+	trashBin := a.cfg.TrashBin.Path
 	if trashBin == "" {
 		return "soft delete is not allowed"
 	}

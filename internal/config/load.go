@@ -29,7 +29,7 @@ func LoadYaml(path string) (*ProgramConfig, error) {
 
 	// Unmarshal to struct
 	var out ProgramConfig
-	err = k.UnmarshalWithConf("", &out, koanf.UnmarshalConf{Tag: "koanf", FlatPaths: true})
+	err = k.UnmarshalWithConf("", &out, koanf.UnmarshalConf{Tag: "koanf"})
 	if err != nil {
 		return Default(), err
 	}

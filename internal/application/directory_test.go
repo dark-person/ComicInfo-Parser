@@ -41,7 +41,7 @@ func TestGetDefaultOutputDirectory(t *testing.T) {
 
 		// Plug exported directory to dummy app
 		if tt.configExportDir != "" {
-			a.cfg.DefaultExport, _ = filepath.Abs(tt.configExportDir)
+			a.cfg.Folder.ExportDir, _ = filepath.Abs(tt.configExportDir)
 		}
 
 		// Run function
