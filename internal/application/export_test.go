@@ -322,7 +322,7 @@ func TestSoftDelete(t *testing.T) {
 		}
 
 		if tt.hasTrashBin {
-			app.cfg.TrashBin = filepath.Join(tempFolder, "trash")
+			app.cfg.TrashBin.Path = filepath.Join(tempFolder, "trash")
 		}
 
 		// Run function

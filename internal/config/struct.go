@@ -4,18 +4,39 @@ package config
 
 // Config for this program.
 type ProgramConfig struct {
-	DefaultComicDir string `koanf:"default.comic-folder"`  // Default input directory, all folder select dialog will start from here
-	DefaultExport   string `koanf:"default.export-folder"` // Default export folder, apply to both quick & standard
-	DatabasePath    string `koanf:"database.path"`         // Database path, empty string imply use default path instead
-	TrashBin        string `koanf:"trash-bin.path"`        // Trash bin location, empty string implment no trash bin defined
+	Folder   folderConfig   `koanf:"default"`   // Config setting for folders
+	Database databaseConfig `koanf:"database"`  // Config for database to use
+	TrashBin trashBinConfig `koanf:"trash-bin"` // Config of trash bin usage
+}
+
+// Config for folder to be used.
+type folderConfig struct {
+	ComicDir  string `koanf:"comic-folder"`  // Default input directory, all folder select dialog will start from here
+	ExportDir string `koanf:"export-folder"` // Default export folder, apply to both quick & standard
+}
+
+// Config for database setting.
+type databaseConfig struct {
+	Path string `koanf:"path"` // Database path, empty string imply use default path instead
+}
+
+// Config for trash bin location.
+type trashBinConfig struct {
+	Path string `koanf:"path"` // Trash bin location, empty string implment no trash bin defined
 }
 
 // Default config struct for this program.
 func Default() *ProgramConfig {
 	return &ProgramConfig{
-		DefaultComicDir: "", // Indicate use wails default directory
-		DefaultExport:   "", // Indicate input folder is used
-		DatabasePath:    "", // Indicate default database location is used
-		TrashBin:        "", // No trash bin location defined
+		Folder: folderConfig{
+			ComicDir:  "", // Indicate use wails default directory
+			ExportDir: "", // Indicate input folder is used
+		},
+		Database: databaseConfig{
+			Path: "", // Indicate default database location is used
+		},
+		TrashBin: trashBinConfig{
+			Path: "", // No trash bin location defined
+		},
 	}
 }

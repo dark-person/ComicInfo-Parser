@@ -23,10 +23,16 @@ func TestLoadYaml(t *testing.T) {
 
 	tests := []testCase{
 		{"mock/case-normal.yaml", &ProgramConfig{
-			DefaultExport:   filepath.Join(exPath, "./my-export"),
-			DefaultComicDir: filepath.Join(exPath, "./my-input"),
-			DatabasePath:    filepath.Join(exPath, "./my-data.db"),
-			TrashBin:        filepath.Join(exPath, "./.trash"),
+			Folder: folderConfig{
+				ExportDir: filepath.Join(exPath, "./my-export"),
+				ComicDir:  filepath.Join(exPath, "./my-input"),
+			},
+			Database: databaseConfig{
+				Path: filepath.Join(exPath, "./my-data.db"),
+			},
+			TrashBin: trashBinConfig{
+				Path: filepath.Join(exPath, "./.trash"),
+			},
 		}, false},
 		{"mock/case-typo1.yaml", Default(), false},
 		{"mock/case-typo2.yaml", Default(), false},

@@ -32,8 +32,8 @@ func main() {
 	backupDir := filepath.Join(home, assets.RootDir, assets.BackupDir)
 
 	// Replace path to create database if config specified path
-	if cfg.DatabasePath != "" {
-		path = cfg.DatabasePath
+	if cfg.Database.Path != "" {
+		path = cfg.Database.Path
 	}
 
 	// Prepare lazydb
