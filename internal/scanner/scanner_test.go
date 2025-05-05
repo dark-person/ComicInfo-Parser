@@ -119,7 +119,11 @@ func TestScanBooks(t *testing.T) {
 		got, err := ScanBooks(tt.folderPath)
 
 		// Error Checking
-		assert.EqualValuesf(t, tt.wantErr, err != nil, "Case %d: unexpected error result: %v", idx, err)
+		if tt.wantErr {
+			assert.Errorf(t, err, "Case %d: Expected error, but no error return.", idx)
+		} else {
+			assert.NoErrorf(t, err, "Case %d: Unwanted error.", idx)
+		}
 
 		// Value checking
 		assert.EqualValuesf(t, tt.want, got, "Case %d: Not equal comicInfo", idx)

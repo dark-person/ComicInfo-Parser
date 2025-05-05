@@ -69,11 +69,14 @@ func TestInsertMultiple(t *testing.T) {
 		// Perform function
 		err = InsertMultiple(db, tt.values...)
 
-		// Asset no error occur
-		assert.EqualValuesf(t, tt.wantErr, err != nil, "Case %d: Expected has error=%t, got %t", idx, tt.wantErr, err != nil)
+		// If error expected, check error and contine test as no value need to check
 		if tt.wantErr {
+			assert.Errorf(t, err, "Case %d: Expected error, but return nil", idx)
 			continue
 		}
+
+		// Asset no error occur
+		assert.NoErrorf(t, err, "Case %d: Unwanted error.", idx)
 
 		// Asset value has inserted
 		for i, val := range tt.values {

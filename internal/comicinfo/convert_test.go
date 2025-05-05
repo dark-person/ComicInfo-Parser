@@ -152,7 +152,11 @@ func TestLoad(t *testing.T) {
 		got, err := Load(tt.path)
 
 		// Check error is wanted
-		assert.Equalf(t, err != nil, tt.wantErr, "Case %d: Expected has any error: %v, but %v", idx, tt.wantErr, err)
+		if tt.wantErr {
+			assert.Errorf(t, err, "Case %d: Expected error, but no error return.", idx)
+		} else {
+			assert.NoErrorf(t, err, "Case %d: Unwanted error.", idx)
+		}
 
 		// Check comic info value
 		assert.EqualValues(t, got, tt.want, "Case %d: values not equals", idx)
@@ -188,7 +192,11 @@ func TestSave(t *testing.T) {
 		err := Save(tt.info, tt.path)
 
 		// Check error is expected
-		assert.Equalf(t, err != nil, tt.wantErr, "Case %d: Expected has any error: %v, but %v", idx, tt.wantErr, err)
+		if tt.wantErr {
+			assert.Errorf(t, err, "Case %d: Expected error, but no error return.", idx)
+		} else {
+			assert.NoErrorf(t, err, "Case %d: Unwanted error.", idx)
+		}
 
 		// Early return if nothing is expected to compare
 		if tt.wantedPath == PATH_NO_COMPARE {

@@ -119,11 +119,14 @@ func TestInsertValue(t *testing.T) {
 		// Perform function
 		err = insertValue(db, tt.category, tt.value...)
 
-		// Asset no error occur
-		assert.EqualValuesf(t, tt.wantErr, err != nil, "Case %d: Expected has error=%t, got %t", idx, tt.wantErr, err != nil)
+		// If error expected, check error and contine test as no value need to check
 		if tt.wantErr {
+			assert.Errorf(t, err, "Case %d: Expected error, but return nil", idx)
 			continue
 		}
+
+		// Asset no error occur
+		assert.NoErrorf(t, err, "Case %d: Unwanted error.", idx)
 
 		// Asset value has inserted
 		for i, val := range tt.value {
@@ -162,11 +165,15 @@ func TestGetHistory(t *testing.T) {
 	}
 
 	// Start Testing
-	for _, tt := range tests {
+	for idx, tt := range tests {
 		results, err := getHistory(a, tt.category)
 
 		// Check error
-		assert.EqualValuesf(t, tt.wantErr, err != nil, "expected error=%v, but error=%v", tt.wantErr, err)
+		if tt.wantErr {
+			assert.Errorf(t, err, "Case %d: expected error, but nil returned", idx)
+		} else {
+			assert.NoErrorf(t, err, "Case %d: Unwanted error", idx)
+		}
 
 		// Check values
 		assert.EqualValuesf(t, tt.result, results, "unexpected output, expect=%v, got=%v", tt.result, results)
@@ -189,14 +196,17 @@ func TestGetHistoryNilDB(t *testing.T) {
 	}
 
 	// Start Testing
-	for _, tt := range tests {
+	for idx, tt := range tests {
 		results, err := getHistory(a, tt.category)
 
-		// Check error
-		assert.EqualValuesf(t, tt.wantErr, err != nil, "expected error=%v, but error=%v", tt.wantErr, err)
+		// If want error, then check error and skip value checking
 		if tt.wantErr {
+			assert.Errorf(t, err, "Case %d: Expected error, but nil returned.", idx)
 			continue
 		}
+
+		// Check error
+		assert.NoErrorf(t, err, "Case %d: Unwanted error.", idx)
 
 		// Check values
 		assert.EqualValuesf(t, tt.result, results, "unexpected output, expect=%v, got=%v", tt.result, results)

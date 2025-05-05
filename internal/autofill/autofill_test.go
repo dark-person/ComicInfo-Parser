@@ -93,7 +93,7 @@ func TestAutoFillRun(t *testing.T) {
 	for idx, tt := range tests {
 		info, err := r.Run(tt.bookname)
 		if err != nil {
-			assert.Nilf(t, err, "No error should be generate in case %d", idx)
+			assert.NoErrorf(t, err, "No error should be generate in case %d", idx)
 			continue
 		}
 

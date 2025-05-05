@@ -125,11 +125,14 @@ func TestAddTag(t *testing.T) {
 		// Perform function
 		err = AddTag(db, tt.tags...)
 
-		// Asset no error occur
-		assert.EqualValuesf(t, tt.wantErr, err != nil, "Case %d: Expected has error=%t, got %t", idx, tt.wantErr, err != nil)
+		// If error expected, check error and contine test as no value need to check
 		if tt.wantErr {
+			assert.Errorf(t, err, "Case %d: Expected error, but return nil", idx)
 			continue
 		}
+
+		// Asset no error occur
+		assert.NoErrorf(t, err, "Case %d: Unwanted error.", idx)
 
 		// Asset value has inserted
 		for i, val := range tt.tags {
@@ -193,7 +196,11 @@ func TestGetAllTags(t *testing.T) {
 		results, err := GetAllTags(tt.db)
 
 		// Check error
-		assert.EqualValuesf(t, tt.wantErr, err != nil, "case %d: expected error=%v, but error=%v", idx, tt.wantErr, err)
+		if tt.wantErr {
+			assert.Errorf(t, err, "Case %d: Expected error, but no error return.", idx)
+		} else {
+			assert.NoErrorf(t, err, "Case %d: Unwanted error.", idx)
+		}
 
 		// Check values
 		assert.EqualValuesf(t, tt.results, results, "case %d: unexpected output, expect=%v, got=%v", idx, tt.results, results)
