@@ -329,9 +329,9 @@ func TestSoftDelete(t *testing.T) {
 		msg := app.RunSoftDelete()
 
 		if tt.wantErr {
-			assert.NotEmpty(t, msg, "Case %d should be not empty", idx)
+			assert.NotEmptyf(t, msg, "Case %d should be not empty", idx)
 		} else {
-			assert.Empty(t, msg, "Case %d should be empty", idx)
+			assert.Emptyf(t, msg, "Case %d should be empty", idx)
 		}
 	}
 

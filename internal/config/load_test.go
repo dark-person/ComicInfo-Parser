@@ -45,14 +45,14 @@ func TestLoadYaml(t *testing.T) {
 		c, err := LoadYaml(tt.path)
 
 		if tt.wantErr {
-			assert.NotNilf(t, err, "Error should be returned in case %d, but return nil", idx)
+			assert.Errorf(t, err, "Error should be returned in case %d, but return nil", idx)
 
 			// Ensure default is returned
 			assert.EqualValuesf(t, Default(), c, "Incorrect values in case %d, should be default config", idx)
 
 		} else {
 			assert.EqualValuesf(t, tt.want, c, "Incorrect values in case %d", idx)
-			assert.Nilf(t, err, "Unexpected error in case %d", idx)
+			assert.NoErrorf(t, err, "Unexpected error in case %d", idx)
 		}
 	}
 }

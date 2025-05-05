@@ -38,12 +38,12 @@ func TestSoftDeleteComic(t *testing.T) {
 		err := SoftDeleteComic(tt.originDir, tt.trashBin)
 
 		if tt.wantErr {
-			assert.Error(t, err, "Case %d : SoftDelete should return an error", idx)
+			assert.Errorf(t, err, "Case %d : SoftDelete should return an error", idx)
 			continue
 		}
 
 		// Check no error and directory
-		assert.NoError(t, err, "Case %d : SoftDelete should not return an error", idx)
+		assert.NoErrorf(t, err, "Case %d : SoftDelete should not return an error", idx)
 
 		// Check if directory moved successfully
 		expectedDest := filepath.Join(tt.trashBin, filepath.Base(tt.originDir))

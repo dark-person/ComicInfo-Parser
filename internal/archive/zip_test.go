@@ -62,7 +62,7 @@ func TestCreateZipTo(t *testing.T) {
 
 		// Start Testing Functions
 		dest, err := CreateZipTo(inputDir, outputDir)
-		assert.Nil(t, err, "Unexpected error")
+		assert.NoError(t, err, "Unexpected error when create zip")
 
 		// Check Dest Filename
 		assert.EqualValuesf(t, dest, filepath.Join(tempDir, tt.destZip), "Error destination file.")
