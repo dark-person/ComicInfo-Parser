@@ -1,4 +1,4 @@
-package history
+package store
 
 import "github.com/dark-person/comicinfo-parser/internal/definitions"
 

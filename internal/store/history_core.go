@@ -1,17 +1,9 @@
 // Package for saving user inputted values to database.
-package history
+package store
 
 import (
-	"fmt"
-
 	"github.com/dark-person/comicinfo-parser/internal/definitions"
 	"github.com/dark-person/lazydb"
-)
-
-// Error blocks
-var (
-	// Error when trying to use nil database in this module.
-	ErrDatabaseNil = fmt.Errorf("Database cannot be nil")
 )
 
 // Insert value into database. This function is allowed to insert multiple values at once.

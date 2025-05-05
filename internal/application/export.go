@@ -10,8 +10,7 @@ import (
 	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
 	"github.com/dark-person/comicinfo-parser/internal/dataprovider/scanner"
 	"github.com/dark-person/comicinfo-parser/internal/definitions"
-	"github.com/dark-person/comicinfo-parser/internal/history"
-	"github.com/dark-person/comicinfo-parser/internal/tagger"
+	"github.com/dark-person/comicinfo-parser/internal/store"
 	"github.com/sirupsen/logrus"
 )
 
@@ -74,20 +73,20 @@ func (a *App) saveToHistory(c *comicinfo.ComicInfo) error {
 	// ==================== Tags ====================
 	// Split the tags into slice of string by comma
 	s := strings.Split(c.Tags, ",")
-	err := tagger.AddTag(a.DB, s...)
+	err := store.AddTag(a.DB, s...)
 
 	if err != nil {
 		return err
 	}
 
 	// ========== For values supported by history pkg ============
-	values := make([]history.HistoryVal, 0)
+	values := make([]store.HistoryVal, 0)
 
 	//  ------------- Genre ----------------
 	// Split the genre into slice of string by comma
 	s = strings.Split(c.Genre, ",")
 	for _, item := range s {
-		values = append(values, history.HistoryVal{
+		values = append(values, store.HistoryVal{
 			Category: definitions.CategoryGenre,
 			Value:    item,
 		})
@@ -97,7 +96,7 @@ func (a *App) saveToHistory(c *comicinfo.ComicInfo) error {
 	// Split the publisher into slice of string by comma
 	s = strings.Split(c.Publisher, ",")
 	for _, item := range s {
-		values = append(values, history.HistoryVal{
+		values = append(values, store.HistoryVal{
 			Category: definitions.CategoryPublisher,
 			Value:    item,
 		})
@@ -107,14 +106,14 @@ func (a *App) saveToHistory(c *comicinfo.ComicInfo) error {
 	// Split the translator into slice of string by comma
 	s = strings.Split(c.Translator, ",")
 	for _, item := range s {
-		values = append(values, history.HistoryVal{
+		values = append(values, store.HistoryVal{
 			Category: definitions.CategoryTranslator,
 			Value:    item,
 		})
 	}
 
 	// ----------- INSERT ----------------
-	return history.InsertMultiple(a.DB, values...)
+	return store.InsertMultiple(a.DB, values...)
 }
 
 // Export the ComicInfo struct to XML file.

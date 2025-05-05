@@ -1,16 +1,8 @@
 // Package for manipulating tags in comic info.
-package tagger
+package store
 
 import (
-	"fmt"
-
 	"github.com/dark-person/lazydb"
-)
-
-// Error blocks
-var (
-	// Error when trying to use nil database in this module.
-	ErrDatabaseNil = fmt.Errorf("Database cannot be nil")
 )
 
 // Add tags to given LazyDB. This function support multiple tags insert at once.
