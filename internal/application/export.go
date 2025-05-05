@@ -8,9 +8,9 @@ import (
 
 	"github.com/dark-person/comicinfo-parser/internal/archive"
 	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
+	"github.com/dark-person/comicinfo-parser/internal/dataprovider/scanner"
 	"github.com/dark-person/comicinfo-parser/internal/definitions"
 	"github.com/dark-person/comicinfo-parser/internal/history"
-	"github.com/dark-person/comicinfo-parser/internal/scanner"
 	"github.com/dark-person/comicinfo-parser/internal/tagger"
 	"github.com/sirupsen/logrus"
 )
