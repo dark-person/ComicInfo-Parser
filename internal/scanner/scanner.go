@@ -8,7 +8,6 @@ import (
 
 	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
 	"github.com/dark-person/comicinfo-parser/internal/files"
-	"github.com/dark-person/comicinfo-parser/internal/parser"
 )
 
 // Check if image file extension is supported.
@@ -92,7 +91,7 @@ func ScanBooks(folderPath string) (*comicinfo.ComicInfo, error) {
 
 	// Parse Folder to info
 	folderName := filepath.Base(folderPath)
-	market, author, bookName := parser.ParseFolder(folderName)
+	market, author, bookName := ParseFolder(folderName)
 	c.Title = bookName
 	c.Writer = author
 	c.Manga = "Yes"
