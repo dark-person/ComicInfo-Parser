@@ -27,6 +27,9 @@ func TestLoadYaml(t *testing.T) {
 				ExportDir: filepath.Join(exPath, "./my-export"),
 				ComicDir:  filepath.Join(exPath, "./my-input"),
 			},
+			Metadata: metadataConfig{
+				Number: "1",
+			},
 			Database: databaseConfig{
 				Path: filepath.Join(exPath, "./my-data.db"),
 			},

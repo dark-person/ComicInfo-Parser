@@ -2,6 +2,9 @@ default:
     export-folder:
     comic-folder:
 
+metadata:
+    default-number:
+
 database:
     path:
 
