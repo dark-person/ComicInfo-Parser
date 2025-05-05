@@ -1,9 +1,6 @@
-// Package for manipulating tags in comic info.
 package store
 
-import (
-	"github.com/dark-person/lazydb"
-)
+import "github.com/dark-person/lazydb"
 
 // Add tags to given LazyDB. This function support multiple tags insert at once.
 //

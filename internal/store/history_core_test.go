@@ -1,4 +1,3 @@
-// Package for saving user inputted values to database.
 package store
 
 import (

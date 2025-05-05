@@ -1,4 +1,3 @@
-// Package for manipulating tags in comic info.
 package store
 
 import (
