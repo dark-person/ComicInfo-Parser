@@ -91,7 +91,7 @@ func ScanBooks(folderPath string) (*comicinfo.ComicInfo, error) {
 
 	// Parse Folder to info
 	folderName := filepath.Base(folderPath)
-	market, author, bookName := ParseFolder(folderName)
+	market, author, bookName := parseFolder(folderName)
 	c.Title = bookName
 	c.Writer = author
 	c.Manga = "Yes"

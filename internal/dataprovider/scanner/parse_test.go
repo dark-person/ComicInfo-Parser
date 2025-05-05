@@ -33,7 +33,7 @@ func TestParseFolder(t *testing.T) {
 
 	// Run Test Case
 	for idx, tt := range tests {
-		gotMarket, gotAuthor, gotBookName := ParseFolder(tt.foldername)
+		gotMarket, gotAuthor, gotBookName := parseFolder(tt.foldername)
 
 		// Compare value
 		assert.EqualValuesf(t, tt.wantBookName, gotBookName, "Case %d : Book name is not equal.", idx)

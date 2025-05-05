@@ -28,7 +28,7 @@ func New(db *lazydb.LazyDB) *AutoFillRunner {
 // this will help quicker checking on tag/value by SQL.
 func (r *AutoFillRunner) parseToDB(bookname string) (err error) {
 	// Splits words
-	words := SplitKeywords(bookname)
+	words := splitKeywords(bookname)
 
 	// Create temporary table
 	_, err = r.db.Exec("CREATE TABLE _tmp_autofill (word text)")

@@ -9,7 +9,7 @@ import (
 // The folder name MUST be base folder name, i.e. not include its parent directory
 //
 // Normally the folder name will be (C102) [Author] Name....
-func ParseFolder(foldername string) (market, author, bookName string) {
+func parseFolder(foldername string) (market, author, bookName string) {
 	if foldername[0:1] == "(" {
 		// Contains C102 e.g
 		re := regexp.MustCompile(`\(([^\)]*)\)?\s?\[([^\]]*)\]{1}(.*)`)
