@@ -1,11 +1,11 @@
-package autofill
+package historyprov
 
 import (
 	"os"
-	"slices"
 	"testing"
 
 	"github.com/dark-person/comicinfo-parser/internal/assets"
+	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
 	"github.com/dark-person/comicinfo-parser/internal/definitions"
 	"github.com/dark-person/lazydb"
 	"github.com/stretchr/testify/assert"
@@ -54,14 +54,11 @@ func TestAutoFillRun(t *testing.T) {
 	// Prepare database
 	db := prepareDB()
 
-	// Init runner
-	r := New(db)
-
 	type testResult struct {
-		genre      []string
-		publisher  []string
-		translator []string
-		tags       []string
+		genre      string
+		publisher  string
+		translator string
+		tags       string
 	}
 
 	// Test case
@@ -73,40 +70,34 @@ func TestAutoFillRun(t *testing.T) {
 	// Start test
 	tests := []testCase{
 		{
-			"Some Bookname (abc) [Test-Translator] [Test-Translator2] [ghi]",
-			testResult{
-				[]string{},
-				[]string{},
-				[]string{"Test-Translator"},
-				[]string{"abc", "ghi"},
-			}},
+			"Some Bookname (abc) [Test-Translator] [Test-Translator2] [def]",
+			testResult{"", "", "Test-Translator", "abc,def"}},
 		{
 			"(ghi) Another Bookname 2 (abc) [Test-Genre] [Test-Publisher] [Test-TranslatorXTest-Translator2] [invalid] [20240123]",
-			testResult{
-				[]string{"Test-Genre"},
-				[]string{"Test-Publisher"},
-				[]string{},
-				[]string{"abc", "ghi"},
-			}},
+			testResult{"Test-Genre", "Test-Publisher", "", "abc,ghi"},
+		},
 	}
 
+	var err error
 	for idx, tt := range tests {
-		info, err := r.Run(tt.bookname)
+		// Init runner
+		prov := New(db, tt.bookname)
+
+		// Prepare new comicinfo
+		temp := comicinfo.New()
+		info := &temp
+
+		// Run provider
+		info, err = prov.Fill(info)
 		if err != nil {
 			assert.NoErrorf(t, err, "No error should be generate in case %d", idx)
 			continue
 		}
 
-		// Sort values for easier testing
-		slices.Sort(info.Inputted[definitions.CategoryGenre])
-		slices.Sort(info.Inputted[definitions.CategoryPublisher])
-		slices.Sort(info.Inputted[definitions.CategoryTranslator])
-		slices.Sort(info.Tags)
-
-		// Compare
-		assert.EqualValuesf(t, tt.want.genre, info.Inputted[definitions.CategoryGenre], "unmatched genre value in case %d", idx)
-		assert.EqualValuesf(t, tt.want.publisher, info.Inputted[definitions.CategoryPublisher], "unmatched publisher value in case %d", idx)
-		assert.EqualValuesf(t, tt.want.translator, info.Inputted[definitions.CategoryTranslator], "unmatched translator value in case %d", idx)
+		// Compare values
+		assert.EqualValuesf(t, tt.want.genre, info.Genre, "unmatched genre value in case %d", idx)
+		assert.EqualValuesf(t, tt.want.publisher, info.Publisher, "unmatched publisher value in case %d", idx)
+		assert.EqualValuesf(t, tt.want.translator, info.Translator, "unmatched translator value in case %d", idx)
 		assert.EqualValuesf(t, tt.want.tags, info.Tags, "unmatched tag value in case %d", idx)
 	}
 
