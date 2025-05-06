@@ -1,4 +1,4 @@
-package parser
+package autofill
 
 import (
 	"testing"
@@ -32,6 +32,6 @@ func TestSplitKeywords(t *testing.T) {
 	}
 
 	for idx, tt := range tests {
-		assert.EqualValuesf(t, tt.keywords, SplitKeywords(tt.bookname), "Unmatched result %d", idx)
+		assert.EqualValuesf(t, tt.keywords, splitKeywords(tt.bookname), "Unmatched result %d", idx)
 	}
 }

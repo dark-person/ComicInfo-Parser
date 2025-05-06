@@ -1,4 +1,4 @@
-package parser
+package autofill
 
 import "strings"
 
@@ -29,7 +29,7 @@ func replaceBrackets(input string) string {
 // by space character.
 //
 // Split to space character, is to get best performance by minimum effort.
-func SplitKeywords(bookName string) []string {
+func splitKeywords(bookName string) []string {
 	// Remove brackets
 	tmp := replaceBrackets(bookName)
 

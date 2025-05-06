@@ -5,7 +5,6 @@ package autofill
 
 import (
 	"github.com/dark-person/comicinfo-parser/internal/definitions"
-	"github.com/dark-person/comicinfo-parser/internal/parser"
 	"github.com/dark-person/lazydb"
 )
 
@@ -29,7 +28,7 @@ func New(db *lazydb.LazyDB) *AutoFillRunner {
 // this will help quicker checking on tag/value by SQL.
 func (r *AutoFillRunner) parseToDB(bookname string) (err error) {
 	// Splits words
-	words := parser.SplitKeywords(bookname)
+	words := splitKeywords(bookname)
 
 	// Create temporary table
 	_, err = r.db.Exec("CREATE TABLE _tmp_autofill (word text)")

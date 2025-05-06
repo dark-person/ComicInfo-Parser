@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/dark-person/comicinfo-parser/internal/autofill"
 	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
+	"github.com/dark-person/comicinfo-parser/internal/dataprovider/autofill"
+	"github.com/dark-person/comicinfo-parser/internal/dataprovider/scanner"
 	"github.com/dark-person/comicinfo-parser/internal/definitions"
-	"github.com/dark-person/comicinfo-parser/internal/scanner"
 )
 
 type ComicInfoResponse struct {
