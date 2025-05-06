@@ -67,7 +67,7 @@ func TestInsertMultiple(t *testing.T) {
 		}
 
 		// Perform function
-		err = InsertMultiple(db, tt.values...)
+		err = InsertMultiHistory(db, tt.values...)
 
 		// If error expected, check error and contine test as no value need to check
 		if tt.wantErr {

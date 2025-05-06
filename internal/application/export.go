@@ -113,7 +113,7 @@ func (a *App) saveToHistory(c *comicinfo.ComicInfo) error {
 	}
 
 	// ----------- INSERT ----------------
-	return store.InsertMultiple(a.DB, values...)
+	return store.InsertMultiHistory(a.DB, values...)
 }
 
 // Export the ComicInfo struct to XML file.
