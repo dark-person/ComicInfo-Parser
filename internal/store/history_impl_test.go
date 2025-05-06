@@ -1,4 +1,4 @@
-package history
+package store
 
 import (
 	"path/filepath"
@@ -55,7 +55,7 @@ func TestInsertMultiple(t *testing.T) {
 		var err error
 
 		if tt.dbPath != "" {
-			db, err = createTestDB(filepath.Join(dir, tt.dbPath), false)
+			db, err = createTestHistoryDB(filepath.Join(dir, tt.dbPath), false)
 			if err != nil {
 				t.Errorf("Failed to create database: %v", err)
 			}
@@ -67,7 +67,7 @@ func TestInsertMultiple(t *testing.T) {
 		}
 
 		// Perform function
-		err = InsertMultiple(db, tt.values...)
+		err = InsertMultiHistory(db, tt.values...)
 
 		// If error expected, check error and contine test as no value need to check
 		if tt.wantErr {
@@ -80,7 +80,7 @@ func TestInsertMultiple(t *testing.T) {
 
 		// Asset value has inserted
 		for i, val := range tt.values {
-			count, err := checkRowCount(db, val.Category, val.Value)
+			count, err := checkHistoryRowCount(db, val.Category, val.Value)
 			if err != nil {
 				t.Errorf("Failed to check row count: %v", err)
 			}

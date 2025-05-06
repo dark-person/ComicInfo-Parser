@@ -1,5 +1,4 @@
-// Package for manipulating tags in comic info.
-package tagger
+package store
 
 import (
 	"path/filepath"
@@ -42,7 +41,7 @@ func getLazyDB(dir, filename string) (*lazydb.LazyDB, error) {
 // Create a test database with some value inserted.
 //
 // Developer should ensure returned LazyDB will be closed after usage.
-func createTestDB(path string) (*lazydb.LazyDB, error) {
+func createTestTagDB(path string) (*lazydb.LazyDB, error) {
 	db := assets.DefaultDb(path)
 
 	// Connect database
@@ -67,7 +66,7 @@ func createTestDB(path string) (*lazydb.LazyDB, error) {
 }
 
 // Function to check how many rows in db has given tag.
-func checkRowCount(a *lazydb.LazyDB, value string) (int, error) {
+func checkTagRowCount(a *lazydb.LazyDB, value string) (int, error) {
 	// Execute query
 	rows, err := a.Query("SELECT COUNT(*) FROM tags WHERE input=?", value)
 	if err != nil {
@@ -136,7 +135,7 @@ func TestAddTag(t *testing.T) {
 
 		// Asset value has inserted
 		for i, val := range tt.tags {
-			count, err := checkRowCount(db, val)
+			count, err := checkTagRowCount(db, val)
 			if err != nil {
 				t.Errorf("Failed to check row count: %v", err)
 			}
@@ -151,7 +150,7 @@ func TestGetAllTags(t *testing.T) {
 	dir := t.TempDir()
 
 	// A standard test database will be created
-	a, err := createTestDB(filepath.Join(dir, "test_get.db"))
+	a, err := createTestTagDB(filepath.Join(dir, "test_get.db"))
 	if err != nil {
 		t.Errorf("Failed to create db: %v", err)
 	}

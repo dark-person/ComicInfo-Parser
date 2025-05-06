@@ -1,5 +1,4 @@
-// Package for saving user inputted values to database.
-package history
+package store
 
 import (
 	"path/filepath"
@@ -12,7 +11,7 @@ import (
 )
 
 // Function to check how many rows in db has given category & value.
-func checkRowCount(a *lazydb.LazyDB, category definitions.CategoryType, value string) (int, error) {
+func checkHistoryRowCount(a *lazydb.LazyDB, category definitions.CategoryType, value string) (int, error) {
 	// Get Inserted rows
 	rows, err := a.Query("SELECT COUNT(*) FROM list_inputted WHERE category=? AND input=?", category, value)
 	if err != nil {
@@ -30,7 +29,7 @@ func checkRowCount(a *lazydb.LazyDB, category definitions.CategoryType, value st
 
 // Create a opened connection lazydb for testing purposes.
 // This database is using almost default migration setting, and have some test data inserted already.
-func createTestDB(path string, withData bool) (*lazydb.LazyDB, error) {
+func createTestHistoryDB(path string, withData bool) (*lazydb.LazyDB, error) {
 	a := assets.DefaultDb(path)
 	err := a.Connect()
 	if err != nil {
@@ -105,7 +104,7 @@ func TestInsertValue(t *testing.T) {
 		var err error
 
 		if tt.dbPath != "" {
-			db, err = createTestDB(filepath.Join(dir, tt.dbPath), false)
+			db, err = createTestHistoryDB(filepath.Join(dir, tt.dbPath), false)
 			if err != nil {
 				t.Errorf("Failed to create database for case %d: %v", idx, err)
 			}
@@ -130,7 +129,7 @@ func TestInsertValue(t *testing.T) {
 
 		// Asset value has inserted
 		for i, val := range tt.value {
-			count, err := checkRowCount(db, tt.category, val)
+			count, err := checkHistoryRowCount(db, tt.category, val)
 			if err != nil {
 				t.Errorf("Failed to check row count: %v", err)
 			}
@@ -145,7 +144,7 @@ func TestGetHistory(t *testing.T) {
 	dir := t.TempDir()
 
 	// Prepare a database with given data rows
-	a, err := createTestDB(filepath.Join(dir, "t.db"), true)
+	a, err := createTestHistoryDB(filepath.Join(dir, "t.db"), true)
 	if err != nil {
 		panic("failed to create database: " + err.Error())
 	}
