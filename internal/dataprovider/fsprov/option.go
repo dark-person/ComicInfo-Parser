@@ -1,4 +1,4 @@
-package scanner
+package fsprov
 
 // The type for limit developer to pass in ScanOpt
 type optEnum int

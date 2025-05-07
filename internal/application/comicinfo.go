@@ -5,8 +5,9 @@ import (
 	"path/filepath"
 
 	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
+	"github.com/dark-person/comicinfo-parser/internal/dataprovider"
+	"github.com/dark-person/comicinfo-parser/internal/dataprovider/fsprov"
 	"github.com/dark-person/comicinfo-parser/internal/dataprovider/historyprov"
-	"github.com/dark-person/comicinfo-parser/internal/dataprovider/scanner"
 )
 
 type ComicInfoResponse struct {
@@ -30,7 +31,7 @@ func (a *App) GetComicInfo(folder string) ComicInfoResponse {
 	}
 
 	// Validate the directory
-	isValid, err := scanner.CheckFolder(absPath, scanner.ScanOpt{SubFolder: scanner.Reject, Image: scanner.Allow})
+	isValid, err := fsprov.CheckFolder(absPath, fsprov.ScanOpt{SubFolder: fsprov.Reject, Image: fsprov.Allow})
 	if err != nil {
 		return ComicInfoResponse{
 			ComicInfo:    nil,
@@ -43,8 +44,16 @@ func (a *App) GetComicInfo(folder string) ComicInfoResponse {
 		}
 	}
 
-	// Load Abs Path
-	c, err := scanner.ScanBooks(absPath)
+	// ------------------- Fill data ---------------------
+	var prov dataprovider.DataProvider
+
+	// Prepare empty comicinfo
+	temp := comicinfo.New()
+	c := &temp
+
+	// Fill comicinfo by file system data provider
+	prov = fsprov.New(absPath)
+	c, err = prov.Fill(c)
 	if err != nil {
 		return ComicInfoResponse{
 			ComicInfo:    nil,
@@ -53,7 +62,7 @@ func (a *App) GetComicInfo(folder string) ComicInfoResponse {
 	}
 
 	// Autofill by file base name
-	prov := historyprov.New(a.DB, filepath.Base(absPath))
+	prov = historyprov.New(a.DB, filepath.Base(absPath))
 	c, err = prov.Fill(c)
 
 	// Consider as acceptable error, log error only
