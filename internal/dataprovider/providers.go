@@ -11,7 +11,9 @@ import "github.com/dark-person/comicinfo-parser/internal/comicinfo"
 type DataProvider interface {
 
 	// Fill input comicinfo by provider's method.
-	// The result will be returned as `out`.
-	// Any error during process will return a nil comicinfo struct and error itself.
-	Fill(in *comicinfo.ComicInfo) (out *comicinfo.ComicInfo, err error)
+	// There has two possiblity of fill method:
+	//
+	//  1. Fill success, return changed comicinfo and nil error
+	//  2. Fill failed, return unchanged comicinfo (same as input) and error it self
+	Fill(input *comicinfo.ComicInfo) (result *comicinfo.ComicInfo, err error)
 }

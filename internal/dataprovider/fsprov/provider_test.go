@@ -144,6 +144,8 @@ func TestProviderFill(t *testing.T) {
 		{filepath.Join(dir, "not exists")},
 	}
 
+	fixed := comicinfo.New()
+
 	// Run Tests
 	for idx, tt := range tests {
 		// Prepare clean  comicinfo
@@ -157,7 +159,7 @@ func TestProviderFill(t *testing.T) {
 		// Check if error occur
 		assert.Errorf(t, err, "Case %d: Expected error, but no error return.", idx)
 
-		// Check comicinfo is empty
-		assert.Nilf(t, c, "Case %d: Expected nil comicinfo but return non-nil", idx)
+		// Check comicinfo is same with new comicinfo
+		assert.EqualValuesf(t, &fixed, c, "Case %d: Comicinfo value is different with new", idx)
 	}
 }

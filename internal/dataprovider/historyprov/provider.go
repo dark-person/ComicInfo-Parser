@@ -127,25 +127,25 @@ func (r *HistoryProvider) Fill(c *comicinfo.ComicInfo) (out *comicinfo.ComicInfo
 	// Prepare bookname into database
 	err = r.parseToDB(r.bookname)
 	if err != nil {
-		return nil, err
+		return c, err
 	}
 
 	// Found Matched Tags
 	tags, err := r.matchTags()
 	if err != nil {
-		return nil, err
+		return c, err
 	}
 
 	// Found matched inputs
 	inputted, err := r.matchInputs()
 	if err != nil {
-		return nil, err
+		return c, err
 	}
 
 	// Drop tempoary table
 	_, err = r.db.Exec("DROP TABLE _tmp_autofill")
 	if err != nil {
-		return nil, err
+		return c, err
 	}
 
 	// Sanitzed input for all category

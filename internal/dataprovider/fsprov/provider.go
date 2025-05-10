@@ -64,12 +64,12 @@ func GetPageInfo(absPath string) (pages []comicinfo.ComicPageInfo, err error) {
 func (p *FsProvider) Fill(c *comicinfo.ComicInfo) (*comicinfo.ComicInfo, error) {
 	// Prevent Empty path
 	if p.folderPath == "" {
-		return nil, fmt.Errorf("empty folder path")
+		return c, fmt.Errorf("empty folder path")
 	}
 
 	// Prevent invalid path
 	if !files.IsPathValid(p.folderPath) || !files.IsFileExist(p.folderPath) {
-		return nil, fmt.Errorf("invalid folder path")
+		return c, fmt.Errorf("invalid folder path")
 	}
 
 	// Check any comic info file before start parse
@@ -80,13 +80,13 @@ func (p *FsProvider) Fill(c *comicinfo.ComicInfo) (*comicinfo.ComicInfo, error) 
 		// Marshal info to struct
 		c, err := comicinfo.Load(infoPath)
 		if err != nil {
-			return nil, err
+			return c, err
 		}
 
 		// Force Re-scan Pages
 		pages, err := GetPageInfo(p.folderPath)
 		if err != nil {
-			return nil, err
+			return c, err
 		}
 
 		c.Pages = pages
