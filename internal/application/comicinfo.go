@@ -5,9 +5,9 @@ import (
 	"path/filepath"
 
 	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
-	"github.com/dark-person/comicinfo-parser/internal/dataprovider/autofill"
-	"github.com/dark-person/comicinfo-parser/internal/dataprovider/scanner"
-	"github.com/dark-person/comicinfo-parser/internal/definitions"
+	"github.com/dark-person/comicinfo-parser/internal/dataprovider"
+	"github.com/dark-person/comicinfo-parser/internal/dataprovider/fsprov"
+	"github.com/dark-person/comicinfo-parser/internal/dataprovider/historyprov"
 )
 
 type ComicInfoResponse struct {
@@ -31,7 +31,7 @@ func (a *App) GetComicInfo(folder string) ComicInfoResponse {
 	}
 
 	// Validate the directory
-	isValid, err := scanner.CheckFolder(absPath, scanner.ScanOpt{SubFolder: scanner.Reject, Image: scanner.Allow})
+	isValid, err := fsprov.CheckFolder(absPath, fsprov.ScanOpt{SubFolder: fsprov.Reject, Image: fsprov.Allow})
 	if err != nil {
 		return ComicInfoResponse{
 			ComicInfo:    nil,
@@ -44,8 +44,16 @@ func (a *App) GetComicInfo(folder string) ComicInfoResponse {
 		}
 	}
 
-	// Load Abs Path
-	c, err := scanner.ScanBooks(absPath)
+	// ------------------- Fill data ---------------------
+	var prov dataprovider.DataProvider
+
+	// Prepare empty comicinfo
+	temp := comicinfo.New()
+	c := &temp
+
+	// Fill comicinfo by file system data provider
+	prov = fsprov.New(absPath)
+	c, err = prov.Fill(c)
 	if err != nil {
 		return ComicInfoResponse{
 			ComicInfo:    nil,
@@ -54,24 +62,13 @@ func (a *App) GetComicInfo(folder string) ComicInfoResponse {
 	}
 
 	// Autofill by file base name
-	r := autofill.New(a.DB)
-	result, err := r.Run(filepath.Base(absPath))
+	prov = historyprov.New(a.DB, filepath.Base(absPath))
+	c, err = prov.Fill(c)
 
-	// Consider as acceptable error
+	// Consider as acceptable error, log error only
 	if err != nil {
 		fmt.Println(err)
-
-		return ComicInfoResponse{
-			ComicInfo:    c,
-			ErrorMessage: "",
-		}
 	}
-
-	// Use autofill result
-	c.AddTags(result.Tags...)
-	c.AddGenre(result.Inputted[definitions.CategoryGenre]...)
-	c.AddPublisher(result.Inputted[definitions.CategoryPublisher]...)
-	c.AddTranslator(result.Inputted[definitions.CategoryTranslator]...)
 
 	// Return result
 	return ComicInfoResponse{

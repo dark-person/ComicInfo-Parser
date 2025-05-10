@@ -1,37 +1,42 @@
-// Package to control autofill behavior for comicinfo, based on database record and bookname.
+// Package for comicinfo data provider
+// that use database record and bookname to fill details of comicinfo.
 //
-// Bookname will be separate to multiple keyword by space, while database store user inputted record.
-package autofill
+// Bookname will be separate to multiple keyword by space,
+// while database store user inputted record.
+package historyprov
 
 import (
+	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
+	"github.com/dark-person/comicinfo-parser/internal/dataprovider"
 	"github.com/dark-person/comicinfo-parser/internal/definitions"
 	"github.com/dark-person/lazydb"
 )
 
-// Runner for auto fill process.
-type AutoFillRunner struct {
-	db *lazydb.LazyDB // Database that store tag and other inputted value
+// Provider that based on user input history.
+type HistoryProvider struct {
+	db       *lazydb.LazyDB // Database that store tag and other inputted value
+	bookname string         // bookname, for split keywords
 }
 
-// Create a new autofill runner. The database should be connected and initalized.
-func New(db *lazydb.LazyDB) *AutoFillRunner {
+var _ dataprovider.DataProvider = (*HistoryProvider)(nil)
+
+// Create a new HistoryProvider. The database should be connected and initalized.
+func New(db *lazydb.LazyDB, bookname string) *HistoryProvider {
 	if !db.Connected() {
 		panic("database is not connected.")
 	}
 
-	return &AutoFillRunner{
-		db: db,
-	}
+	return &HistoryProvider{db: db, bookname: bookname}
 }
 
 // Parse bookname into multiple keywords, then put into a tempoary table,
 // this will help quicker checking on tag/value by SQL.
-func (r *AutoFillRunner) parseToDB(bookname string) (err error) {
+func (p *HistoryProvider) parseToDB(bookname string) (err error) {
 	// Splits words
 	words := splitKeywords(bookname)
 
 	// Create temporary table
-	_, err = r.db.Exec("CREATE TABLE _tmp_autofill (word text)")
+	_, err = p.db.Exec("CREATE TABLE _tmp_autofill (word text)")
 	if err != nil {
 		return err
 	}
@@ -43,7 +48,7 @@ func (r *AutoFillRunner) parseToDB(bookname string) (err error) {
 		queries = append(queries, lazydb.Param("INSERT INTO _tmp_autofill (word) VALUES (?)", item))
 	}
 
-	_, err = r.db.ExecMultiple(queries)
+	_, err = p.db.ExecMultiple(queries)
 	if err != nil {
 		return err
 	}
@@ -52,11 +57,11 @@ func (r *AutoFillRunner) parseToDB(bookname string) (err error) {
 }
 
 // Check if any inputted value match bookname keyword.
-func (r *AutoFillRunner) matchInputs() (map[definitions.CategoryType][]string, error) {
+func (p *HistoryProvider) matchInputs() (map[definitions.CategoryType][]string, error) {
 	var err error
 
 	// Select tags that is matched
-	rows, err := r.db.Query("SELECT category, input from _tmp_autofill JOIN list_inputted ON _tmp_autofill.word = list_inputted.input")
+	rows, err := p.db.Query("SELECT category, input from _tmp_autofill JOIN list_inputted ON _tmp_autofill.word = list_inputted.input")
 	if err != nil {
 		return nil, err
 	}
@@ -84,11 +89,11 @@ func (r *AutoFillRunner) matchInputs() (map[definitions.CategoryType][]string, e
 }
 
 // Check if any tag match bookname keyword.
-func (r *AutoFillRunner) matchTags() ([]string, error) {
+func (p *HistoryProvider) matchTags() ([]string, error) {
 	var err error
 
 	// Select tags that is matched
-	rows, err := r.db.Query("SELECT word from _tmp_autofill JOIN tags ON _tmp_autofill.word = tags.input")
+	rows, err := p.db.Query("SELECT word from _tmp_autofill JOIN tags ON _tmp_autofill.word = tags.input")
 	if err != nil {
 		return nil, err
 	}
@@ -118,47 +123,41 @@ func sanitized(input []string) []string {
 	return input
 }
 
-// Result for auto fill runner.
-type AutoFillResult struct {
-	Tags     []string                              // Tag that is matched with bookname keywords.
-	Inputted map[definitions.CategoryType][]string // Map of Category and Inputted value that is matched with bookname keyword.
-}
-
-// Start the auto fill runner.
-// Bookname will separate to multiple keyword and insert to tempoary table,
-// then find matched value by SQL.
-func (r *AutoFillRunner) Run(bookname string) (*AutoFillResult, error) {
-	var err error
-	result := &AutoFillResult{}
-
+func (p *HistoryProvider) Fill(c *comicinfo.ComicInfo) (out *comicinfo.ComicInfo, err error) {
 	// Prepare bookname into database
-	err = r.parseToDB(bookname)
+	err = p.parseToDB(p.bookname)
 	if err != nil {
-		return nil, err
+		return c, err
 	}
 
 	// Found Matched Tags
-	result.Tags, err = r.matchTags()
+	tags, err := p.matchTags()
 	if err != nil {
-		return nil, err
+		return c, err
 	}
 
 	// Found matched inputs
-	result.Inputted, err = r.matchInputs()
+	inputted, err := p.matchInputs()
 	if err != nil {
-		return nil, err
+		return c, err
 	}
 
 	// Drop tempoary table
-	_, err = r.db.Exec("DROP TABLE _tmp_autofill")
+	_, err = p.db.Exec("DROP TABLE _tmp_autofill")
 	if err != nil {
-		return nil, err
+		return c, err
 	}
 
 	// Sanitzed input for all category
 	for _, c := range definitions.Categories() {
-		result.Inputted[c] = sanitized(result.Inputted[c])
+		inputted[c] = sanitized(inputted[c])
 	}
 
-	return result, nil
+	// Fill comicinfo
+	c.AddTags(tags...)
+	c.AddGenre(inputted[definitions.CategoryGenre]...)
+	c.AddPublisher(inputted[definitions.CategoryPublisher]...)
+	c.AddTranslator(inputted[definitions.CategoryTranslator]...)
+
+	return c, nil
 }

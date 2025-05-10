@@ -8,7 +8,8 @@ import (
 
 	"github.com/dark-person/comicinfo-parser/internal/archive"
 	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
-	"github.com/dark-person/comicinfo-parser/internal/dataprovider/scanner"
+	"github.com/dark-person/comicinfo-parser/internal/dataprovider"
+	"github.com/dark-person/comicinfo-parser/internal/dataprovider/fsprov"
 	"github.com/dark-person/comicinfo-parser/internal/definitions"
 	"github.com/dark-person/comicinfo-parser/internal/store"
 	"github.com/sirupsen/logrus"
@@ -35,15 +36,22 @@ func (a *App) QuickExportKomga(inputDir string) string {
 	}
 
 	// Validate the directory
-	isValid, err := scanner.CheckFolder(inputDir, scanner.ScanOpt{SubFolder: scanner.Reject, Image: scanner.Allow})
+	isValid, err := fsprov.CheckFolder(inputDir, fsprov.ScanOpt{SubFolder: fsprov.Reject, Image: fsprov.Allow})
 	if err != nil {
 		return err.Error()
 	} else if !isValid {
 		return "folder structure is not correct"
 	}
 
-	// Load Abs Path
-	c, err := scanner.ScanBooks(inputDir)
+	var prov dataprovider.DataProvider
+
+	// Prepare empty comicinfo struct
+	temp := comicinfo.New()
+	c := &temp
+
+	// Fil comicinfo by file system provider
+	prov = fsprov.New(inputDir)
+	c, err = prov.Fill(c)
 	if err != nil {
 		return err.Error()
 	}
