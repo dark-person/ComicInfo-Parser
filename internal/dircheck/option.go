@@ -1,4 +1,4 @@
-package fsprov
+package dircheck
 
 // The type for limit developer to pass in ScanOpt
 type optEnum int
@@ -14,7 +14,7 @@ const (
 	Reject
 )
 
-// The option for scanner package.
+// The option for dircheck package.
 type ScanOpt struct {
 	// Option for given path has any sub-folder
 	SubFolder optEnum

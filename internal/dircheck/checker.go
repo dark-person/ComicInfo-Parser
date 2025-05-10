@@ -1,4 +1,4 @@
-package fsprov
+package dircheck
 
 import (
 	"fmt"
