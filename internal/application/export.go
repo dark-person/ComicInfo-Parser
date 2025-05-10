@@ -37,7 +37,7 @@ func (a *App) QuickExportKomga(inputDir string) string {
 	}
 
 	// Validate the directory
-	isValid, err := dircheck.CheckFolder(inputDir, dircheck.ScanOpt{SubFolder: dircheck.Reject, Image: dircheck.Allow})
+	isValid, err := dircheck.CheckFolder(inputDir, dircheck.DirectoryOpt{SubFolder: dircheck.Reject, Image: dircheck.Allow})
 	if err != nil {
 		return err.Error()
 	} else if !isValid {

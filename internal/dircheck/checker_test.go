@@ -34,55 +34,55 @@ func TestCheckFolder(t *testing.T) {
 	// Start Image Test
 	var tests = []struct {
 		path     string
-		opt      ScanOpt
+		opt      DirectoryOpt
 		want     bool
 		hasError bool
 	}{
 		// Image Opt Test (1~12)
-		{path1, ScanOpt{Image: Unspecific}, true, false},
-		{path1, ScanOpt{Image: Allow}, true, false},
-		{path1, ScanOpt{Image: AllowOnly}, true, false},
-		{path1, ScanOpt{Image: Reject}, false, false},
+		{path1, DirectoryOpt{Image: Unspecific}, true, false},
+		{path1, DirectoryOpt{Image: Allow}, true, false},
+		{path1, DirectoryOpt{Image: AllowOnly}, true, false},
+		{path1, DirectoryOpt{Image: Reject}, false, false},
 
-		{path2, ScanOpt{Image: Unspecific}, true, false},
-		{path2, ScanOpt{Image: Allow}, false, false},
-		{path2, ScanOpt{Image: AllowOnly}, false, false},
-		{path2, ScanOpt{Image: Reject}, true, false},
+		{path2, DirectoryOpt{Image: Unspecific}, true, false},
+		{path2, DirectoryOpt{Image: Allow}, false, false},
+		{path2, DirectoryOpt{Image: AllowOnly}, false, false},
+		{path2, DirectoryOpt{Image: Reject}, true, false},
 
-		{path3, ScanOpt{Image: Unspecific}, true, false},
-		{path3, ScanOpt{Image: Allow}, true, false},
-		{path3, ScanOpt{Image: AllowOnly}, false, false},
-		{path3, ScanOpt{Image: Reject}, false, false},
+		{path3, DirectoryOpt{Image: Unspecific}, true, false},
+		{path3, DirectoryOpt{Image: Allow}, true, false},
+		{path3, DirectoryOpt{Image: AllowOnly}, false, false},
+		{path3, DirectoryOpt{Image: Reject}, false, false},
 
-		{path4, ScanOpt{Image: Unspecific}, true, false},
-		{path4, ScanOpt{Image: Allow}, false, false},
-		{path4, ScanOpt{Image: AllowOnly}, false, false},
-		{path4, ScanOpt{Image: Reject}, true, false},
+		{path4, DirectoryOpt{Image: Unspecific}, true, false},
+		{path4, DirectoryOpt{Image: Allow}, false, false},
+		{path4, DirectoryOpt{Image: AllowOnly}, false, false},
+		{path4, DirectoryOpt{Image: Reject}, true, false},
 
 		// Subfolder Test (13~24)
-		{path1, ScanOpt{SubFolder: Unspecific}, true, false},
-		{path1, ScanOpt{SubFolder: Allow}, false, false},
-		{path1, ScanOpt{SubFolder: AllowOnly}, false, false},
-		{path1, ScanOpt{SubFolder: Reject}, true, false},
+		{path1, DirectoryOpt{SubFolder: Unspecific}, true, false},
+		{path1, DirectoryOpt{SubFolder: Allow}, false, false},
+		{path1, DirectoryOpt{SubFolder: AllowOnly}, false, false},
+		{path1, DirectoryOpt{SubFolder: Reject}, true, false},
 
-		{path2, ScanOpt{SubFolder: Unspecific}, true, false},
-		{path2, ScanOpt{SubFolder: Allow}, true, false},
-		{path2, ScanOpt{SubFolder: AllowOnly}, true, false},
-		{path2, ScanOpt{SubFolder: Reject}, false, false},
+		{path2, DirectoryOpt{SubFolder: Unspecific}, true, false},
+		{path2, DirectoryOpt{SubFolder: Allow}, true, false},
+		{path2, DirectoryOpt{SubFolder: AllowOnly}, true, false},
+		{path2, DirectoryOpt{SubFolder: Reject}, false, false},
 
-		{path3, ScanOpt{SubFolder: Unspecific}, true, false},
-		{path3, ScanOpt{SubFolder: Allow}, true, false},
-		{path3, ScanOpt{SubFolder: AllowOnly}, false, false},
-		{path3, ScanOpt{SubFolder: Reject}, false, false},
+		{path3, DirectoryOpt{SubFolder: Unspecific}, true, false},
+		{path3, DirectoryOpt{SubFolder: Allow}, true, false},
+		{path3, DirectoryOpt{SubFolder: AllowOnly}, false, false},
+		{path3, DirectoryOpt{SubFolder: Reject}, false, false},
 
-		{path4, ScanOpt{SubFolder: Unspecific}, true, false},
-		{path4, ScanOpt{SubFolder: Allow}, false, false},
-		{path4, ScanOpt{SubFolder: AllowOnly}, false, false},
-		{path4, ScanOpt{SubFolder: Reject}, true, false},
+		{path4, DirectoryOpt{SubFolder: Unspecific}, true, false},
+		{path4, DirectoryOpt{SubFolder: Allow}, false, false},
+		{path4, DirectoryOpt{SubFolder: AllowOnly}, false, false},
+		{path4, DirectoryOpt{SubFolder: Reject}, true, false},
 
 		// Contradiction Test
-		{path3, ScanOpt{SubFolder: AllowOnly, Image: Allow}, false, true},
-		{path3, ScanOpt{Image: AllowOnly, SubFolder: Allow}, false, true},
+		{path3, DirectoryOpt{SubFolder: AllowOnly, Image: Allow}, false, true},
+		{path3, DirectoryOpt{Image: AllowOnly, SubFolder: Allow}, false, true},
 	}
 
 	// Loop the test case and check the result

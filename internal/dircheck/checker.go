@@ -7,8 +7,8 @@ import (
 	"github.com/dark-person/comicinfo-parser/internal/files"
 )
 
-// Check the folder fulfill requirement of the given Scanner Options
-func CheckFolder(folderPath string, opt ScanOpt) (bool, error) {
+// Check the folder fulfill requirement of the given Directory option.
+func CheckFolder(folderPath string, opt DirectoryOpt) (bool, error) {
 	if !opt.Valid() {
 		return false, fmt.Errorf("invalid scan options")
 	}
