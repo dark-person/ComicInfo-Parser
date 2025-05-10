@@ -31,12 +31,12 @@ func New(db *lazydb.LazyDB, bookname string) *HistoryProvider {
 
 // Parse bookname into multiple keywords, then put into a tempoary table,
 // this will help quicker checking on tag/value by SQL.
-func (r *HistoryProvider) parseToDB(bookname string) (err error) {
+func (p *HistoryProvider) parseToDB(bookname string) (err error) {
 	// Splits words
 	words := splitKeywords(bookname)
 
 	// Create temporary table
-	_, err = r.db.Exec("CREATE TABLE _tmp_autofill (word text)")
+	_, err = p.db.Exec("CREATE TABLE _tmp_autofill (word text)")
 	if err != nil {
 		return err
 	}
@@ -48,7 +48,7 @@ func (r *HistoryProvider) parseToDB(bookname string) (err error) {
 		queries = append(queries, lazydb.Param("INSERT INTO _tmp_autofill (word) VALUES (?)", item))
 	}
 
-	_, err = r.db.ExecMultiple(queries)
+	_, err = p.db.ExecMultiple(queries)
 	if err != nil {
 		return err
 	}
@@ -57,11 +57,11 @@ func (r *HistoryProvider) parseToDB(bookname string) (err error) {
 }
 
 // Check if any inputted value match bookname keyword.
-func (r *HistoryProvider) matchInputs() (map[definitions.CategoryType][]string, error) {
+func (p *HistoryProvider) matchInputs() (map[definitions.CategoryType][]string, error) {
 	var err error
 
 	// Select tags that is matched
-	rows, err := r.db.Query("SELECT category, input from _tmp_autofill JOIN list_inputted ON _tmp_autofill.word = list_inputted.input")
+	rows, err := p.db.Query("SELECT category, input from _tmp_autofill JOIN list_inputted ON _tmp_autofill.word = list_inputted.input")
 	if err != nil {
 		return nil, err
 	}
@@ -89,11 +89,11 @@ func (r *HistoryProvider) matchInputs() (map[definitions.CategoryType][]string, 
 }
 
 // Check if any tag match bookname keyword.
-func (r *HistoryProvider) matchTags() ([]string, error) {
+func (p *HistoryProvider) matchTags() ([]string, error) {
 	var err error
 
 	// Select tags that is matched
-	rows, err := r.db.Query("SELECT word from _tmp_autofill JOIN tags ON _tmp_autofill.word = tags.input")
+	rows, err := p.db.Query("SELECT word from _tmp_autofill JOIN tags ON _tmp_autofill.word = tags.input")
 	if err != nil {
 		return nil, err
 	}
@@ -123,27 +123,27 @@ func sanitized(input []string) []string {
 	return input
 }
 
-func (r *HistoryProvider) Fill(c *comicinfo.ComicInfo) (out *comicinfo.ComicInfo, err error) {
+func (p *HistoryProvider) Fill(c *comicinfo.ComicInfo) (out *comicinfo.ComicInfo, err error) {
 	// Prepare bookname into database
-	err = r.parseToDB(r.bookname)
+	err = p.parseToDB(p.bookname)
 	if err != nil {
 		return c, err
 	}
 
 	// Found Matched Tags
-	tags, err := r.matchTags()
+	tags, err := p.matchTags()
 	if err != nil {
 		return c, err
 	}
 
 	// Found matched inputs
-	inputted, err := r.matchInputs()
+	inputted, err := p.matchInputs()
 	if err != nil {
 		return c, err
 	}
 
 	// Drop tempoary table
-	_, err = r.db.Exec("DROP TABLE _tmp_autofill")
+	_, err = p.db.Exec("DROP TABLE _tmp_autofill")
 	if err != nil {
 		return c, err
 	}
