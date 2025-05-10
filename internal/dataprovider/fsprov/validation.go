@@ -3,6 +3,8 @@ package fsprov
 import (
 	"fmt"
 	"os"
+
+	"github.com/dark-person/comicinfo-parser/internal/files"
 )
 
 // Check the folder fulfill requirement of the given Scanner Options
@@ -33,7 +35,7 @@ func CheckFolder(folderPath string, opt ScanOpt) (bool, error) {
 		}
 
 		// Image Extension check
-		if isSupportedImg(entry.Name()) {
+		if files.IsSupportedImg(entry.Name()) {
 			imageCount++
 			continue
 		}
