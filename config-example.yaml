@@ -5,5 +5,8 @@ default:
 database:
     path: "./my-data.db"
 
+metadata:
+    default-number: "1"
+
 trash-bin:
     path: "./.trash"
