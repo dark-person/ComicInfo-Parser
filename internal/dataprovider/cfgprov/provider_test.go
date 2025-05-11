@@ -1,6 +1,8 @@
 package cfgprov
 
 import (
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
@@ -9,6 +11,8 @@ import (
 )
 
 func TestProvider(t *testing.T) {
+	dir := t.TempDir()
+
 	// Prepare test case values
 	configured1 := config.Default()
 	configured1.Metadata.Number = "1.5"
@@ -22,20 +26,31 @@ func TestProvider(t *testing.T) {
 	info2 := comicinfo.New()
 	info2.Number = "2"
 
+	// Existed comicinfo
+	existedDir := filepath.Join(dir, "existed")
+	os.MkdirAll(existedDir, 0755)
+	info3 := comicinfo.New()
+	err := comicinfo.Save(&info3, filepath.Join(existedDir, "ComicInfo.xml"))
+	if err != nil {
+		panic(err)
+	}
+
 	// ----------------------------------------
 
 	// Prepare Test cases, which error must not allowed
 	type testCase struct {
-		cfg     *config.ProgramConfig // configuration
-		want    comicinfo.ComicInfo   // expected comicinfo
-		wantErr bool                  // If error will occur
+		cfg        *config.ProgramConfig // configuration
+		folderPath string
+		want       comicinfo.ComicInfo // expected comicinfo
+		wantErr    bool                // If error will occur
 	}
 
 	tests := []testCase{
-		{config.Default(), comicinfo.New(), false},
-		{configured1, info1, false},
-		{configured2, info2, false},
-		{nil, comicinfo.New(), true},
+		{config.Default(), "", comicinfo.New(), false},
+		{configured1, "", info1, false},
+		{configured2, "", info2, false},
+		{configured1, existedDir, comicinfo.New(), false},
+		{nil, "", comicinfo.New(), true},
 	}
 
 	// Start test
@@ -45,7 +60,7 @@ func TestProvider(t *testing.T) {
 		c := &tc
 
 		// Run provider
-		prov := New(tt.cfg)
+		prov := New(tt.cfg, tt.folderPath)
 		c, err := prov.Fill(c)
 
 		if tt.wantErr {

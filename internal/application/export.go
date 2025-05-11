@@ -59,7 +59,7 @@ func (a *App) QuickExportKomga(inputDir string) string {
 	}
 
 	// Fill by configuration
-	prov = cfgprov.New(a.cfg)
+	prov = cfgprov.New(a.cfg, inputDir)
 	c, err = prov.Fill(c)
 
 	// Consider as acceptable error, log error only

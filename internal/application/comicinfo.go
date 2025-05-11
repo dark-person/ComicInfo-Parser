@@ -73,7 +73,7 @@ func (a *App) GetComicInfo(folder string) ComicInfoResponse {
 	}
 
 	// Fill by configuration
-	prov = cfgprov.New(a.cfg)
+	prov = cfgprov.New(a.cfg, absPath)
 	c, err = prov.Fill(c)
 
 	// Consider as acceptable error, log error only
