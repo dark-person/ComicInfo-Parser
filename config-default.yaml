@@ -5,5 +5,8 @@ default:
 database:
     path:
 
+metadata:
+    default-number:
+
 trash-bin:
     path:

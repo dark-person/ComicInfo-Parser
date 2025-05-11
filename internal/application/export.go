@@ -9,6 +9,7 @@ import (
 	"github.com/dark-person/comicinfo-parser/internal/archive"
 	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
 	"github.com/dark-person/comicinfo-parser/internal/dataprovider"
+	"github.com/dark-person/comicinfo-parser/internal/dataprovider/cfgprov"
 	"github.com/dark-person/comicinfo-parser/internal/dataprovider/fsprov"
 	"github.com/dark-person/comicinfo-parser/internal/definitions"
 	"github.com/dark-person/comicinfo-parser/internal/dircheck"
@@ -55,6 +56,15 @@ func (a *App) QuickExportKomga(inputDir string) string {
 	c, err = prov.Fill(c)
 	if err != nil {
 		return err.Error()
+	}
+
+	// Fill by configuration
+	prov = cfgprov.New(a.cfg)
+	c, err = prov.Fill(c)
+
+	// Consider as acceptable error, log error only
+	if err != nil {
+		fmt.Println(err)
 	}
 
 	// Write ComicInfo.xml

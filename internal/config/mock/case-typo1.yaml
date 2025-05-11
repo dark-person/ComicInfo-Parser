@@ -2,6 +2,9 @@ defaults:
     export-folder: ./my-export
     comic-folder: ./my-input
 
+metadatas:
+    default-number: 1
+
 databases:
     path: "./my-data.db"
 
