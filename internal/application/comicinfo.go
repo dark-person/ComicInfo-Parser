@@ -6,6 +6,7 @@ import (
 
 	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
 	"github.com/dark-person/comicinfo-parser/internal/dataprovider"
+	"github.com/dark-person/comicinfo-parser/internal/dataprovider/cfgprov"
 	"github.com/dark-person/comicinfo-parser/internal/dataprovider/fsprov"
 	"github.com/dark-person/comicinfo-parser/internal/dataprovider/historyprov"
 	"github.com/dark-person/comicinfo-parser/internal/dircheck"
@@ -64,6 +65,15 @@ func (a *App) GetComicInfo(folder string) ComicInfoResponse {
 
 	// Autofill by file base name
 	prov = historyprov.New(a.DB, filepath.Base(absPath))
+	c, err = prov.Fill(c)
+
+	// Consider as acceptable error, log error only
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// Fill by configuration
+	prov = cfgprov.New(a.cfg)
 	c, err = prov.Fill(c)
 
 	// Consider as acceptable error, log error only
