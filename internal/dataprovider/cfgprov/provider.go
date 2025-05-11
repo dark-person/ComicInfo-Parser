@@ -4,25 +4,29 @@ package cfgprov
 
 import (
 	"fmt"
+	"path/filepath"
 
 	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
 	"github.com/dark-person/comicinfo-parser/internal/config"
 	"github.com/dark-person/comicinfo-parser/internal/dataprovider"
+	"github.com/dark-person/comicinfo-parser/internal/files"
 )
 
 // Data provider that use default value stated in configuration.
 type ConfigProvider struct {
-	cfg *config.ProgramConfig
+	folderPath string
+	cfg        *config.ProgramConfig
 }
 
 var _ dataprovider.DataProvider = (*ConfigProvider)(nil)
 
 // Create a new data provider that use default value stated in configuration.
-func New(cfg *config.ProgramConfig) *ConfigProvider {
-	return &ConfigProvider{cfg: cfg}
+func New(cfg *config.ProgramConfig, folderPath string) *ConfigProvider {
+	return &ConfigProvider{cfg: cfg, folderPath: folderPath}
 }
 
 // Fill input comicinfo by configuration.
+// When comicinfo.xml is already exist, this provider will have no-ops.
 // There has two possiblity of fill method:
 //
 //  1. Fill success, return changed comicinfo and nil error
@@ -31,6 +35,11 @@ func (c *ConfigProvider) Fill(input *comicinfo.ComicInfo) (result *comicinfo.Com
 	// Ensure configuration is not empty
 	if c.cfg == nil {
 		return input, fmt.Errorf("configuration cannot be nil")
+	}
+
+	// Ignore fill when comicinfo file is exist
+	if files.IsFileExist(filepath.Join(c.folderPath, "ComicInfo.xml")) {
+		return input, nil
 	}
 
 	// Fill values
