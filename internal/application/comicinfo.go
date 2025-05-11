@@ -8,6 +8,7 @@ import (
 	"github.com/dark-person/comicinfo-parser/internal/dataprovider"
 	"github.com/dark-person/comicinfo-parser/internal/dataprovider/fsprov"
 	"github.com/dark-person/comicinfo-parser/internal/dataprovider/historyprov"
+	"github.com/dark-person/comicinfo-parser/internal/dircheck"
 )
 
 type ComicInfoResponse struct {
@@ -31,7 +32,7 @@ func (a *App) GetComicInfo(folder string) ComicInfoResponse {
 	}
 
 	// Validate the directory
-	isValid, err := fsprov.CheckFolder(absPath, fsprov.ScanOpt{SubFolder: fsprov.Reject, Image: fsprov.Allow})
+	isValid, err := dircheck.CheckFolder(absPath, dircheck.DirectoryOpt{SubFolder: dircheck.Reject, Image: dircheck.Allow})
 	if err != nil {
 		return ComicInfoResponse{
 			ComicInfo:    nil,

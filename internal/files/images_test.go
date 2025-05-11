@@ -1,4 +1,4 @@
-package fsprov
+package files
 
 import (
 	"testing"
@@ -25,6 +25,6 @@ func TestIsSupportedImg(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		assert.Equal(t, tt.want, isSupportedImg(tt.filename))
+		assert.Equal(t, tt.want, IsSupportedImg(tt.filename))
 	}
 }

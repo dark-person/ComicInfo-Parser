@@ -37,7 +37,7 @@ func GetPageInfo(absPath string) (pages []comicinfo.ComicPageInfo, err error) {
 	// Image must be re-scan due to image contents may changed
 	imageIdx := 0
 	for _, entry := range entries {
-		if !isSupportedImg(entry.Name()) {
+		if !files.IsSupportedImg(entry.Name()) {
 			continue
 		}
 

@@ -11,6 +11,7 @@ import (
 	"github.com/dark-person/comicinfo-parser/internal/dataprovider"
 	"github.com/dark-person/comicinfo-parser/internal/dataprovider/fsprov"
 	"github.com/dark-person/comicinfo-parser/internal/definitions"
+	"github.com/dark-person/comicinfo-parser/internal/dircheck"
 	"github.com/dark-person/comicinfo-parser/internal/store"
 	"github.com/sirupsen/logrus"
 )
@@ -36,7 +37,7 @@ func (a *App) QuickExportKomga(inputDir string) string {
 	}
 
 	// Validate the directory
-	isValid, err := fsprov.CheckFolder(inputDir, fsprov.ScanOpt{SubFolder: fsprov.Reject, Image: fsprov.Allow})
+	isValid, err := dircheck.CheckFolder(inputDir, dircheck.DirectoryOpt{SubFolder: dircheck.Reject, Image: dircheck.Allow})
 	if err != nil {
 		return err.Error()
 	} else if !isValid {

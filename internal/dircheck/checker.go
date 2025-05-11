@@ -1,12 +1,15 @@
-package fsprov
+// Package to check folder is valid to process or not.
+package dircheck
 
 import (
 	"fmt"
 	"os"
+
+	"github.com/dark-person/comicinfo-parser/internal/files"
 )
 
-// Check the folder fulfill requirement of the given Scanner Options
-func CheckFolder(folderPath string, opt ScanOpt) (bool, error) {
+// Check the folder fulfill requirement of the given Directory option.
+func CheckFolder(folderPath string, opt DirectoryOpt) (bool, error) {
 	if !opt.Valid() {
 		return false, fmt.Errorf("invalid scan options")
 	}
@@ -33,7 +36,7 @@ func CheckFolder(folderPath string, opt ScanOpt) (bool, error) {
 		}
 
 		// Image Extension check
-		if isSupportedImg(entry.Name()) {
+		if files.IsSupportedImg(entry.Name()) {
 			imageCount++
 			continue
 		}

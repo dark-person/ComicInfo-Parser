@@ -1,6 +1,6 @@
-package fsprov
+package dircheck
 
-// The type for limit developer to pass in ScanOpt
+// The type for limit developer to pass in DirectoryOpt
 type optEnum int
 
 const (
@@ -14,8 +14,8 @@ const (
 	Reject
 )
 
-// The option for scanner package.
-type ScanOpt struct {
+// The option for dircheck package.
+type DirectoryOpt struct {
 	// Option for given path has any sub-folder
 	SubFolder optEnum
 
@@ -23,8 +23,8 @@ type ScanOpt struct {
 	Image optEnum
 }
 
-// Check the ScanOpt is valid for process, prevent contradiction among fields.
-func (opt *ScanOpt) Valid() bool {
+// Check the DirOpt is valid for process, prevent contradiction among fields.
+func (opt *DirectoryOpt) Valid() bool {
 	if opt.Image == AllowOnly && (opt.SubFolder == Allow || opt.SubFolder == AllowOnly) {
 		return false
 	}
