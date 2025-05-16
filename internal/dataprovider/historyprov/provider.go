@@ -93,7 +93,7 @@ func (p *HistoryProvider) matchTags() ([]string, error) {
 	var err error
 
 	// Select tags that is matched
-	rows, err := p.db.Query("SELECT word from _tmp_autofill JOIN tags ON _tmp_autofill.word = tags.input")
+	rows, err := p.db.Query("SELECT tag from _tmp_autofill JOIN map_keyword_tags ON map_keyword_tags.keyword = _tmp_autofill.word")
 	if err != nil {
 		return nil, err
 	}
