@@ -36,7 +36,7 @@ func (p *HistoryProvider) parseToDB(bookname string) (err error) {
 	words := splitKeywords(bookname)
 
 	// Create temporary table
-	_, err = p.db.Exec("CREATE TABLE _tmp_autofill (word text)")
+	_, err = p.db.Exec("CREATE TEMPORARY TABLE _tmp_autofill (word text)")
 	if err != nil {
 		return err
 	}
