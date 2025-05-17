@@ -58,9 +58,16 @@ Currently, this feature support below fields:
 
 -   `Genre`
 -   `Publisher`
+-   `Translator`
 -   `Tags`
 
 More field will be added in near future.
+
+#### Tag Alias
+
+User can define a alias word for tag in database, for example `me-tag` can be alias for `my-tag`.
+
+Program when also use these alias when auto fill `Tags` field in comicinfo.
 
 ### Option to Export ComicInfo
 

@@ -47,6 +47,9 @@ func prepareDB() *lazydb.LazyDB {
 	// Tags
 	db.Exec(`INSERT INTO tags (input) VALUES ('abc'), ('def'), ('ghi')`)
 
+	// Alias tags
+	db.Exec(`INSERT INTO tags_alias (alias, tag_id) VALUES ('kcs', 1)`)
+
 	return db
 }
 
@@ -75,6 +78,10 @@ func TestAutoFillRun(t *testing.T) {
 		{
 			"(ghi) Another Bookname 2 (abc) [Test-Genre] [Test-Publisher] [Test-TranslatorXTest-Translator2] [invalid] [20240123]",
 			testResult{"Test-Genre", "Test-Publisher", "", "abc,ghi"},
+		},
+		{
+			"Another Bookname (kcs) [def]",
+			testResult{"", "", "", "abc,def"},
 		},
 	}
 
