@@ -1,84 +1,84 @@
 {
-	"[css]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
-	"[html]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
-	"[javascriptreact]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
-	"[json]": {
-		"editor.defaultFormatter": "vscode.json-language-features"
-	},
-	"[markdown]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
-	"[sql]": {
-		"editor.defaultFormatter": "adpyke.vscode-sql-formatter"
-	},
-	"[typescript]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
-	"[typescriptreact]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
-	"[yaml]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
-	"cSpell.customDictionaries": {
-		"comicinfo-dictionary": {
-			"addWords": true,
-			"name": "ComicInfo.xml dictionary",
-			"path": "./.vscode/.cspell/comicinfo-dictionary.txt",
-			"scope": "workspace"
-		},
-		"package-dictionary": {
-			"addWords": true,
-			"name": "package dictionary",
-			"path": "./.vscode/.cspell/package-dictionary.txt",
-			"scope": "workspace"
-		}
-	},
-	"cSpell.ignorePaths": [
-		"package-lock.json",
-		"node_modules",
-		"vscode-extension",
-		".git/objects",
-		".vscode",
-		".vscode-insiders",
-		"wailsjs"
-	],
-	"cSpell.languageSettings": [
-		{
-			"allowCompoundWords": false,
-			"dictionaries": ["go"],
-			"languageId": "go"
-		},
-		{
-			"dictionaries": ["typescript", "node"],
-			"languageId": "typescriptreact"
-		},
-		{
-			"dictionaries": ["fonts", "css"],
-			"languageId": "css"
-		}
-	],
-	"code-runner.clearPreviousOutput": true,
-	"code-runner.executorMap": {
-		"go": "wails dev"
-	},
-	"code-runner.runInTerminal": true,
-	"editor.codeActionsOnSave": {
-		"source.organizeImports": "always"
-	},
-	"editor.detectIndentation": true,
-	"editor.formatOnSave": true,
-	"editor.tabSize": 4,
-	"editor.unicodeHighlight.includeStrings": false,
-	"prettier.bracketSameLine": true,
-	"prettier.printWidth": 120,
-	"prettier.singleAttributePerLine": false,
-	"prettier.tabWidth": 4,
-	"prettier.useTabs": false
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[sql]": {
+        "editor.defaultFormatter": "adpyke.vscode-sql-formatter"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[yaml]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "code-runner.clearPreviousOutput": true,
+    "code-runner.executorMap": {
+        "go": "wails dev"
+    },
+    "code-runner.runInTerminal": true,
+    "cSpell.customDictionaries": {
+        "comicinfo-dictionary": {
+            "addWords": true,
+            "name": "ComicInfo.xml dictionary",
+            "path": "./.vscode/.cspell/comicinfo-dictionary.txt",
+            "scope": "workspace"
+        },
+        "package-dictionary": {
+            "addWords": true,
+            "name": "package dictionary",
+            "path": "./.vscode/.cspell/package-dictionary.txt",
+            "scope": "workspace"
+        }
+    },
+    "cSpell.ignorePaths": [
+        "package-lock.json",
+        "node_modules",
+        "vscode-extension",
+        ".git/objects",
+        ".vscode",
+        ".vscode-insiders",
+        "wailsjs"
+    ],
+    "cSpell.languageSettings": [
+        {
+            "allowCompoundWords": false,
+            "dictionaries": ["go"],
+            "languageId": "go"
+        },
+        {
+            "dictionaries": ["typescript", "node"],
+            "languageId": "typescriptreact"
+        },
+        {
+            "dictionaries": ["fonts", "css"],
+            "languageId": "css"
+        }
+    ],
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "always"
+    },
+    "editor.detectIndentation": true,
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4,
+    "editor.unicodeHighlight.includeStrings": false,
+    "prettier.bracketSameLine": true,
+    "prettier.printWidth": 120,
+    "prettier.singleAttributePerLine": false,
+    "prettier.tabWidth": 4,
+    "prettier.useTabs": false
 }
