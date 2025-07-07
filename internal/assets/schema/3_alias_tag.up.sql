@@ -31,24 +31,24 @@ DROP TABLE "tmp_tags";
 CREATE VIEW "view_tags_alias" AS
 SELECT
     tags_alias.alias,
-    tags.input as tag,
-    tags.tag_id as tag_id
+    tags.input AS tag,
+    tags.tag_id AS tag_id
 FROM
     "tags_alias"
-    LEFT JOIN tags on tags_alias.tag_id = tags.tag_id;
+    LEFT JOIN tags ON tags_alias.tag_id = tags.tag_id;
 
 -- Create view for easier lookup
-CREATE VIEW map_keyword_tags as
+CREATE VIEW map_keyword_tags AS
 SELECT
-    tags_alias.alias as keyword,
-    tags.input as tag
+    tags_alias.alias AS keyword,
+    tags.input AS tag
 FROM
     tags_alias
     JOIN tags ON tags_alias.tag_id = tags.tag_id
 UNION
 SELECT
-    tags.input as keyword,
-    tags.input as tag
+    tags.input AS keyword,
+    tags.input AS tag
 FROM
     tags;
 

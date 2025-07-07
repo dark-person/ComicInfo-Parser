@@ -14,7 +14,7 @@ SELECT
 FROM
     list_inputted
     LEFT JOIN category
-where
+WHERE
     category.category_id = list_inputted.category;
 
 -- Drop table not supported

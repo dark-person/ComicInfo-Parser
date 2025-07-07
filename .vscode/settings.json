@@ -80,5 +80,6 @@
     "prettier.printWidth": 120,
     "prettier.singleAttributePerLine": false,
     "prettier.tabWidth": 4,
-    "prettier.useTabs": false
+    "prettier.useTabs": false,
+    "sql-formatter.uppercase": true
 }

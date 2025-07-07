@@ -7,7 +7,7 @@ CREATE TABLE "category" (
 
 INSERT INTO
     "category"(category_name)
-values
+VALUES
     ("Genre"),
     ("Publisher"),
     ("Translator");
