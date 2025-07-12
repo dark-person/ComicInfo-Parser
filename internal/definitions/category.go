@@ -8,9 +8,10 @@ const (
 	CategoryGenre      CategoryType = iota + 1 // Database value for Genre.
 	CategoryPublisher                          // Database value for Publisher.
 	CategoryTranslator                         // Database value for Translator.
+	CategoryTag                                // Database value for Tag.
 )
 
 // Return a slices of category type.
 func Categories() []CategoryType {
-	return []CategoryType{CategoryGenre, CategoryPublisher, CategoryTranslator}
+	return []CategoryType{CategoryGenre, CategoryPublisher, CategoryTranslator, CategoryTag}
 }
