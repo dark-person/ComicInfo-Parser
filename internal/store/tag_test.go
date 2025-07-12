@@ -56,7 +56,7 @@ func createTestTagDB(path string) (*lazydb.LazyDB, error) {
 	}
 
 	// Insert data rows
-	_, err = db.Exec(`INSERT INTO tags (input) VALUES ('abc'), ('def'), ('ghi')`)
+	_, err = db.Exec(`INSERT INTO word_store (word, category_id) VALUES ('abc', 4), ('def', 4), ('ghi', 4)`)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func createTestTagDB(path string) (*lazydb.LazyDB, error) {
 // Function to check how many rows in db has given tag.
 func checkTagRowCount(a *lazydb.LazyDB, value string) (int, error) {
 	// Execute query
-	rows, err := a.Query("SELECT COUNT(*) FROM tags WHERE input=?", value)
+	rows, err := a.Query("SELECT COUNT(*) FROM word_store WHERE word=? AND category_id=4", value)
 	if err != nil {
 		return -1, err
 	}

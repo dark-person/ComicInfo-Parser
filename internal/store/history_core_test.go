@@ -13,7 +13,7 @@ import (
 // Function to check how many rows in db has given category & value.
 func checkHistoryRowCount(a *lazydb.LazyDB, category definitions.CategoryType, value string) (int, error) {
 	// Get Inserted rows
-	rows, err := a.Query("SELECT COUNT(*) FROM list_inputted WHERE category=? AND input=?", category, value)
+	rows, err := a.Query("SELECT COUNT(*) FROM word_store WHERE category_id=? AND word=?", category, value)
 	if err != nil {
 		return -1, err
 	}
@@ -47,7 +47,7 @@ func createTestHistoryDB(path string, withData bool) (*lazydb.LazyDB, error) {
 	}
 
 	// Insert data rows
-	sql := `INSERT INTO list_inputted (category, input) VALUES (45,'123'), (56, '123'), (56, '456')`
+	sql := `INSERT INTO word_store (category_id, word) VALUES (45,'123'), (56, '123'), (56, '456')`
 	_, err = a.Exec(sql)
 	if err != nil {
 		return nil, err

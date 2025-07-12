@@ -61,7 +61,16 @@ func (p *HistoryProvider) matchInputs() (map[definitions.CategoryType][]string, 
 	var err error
 
 	// Select tags that is matched
-	rows, err := p.db.Query("SELECT category, input from _tmp_autofill JOIN list_inputted ON _tmp_autofill.word = list_inputted.input")
+	rows, err := p.db.Query(`
+		SELECT 
+			word_store.category_id, 
+			word_store.word
+		from 
+			_tmp_autofill 
+		JOIN 
+			word_store ON _tmp_autofill.word = word_store.word
+	`)
+
 	if err != nil {
 		return nil, err
 	}
@@ -88,27 +97,44 @@ func (p *HistoryProvider) matchInputs() (map[definitions.CategoryType][]string, 
 	return result, nil
 }
 
-// Check if any tag match bookname keyword.
-func (p *HistoryProvider) matchTags() ([]string, error) {
+// Check if any trigger match bookname keyword.
+func (p *HistoryProvider) matchTrigger() (map[definitions.CategoryType][]string, error) {
 	var err error
 
-	// Select tags that is matched
-	rows, err := p.db.Query("SELECT tag from _tmp_autofill JOIN map_keyword_tags ON map_keyword_tags.keyword = _tmp_autofill.word")
+	// Select trigger that is matched
+	rows, err := p.db.Query(`
+		SELECT 
+			category_id,
+			word_store.word
+		from 
+			_tmp_autofill 
+        JOIN
+            triggers ON _tmp_autofill.word = triggers.keyword 
+        JOIN
+            word_store ON triggers.word_id = word_store.word_id
+	`)
+
 	if err != nil {
 		return nil, err
 	}
 
-	result := make([]string, 0)
+	result := make(map[definitions.CategoryType][]string, 0)
 
 	for rows.Next() {
+		var category definitions.CategoryType
 		var word string
 
-		err = rows.Scan(&word)
+		err = rows.Scan(&category, &word)
 		if err != nil {
 			return nil, err
 		}
 
-		result = append(result, word)
+		_, exist := result[category]
+		if !exist {
+			result[category] = make([]string, 0)
+		}
+
+		result[category] = append(result[category], word)
 	}
 
 	return result, nil
@@ -130,14 +156,14 @@ func (p *HistoryProvider) Fill(c *comicinfo.ComicInfo) (out *comicinfo.ComicInfo
 		return c, err
 	}
 
-	// Found Matched Tags
-	tags, err := p.matchTags()
+	// Found matched inputs
+	inputted, err := p.matchInputs()
 	if err != nil {
 		return c, err
 	}
 
-	// Found matched inputs
-	inputted, err := p.matchInputs()
+	// Run possible trigger
+	triggers, err := p.matchTrigger()
 	if err != nil {
 		return c, err
 	}
@@ -154,10 +180,17 @@ func (p *HistoryProvider) Fill(c *comicinfo.ComicInfo) (out *comicinfo.ComicInfo
 	}
 
 	// Fill comicinfo
-	c.AddTags(tags...)
+	c.AddTags(inputted[definitions.CategoryTag]...)
+	c.AddTags(triggers[definitions.CategoryTag]...)
+
 	c.AddGenre(inputted[definitions.CategoryGenre]...)
+	c.AddGenre(triggers[definitions.CategoryGenre]...)
+
 	c.AddPublisher(inputted[definitions.CategoryPublisher]...)
+	c.AddPublisher(triggers[definitions.CategoryPublisher]...)
+
 	c.AddTranslator(inputted[definitions.CategoryTranslator]...)
+	c.AddTranslator(triggers[definitions.CategoryTranslator]...)
 
 	return c, nil
 }
