@@ -52,7 +52,7 @@ More field will be added in near future.
 
 Each time when generate comicinfo file, program will try to auto fill some values depends on folder name of selected folder.
 
-Folder name will be split to some keywords by space characters, and only fill value when keywords is same with inputted values in local database .
+Folder name will be split to some keywords by space characters, and only fill value when keywords is same with inputted values in local database.
 
 Currently, this feature support below fields:
 
@@ -61,13 +61,16 @@ Currently, this feature support below fields:
 -   `Translator`
 -   `Tags`
 
-More field will be added in near future.
+#### Triggers
 
-#### Tag Alias
+Advanced user can use `triggers` table in database to define keyword alias and its behavior.
 
-User can define a alias word for tag in database, for example `me-tag` can be alias for `my-tag`.
+For examplem, to auto fill `me-value` to `Genre` when detect `my-value` in bookname, user require to:
 
-Program when also use these alias when auto fill `Tags` field in comicinfo.
+1. Create `me-value` row in `word_store` table, with `category_id` for genre field
+2. Create `my-value` row in `triggers` table, with `word_id` in `word_store` table
+
+User should use software with GUI to perform CRUD for database.
 
 ### Option to Export ComicInfo
 

@@ -21,7 +21,7 @@ func AddTag(db *lazydb.LazyDB, tags ...string) error {
 		}
 
 		prepared = append(prepared, lazydb.Param(
-			"INSERT OR IGNORE INTO tags (input) VALUES (?)",
+			"INSERT OR IGNORE INTO word_store (word, category_id) VALUES (?, 4)",
 			item,
 		))
 	}
@@ -39,7 +39,7 @@ func GetAllTags(db *lazydb.LazyDB) ([]string, error) {
 	}
 
 	// Prepare SQL & its args
-	query := "SELECT input FROM tags ORDER BY input"
+	query := "SELECT word FROM word_store WHERE category_id = 4 ORDER BY word"
 
 	// Execute query
 	rows, err := db.Query(query)

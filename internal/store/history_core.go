@@ -23,7 +23,7 @@ func insertValue(db *lazydb.LazyDB, category definitions.CategoryType, value ...
 
 		prepared = append(prepared,
 			lazydb.Param(
-				"INSERT OR IGNORE INTO list_inputted (category, input) VALUES (?, ?)",
+				"INSERT OR IGNORE INTO word_store (category_id, word) VALUES (?, ?)",
 				category, item,
 			))
 	}
@@ -41,7 +41,7 @@ func getHistory(db *lazydb.LazyDB, category definitions.CategoryType) ([]string,
 	}
 
 	// Execute query
-	rows, err := db.Query("SELECT input FROM list_inputted WHERE category = ?", category)
+	rows, err := db.Query("SELECT word FROM word_store WHERE category_id = ?", category)
 	if err != nil {
 		return nil, err
 	}

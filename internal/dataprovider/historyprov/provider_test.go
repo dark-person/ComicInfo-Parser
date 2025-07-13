@@ -30,25 +30,25 @@ func prepareDB() *lazydb.LazyDB {
 	// Prepare some dummy data
 
 	// Genre
-	db.Exec("INSERT OR IGNORE INTO list_inputted (category, input) VALUES (?, ?)",
+	db.Exec("INSERT OR IGNORE INTO word_store (category_id, word) VALUES (?, ?)",
 		definitions.CategoryGenre,
 		"Test-Genre")
 
 	// Publisher
-	db.Exec("INSERT OR IGNORE INTO list_inputted (category, input) VALUES (?, ?)",
+	db.Exec("INSERT OR IGNORE INTO word_store (category_id, word) VALUES (?, ?)",
 		definitions.CategoryPublisher,
 		"Test-Publisher")
 
 	// Tranlator
-	db.Exec("INSERT OR IGNORE INTO list_inputted (category, input) VALUES (?, ?)",
+	db.Exec("INSERT OR IGNORE INTO word_store (category_id, word) VALUES (?, ?)",
 		definitions.CategoryTranslator,
 		"Test-Translator")
 
 	// Tags
-	db.Exec(`INSERT INTO tags (input) VALUES ('abc'), ('def'), ('ghi')`)
+	db.Exec(`INSERT INTO word_store (category_id, word) VALUES (4, 'abc'), (4, 'def'), (4, 'ghi')`)
 
-	// Alias tags
-	db.Exec(`INSERT INTO tags_alias (alias, tag_id) VALUES ('kcs', 1)`)
+	// Triggers
+	db.Exec(`INSERT INTO triggers (keyword, word_id) VALUES ('kcs', 4), ('aed', 1)`)
 
 	return db
 }
@@ -80,8 +80,8 @@ func TestAutoFillRun(t *testing.T) {
 			testResult{"Test-Genre", "Test-Publisher", "", "abc,ghi"},
 		},
 		{
-			"Another Bookname (kcs) [def]",
-			testResult{"", "", "", "abc,def"},
+			"Another Bookname (kcs) (aed) [def]",
+			testResult{"Test-Genre", "", "", "abc,def"},
 		},
 	}
 
