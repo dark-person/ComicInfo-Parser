@@ -53,13 +53,13 @@ var testLoadResult = &ComicInfo{
 	PageCount:       210,
 	LanguageISO:     "en",
 	Format:          "",
-	Manga:           Manga_Yes,
+	Manga:           MangaYes,
 	Characters:      "Eijiro Saito, Kaori Akagi, Kuniya Dekune, Yukiko Minagawa, Katsuo Ushida",
 	Teams:           "",
 	Locations:       "",
 	ScanInformation: "v01",
 	Pages: []ComicPageInfo{
-		{XMLName: xml.Name{Space: "", Local: "Page"}, Image: 0, ImageSize: 1798991, Type: ComicPageType_FrontCover},
+		{XMLName: xml.Name{Space: "", Local: "Page"}, Image: 0, ImageSize: 1798991, Type: ComicPageTypeFrontCover},
 		newPage(1, 516297), newPage(2, 1436176), newPage(3, 1762430), newPage(4, 1901097), newPage(5, 1718912),
 		newPage(6, 1076491), newPage(7, 1410195), newPage(8, 1405229), newPage(9, 1195708), newPage(10, 1394210),
 		newPage(11, 1235988), newPage(12, 1056806), newPage(13, 1258274), newPage(14, 1185841), newPage(15, 1456285),
@@ -165,7 +165,7 @@ func TestLoad(t *testing.T) {
 
 func TestSave(t *testing.T) {
 	// For path that not perform any comparison on filepath content
-	const PATH_NO_COMPARE = ""
+	const PathNoCompare = ""
 
 	// Prepare Temp Directory
 	dir := t.TempDir()
@@ -181,11 +181,11 @@ func TestSave(t *testing.T) {
 		// 1. Graceful Save
 		{testLoadResult, filepath.Join(dir, "case1", "ComicInfo.xml"), "resources/closed_tag/ComicInfo.xml", false},
 		// 2. Nil ComicInfo
-		{nil, filepath.Join(dir, "case2", "ComicInfo.xml"), PATH_NO_COMPARE, true},
+		{nil, filepath.Join(dir, "case2", "ComicInfo.xml"), PathNoCompare, true},
 		// 3. Invalid path (not ComicInfo.xml)
-		{testLoadResult, filepath.Join(dir, "case3", "abc.xml"), PATH_NO_COMPARE, true},
+		{testLoadResult, filepath.Join(dir, "case3", "abc.xml"), PathNoCompare, true},
 		// 4. Invalid path (Invalid path symbol)
-		{testLoadResult, filepath.Join(dir, "case4", "?", "ComicInfo.xml"), PATH_NO_COMPARE, true},
+		{testLoadResult, filepath.Join(dir, "case4", "?", "ComicInfo.xml"), PathNoCompare, true},
 	}
 
 	for idx, tt := range tests {
@@ -199,7 +199,7 @@ func TestSave(t *testing.T) {
 		}
 
 		// Early return if nothing is expected to compare
-		if tt.wantedPath == PATH_NO_COMPARE {
+		if tt.wantedPath == PathNoCompare {
 			continue
 		}
 
