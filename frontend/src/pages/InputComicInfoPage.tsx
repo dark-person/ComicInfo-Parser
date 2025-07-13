@@ -13,7 +13,7 @@ import SeriesMetadata from "@/pages/metadata/SeriesMetadata";
 import TagMetadata from "@/pages/metadata/TagMetadata";
 
 // Wails binding
-import { ExportXml } from "@wailsjs/go/application/App";
+import { ExportXML } from "@wailsjs/go/application/App";
 import { comicinfo } from "@wailsjs/go/models";
 
 /** Props Interface for InputComicInfoPage */
@@ -55,7 +55,7 @@ export default function InputComicInfoPage({
         }
 
         // Start Running
-        ExportXml(folderPath, comicInfo).then((msg) => {
+        ExportXML(folderPath, comicInfo).then((msg) => {
             console.log(`xml return: '${msg}'`);
             if (msg === "") {
                 modalControl.complete();

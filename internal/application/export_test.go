@@ -115,7 +115,7 @@ func TestExportXml(t *testing.T) {
 
 	// Start test
 	for idx, tt := range tests {
-		msg := app.ExportXml(tt.dir, tt.c)
+		msg := app.ExportXML(tt.dir, tt.c)
 
 		// Check error
 		assert.EqualValuesf(t, tt.hasErrMsg, msg != "", "Case %d: unexpected error message: %v", idx, msg)

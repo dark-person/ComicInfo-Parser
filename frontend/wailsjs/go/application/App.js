@@ -14,8 +14,8 @@ export function ExportCbzWithWrap(arg1, arg2, arg3, arg4) {
   return window['go']['application']['App']['ExportCbzWithWrap'](arg1, arg2, arg3, arg4);
 }
 
-export function ExportXml(arg1, arg2) {
-  return window['go']['application']['App']['ExportXml'](arg1, arg2);
+export function ExportXML(arg1, arg2) {
+  return window['go']['application']['App']['ExportXML'](arg1, arg2);
 }
 
 export function GetAllGenreInput() {
