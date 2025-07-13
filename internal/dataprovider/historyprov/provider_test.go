@@ -47,8 +47,8 @@ func prepareDB() *lazydb.LazyDB {
 	// Tags
 	db.Exec(`INSERT INTO word_store (category_id, word) VALUES (4, 'abc'), (4, 'def'), (4, 'ghi')`)
 
-	// Alias tags
-	db.Exec(`INSERT INTO triggers (keyword, word_id) VALUES ('kcs', 4)`)
+	// Triggers
+	db.Exec(`INSERT INTO triggers (keyword, word_id) VALUES ('kcs', 4), ('aed', 1)`)
 
 	return db
 }
@@ -80,8 +80,8 @@ func TestAutoFillRun(t *testing.T) {
 			testResult{"Test-Genre", "Test-Publisher", "", "abc,ghi"},
 		},
 		{
-			"Another Bookname (kcs) [def]",
-			testResult{"", "", "", "abc,def"},
+			"Another Bookname (kcs) (aed) [def]",
+			testResult{"Test-Genre", "", "", "abc,def"},
 		},
 	}
 
