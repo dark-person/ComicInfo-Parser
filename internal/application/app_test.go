@@ -85,7 +85,7 @@ func TestGetComicInfo(t *testing.T) {
 	}
 
 	// Create a new app
-	app := NewAppWithDefaultConfig(assets.DefaultDb("test.db"))
+	app := NewAppWithDefaultConfig(assets.DefaultDB("test.db"))
 
 	// Connect to database
 	app.DB.Connect()

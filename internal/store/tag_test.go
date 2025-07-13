@@ -21,7 +21,7 @@ func getLazyDB(dir, filename string) (*lazydb.LazyDB, error) {
 		return nil, nil
 	}
 
-	db := assets.DefaultDb(filepath.Join(dir, filename))
+	db := assets.DefaultDB(filepath.Join(dir, filename))
 
 	// Connect database
 	err := db.Connect()
@@ -42,7 +42,7 @@ func getLazyDB(dir, filename string) (*lazydb.LazyDB, error) {
 //
 // Developer should ensure returned LazyDB will be closed after usage.
 func createTestTagDB(path string) (*lazydb.LazyDB, error) {
-	db := assets.DefaultDb(path)
+	db := assets.DefaultDB(path)
 
 	// Connect database
 	err := db.Connect()
@@ -160,7 +160,7 @@ func TestGetAllTags(t *testing.T) {
 	}
 
 	// Empty database
-	empty := assets.DefaultDb(filepath.Join(dir, "test_get_empty.db"))
+	empty := assets.DefaultDB(filepath.Join(dir, "test_get_empty.db"))
 	err = empty.Connect()
 	if err != nil {
 		t.Errorf("Failed to connect db: %v", err)

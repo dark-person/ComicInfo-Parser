@@ -51,7 +51,7 @@ func TestQuickExportKomga(t *testing.T) {
 	}
 
 	// Prepare new app
-	app := NewAppWithDefaultConfig(assets.DefaultDb("testing.db"))
+	app := NewAppWithDefaultConfig(assets.DefaultDB("testing.db"))
 
 	// Looping
 	for idx, tt := range tests {
@@ -110,7 +110,7 @@ func TestExportXml(t *testing.T) {
 	}
 
 	// Prepare dummy App
-	app := NewAppWithDefaultConfig(assets.DefaultDb(testDB))
+	app := NewAppWithDefaultConfig(assets.DefaultDB(testDB))
 	app.Startup(context.TODO())
 
 	// Start test
@@ -166,7 +166,7 @@ func TestExportCbzNoErr(t *testing.T) {
 	}
 
 	// Create a new app
-	app := NewAppWithDefaultConfig(assets.DefaultDb(testDB))
+	app := NewAppWithDefaultConfig(assets.DefaultDB(testDB))
 	app.Startup(context.TODO())
 
 	// Test case for normal situation
@@ -205,7 +205,7 @@ func TestExportCbzNilInfo(t *testing.T) {
 	testDB := filepath.Join(tempFolder, "test_cbz_nil.db")
 
 	// Create a new app
-	app := NewAppWithDefaultConfig(assets.DefaultDb(testDB))
+	app := NewAppWithDefaultConfig(assets.DefaultDB(testDB))
 	app.Startup(context.TODO())
 
 	// Prepare content
@@ -244,7 +244,7 @@ func TestExportCbzErrOs(t *testing.T) {
 	validInfo := comicinfo.New()
 
 	// Create a new app
-	app := NewAppWithDefaultConfig(assets.DefaultDb(testDB))
+	app := NewAppWithDefaultConfig(assets.DefaultDB(testDB))
 	app.Startup(context.TODO())
 
 	// Prepare test case struct
@@ -283,7 +283,7 @@ func TestSoftDelete(t *testing.T) {
 	testDB := filepath.Join(tempFolder, "test_soft_delete.db")
 
 	// Create a new app
-	app := NewAppWithDefaultConfig(assets.DefaultDb(testDB))
+	app := NewAppWithDefaultConfig(assets.DefaultDB(testDB))
 	app.Startup(context.TODO())
 
 	type testcase struct {

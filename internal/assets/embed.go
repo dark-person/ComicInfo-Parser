@@ -28,7 +28,7 @@ func GetSchema() embed.FS {
 }
 
 // Return default lazydb.
-func DefaultDb(path string) *lazydb.LazyDB {
+func DefaultDB(path string) *lazydb.LazyDB {
 	return lazydb.New(
 		lazydb.DbPath(path),
 		lazydb.Migrate(schema, "schema"),
@@ -37,7 +37,7 @@ func DefaultDb(path string) *lazydb.LazyDB {
 }
 
 // Return default lazydb that allow auto-backup when schema version changed.
-func DefaultDbWithBackup(path string, backupDir string) *lazydb.LazyDB {
+func DefaultDBWithBackup(path string, backupDir string) *lazydb.LazyDB {
 	return lazydb.New(
 		lazydb.DbPath(path),
 		lazydb.Migrate(schema, "schema"),
