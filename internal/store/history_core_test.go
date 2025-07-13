@@ -30,7 +30,7 @@ func checkHistoryRowCount(a *lazydb.LazyDB, category definitions.CategoryType, v
 // Create a opened connection lazydb for testing purposes.
 // This database is using almost default migration setting, and have some test data inserted already.
 func createTestHistoryDB(path string, withData bool) (*lazydb.LazyDB, error) {
-	a := assets.DefaultDb(path)
+	a := assets.DefaultDB(path)
 	err := a.Connect()
 	if err != nil {
 		return nil, err

@@ -9,7 +9,7 @@ export function ExportCbzWithDefaultWrap(arg1:string,arg2:string,arg3:comicinfo.
 
 export function ExportCbzWithWrap(arg1:string,arg2:string,arg3:string,arg4:comicinfo.ComicInfo):Promise<string>;
 
-export function ExportXml(arg1:string,arg2:comicinfo.ComicInfo):Promise<string>;
+export function ExportXML(arg1:string,arg2:comicinfo.ComicInfo):Promise<string>;
 
 export function GetAllGenreInput():Promise<application.HistoryResp>;
 

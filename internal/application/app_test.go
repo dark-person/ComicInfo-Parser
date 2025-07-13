@@ -17,10 +17,10 @@ import (
 // Create folder content that similar to the real environment.
 // The folder will contain 3 images, with different image size.
 //
-// An xml file will be created if `withXml` flag is true.
+// An xml file will be created if `withXML` flag is true.
 //
 // Please note that this function will try to create all necessary folders.
-func createFolderContent(tempDir string, withXml bool) {
+func createFolderContent(tempDir string, withXML bool) {
 	tempDir = strings.TrimSpace(tempDir)
 
 	// Create folder first
@@ -31,7 +31,7 @@ func createFolderContent(tempDir string, withXml bool) {
 	fileSizes := []int64{1234, 3456, 789}
 
 	// Include XML if flag is true
-	if withXml {
+	if withXML {
 		fileNames = append(fileNames, "test.xml")
 		fileSizes = append(fileSizes, 12)
 	}
@@ -85,7 +85,7 @@ func TestGetComicInfo(t *testing.T) {
 	}
 
 	// Create a new app
-	app := NewAppWithDefaultConfig(assets.DefaultDb("test.db"))
+	app := NewAppWithDefaultConfig(assets.DefaultDB("test.db"))
 
 	// Connect to database
 	app.DB.Connect()

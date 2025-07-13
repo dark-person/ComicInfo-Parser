@@ -171,7 +171,7 @@ func (a *App) saveComicInfo(originalDir string, c *comicinfo.ComicInfo) error {
 //
 // If the process success, then function will output empty string.
 // Otherwise, function will return the reason for error.
-func (a *App) ExportXml(originalDir string, c *comicinfo.ComicInfo) (errorMsg string) {
+func (a *App) ExportXML(originalDir string, c *comicinfo.ComicInfo) (errorMsg string) {
 	err := a.saveComicInfo(originalDir, c)
 	if err != nil {
 		return err.Error()

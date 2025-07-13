@@ -37,7 +37,7 @@ func main() {
 	}
 
 	// Prepare lazydb
-	l := assets.DefaultDbWithBackup(path, backupDir)
+	l := assets.DefaultDBWithBackup(path, backupDir)
 
 	// ------------------------------------------------------
 

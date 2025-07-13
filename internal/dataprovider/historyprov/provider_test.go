@@ -15,7 +15,7 @@ const testingDatabasePath = "./storage.db"
 
 // Create a testing database
 func prepareDB() *lazydb.LazyDB {
-	db := assets.DefaultDb(testingDatabasePath)
+	db := assets.DefaultDB(testingDatabasePath)
 
 	err := db.Connect()
 	if err != nil {

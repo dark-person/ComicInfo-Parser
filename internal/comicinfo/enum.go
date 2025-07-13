@@ -6,55 +6,55 @@ package comicinfo
 type ComicPageType string
 
 const (
-	ComicPageType_FrontCover    ComicPageType = "FrontCover"
-	ComicPageType_InnerCover    ComicPageType = "InnerCover"
-	ComicPageType_Roundup       ComicPageType = "Roundup"
-	ComicPageType_Story         ComicPageType = "Story"
-	ComicPageType_Advertisement ComicPageType = "Advertisement"
-	ComicPageType_Editorial     ComicPageType = "Editorial"
-	ComicPageType_Letters       ComicPageType = "Letters"
-	ComicPageType_Preview       ComicPageType = "Preview"
-	ComicPageType_BackCover     ComicPageType = "BackCover"
-	ComicPageType_Other         ComicPageType = "Other"
-	ComicPageType_Deleted       ComicPageType = "Deleted"
+	ComicPageTypeFrontCover    ComicPageType = "FrontCover"
+	ComicPageTypeInnerCover    ComicPageType = "InnerCover"
+	ComicPageTypeRoundup       ComicPageType = "Roundup"
+	ComicPageTypeStory         ComicPageType = "Story"
+	ComicPageTypeAdvertisement ComicPageType = "Advertisement"
+	ComicPageTypeEditorial     ComicPageType = "Editorial"
+	ComicPageTypeLetters       ComicPageType = "Letters"
+	ComicPageTypePreview       ComicPageType = "Preview"
+	ComicPageTypeBackCover     ComicPageType = "BackCover"
+	ComicPageTypeOther         ComicPageType = "Other"
+	ComicPageTypeDeleted       ComicPageType = "Deleted"
 )
 
 // The AgeRating Type for comicInfo
 type AgeRating string
 
 const (
-	AgeRating_Unknown        AgeRating = "Unknown"
-	AgeRating_AdultsOnly18   AgeRating = "Adults Only 18+"
-	AgeRating_EarlyChildhood AgeRating = "Early Childhood"
-	AgeRating_Everyone       AgeRating = "Everyone"
-	AgeRating_Everyone10Plus AgeRating = "Everyone 10+"
-	AgeRating_G              AgeRating = "G"
-	AgeRating_KidsToAdults   AgeRating = "Kids to Adults"
-	AgeRating_M              AgeRating = "M"
-	AgeRating_MA15Plus       AgeRating = "MA15+"
-	AgeRating_Mature17Plus   AgeRating = "Mature 17+"
-	AgeRating_PG             AgeRating = "PG"
-	AgeRating_R18Plus        AgeRating = "R18+"
-	AgeRating_RatingPending  AgeRating = "Rating Pending"
-	AgeRating_Teen           AgeRating = "Teen"
-	AgeRating_X18Plus        AgeRating = "X18+"
+	AgeRatingUnknown        AgeRating = "Unknown"
+	AgeRatingAdultsOnly18   AgeRating = "Adults Only 18+"
+	AgeRatingEarlyChildhood AgeRating = "Early Childhood"
+	AgeRatingEveryone       AgeRating = "Everyone"
+	AgeRatingEveryone10Plus AgeRating = "Everyone 10+"
+	AgeRatingG              AgeRating = "G"
+	AgeRatingKidsToAdults   AgeRating = "Kids to Adults"
+	AgeRatingM              AgeRating = "M"
+	AgeRatingMA15Plus       AgeRating = "MA15+"
+	AgeRatingMature17Plus   AgeRating = "Mature 17+"
+	AgeRatingPG             AgeRating = "PG"
+	AgeRatingR18Plus        AgeRating = "R18+"
+	AgeRatingRatingPending  AgeRating = "Rating Pending"
+	AgeRatingTeen           AgeRating = "Teen"
+	AgeRatingX18Plus        AgeRating = "X18+"
 )
 
 // The YesNo Type for comicInfo
 type YesNo string
 
 const (
-	YesNo_Unknown YesNo = "Unknown"
-	YesNo_No      YesNo = "No"
-	YesNo_Yes     YesNo = "Yes"
+	YesNoValUnknown YesNo = "Unknown"
+	YesNoValNo      YesNo = "No"
+	YesNoValYes     YesNo = "Yes"
 )
 
 // The Manga Type for comicInfo
 type Manga string
 
 const (
-	Manga_Unknown           Manga = "Unknown"
-	Manga_No                Manga = "No"
-	Manga_Yes               Manga = "Yes"
-	Manga_YesAndRightToLeft Manga = "YesAndRightToLeft"
+	MangaUnknown           Manga = "Unknown"
+	MangaNo                Manga = "No"
+	MangaYes               Manga = "Yes"
+	MangaYesAndRightToLeft Manga = "YesAndRightToLeft"
 )

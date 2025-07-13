@@ -34,9 +34,9 @@ func dummyComicDir(path string, c *comicinfo.ComicInfo) *comicinfo.ComicInfo {
 	}
 
 	c.PageCount = 3
-	c.Manga = comicinfo.Manga_Yes
+	c.Manga = comicinfo.MangaYes
 	c.Pages = []comicinfo.ComicPageInfo{
-		{Image: 0, Type: comicinfo.ComicPageType_FrontCover, ImageSize: 1234},
+		{Image: 0, Type: comicinfo.ComicPageTypeFrontCover, ImageSize: 1234},
 		{Image: 1, ImageSize: 3456},
 		{Image: 2, ImageSize: 789},
 	}
@@ -71,7 +71,7 @@ func TestGetPageInfo(t *testing.T) {
 	}
 
 	// Check First Page is front page
-	if pages[0].Type != comicinfo.ComicPageType_FrontCover {
+	if pages[0].Type != comicinfo.ComicPageTypeFrontCover {
 		t.Error("Wrong Type of first page")
 	}
 
