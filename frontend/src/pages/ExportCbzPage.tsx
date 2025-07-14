@@ -10,7 +10,7 @@ import Form from "react-bootstrap/Form";
 // Project Component
 import { ColoredCheckBox, ColoredRadio } from "@/components/ColoredFormCheck";
 import FolderSelector from "@/components/FolderSelector";
-import { ModalControl } from "@/controls/ModalControl";
+import { type ModalControl } from "@/controls/ModalControl";
 import { ExportMethod } from "@/controls/SessionData";
 import { basename } from "@/filename";
 

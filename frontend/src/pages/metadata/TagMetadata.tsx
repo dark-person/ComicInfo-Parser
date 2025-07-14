@@ -3,7 +3,7 @@ import { Form } from "react-bootstrap";
 
 // Project Specified Component
 import OptionFormRow from "@/forms/OptionFormRow";
-import { MetadataProps } from "@/pages/metadata/MetadataProps";
+import { type MetadataProps } from "@/pages/metadata/MetadataProps";
 
 // Wails binding
 import { GetAllTagInput } from "@wailsjs/go/application/App";

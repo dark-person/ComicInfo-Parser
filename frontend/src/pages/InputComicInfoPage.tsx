@@ -5,7 +5,7 @@ import Tabs from "react-bootstrap/Tabs";
 
 // Project Specified Component
 import FolderNameDisplay from "@/components/FolderDisplay";
-import { ModalControl } from "@/controls/ModalControl";
+import { type ModalControl } from "@/controls/ModalControl";
 import BookMetadata from "@/pages/metadata/BookMetadata";
 import CreatorMetadata from "@/pages/metadata/CreatorMetadata";
 import MiscMetadata from "@/pages/metadata/MiscMetadata";

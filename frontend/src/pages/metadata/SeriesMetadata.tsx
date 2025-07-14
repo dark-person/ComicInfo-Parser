@@ -1,5 +1,5 @@
 // React
-import { ChangeEvent } from "react";
+import { type ChangeEvent } from "react";
 
 // React Component
 import { Form } from "react-bootstrap";
@@ -9,7 +9,7 @@ import { AgeRatingSelect, MangaSelect } from "@/components/EnumSelect";
 import FormRow from "@/forms/FormRow";
 import FormSelectRow from "@/forms/FormSelectRow";
 import OptionFormRow from "@/forms/OptionFormRow";
-import { MetadataProps } from "@/pages/metadata/MetadataProps";
+import { type MetadataProps } from "@/pages/metadata/MetadataProps";
 
 // Wails binding
 import { GetAllGenreInput } from "@wailsjs/go/application/App";

@@ -1,6 +1,6 @@
 import "@/components/ColoredFormCheck.css";
 
-import { ChangeEvent } from "react";
+import { type ChangeEvent } from "react";
 import { Form } from "react-bootstrap";
 
 type supportedColors = "dark-red" | "dark-orange" | "dark-yellow" | "dark-green" | "dark-blue";

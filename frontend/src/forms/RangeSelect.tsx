@@ -1,5 +1,5 @@
 // React
-import { ChangeEventHandler } from "react";
+import { type ChangeEventHandler } from "react";
 
 // React Component
 import Form from "react-bootstrap/Form";
