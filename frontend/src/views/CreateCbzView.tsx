@@ -4,8 +4,8 @@ import { Col, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 
 // Project Specified Component
-import { ModalControl } from "@/controls/ModalControl";
-import { ExportMethod, SessionData } from "@/controls/SessionData";
+import { type ModalControl } from "@/controls/ModalControl";
+import { ExportMethod, type SessionData } from "@/controls/SessionData";
 import ExportCbzPage from "@/pages/ExportCbzPage";
 import FolderSelectPage from "@/pages/FolderSelectPage";
 import InputComicInfoPage from "@/pages/InputComicInfoPage";

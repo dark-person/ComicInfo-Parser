@@ -1,5 +1,5 @@
 // React
-import { ChangeEvent } from "react";
+import { type ChangeEvent } from "react";
 
 // React Component
 import { Form } from "react-bootstrap";
@@ -7,7 +7,7 @@ import { Form } from "react-bootstrap";
 // Project Specified Component
 import FormDateRow from "@/forms/FormDateRow";
 import FormRow from "@/forms/FormRow";
-import { MetadataProps } from "@/pages/metadata/MetadataProps";
+import { type MetadataProps } from "@/pages/metadata/MetadataProps";
 
 /**
  * The interface for show/edit book metadata.

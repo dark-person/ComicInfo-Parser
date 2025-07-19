@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 
-import { ActionMeta, GroupBase, MultiValue, StylesConfig } from "react-select";
+import { type ActionMeta, type GroupBase, type MultiValue, type StylesConfig } from "react-select";
 import CreatableSelect from "react-select/creatable";
 
 import { application } from "@wailsjs/go/models";

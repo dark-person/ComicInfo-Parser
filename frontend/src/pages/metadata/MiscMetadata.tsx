@@ -1,12 +1,12 @@
 // React
-import { ChangeEvent } from "react";
+import { type ChangeEvent } from "react";
 
 // React Component
 import { Form } from "react-bootstrap";
 
 // Project Specified Component
 import FormRow from "@/forms/FormRow";
-import { MetadataProps } from "@/pages/metadata/MetadataProps";
+import { type MetadataProps } from "@/pages/metadata/MetadataProps";
 
 /** The user interface for show/edit Collection & ReadList MetaData. */
 export default function MiscMetadata({ comicInfo, infoSetter }: Readonly<MetadataProps>) {

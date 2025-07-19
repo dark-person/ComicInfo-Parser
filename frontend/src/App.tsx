@@ -8,8 +8,8 @@ import { Tab, Tabs } from "react-bootstrap";
 
 // Project Specified Component
 import { CompleteModal, ErrorModal, LoadingModal } from "@/components/modal";
-import { ModalControl } from "@/controls/ModalControl";
-import { defaultModalState, ModalState } from "@/controls/ModalState";
+import type { ModalControl } from "@/controls/ModalControl";
+import { defaultModalState, type ModalState } from "@/controls/ModalState";
 import { CreateCbzStatus } from "@/status/CreateCbzStatus";
 import CreateCbzView from "@/views/CreateCbzView";
 import HelpView from "@/views/HelpView";

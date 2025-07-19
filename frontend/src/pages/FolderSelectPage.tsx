@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 
 // Project Specific Component
 import FolderSelector from "@/components/FolderSelector";
-import { ModalControl } from "@/controls/ModalControl";
+import { type ModalControl } from "@/controls/ModalControl";
 
 // Wails
 import { GetComicFolder, QuickExportKomga } from "@wailsjs/go/application/App";
