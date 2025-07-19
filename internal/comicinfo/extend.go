@@ -12,6 +12,12 @@ func (c *ComicInfo) AddGenre(genre ...string) {
 	c.Genre = AddValue(c.Genre, genre...)
 }
 
+// Add writer to the comic info container.
+// This function will handle the comma separation automatically.
+func (c *ComicInfo) AddWriter(writer ...string) {
+	c.Writer = AddValue(c.Writer, writer...)
+}
+
 // Add publishers to the comic info container.
 // This function will handle the comma separation automatically.
 func (c *ComicInfo) AddPublisher(publisher ...string) {

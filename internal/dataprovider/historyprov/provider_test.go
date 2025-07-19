@@ -47,6 +47,9 @@ func prepareDB() *lazydb.LazyDB {
 	// Tags
 	db.Exec(`INSERT INTO word_store (category_id, word) VALUES (4, 'abc'), (4, 'def'), (4, 'ghi')`)
 
+	// Writers
+	db.Exec(`INSERT INTO word_store (category_id, word) VALUES (?, ?)`, definitions.CategoryWriter, "Test-Writer")
+
 	// Triggers
 	db.Exec(`INSERT INTO triggers (keyword, word_id) VALUES ('kcs', 4), ('aed', 1)`)
 
@@ -59,6 +62,7 @@ func TestAutoFillRun(t *testing.T) {
 
 	type testResult struct {
 		genre      string
+		writer     string
 		publisher  string
 		translator string
 		tags       string
@@ -73,15 +77,15 @@ func TestAutoFillRun(t *testing.T) {
 	// Start test
 	tests := []testCase{
 		{
-			"Some Bookname (abc) [Test-Translator] [Test-Translator2] [def]",
-			testResult{"", "", "Test-Translator", "abc,def"}},
+			"[Test-Writer] Some Bookname (abc) [Test-Translator] [Test-Translator2] [def]",
+			testResult{"", "Test-Writer", "", "Test-Translator", "abc,def"}},
 		{
 			"(ghi) Another Bookname 2 (abc) [Test-Genre] [Test-Publisher] [Test-TranslatorXTest-Translator2] [invalid] [20240123]",
-			testResult{"Test-Genre", "Test-Publisher", "", "abc,ghi"},
+			testResult{"Test-Genre", "", "Test-Publisher", "", "abc,ghi"},
 		},
 		{
 			"Another Bookname (kcs) (aed) [def]",
-			testResult{"Test-Genre", "", "", "abc,def"},
+			testResult{"Test-Genre", "", "", "", "abc,def"},
 		},
 	}
 
@@ -103,6 +107,7 @@ func TestAutoFillRun(t *testing.T) {
 
 		// Compare values
 		assert.EqualValuesf(t, tt.want.genre, info.Genre, "unmatched genre value in case %d", idx)
+		assert.EqualValuesf(t, tt.want.writer, info.Writer, "unmatched writer value in case %d", idx)
 		assert.EqualValuesf(t, tt.want.publisher, info.Publisher, "unmatched publisher value in case %d", idx)
 		assert.EqualValuesf(t, tt.want.translator, info.Translator, "unmatched translator value in case %d", idx)
 		assert.EqualValuesf(t, tt.want.tags, info.Tags, "unmatched tag value in case %d", idx)

@@ -186,6 +186,9 @@ func (p *HistoryProvider) Fill(c *comicinfo.ComicInfo) (out *comicinfo.ComicInfo
 	c.AddGenre(inputted[definitions.CategoryGenre]...)
 	c.AddGenre(triggers[definitions.CategoryGenre]...)
 
+	c.AddWriter(inputted[definitions.CategoryWriter]...)
+	c.AddWriter(triggers[definitions.CategoryWriter]...)
+
 	c.AddPublisher(inputted[definitions.CategoryPublisher]...)
 	c.AddPublisher(triggers[definitions.CategoryPublisher]...)
 
