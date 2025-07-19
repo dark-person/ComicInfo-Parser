@@ -1,6 +1,8 @@
 package store
 
 import (
+	"strings"
+
 	"github.com/dark-person/comicinfo-parser/internal/definitions"
 	"github.com/dark-person/lazydb"
 )
@@ -24,7 +26,7 @@ func insertValue(db *lazydb.LazyDB, category definitions.CategoryType, value ...
 		prepared = append(prepared,
 			lazydb.Param(
 				"INSERT OR IGNORE INTO word_store (category_id, word) VALUES (?, ?)",
-				category, item,
+				category, strings.TrimSpace(item),
 			))
 	}
 

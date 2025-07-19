@@ -106,6 +106,9 @@ func TestAddTag(t *testing.T) {
 		{"test3.db", []string{""}, false, []int{0}},
 		{"test4.db", []string{"abc", ""}, false, []int{1, 0}},
 
+		// Duplicate with space around
+		{"test5.db", []string{"abc", "abc "}, false, []int{1, 0}},
+
 		// Nil Database
 		{"", []string{"abc"}, true, []int{1}},
 	}
