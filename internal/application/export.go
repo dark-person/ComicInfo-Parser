@@ -111,6 +111,16 @@ func (a *App) saveToHistory(c *comicinfo.ComicInfo) error {
 		})
 	}
 
+	// ----------- Writer ----------------
+	// Split the publisher into slice of string by comma
+	s = strings.Split(c.Writer, ",")
+	for _, item := range s {
+		values = append(values, store.HistoryVal{
+			Category: definitions.CategoryWriter,
+			Value:    item,
+		})
+	}
+
 	// ----------- Publisher ----------------
 	// Split the publisher into slice of string by comma
 	s = strings.Split(c.Publisher, ",")
