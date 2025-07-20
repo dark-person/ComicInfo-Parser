@@ -41,7 +41,9 @@ User can use these values when they generate another comicinfo, with easy-to-use
 Currently, this feature support below fields:
 
 -   `Genre`
+-   `Writer`
 -   `Publisher`
+-   `Translator`
 -   `Tags`
 
 More field will be added in near future.
@@ -57,6 +59,7 @@ Folder name will be split to some keywords by space characters, and only fill va
 Currently, this feature support below fields:
 
 -   `Genre`
+-   `Writer`
 -   `Publisher`
 -   `Translator`
 -   `Tags`
