@@ -1,6 +1,10 @@
 package store
 
-import "github.com/dark-person/lazydb"
+import (
+	"strings"
+
+	"github.com/dark-person/lazydb"
+)
 
 // Add tags to given LazyDB. This function support multiple tags insert at once.
 //
@@ -22,7 +26,7 @@ func AddTag(db *lazydb.LazyDB, tags ...string) error {
 
 		prepared = append(prepared, lazydb.Param(
 			"INSERT OR IGNORE INTO word_store (word, category_id) VALUES (?, 4)",
-			item,
+			strings.TrimSpace(item),
 		))
 	}
 

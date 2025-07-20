@@ -93,6 +93,9 @@ func TestInsertValue(t *testing.T) {
 		// Empty string value
 		{"test5.db", 45, []string{"123", ""}, false, []int{1, 0}},
 
+		// Duplicate test with space
+		{"test6.db", 45, []string{"789", "789 "}, false, []int{1, 0}},
+
 		// Nil database
 		{"", 45, []string{"123"}, true, []int{1}},
 	}
