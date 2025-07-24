@@ -59,3 +59,43 @@ func getHistory(db *lazydb.LazyDB, category definitions.CategoryType) ([]string,
 
 	return list, nil
 }
+
+// Word that will be used in auto fill function.
+type AutofillWord struct {
+	ID       int    `json:"id"`       // ID of word
+	Word     string `json:"word"`     // word that user has inputted once and will be re-used when autofill
+	Category string `json:"category"` // Category of the word, in human readable format
+}
+
+// Get all word that stored in database and will be used when autofill.
+func GetAllAutofillWord(db *lazydb.LazyDB) ([]AutofillWord, error) {
+	// Prevent nil database
+	if db == nil {
+		return []AutofillWord{}, ErrDatabaseNil
+	}
+
+	// Execute query
+	rows, err := db.Query(`
+		SELECT 
+			w.word_id, w.word, c.category_name 
+		FROM 
+			word_store AS w 
+		LEFT JOIN 
+			category AS c ON w.category_id = c.category_id 
+		ORDER BY w.word`)
+
+	if err != nil {
+		return nil, err
+	}
+
+	// Load query result
+	list := make([]AutofillWord, 0)
+	for rows.Next() {
+		var word AutofillWord
+		rows.Scan(&word.ID, &word.Word, &word.Category)
+
+		list = append(list, word)
+	}
+
+	return list, nil
+}
