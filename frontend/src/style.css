@@ -17,3 +17,11 @@ body {
 .newLine {
     white-space: pre;
 }
+
+.w-65 {
+    width: 65% !important;
+}
+
+.w-35 {
+    width: 35% !important;
+}
