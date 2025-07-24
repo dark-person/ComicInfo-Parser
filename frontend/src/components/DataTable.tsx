@@ -11,10 +11,11 @@ import { Button, Form, Table } from "react-bootstrap";
 
 interface DataTableProps<DataT> {
     columns: ColumnDef<DataT>[];
+    headerClassName?: string[];
     data: DataT[];
 }
 
-export default function DataTable<DataT>({ columns, data }: Readonly<DataTableProps<DataT>>) {
+export default function DataTable<DataT>({ columns, headerClassName, data }: Readonly<DataTableProps<DataT>>) {
     const [globalFilter, setGlobalFilter] = useState("");
 
     const table = useReactTable({
@@ -41,10 +42,12 @@ export default function DataTable<DataT>({ columns, data }: Readonly<DataTablePr
             <Table striped bordered hover variant="dark">
                 <thead>
                     {table.getHeaderGroups().map((headerGroup) => (
-                        <tr key={headerGroup.id}>
-                            {headerGroup.headers.map((header) => {
+                        <tr key={headerGroup.id} className="text-start">
+                            {headerGroup.headers.map((header, idx) => {
                                 return (
-                                    <th key={header.id}>
+                                    <th
+                                        key={header.id}
+                                        className={headerClassName === undefined ? "" : headerClassName[idx]}>
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(header.column.columnDef.header, header.getContext())}
@@ -57,7 +60,7 @@ export default function DataTable<DataT>({ columns, data }: Readonly<DataTablePr
                 <tbody>
                     {table.getRowModel().rows?.length ? (
                         table.getRowModel().rows.map((row) => (
-                            <tr key={row.id} data-state={row.getIsSelected() && "selected"}>
+                            <tr key={row.id} data-state={row.getIsSelected() && "selected"} className="text-start">
                                 {row.getVisibleCells().map((cell) => (
                                     <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
                                 ))}
