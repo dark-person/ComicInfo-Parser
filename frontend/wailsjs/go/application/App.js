@@ -18,6 +18,10 @@ export function ExportXML(arg1, arg2) {
   return window['go']['application']['App']['ExportXML'](arg1, arg2);
 }
 
+export function GetAllAutofillWord() {
+  return window['go']['application']['App']['GetAllAutofillWord']();
+}
+
 export function GetAllGenreInput() {
   return window['go']['application']['App']['GetAllGenreInput']();
 }
