@@ -53,6 +53,12 @@ func createTestHistoryDB(path string, withData bool) (*lazydb.LazyDB, error) {
 		return nil, err
 	}
 
+	// Insert dummy category
+	_, err = a.Exec(`INSERT INTO category (category_id, category_name) VALUES (45,'Test-Category1'), (56,'Test-Category2')`)
+	if err != nil {
+		return nil, err
+	}
+
 	// Return db object
 	return a, nil
 }
@@ -213,4 +219,33 @@ func TestGetHistoryNilDB(t *testing.T) {
 		// Check values
 		assert.EqualValuesf(t, tt.result, results, "unexpected output, expect=%v, got=%v", tt.result, results)
 	}
+}
+
+func TestGetAllAutofillWord(t *testing.T) {
+	// Directory to store db files
+	dir := t.TempDir()
+
+	// Prepare a database with given data rows
+	a, err := createTestHistoryDB(filepath.Join(dir, "t.db"), true)
+	if err != nil {
+		panic("failed to create database: " + err.Error())
+	}
+	defer a.Close()
+
+	// Prepare result
+	expected := []AutofillWord{
+		{ID: 1, Word: "123", Category: "Test-Category1"},
+		{ID: 2, Word: "123", Category: "Test-Category2"},
+		{ID: 3, Word: "456", Category: "Test-Category2"},
+	}
+
+	// Test for database is ok
+	got, err := GetAllAutofillWord(a)
+	assert.EqualValues(t, expected, got)
+	assert.NoError(t, err)
+
+	// Test for nil value of database parameter
+	got, err = GetAllAutofillWord(nil)
+	assert.Empty(t, got)
+	assert.ErrorIs(t, err, ErrDatabaseNil)
 }

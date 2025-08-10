@@ -64,6 +64,10 @@ Currently, this feature support below fields:
 -   `Translator`
 -   `Tags`
 
+You can view and search the value that will be used in "Autofill" Tag.
+
+<img src="screenshots/view_autofill.png" width="75%" height="75%">
+
 #### Triggers
 
 Advanced user can use `triggers` table in database to define keyword alias and its behavior.
