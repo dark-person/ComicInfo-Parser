@@ -1,6 +1,6 @@
 module github.com/dark-person/comicinfo-parser
 
-go 1.23.8
+go 1.26.9
 
 require (
 	github.com/dark-person/lazydb v0.1.10
