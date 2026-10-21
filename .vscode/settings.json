@@ -26,11 +26,6 @@
     "[yaml]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "code-runner.clearPreviousOutput": true,
-    "code-runner.executorMap": {
-        "go": "wails dev"
-    },
-    "code-runner.runInTerminal": true,
     "cSpell.customDictionaries": {
         "comicinfo-dictionary": {
             "addWords": true,
@@ -52,20 +47,30 @@
         ".git/objects",
         ".vscode",
         ".vscode-insiders",
-        "wailsjs"
+        "go.mod",
+        "go.sum",
+        "wailsjs",
     ],
     "cSpell.languageSettings": [
         {
-            "allowCompoundWords": false,
-            "dictionaries": ["go"],
+            "allowCompoundWords": true,
+            "dictionaries": [
+                "go"
+            ],
             "languageId": "go"
         },
         {
-            "dictionaries": ["typescript", "node"],
+            "dictionaries": [
+                "typescript",
+                "node"
+            ],
             "languageId": "typescriptreact"
         },
         {
-            "dictionaries": ["fonts", "css"],
+            "dictionaries": [
+                "fonts",
+                "css"
+            ],
             "languageId": "css"
         }
     ],
@@ -76,6 +81,9 @@
     "editor.formatOnSave": true,
     "editor.tabSize": 4,
     "editor.unicodeHighlight.includeStrings": false,
+    "json.schemaDownload.trustedDomains": {
+        "https://wails.io": true
+    },
     "prettier.bracketSameLine": true,
     "prettier.printWidth": 120,
     "prettier.singleAttributePerLine": false,
