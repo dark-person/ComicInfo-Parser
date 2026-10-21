@@ -26,5 +26,8 @@ build/bin
 node_modules
 frontend/dist
 
+# Local Note for Developer
+.dev-notes.md
+
 # Configuration file
 config.yaml
