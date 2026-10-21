@@ -18,8 +18,10 @@ func TestSplitKeywords(t *testing.T) {
 			[]string{"Some", "Name", "2", "ABC", "｜Translated", "Name", "Translated", "DL"},
 		},
 		{
+			// cSpell:disable
 			"Some Name 7.5 [TranslatorxTranslator]",
 			[]string{"Some", "Name", "7.5", "TranslatorxTranslator"},
+			// cSpell:enable
 		},
 		{
 			"SomeName2[Translator]",

@@ -39,7 +39,7 @@ func prepareDB() *lazydb.LazyDB {
 		definitions.CategoryPublisher,
 		"Test-Publisher")
 
-	// Tranlator
+	// Translator
 	db.Exec("INSERT OR IGNORE INTO word_store (category_id, word) VALUES (?, ?)",
 		definitions.CategoryTranslator,
 		"Test-Translator")

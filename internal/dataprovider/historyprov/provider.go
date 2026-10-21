@@ -29,7 +29,7 @@ func New(db *lazydb.LazyDB, bookname string) *HistoryProvider {
 	return &HistoryProvider{db: db, bookname: bookname}
 }
 
-// Parse bookname into multiple keywords, then put into a tempoary table,
+// Parse bookname into multiple keywords, then put into a temporary table,
 // this will help quicker checking on tag/value by SQL.
 func (p *HistoryProvider) parseToDB(bookname string) (err error) {
 	// Splits words
@@ -168,13 +168,13 @@ func (p *HistoryProvider) Fill(c *comicinfo.ComicInfo) (out *comicinfo.ComicInfo
 		return c, err
 	}
 
-	// Drop tempoary table
+	// Drop temporary table
 	_, err = p.db.Exec("DROP TABLE _tmp_autofill")
 	if err != nil {
 		return c, err
 	}
 
-	// Sanitzed input for all category
+	// Sanitized input for all category
 	for _, c := range definitions.Categories() {
 		inputted[c] = sanitized(inputted[c])
 	}

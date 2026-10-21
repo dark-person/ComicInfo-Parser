@@ -28,7 +28,7 @@ type databaseConfig struct {
 
 // Config for trash bin location.
 type trashBinConfig struct {
-	Path string `koanf:"path"` // Trash bin location, empty string implment no trash bin defined
+	Path string `koanf:"path"` // Trash bin location, empty string imply no trash bin defined
 }
 
 // Default config struct for this program.
