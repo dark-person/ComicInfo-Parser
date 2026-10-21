@@ -1,4 +1,3 @@
-// Package for providers, which allow filling comicinfo struct by different source.
 package dataprovider
 
 import "github.com/dark-person/comicinfo-parser/internal/comicinfo"
