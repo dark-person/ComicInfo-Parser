@@ -65,14 +65,7 @@ export namespace application {
 
 export namespace comicinfo {
 	
-	export enum Manga {
-	    Unknown = "Unknown",
-	    No = "No",
-	    Yes = "Yes",
-	    YesAndRightToLeft = "YesAndRightToLeft",
-	}
 	export enum AgeRating {
-	    Unknown = "Unknown",
 	    AdultsOnly18 = "Adults Only 18+",
 	    EarlyChildhood = "Early Childhood",
 	    Everyone = "Everyone",
@@ -86,7 +79,14 @@ export namespace comicinfo {
 	    R18Plus = "R18+",
 	    RatingPending = "Rating Pending",
 	    Teen = "Teen",
+	    Unknown = "Unknown",
 	    X18Plus = "X18+",
+	}
+	export enum Manga {
+	    No = "No",
+	    Unknown = "Unknown",
+	    Yes = "Yes",
+	    YesAndRightToLeft = "YesAndRightToLeft",
 	}
 	export class ComicPageInfo {
 	    XMLName: xml.Name;
