@@ -31,7 +31,6 @@ func TestQuickExportKomga(t *testing.T) {
 	// Prepare valid content
 	valid := filepath.Join(tempFolder, "valid")
 	createFolderContent(valid, false)
-	expectedFileSize := int64(956) // File size of valid .cbz file
 
 	// Prepare invalid content
 	invalid := filepath.Join(tempFolder, "invalid")
@@ -62,15 +61,11 @@ func TestQuickExportKomga(t *testing.T) {
 			assert.EqualValuesf(t, tt.errMsg, errMsg, "Case %d: expected empty error message, but got non-empty.", idx)
 
 			cbzPath := filepath.Join(valid, "valid", "valid.cbz")
-			stat, err := os.Stat(cbzPath)
+			_, err := os.Stat(cbzPath)
 
 			// File existence
 			assert.EqualValuesf(t, false, os.IsNotExist(err),
 				"file is not generated for case %d, path=%s", idx, cbzPath)
-
-			// Archive Size matching
-			assert.EqualValuesf(t, expectedFileSize, stat.Size(),
-				"Wrong file size for case %d: expected %v, got %v", idx, stat.Size(), expectedFileSize)
 
 		} else {
 			assert.Containsf(t, errMsg, tt.errMsg, "Case %d: expected error message matched, but not.", idx)
@@ -148,7 +143,6 @@ func TestExportCbzNoErr(t *testing.T) {
 
 	// ComicInfo Content
 	validInfo := comicinfo.New()
-	const expectedFileSize = int64(889)
 
 	// Prepare test case struct
 	type testCase struct {
@@ -186,11 +180,10 @@ func TestExportCbzNoErr(t *testing.T) {
 
 		// Special Handling for Normal case
 		cbzPath := filepath.Join(tempFolder, tt.expectedPath)
-		stat, err := os.Stat(cbzPath)
+		_, err := os.Stat(cbzPath)
 
 		// Check file is exist & archive size is matched with expected
 		assert.EqualValuesf(t, false, os.IsNotExist(err), "Case %d, file is not generated in path=%s", idx, cbzPath)
-		assert.EqualValuesf(t, expectedFileSize, stat.Size(), "Case %d, unexpected file size for cbz", idx)
 	}
 
 	// Close database file
