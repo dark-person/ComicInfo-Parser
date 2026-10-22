@@ -1,10 +1,13 @@
 # Dictionary for imported packages
 assetserver
 AUTOINCREMENT
+cfgprov
 Colour
 Containsf
 Debugf
+Emptyf
 Equalf
+fsprov
 Infof
 innerxml
 iofs
@@ -23,3 +26,4 @@ Valuesf
 wailsapp
 wailsjs
 Warnf
+webp

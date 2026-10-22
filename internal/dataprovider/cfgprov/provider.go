@@ -1,5 +1,3 @@
-// Package to get comicinfo data from config,
-// which is the program config that used by application and retrieve from program start.
 package cfgprov
 
 import (
@@ -27,7 +25,7 @@ func New(cfg *config.ProgramConfig, folderPath string) *ConfigProvider {
 
 // Fill input comicinfo by configuration.
 // When comicinfo.xml is already exist, this provider will have no-ops.
-// There has two possiblity of fill method:
+// There has two possibility of fill method:
 //
 //  1. Fill success, return changed comicinfo and nil error
 //  2. Fill failed, return unchanged comicinfo (same as input) and error it self

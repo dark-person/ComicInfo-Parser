@@ -261,12 +261,12 @@ func (a *App) exportCbz(inputDir string, exportDir string, c *comicinfo.ComicInf
 		return err.Error()
 	}
 
-	// Mark last sucessful export path
+	// Mark last successful export path
 	a.lastExportedComic = inputDir
 	return ""
 }
 
-// Run soft delet process,
+// Run soft delete process,
 // which will move the last exported comic folder to trash bin in config file.
 //
 // This function only effect when one export function is run successfully.

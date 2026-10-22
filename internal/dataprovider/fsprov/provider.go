@@ -1,5 +1,3 @@
-// Package to get comicinfo data from file system.
-// This package will provider a data provider that get data from folder name, XML & image file.
 package fsprov
 
 import (
@@ -14,13 +12,13 @@ import (
 
 // Comicinfo data provider that use file system to fill comicinfo details.
 type FsProvider struct {
-	folderPath string // Folder path of comic, in absoulte path
+	folderPath string // Folder path of comic, in absolute path
 }
 
 var _ dataprovider.DataProvider = (*FsProvider)(nil)
 
 // Create a new file system provider that use file system to fill comicinfo details.
-// Folder path SHOULD be absoulte path for precise scan.
+// Folder path SHOULD be absolute path for precise scan.
 func New(folderPath string) *FsProvider {
 	return &FsProvider{folderPath: folderPath}
 }

@@ -1,4 +1,3 @@
-// Package for providers, which allow filling comicinfo struct by different source.
 package dataprovider
 
 import "github.com/dark-person/comicinfo-parser/internal/comicinfo"
@@ -11,7 +10,7 @@ import "github.com/dark-person/comicinfo-parser/internal/comicinfo"
 type DataProvider interface {
 
 	// Fill input comicinfo by provider's method.
-	// There has two possiblity of fill method:
+	// There has two possibility of fill method:
 	//
 	//  1. Fill success, return changed comicinfo and nil error
 	//  2. Fill failed, return unchanged comicinfo (same as input) and error it self
