@@ -1,4 +1,4 @@
-default: help
+default: build
 
 # Help Menu for makefile
 .PHONY: help
@@ -18,13 +18,17 @@ audit-fix:	## Run npm audit fix for frontend
 binding:	## Generate wails binding
 	wails generate module
 
+.PHONY: build
+build:		## Build program (Not recommend for human usage)
+	wails build
+
 .PHONY: clean 
 clean: 		## Remove distribution of both frontend and backend
 	cd frontend; rm -rf dist
 	rm -f build/bin/*.exe
 
 .PHONY: dist
-dist:		## Create a wails executeable distribution
+dist:		## Create a wails executable distribution
 	rm -f build/bin/*.*
 	wails build
 	@CURRENT_TAG=$$(git tag --points-at | head -n 1);\

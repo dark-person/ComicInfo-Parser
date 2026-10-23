@@ -1,0 +1,37 @@
+name: Go-Test
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go and Wails
+        uses: snider/build/actions/setup/go@v3
+        with:
+          go-version: "1.26.9"
+          wails-version: "v2.17.0"
+
+      - name: Setup Node/npm
+        uses: snider/build/actions/setup/npm@v3
+        with:
+          node-version: "18.x"
+
+      - name: Build Wails app # Build first to prevent frontend dist not exist
+        uses: snider/build/actions/build/wails2/build@v3
+        with:
+          build: "true"
+          build-platform: "windows/amd64"
+          build-name: "wailsApp"
+
+      - name: Test
+        run: go test -v ./...
