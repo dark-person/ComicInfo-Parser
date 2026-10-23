@@ -1,6 +1,8 @@
 package historyprov
 
 import (
+	"path/filepath"
+
 	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
 	"github.com/dark-person/comicinfo-parser/internal/dataprovider"
 	"github.com/dark-person/comicinfo-parser/internal/definitions"
@@ -9,26 +11,36 @@ import (
 
 // Provider that based on user input history.
 type HistoryProvider struct {
-	db       *lazydb.LazyDB // Database that store tag and other inputted value
-	bookname string         // bookname, for split keywords
+	db           *lazydb.LazyDB // Database that store tag and other inputted value
+	rootFolder   string         // Absolute path of root input folder
+	targetFolder string         // Absolute path of book folder to parse info
 }
 
 var _ dataprovider.DataProvider = (*HistoryProvider)(nil)
 
-// Create a new HistoryProvider. The database should be connected and initalized.
-func New(db *lazydb.LazyDB, bookname string) *HistoryProvider {
+// Create a new HistoryProvider, with folder paths. Bookname will be parsed from targetFolder.
+// The database should be connected and initalized.
+func New(db *lazydb.LazyDB, rootFolder string, targetFolder string) *HistoryProvider {
 	if !db.Connected() {
 		panic("database is not connected.")
 	}
 
-	return &HistoryProvider{db: db, bookname: bookname}
+	return &HistoryProvider{
+		db:           db,
+		rootFolder:   rootFolder,
+		targetFolder: targetFolder,
+	}
 }
 
 // Parse bookname into multiple keywords, then put into a temporary table,
 // this will help quicker checking on tag/value by SQL.
-func (p *HistoryProvider) parseToDB(bookname string) (err error) {
+func (p *HistoryProvider) parseToDB() (err error) {
 	// Splits words
+	bookname := filepath.Base(p.targetFolder)
 	words := splitKeywords(bookname)
+
+	// Load keywords from intermediate folder name
+	words = append(words, relativeParentKeywords(p.rootFolder, p.targetFolder)...)
 
 	// Create temporary table
 	_, err = p.db.Exec("CREATE TEMPORARY TABLE _tmp_autofill (word text)")
@@ -146,7 +158,7 @@ func sanitized(input []string) []string {
 
 func (p *HistoryProvider) Fill(c *comicinfo.ComicInfo) (out *comicinfo.ComicInfo, err error) {
 	// Prepare bookname into database
-	err = p.parseToDB(p.bookname)
+	err = p.parseToDB()
 	if err != nil {
 		return c, err
 	}
