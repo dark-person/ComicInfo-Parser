@@ -1,12 +1,12 @@
 default:
-    export-folder: ./my-export
-    comic-folder: ./my-input
+  export-folder: ./my-export
+  comic-folder: ./my-input
 
 metadata:
-    default-number: 1
+  default-number: 1
 
 database:
-    path: "./my-data.db"
+  path: "./my-data.db"
 
 trash-bin:
-    path: "./.trash"
+  path: "./.trash"
