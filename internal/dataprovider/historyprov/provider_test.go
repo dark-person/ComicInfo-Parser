@@ -70,29 +70,50 @@ func TestAutoFillRun(t *testing.T) {
 
 	// Test case
 	type testCase struct {
-		bookname string
-		want     testResult
+		rootFolder string
+		bookFolder string
+		want       testResult
 	}
 
 	// Start test
 	tests := []testCase{
+		// Plain folder case
 		{
-			"[Test-Writer] Some Bookname (abc) [Test-Translator] [Test-Translator2] [def]",
-			testResult{"", "Test-Writer", "", "Test-Translator", "abc,def"}},
+			rootFolder: "/c/user/home/input/",
+			bookFolder: "/c/user/home/input/[Test-Writer] Some Bookname (abc) [Test-Translator] [Test-Translator2] [def]",
+			want:       testResult{"", "Test-Writer", "", "Test-Translator", "abc,def"}},
 		{
-			"(ghi) Another Bookname 2 (abc) [Test-Genre] [Test-Publisher] [Test-TranslatorXTest-Translator2] [invalid] [20240123]",
-			testResult{"Test-Genre", "", "Test-Publisher", "", "abc,ghi"},
+			rootFolder: "/c/user/home/input/",
+			bookFolder: "/c/user/home/input/(ghi) Another Bookname 2 (abc) [Test-Genre] [Test-Publisher] [Test-TranslatorXTest-Translator2] [invalid] [20240123]",
+			want:       testResult{"Test-Genre", "", "Test-Publisher", "", "abc,ghi"},
 		},
 		{
-			"Another Bookname (kcs) (aed) [def]",
-			testResult{"Test-Genre", "", "", "", "abc,def"},
+			rootFolder: "/c/user/home/input/",
+			bookFolder: "/c/user/home/input/Another Bookname (kcs) (aed) [def]",
+			want:       testResult{"Test-Genre", "", "", "", "abc,def"},
+		},
+
+		// Intermediate folder case
+		{
+			rootFolder: "/c/user/home/input/",
+			bookFolder: "/c/user/home/input/def/[Test-Writer] Some Bookname (abc) [Test-Translator] [Test-Translator2]",
+			want:       testResult{"", "Test-Writer", "", "Test-Translator", "abc,def"}},
+		{
+			rootFolder: "/c/user/home/input/",
+			bookFolder: "/c/user/home/input/kcs/aed/Another Bookname [def]",
+			want:       testResult{"Test-Genre", "", "", "", "abc,def"},
+		},
+		{
+			rootFolder: "/c/user/home/input/",
+			bookFolder: "/c/user/home/input/kcs/aed/Another Bookname (kcs) [def]",
+			want:       testResult{"Test-Genre", "", "", "", "abc,def"},
 		},
 	}
 
 	var err error
 	for idx, tt := range tests {
 		// Init runner
-		prov := New(db, tt.bookname)
+		prov := New(db, tt.rootFolder, tt.bookFolder)
 
 		// Prepare new comicinfo
 		temp := comicinfo.New()

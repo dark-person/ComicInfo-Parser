@@ -2,7 +2,6 @@ package application
 
 import (
 	"fmt"
-	"path/filepath"
 
 	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
 	"github.com/dark-person/comicinfo-parser/internal/dataprovider"
@@ -63,8 +62,8 @@ func (a *App) GetComicInfo(folder string) ComicInfoResponse {
 		}
 	}
 
-	// Autofill by file base name
-	prov = historyprov.New(a.DB, filepath.Base(absPath))
+	// Autofill by folder path (intermediate folder + book folder name)
+	prov = historyprov.New(a.DB, a.cfg.Folder.ComicDir, absPath)
 	c, err = prov.Fill(c)
 
 	// Consider as acceptable error, log error only
