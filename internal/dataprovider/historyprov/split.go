@@ -1,6 +1,9 @@
 package historyprov
 
-import "strings"
+import (
+	"path/filepath"
+	"strings"
+)
 
 // Replace brackets to space from given input.
 func replaceBrackets(input string) string {
@@ -51,4 +54,33 @@ func splitKeywords(bookName string) []string {
 	}
 
 	return result
+}
+
+// Parse relative part of folder path to keywords, allow trigger to work.
+//
+// An example is like this:
+//   - root path: /c/user/home/input/
+//   - current path: /c/user/home/input/category1/category2/book1
+//
+// Then this function should return:
+//   - result: [category1, category2]
+//
+// If no word can be loaded from this function, empty string slice will return.
+func relativeParentKeywords(rootPath, currentPath string) []string {
+	// Do nothing if both root path or current path is empty
+	if rootPath == "" || currentPath == "" {
+		return []string{}
+	}
+
+	root := filepath.Clean(rootPath)
+	currentFolder := filepath.Dir(filepath.Clean(currentPath))
+
+	// Try to get relative path from root & current folder
+	rel, err := filepath.Rel(root, currentFolder)
+	if err != nil || rel == "." || strings.HasPrefix(rel, "..") {
+		return []string{}
+	}
+
+	// Rel already uses the native separator; Fields collapses any residual whitespace.
+	return strings.Fields(strings.ReplaceAll(rel, string(filepath.Separator), " "))
 }
