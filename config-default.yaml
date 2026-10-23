@@ -1,12 +1,12 @@
 default:
-    export-folder:
-    comic-folder:
+  export-folder:
+  comic-folder:
 
 database:
-    path:
+  path:
 
 metadata:
-    default-number:
+  default-number:
 
 trash-bin:
-    path:
+  path:
