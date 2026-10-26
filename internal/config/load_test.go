@@ -23,7 +23,7 @@ func TestLoadYaml(t *testing.T) {
 
 	tests := []testCase{
 		{"mock/case-normal.yaml", &ProgramConfig{
-			Folder: folderConfig{
+			Preference: preferenceConfig{
 				ExportDir: filepath.Join(exPath, "./my-export"),
 				ComicDir:  filepath.Join(exPath, "./my-input"),
 			},

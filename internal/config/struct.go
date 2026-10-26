@@ -2,14 +2,14 @@ package config
 
 // Config for this program.
 type ProgramConfig struct {
-	Folder   folderConfig   `koanf:"default"`   // Config setting for folders
-	Metadata metadataConfig `koanf:"metadata"`  // Config for metadata default values
-	Database databaseConfig `koanf:"database"`  // Config for database to use
-	TrashBin trashBinConfig `koanf:"trash-bin"` // Config of trash bin usage
+	Preference preferenceConfig `koanf:"default"`   // Config setting for folders
+	Metadata   metadataConfig   `koanf:"metadata"`  // Config for metadata default values
+	Database   databaseConfig   `koanf:"database"`  // Config for database to use
+	TrashBin   trashBinConfig   `koanf:"trash-bin"` // Config of trash bin usage
 }
 
 // Config for folder to be used.
-type folderConfig struct {
+type preferenceConfig struct {
 	ComicDir  string `koanf:"comic-folder"`  // Default input directory, all folder select dialog will start from here
 	ExportDir string `koanf:"export-folder"` // Default export folder, apply to both quick & standard
 }
@@ -32,7 +32,7 @@ type trashBinConfig struct {
 // Default config struct for this program.
 func Default() *ProgramConfig {
 	return &ProgramConfig{
-		Folder: folderConfig{
+		Preference: preferenceConfig{
 			ComicDir:  "", // Indicate use wails default directory
 			ExportDir: "", // Indicate input folder is used
 		},
