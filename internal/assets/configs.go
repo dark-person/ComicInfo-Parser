@@ -1,9 +1,8 @@
 package assets
 
 import (
-	"fmt"
-
 	"github.com/dark-person/comicinfo-parser/internal/config"
+	"github.com/rs/zerolog/log"
 )
 
 var cfg *config.ProgramConfig
@@ -19,7 +18,7 @@ func Config() *config.ProgramConfig {
 	// Load Config from filesystem
 	c, err := config.LoadYaml("config.yaml")
 	if err != nil {
-		fmt.Println(err)
+		log.Warn().Err(err).Msg("Failed to load config.yaml, use default instead")
 	}
 
 	// Set loaded config to package

@@ -2,9 +2,10 @@ package comicinfo
 
 import (
 	"encoding/xml"
-	"fmt"
 	"os"
 	"testing"
+
+	"github.com/rs/zerolog/log"
 )
 
 // Test Create new ComicInfo object, then unmarshal to XML.
@@ -13,7 +14,7 @@ func TestNew(t *testing.T) {
 
 	output, err := xml.MarshalIndent(v, "", "  ")
 	if err != nil {
-		fmt.Printf("error: %v\n", err)
+		log.Error().Err(err).Send()
 	}
 
 	if string(output) != emptyMarshal {

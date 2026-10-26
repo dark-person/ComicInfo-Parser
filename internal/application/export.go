@@ -64,7 +64,7 @@ func (a *App) QuickExportKomga(inputDir string) string {
 
 	// Consider as acceptable error, log error only
 	if err != nil {
-		fmt.Println(err)
+		log.Debug().Err(err).Msg("acceptable error caught")
 	}
 
 	// Write ComicInfo.xml

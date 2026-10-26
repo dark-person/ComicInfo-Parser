@@ -1,9 +1,8 @@
 package application
 
 import (
-	"fmt"
-
 	"github.com/dark-person/comicinfo-parser/internal/store"
+	"github.com/rs/zerolog/log"
 )
 
 // Struct that designed for
@@ -50,7 +49,7 @@ func (a *App) GetAllTagInput() HistoryResp {
 func (a *App) GetAllAutofillWord() []store.AutofillWord {
 	words, err := store.GetAllAutofillWord(a.DB)
 	if err != nil {
-		fmt.Println(err)
+		log.Warn().Err(err).Msg("Failed to get autofill word(s)")
 		return []store.AutofillWord{}
 	}
 
