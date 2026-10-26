@@ -2,13 +2,13 @@ package config
 
 // Config for this program.
 type ProgramConfig struct {
-	Preference preferenceConfig `koanf:"default"`   // Config setting for folders
+	Preference preferenceConfig `koanf:"default"`   // Config setting for general user preference
 	Metadata   metadataConfig   `koanf:"metadata"`  // Config for metadata default values
 	Database   databaseConfig   `koanf:"database"`  // Config for database to use
 	TrashBin   trashBinConfig   `koanf:"trash-bin"` // Config of trash bin usage
 }
 
-// Config for folder to be used.
+// Config for some user preference, e.g. default folder used.
 type preferenceConfig struct {
 	ComicDir  string `koanf:"comic-folder"`  // Default input directory, all folder select dialog will start from here
 	ExportDir string `koanf:"export-folder"` // Default export folder, apply to both quick & standard
