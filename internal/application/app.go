@@ -61,7 +61,7 @@ func (a *App) Startup(ctx context.Context) {
 // LoadSessionData will get session data that will be used in frontend for whole application session.
 func (a *App) LoadSessionData() definitions.SessionData {
 	return definitions.SessionData{
-		ExportMethod:      definitions.ExportMethodDefaultWrapCBZ,
-		DeleteAfterExport: false,
+		ExportMethod:      a.cfg.Preference.ExportMethod,
+		DeleteAfterExport: a.cfg.Preference.DeleteAfterExport,
 	}
 }

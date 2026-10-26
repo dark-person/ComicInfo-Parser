@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/dark-person/comicinfo-parser/internal/definitions"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -24,8 +25,10 @@ func TestLoadYaml(t *testing.T) {
 	tests := []testCase{
 		{"mock/case-normal.yaml", &ProgramConfig{
 			Preference: preferenceConfig{
-				ExportDir: filepath.Join(exPath, "./my-export"),
-				ComicDir:  filepath.Join(exPath, "./my-input"),
+				ExportDir:         filepath.Join(exPath, "./my-export"),
+				ComicDir:          filepath.Join(exPath, "./my-input"),
+				ExportMethod:      definitions.ExportMethodOnlyCBZ,
+				DeleteAfterExport: true,
 			},
 			Metadata: metadataConfig{
 				Number: "1",
@@ -37,6 +40,7 @@ func TestLoadYaml(t *testing.T) {
 				Path: filepath.Join(exPath, "./.trash"),
 			},
 		}, false},
+
 		{"mock/case-typo1.yaml", Default(), false},
 		{"mock/case-typo2.yaml", Default(), false},
 		{"mock/case-empty.yaml", Default(), false},
@@ -57,5 +61,36 @@ func TestLoadYaml(t *testing.T) {
 			assert.EqualValuesf(t, tt.want, c, "Incorrect values in case %d", idx)
 			assert.NoErrorf(t, err, "Unexpected error in case %d", idx)
 		}
+	}
+}
+
+func TestLoadYamlExportMethod(t *testing.T) {
+	type testCase struct {
+		path    string
+		want    definitions.ExportMethod
+		wantErr bool
+	}
+
+	exPath, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+	t.Log(exPath)
+
+	tests := []testCase{
+		{"mock/case-normal.yaml", definitions.ExportMethodOnlyCBZ, false},
+		{"mock/case-empty.yaml", definitions.ExportMethodDefaultWrapCBZ, false},
+
+		{"mock/case-export0.yaml", definitions.ExportMethodDefaultWrapCBZ, false},
+		{"mock/case-export1.yaml", definitions.ExportMethodOnlyCBZ, false},
+		{"mock/case-export2.yaml", definitions.ExportMethodCustomWrapCBZ, false},
+	}
+
+	for idx, tt := range tests {
+		// Load YAML file and check result
+		c, err := LoadYaml(tt.path)
+
+		assert.EqualValuesf(t, tt.want, c.Preference.ExportMethod, "Incorrect values in case %d", idx)
+		assert.NoErrorf(t, err, "Unexpected error in case %d", idx)
 	}
 }

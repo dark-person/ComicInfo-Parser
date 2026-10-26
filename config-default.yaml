@@ -1,6 +1,8 @@
 default:
   export-folder:
   comic-folder:
+  export-method:
+  delete-after-export:
 
 database:
   path:

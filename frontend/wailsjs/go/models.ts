@@ -276,8 +276,8 @@ export namespace definitions {
 	
 	export enum ExportMethod {
 	    CBZ_ONLY = 1,
-	    CUSTOM_WRAP_CBZ = 3,
-	    DEFAULT_WRAP_CBZ = 2,
+	    CUSTOM_WRAP_CBZ = 2,
+	    DEFAULT_WRAP_CBZ = 0,
 	}
 	export class SessionData {
 	    exportMethod: ExportMethod;
