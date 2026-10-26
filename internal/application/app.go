@@ -5,6 +5,7 @@ import (
 
 	"github.com/dark-person/comicinfo-parser/internal/assets"
 	"github.com/dark-person/comicinfo-parser/internal/config"
+	"github.com/dark-person/comicinfo-parser/internal/definitions"
 	"github.com/dark-person/lazydb"
 	"github.com/rs/zerolog/log"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -54,5 +55,13 @@ func (a *App) Startup(ctx context.Context) {
 			Message: "Database version is corrupted. To fix this issue, you can:\n\n1. Change database by config.yaml.\n2. Backup and remove the database file.\n3. Fix your database (Advanced User ONLY).",
 		})
 		log.Panic().Err(err).Msg("Failed to start application due to database corrupted")
+	}
+}
+
+// LoadSessionData will get session data that will be used in frontend for whole application session.
+func (a *App) LoadSessionData() definitions.SessionData {
+	return definitions.SessionData{
+		ExportMethod:      definitions.ExportMethodDefaultWrapCBZ,
+		DeleteAfterExport: false,
 	}
 }

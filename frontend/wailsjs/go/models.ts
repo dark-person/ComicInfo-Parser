@@ -272,6 +272,30 @@ export namespace comicinfo {
 
 }
 
+export namespace definitions {
+	
+	export enum ExportMethod {
+	    CBZ_ONLY = 1,
+	    CUSTOM_WRAP_CBZ = 3,
+	    DEFAULT_WRAP_CBZ = 2,
+	}
+	export class SessionData {
+	    exportMethod: ExportMethod;
+	    deleteAfterExport: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new SessionData(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.exportMethod = source["exportMethod"];
+	        this.deleteAfterExport = source["deleteAfterExport"];
+	    }
+	}
+
+}
+
 export namespace store {
 	
 	export class AutofillWord {

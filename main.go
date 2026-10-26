@@ -65,6 +65,7 @@ func main() {
 		EnumBind: []interface{}{
 			application.AllMangaValue,
 			application.AllAgeRatingValue,
+			application.AllExportMethodValue,
 		},
 	})
 

@@ -1,19 +1,22 @@
 // React Component
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 
 // Project Specified Component
 import { type ModalControl } from "@/controls/ModalControl";
-import { ExportMethod, type SessionData } from "@/controls/SessionData";
 import ExportCbzPage from "@/pages/ExportCbzPage";
 import FolderSelectPage from "@/pages/FolderSelectPage";
 import InputComicInfoPage from "@/pages/InputComicInfoPage";
 import { CreateCbzStatus } from "@/status/CreateCbzStatus";
 
 // Wails
-import { GetComicInfo } from "@wailsjs/go/application/App";
-import { comicinfo } from "@wailsjs/go/models";
+import { GetComicInfo, LoadSessionData } from "@wailsjs/go/application/App";
+import { comicinfo, definitions } from "@wailsjs/go/models";
+
+// Alias from namespace
+export import ExportMethod = definitions.ExportMethod;
+export import SessionData = definitions.SessionData;
 
 type CreateCbzViewProps = {
     /** Decide which panel will be displayed. */
@@ -36,6 +39,11 @@ export default function CreateCbzView({ mode, setMode, modalController }: Readon
         exportMethod: ExportMethod.DEFAULT_WRAP_CBZ,
         deleteAfterExport: false,
     });
+
+    useEffect(() => {
+        // Load default export method from backend to session
+        LoadSessionData().then((data) => setSessionData(data));
+    }, []);
 
     /**
      * Set value of selected folder, then pass selected folder to next panel.
