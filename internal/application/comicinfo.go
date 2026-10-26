@@ -1,14 +1,13 @@
 package application
 
 import (
-	"fmt"
-
 	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
 	"github.com/dark-person/comicinfo-parser/internal/dataprovider"
 	"github.com/dark-person/comicinfo-parser/internal/dataprovider/cfgprov"
 	"github.com/dark-person/comicinfo-parser/internal/dataprovider/fsprov"
 	"github.com/dark-person/comicinfo-parser/internal/dataprovider/historyprov"
 	"github.com/dark-person/comicinfo-parser/internal/dircheck"
+	"github.com/rs/zerolog/log"
 )
 
 type ComicInfoResponse struct {
@@ -68,7 +67,7 @@ func (a *App) GetComicInfo(folder string) ComicInfoResponse {
 
 	// Consider as acceptable error, log error only
 	if err != nil {
-		fmt.Println(err)
+		log.Debug().Err(err).Msg("acceptable error caught")
 	}
 
 	// Fill by configuration
@@ -77,7 +76,7 @@ func (a *App) GetComicInfo(folder string) ComicInfoResponse {
 
 	// Consider as acceptable error, log error only
 	if err != nil {
-		fmt.Println(err)
+		log.Debug().Err(err).Msg("acceptable error caught")
 	}
 
 	// Return result

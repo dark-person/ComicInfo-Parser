@@ -11,7 +11,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 )
 
 // Load XML file to comicInfo struct in go.
@@ -26,7 +26,7 @@ func Load(path string) (*ComicInfo, error) {
 	// Open XML file
 	file, err := os.Open(path)
 	if err != nil {
-		logrus.Errorf("Error when opening file %s: %v", path, err)
+		log.Error().Err(err).Str("path", path).Msg("Error when opening file.")
 		return nil, err
 	}
 	defer file.Close()
@@ -34,7 +34,7 @@ func Load(path string) (*ComicInfo, error) {
 	// Read byte[] from file
 	data, err := io.ReadAll(file)
 	if err != nil {
-		logrus.Errorf("Error when read file %s: %v", path, err)
+		log.Error().Err(err).Str("path", path).Msg("Error when read file.")
 		return nil, err
 	}
 
@@ -42,7 +42,7 @@ func Load(path string) (*ComicInfo, error) {
 	result := New()
 	err = xml.Unmarshal(data, &result)
 	if err != nil {
-		logrus.Errorf("Error when unmarshal to XML file %s: %v", path, err)
+		log.Error().Err(err).Str("path", path).Msg("Error when unmarshal to XML file.")
 		return nil, err
 	}
 
@@ -67,7 +67,7 @@ func Save(info *ComicInfo, path string) error {
 	// Marshal XML
 	output, err := xml.MarshalIndent(info, "", "    ")
 	if err != nil {
-		logrus.Errorf("Error when marshal to XML file %s: %v", path, err)
+		log.Error().Err(err).Str("path", path).Msg("Error when unmarshal to XML file.")
 		return err
 	}
 

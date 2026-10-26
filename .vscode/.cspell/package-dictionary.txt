@@ -15,7 +15,6 @@ knadh
 koanf
 Komga
 lazydb
-logrus
 mattn
 Nilf
 sirupsen

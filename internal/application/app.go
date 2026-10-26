@@ -2,12 +2,11 @@ package application
 
 import (
 	"context"
-	"fmt"
-	"os"
 
 	"github.com/dark-person/comicinfo-parser/internal/assets"
 	"github.com/dark-person/comicinfo-parser/internal/config"
 	"github.com/dark-person/lazydb"
+	"github.com/rs/zerolog/log"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -46,7 +45,7 @@ func (a *App) Startup(ctx context.Context) {
 
 	// Perform migration to database if needed
 	tmpPath, err := a.DB.Migrate()
-	fmt.Println("Backup Path: " + tmpPath)
+	log.Info().Str("backup path", tmpPath).Send()
 
 	if err != nil {
 		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
@@ -54,6 +53,6 @@ func (a *App) Startup(ctx context.Context) {
 			Title:   "Error",
 			Message: "Database version is corrupted. To fix this issue, you can:\n\n1. Change database by config.yaml.\n2. Backup and remove the database file.\n3. Fix your database (Advanced User ONLY).",
 		})
-		os.Exit(1)
+		log.Panic().Err(err).Msg("Failed to start application due to database corrupted")
 	}
 }
