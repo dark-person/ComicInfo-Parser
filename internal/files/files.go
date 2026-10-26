@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 )
 
 // Check the file is exist or not.
@@ -17,16 +17,16 @@ func IsFileExist(path string) bool {
 	_, err := os.Stat(path)
 
 	if os.IsNotExist(err) {
-		logrus.Debugf("%v file does not exist\n", path)
+		log.Debug().Str("path", path).Msg("file does not exist")
 		return false
 	}
 
 	if err == nil {
-		logrus.Debugf("%v file exist\n", path)
+		log.Debug().Str("path", path).Msg("file exist")
 		return true
 	}
 
-	logrus.Warnf("Unknown error: %s - %v", path, err)
+	log.Warn().Err(err).Str("path", path).Msg("Unknown error.")
 	return false
 }
 
@@ -44,7 +44,7 @@ func IsPathValid(path string) bool {
 	}
 
 	// Log Error & return
-	logrus.Debugf("invalid path error: %v", err)
+	log.Debug().Err(err).Msg("invalid path error")
 	return false
 }
 
@@ -68,7 +68,7 @@ func MoveFile(target, dest string) error {
 
 	// Use rename if volume is same
 	if filepath.VolumeName(target) == filepath.VolumeName(dest) {
-		logrus.Info("Same volume in copy & dest, use rename")
+		log.Info().Msg("Same volume in copy & dest, use rename")
 		return os.Rename(target, dest)
 	}
 

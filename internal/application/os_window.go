@@ -4,7 +4,7 @@ import (
 	"os/exec"
 	"runtime"
 
-	"github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -22,7 +22,7 @@ func (a *App) OpenFolder(path string) {
 		})
 
 		if err != nil {
-			logrus.Error(err)
+			log.Error().Err(err).Msg("Failed to show message dialog.")
 		}
 
 		return

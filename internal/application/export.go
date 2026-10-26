@@ -14,7 +14,7 @@ import (
 	"github.com/dark-person/comicinfo-parser/internal/definitions"
 	"github.com/dark-person/comicinfo-parser/internal/dircheck"
 	"github.com/dark-person/comicinfo-parser/internal/store"
-	"github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 )
 
 const comicInfoFile = "ComicInfo.xml"
@@ -171,7 +171,7 @@ func (a *App) saveComicInfo(originalDir string, c *comicinfo.ComicInfo) error {
 	err = a.saveToHistory(c)
 	if err != nil {
 		// This is consider as additional part, consider no error here
-		logrus.Error(err)
+		log.Error().Err(err).Msg("Failed to save history data.")
 	}
 
 	return nil
