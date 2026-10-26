@@ -39,11 +39,11 @@ func (a *App) GetDirectory(dir string) DirectoryResp {
 // Attempt to load default output directory.
 // If no default directory is set, then return input directory instead.
 func (a *App) GetDefaultOutputDirectory(inputDir string) string {
-	if a.cfg.Folder.ExportDir == "" {
+	if a.cfg.Preference.ExportDir == "" {
 		return inputDir
 	}
 
-	return a.cfg.Folder.ExportDir
+	return a.cfg.Preference.ExportDir
 }
 
 // Attempt to load default comic folder.
@@ -53,5 +53,5 @@ func (a *App) GetComicFolder() string {
 		return ""
 	}
 
-	return a.cfg.Folder.ComicDir
+	return a.cfg.Preference.ComicDir
 }

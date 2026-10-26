@@ -62,7 +62,7 @@ func (a *App) GetComicInfo(folder string) ComicInfoResponse {
 	}
 
 	// Autofill by folder path (intermediate folder + book folder name)
-	prov = historyprov.New(a.DB, a.cfg.Folder.ComicDir, absPath)
+	prov = historyprov.New(a.DB, a.cfg.Preference.ComicDir, absPath)
 	c, err = prov.Fill(c)
 
 	// Consider as acceptable error, log error only

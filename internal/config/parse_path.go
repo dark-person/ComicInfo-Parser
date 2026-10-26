@@ -16,12 +16,12 @@ func parsePath(relativePath string) (absPath string, err error) {
 func (cfg *ProgramConfig) parse() error {
 	var err error
 
-	cfg.Folder.ExportDir, err = parsePath(cfg.Folder.ExportDir)
+	cfg.Preference.ExportDir, err = parsePath(cfg.Preference.ExportDir)
 	if err != nil {
 		return err
 	}
 
-	cfg.Folder.ComicDir, err = parsePath(cfg.Folder.ComicDir)
+	cfg.Preference.ComicDir, err = parsePath(cfg.Preference.ComicDir)
 	if err != nil {
 		return err
 	}
