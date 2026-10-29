@@ -50,6 +50,10 @@ export function GetDirectory(arg1) {
   return window['go']['application']['App']['GetDirectory'](arg1);
 }
 
+export function LoadSessionData() {
+  return window['go']['application']['App']['LoadSessionData']();
+}
+
 export function OpenFolder(arg1) {
   return window['go']['application']['App']['OpenFolder'](arg1);
 }

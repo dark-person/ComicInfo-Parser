@@ -1,6 +1,8 @@
 default:
   export-folder: ./my-export
   comic-folder: ./my-input
+  export-method: file
+  delete-after-export: true
 
 metadata:
   default-number: 1

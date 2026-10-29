@@ -11,7 +11,6 @@ import Form from "react-bootstrap/Form";
 import { ColoredCheckBox, ColoredRadio } from "@/components/ColoredFormCheck";
 import FolderSelector from "@/components/FolderSelector";
 import { type ModalControl } from "@/controls/ModalControl";
-import { ExportMethod } from "@/controls/SessionData";
 import { basename } from "@/filename";
 
 // Wails
@@ -22,7 +21,10 @@ import {
     GetDefaultOutputDirectory,
     RunSoftDelete,
 } from "@wailsjs/go/application/App";
-import { comicinfo } from "@wailsjs/go/models";
+import { comicinfo, definitions } from "@wailsjs/go/models";
+
+// Alias from namespace
+export import ExportMethod = definitions.ExportMethod;
 
 /** Props Interface for ExportCbzPage */
 type ExportCbzPageProps = {

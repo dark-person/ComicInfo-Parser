@@ -1,6 +1,9 @@
 package application
 
-import "github.com/dark-person/comicinfo-parser/internal/comicinfo"
+import (
+	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
+	"github.com/dark-person/comicinfo-parser/internal/definitions"
+)
 
 // The value of `Manga` const to use in wails binding.
 var AllMangaValue = []struct {
@@ -33,4 +36,14 @@ var AllAgeRatingValue = []struct {
 	{comicinfo.AgeRatingRatingPending, "RatingPending"},
 	{comicinfo.AgeRatingTeen, "Teen"},
 	{comicinfo.AgeRatingX18Plus, "X18Plus"},
+}
+
+// The value of `ExportMethod` const to use in wails binding.
+var AllExportMethodValue = []struct {
+	Value  definitions.ExportMethod
+	TSName string
+}{
+	{definitions.ExportMethodOnlyCBZ, "CBZ_ONLY"},
+	{definitions.ExportMethodDefaultWrapCBZ, "DEFAULT_WRAP_CBZ"},
+	{definitions.ExportMethodCustomWrapCBZ, "CUSTOM_WRAP_CBZ"},
 }

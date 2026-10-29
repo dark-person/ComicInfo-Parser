@@ -16,15 +16,15 @@ When there has existing `ComicInfo.xml` file in selected folder, GUI will load e
 
 Currently, this project supports fields:
 
--   `Title`, `Number`, `Summary`, `Year/Month/Day`, `Web`, `GTIN`
--   ALL Creator fields: `Writer`, `Translator` .etc
--   `Tags` with GUI to edit & view
--   `Series`, `Volume`, `Count`
--   `AgeRating`, `Manga` with Enum values supported
--   `Genre`, `LanguageISO`
--   `SeriesGroup`, `AlternateSeries`
--   `AlternateNumber`, `AlternateCount`
--   `StoryArc`, `StoryArcNumber`
+- `Title`, `Number`, `Summary`, `Year/Month/Day`, `Web`, `GTIN`
+- ALL Creator fields: `Writer`, `Translator` .etc
+- `Tags` with GUI to edit & view
+- `Series`, `Volume`, `Count`
+- `AgeRating`, `Manga` with Enum values supported
+- `Genre`, `LanguageISO`
+- `SeriesGroup`, `AlternateSeries`
+- `AlternateNumber`, `AlternateCount`
+- `StoryArc`, `StoryArcNumber`
 
 | ![Select Folder](screenshots/select.png)    | ![Preview Page](screenshots/input_book.png) |
 | ------------------------------------------- | ------------------------------------------- |
@@ -40,11 +40,11 @@ User can use these values when they generate another comicinfo, with easy-to-use
 
 Currently, this feature support below fields:
 
--   `Genre`
--   `Writer`
--   `Publisher`
--   `Translator`
--   `Tags`
+- `Genre`
+- `Writer`
+- `Publisher`
+- `Translator`
+- `Tags`
 
 More field will be added in near future.
 
@@ -58,11 +58,11 @@ Folder name will be split to some keywords by space characters, and only fill va
 
 Currently, this feature support below fields:
 
--   `Genre`
--   `Writer`
--   `Publisher`
--   `Translator`
--   `Tags`
+- `Genre`
+- `Writer`
+- `Publisher`
+- `Translator`
+- `Tags`
 
 You can view and search the value that will be used in "Autofill" Tag.
 
@@ -83,9 +83,9 @@ User should use software with GUI to perform CRUD for database.
 
 After preview & press button to export, User can defined export folder, and export in following options:
 
--   `.cbz` file ONLY
--   `.cbz` with `komga` folder structure, using book name as folder name
--   `.cbz` with `komga` folder structure, using custom folder name
+- `.cbz` file ONLY
+- `.cbz` with `komga` folder structure, using book name as folder name
+- `.cbz` with `komga` folder structure, using custom folder name
 
 | ![Export UI](screenshots/export.png) | ![Custom Export](screenshots/export_custom.png) |
 | ------------------------------------ | ----------------------------------------------- |
@@ -134,17 +134,19 @@ You may found a sample of configuration file in `config-example.yaml`, and defau
 
 You should use absolute paths as possible. If folder is missing, then program will try to create for all folders.
 
-| Field                     | Type   | Usage                                                          | When value is empty                                |
-| ------------------------- | ------ | -------------------------------------------------------------- | -------------------------------------------------- |
-| `default`                 | struct | storing default values for program                             | N/a                                                |
-| `default.export-folder`   | string | default export folder path                                     | create inside input directory                      |
-| `default.comic-folder`    | string | default folder location when choose folder to create comicinfo | Folder select UI will be empty                     |
-| `trash-bin`               | struct | Store trash bin definition for soft-deletion                   | N/a                                                |
-| `trash-bin.path`          | string | path of program trash bin                                      | no soft-deletion operation                         |
-| `database`                | struct | Database related settings                                      | N/a                                                |
-| `database.path`           | string | path of database                                               | use `{Home Directory}/comicInfo-parser/storage.db` |
-| `metadata`                | struct | Default Metadata values                                        | N/a                                                |
-| `metadata.default-number` | string | `Number` in comicinfo                                          | use empty value                                    |
+| Field                     | Type    | Usage                                                             | When value is empty                                |
+| ------------------------- | ------- | ----------------------------------------------------------------- | -------------------------------------------------- |
+| `default`                 | struct  | storing default values for program                                | N/a                                                |
+| `default.export-folder`   | string  | default export folder path                                        | create inside input directory                      |
+| `default.comic-folder`    | string  | default folder location when choose folder to create comicinfo    | Folder select UI will be empty                     |
+| `default.export-method`   | string  | default method to export: `file` / `default-wrap` / `custom-wrap` | `default-wrap`                                     |
+| `delete-after-export`     | boolean | default to tick "Soft Delete After Export" checkbox               | `false`                                            |
+| `trash-bin`               | struct  | Store trash bin definition for soft-deletion                      | N/a                                                |
+| `trash-bin.path`          | string  | path of program trash bin                                         | no soft-deletion operation                         |
+| `database`                | struct  | Database related settings                                         | N/a                                                |
+| `database.path`           | string  | path of database                                                  | use `{Home Directory}/comicInfo-parser/storage.db` |
+| `metadata`                | struct  | Default Metadata values                                           | N/a                                                |
+| `metadata.default-number` | string  | `Number` in comicinfo                                             | use empty value                                    |
 
 ## Data
 

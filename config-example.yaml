@@ -1,6 +1,8 @@
 default:
   export-folder: ./my-export
   comic-folder: ./my-input
+  export-method: custom-wrap
+  delete-after-export: true
 
 database:
   path: "./my-data.db"

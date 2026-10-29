@@ -1,5 +1,7 @@
 package config
 
+import "github.com/dark-person/comicinfo-parser/internal/definitions"
+
 // Config for this program.
 type ProgramConfig struct {
 	Preference preferenceConfig `koanf:"default"`   // Config setting for general user preference
@@ -10,8 +12,10 @@ type ProgramConfig struct {
 
 // Config for some user preference, e.g. default folder used.
 type preferenceConfig struct {
-	ComicDir  string `koanf:"comic-folder"`  // Default input directory, all folder select dialog will start from here
-	ExportDir string `koanf:"export-folder"` // Default export folder, apply to both quick & standard
+	ComicDir          string                   `koanf:"comic-folder"`  // Default input directory, all folder select dialog will start from here
+	ExportDir         string                   `koanf:"export-folder"` // Default export folder, apply to both quick & standard
+	ExportMethod      definitions.ExportMethod `koanf:"export-method"`
+	DeleteAfterExport bool                     `koanf:"delete-after-export"`
 }
 
 // Configuration for default value of metadata.
@@ -33,8 +37,10 @@ type trashBinConfig struct {
 func Default() *ProgramConfig {
 	return &ProgramConfig{
 		Preference: preferenceConfig{
-			ComicDir:  "", // Indicate use wails default directory
-			ExportDir: "", // Indicate input folder is used
+			ComicDir:          "", // Indicate use wails default directory
+			ExportDir:         "", // Indicate input folder is used
+			ExportMethod:      definitions.ExportMethodDefaultWrapCBZ,
+			DeleteAfterExport: false,
 		},
 		Metadata: metadataConfig{
 			Number: "",

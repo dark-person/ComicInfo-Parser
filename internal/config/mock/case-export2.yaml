@@ -1,0 +1,14 @@
+default:
+  export-folder:
+  comic-folder:
+  export-method: custom-wrap
+  delete-after-export:
+
+metadata:
+  default-number:
+
+database:
+  path:
+
+trash-bin:
+  path:
