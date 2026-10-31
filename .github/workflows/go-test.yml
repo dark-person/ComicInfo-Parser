@@ -15,23 +15,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Go and Wails
-        uses: snider/build/actions/setup/go@v3
+      - name: Setup Go
+        uses: actions/setup-go@v5
         with:
-          go-version: "1.26.9"
-          wails-version: "v2.17.0"
+          go-version-file: go.mod
+          cache: true
 
-      - name: Setup Node/npm
-        uses: snider/build/actions/setup/npm@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: "18.x"
+          node-version: "22.x"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
 
-      - name: Build Wails app # Build first to prevent frontend dist not exist
-        uses: snider/build/actions/build/wails2/build@v3
-        with:
-          build: "true"
-          build-platform: "windows/amd64"
-          build-name: "wailsApp"
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: frontend
+
+      - name: Install Wails v3 CLI
+        run: |
+          go install github.com/wailsapp/wails/v3/cmd/wails3@v3.0.0
+          "$(go env GOPATH)\bin" >> $env:GITHUB_PATH
+
+      - name: Build Wails v3 app
+        run: wails3 build GOOS=windows ARCH=amd64
 
       - name: Test
         run: go test -v ./...

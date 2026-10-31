@@ -1,4 +1,5 @@
 // React
+import type { HistoryResp } from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/models";
 import { useEffect, useState } from "react";
 
 // React Component
@@ -7,8 +8,6 @@ import Form from "react-bootstrap/Form";
 
 import { type ActionMeta, type GroupBase, type MultiValue, type StylesConfig } from "react-select";
 import CreatableSelect from "react-select/creatable";
-
-import { application } from "@wailsjs/go/models";
 
 /** Props for `OptionFormRow`. */
 type OptionFormRowProps = {
@@ -23,7 +22,7 @@ type OptionFormRowProps = {
     /** Function to set value back to primary comicinfo object. */
     setValue?: (value: string) => void;
     /** Function to get default values from wails backend. */
-    getDefaultOpt: () => Promise<application.HistoryResp>;
+    getDefaultOpt: () => Promise<HistoryResp>;
     /** Max height for menu list, same with css `max-height`. Default is `9em` */
     menuMaxHeight?: string;
     /** Current height for component, same with css `height`.*/

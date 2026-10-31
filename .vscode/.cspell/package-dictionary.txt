@@ -1,4 +1,5 @@
 # Dictionary for imported packages
+appicon
 assetserver
 AUTOINCREMENT
 cfgprov
@@ -8,6 +9,7 @@ Debugf
 Emptyf
 Equalf
 fsprov
+GOPATH
 Infof
 innerxml
 iofs
@@ -16,13 +18,17 @@ koanf
 Komga
 lazydb
 mattn
+MSIX
 Nilf
 sirupsen
 stretchr
 Struct
+Taskfile
 Tracef
 Valuesf
+vite
 wailsapp
+wailsio
 wailsjs
 Warnf
 webp

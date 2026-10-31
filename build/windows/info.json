@@ -1,15 +1,15 @@
 {
 	"fixed": {
-		"file_version": "{{.Info.ProductVersion}}"
+		"file_version": "0.0.1"
 	},
 	"info": {
-		"0000": {
-			"ProductVersion": "{{.Info.ProductVersion}}",
-			"CompanyName": "{{.Info.CompanyName}}",
-			"FileDescription": "{{.Info.ProductName}}",
-			"LegalCopyright": "{{.Info.Copyright}}",
-			"ProductName": "{{.Info.ProductName}}",
-			"Comments": "{{.Info.Comments}}"
+		"0409": {
+			"ProductVersion": "0.0.1",
+			"CompanyName": "dark-person.github.io",
+			"FileDescription": "A simple GUI for making ComicInfo.xml.",
+			"LegalCopyright": "Copyright (c) 2024 dark-person",
+			"ProductName": "ComicInfo Parser",
+			"Comments": "This is a comment"
 		}
 	}
 }

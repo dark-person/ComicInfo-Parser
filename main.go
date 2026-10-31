@@ -5,13 +5,11 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/dark-person/comicinfo-parser/internal/application"
 	"github.com/dark-person/comicinfo-parser/internal/assets"
+	"github.com/dark-person/comicinfo-parser/internal/services"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/wailsapp/wails/v2"
-	"github.com/wailsapp/wails/v2/pkg/options"
-	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 //go:embed all:frontend/dist
@@ -46,30 +44,26 @@ func main() {
 
 	// ------------------------------------------------------
 
-	// Create an instance of the app structure
-	app := application.NewApp(cfg, l)
-
-	// Create application with options
-	err = wails.Run(&options.App{
-		Title:  "Comicinfo Parser GUI",
-		Width:  1200,
-		Height: 810,
-		AssetServer: &assetserver.Options{
-			Assets: assetsFs,
-		},
-		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
-		OnStartup:        app.Startup,
-		Bind: []interface{}{
-			app,
-		},
-		EnumBind: []interface{}{
-			application.AllMangaValue,
-			application.AllAgeRatingValue,
-			application.AllExportMethodValue,
+	app := application.New(application.Options{
+		Name: "My App",
+		Assets: application.AssetOptions{
+			Handler: application.AssetFileServerFS(assetsFs),
 		},
 	})
 
+	comicService := services.NewComicService(cfg, l)
+	comicService.SetApp(app)
+	app.RegisterService(application.NewService(comicService))
+
+	app.Window.NewWithOptions(application.WebviewWindowOptions{
+		Title:            "Comicinfo Parser GUI",
+		Width:            1200,
+		Height:           810,
+		BackgroundColour: application.NewRGBA(27, 38, 54, 1),
+	})
+
+	err = app.Run()
 	if err != nil {
-		log.Panic().Err(err).Msg("Failed to start application.")
+		log.Error().Err(err).Msg("Failed to start application.")
 	}
 }

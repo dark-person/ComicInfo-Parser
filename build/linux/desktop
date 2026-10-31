@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=ComicInfo Parser
+Comment=A simple GUI for making ComicInfo.xml.
+# The Exec line includes %u to pass the URL to the application
+Exec=/usr/local/bin/ComicInfo-Parser %u
+Terminal=false
+Type=Application
+Icon=ComicInfo-Parser
+Categories=Utility;
+StartupWMClass=ComicInfo-Parser
+
+ 

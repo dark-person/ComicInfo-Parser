@@ -16,26 +16,30 @@
         "allowImportingTsExtensions": true,
         "verbatimModuleSyntax": true,
         "moduleDetection": "force",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
         "noEmit": true,
         "jsx": "react-jsx",
         //
         /* Linting */
         "strict": true,
         "noUnusedLocals": true,
-        "noUnusedParameters": true,
+        "noUnusedParameters": false,
         "erasableSyntaxOnly": false,
+        "noImplicitAny": false,
         "noFallthroughCasesInSwitch": true,
         "noUncheckedSideEffectImports": true,
         "paths": {
             "@/*": [
                 "./src/*"
             ],
-            "@wailsjs/*": [
-                "./wailsjs/*"
+            "@bindings/*": [
+                "./bindings/*"
             ]
         }
     },
     "include": [
-        "src"
-    ]
+        "src",
+        "bindings"
+    ],
 }

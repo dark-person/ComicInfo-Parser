@@ -11,12 +11,16 @@ import InputComicInfoPage from "@/pages/InputComicInfoPage";
 import { CreateCbzStatus } from "@/status/CreateCbzStatus";
 
 // Wails
-import { GetComicInfo, LoadSessionData } from "@wailsjs/go/application/App";
-import { comicinfo, definitions } from "@wailsjs/go/models";
-
-// Alias from namespace
-export import ExportMethod = definitions.ExportMethod;
-export import SessionData = definitions.SessionData;
+import { ComicInfo } from "@bindings/github.com/dark-person/comicinfo-parser/internal/comicinfo/models";
+import {
+    ExportMethod,
+    type SessionData,
+} from "@bindings/github.com/dark-person/comicinfo-parser/internal/definitions/models";
+import {
+    GetComicInfo,
+    LoadSessionData,
+} from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/comicservice";
+import type { ComicInfoResponse } from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/models";
 
 type CreateCbzViewProps = {
     /** Decide which panel will be displayed. */
@@ -30,19 +34,19 @@ type CreateCbzViewProps = {
 /** Panel to create a cbz file. */
 export default function CreateCbzView({ mode, setMode, modalController }: Readonly<CreateCbzViewProps>) {
     /** The ComicInfo model. For communicate with different panel. */
-    const [info, setInfo] = useState<comicinfo.ComicInfo | undefined>(undefined);
+    const [info, setInfo] = useState<ComicInfo | undefined>(undefined);
 
     /** The directory of initial input, which is the folder contain image. */
     const [inputDir, setInputDir] = useState<string | undefined>(undefined);
 
     const [sessionData, setSessionData] = useState<SessionData>({
-        exportMethod: ExportMethod.DEFAULT_WRAP_CBZ,
+        exportMethod: ExportMethod.ExportMethodDefaultWrapCBZ,
         deleteAfterExport: false,
     });
 
     useEffect(() => {
         // Load default export method from backend to session
-        LoadSessionData().then((data) => setSessionData(data));
+        LoadSessionData().then((data: SessionData) => setSessionData(data));
     }, []);
 
     /**
@@ -56,7 +60,7 @@ export default function CreateCbzView({ mode, setMode, modalController }: Readon
         modalController.loading();
 
         // Get ComicInfo
-        GetComicInfo(folder).then((response) => {
+        GetComicInfo(folder).then((response: ComicInfoResponse) => {
             const error = response.ErrorMessage;
 
             if (error !== "") {
@@ -67,7 +71,7 @@ export default function CreateCbzView({ mode, setMode, modalController }: Readon
                 modalController.closeAll();
 
                 // Set data with info
-                setInfo(response.ComicInfo);
+                setInfo(response.ComicInfo ?? undefined);
                 setInputDir(folder);
 
                 // Pass to another panel
@@ -117,14 +121,14 @@ export default function CreateCbzView({ mode, setMode, modalController }: Readon
      */
     function infoSetter(field: string, value: string | number) {
         // Prepare an object of ComicInfo
-        const temp = { ...info } as comicinfo.ComicInfo;
+        const temp = { ...info } as ComicInfo;
 
         // Treat Summary field name as special case
         if (field === "Summary" && typeof value === "string") {
             temp["Summary"]["InnerXML"] = value;
         } else {
             // Normal Change
-            const key = field as keyof comicinfo.ComicInfo;
+            const key = field as keyof ComicInfo;
             setValue(temp, key, value);
         }
 

@@ -10,9 +10,9 @@ import FormRow from "@/forms/FormRow";
 import FormSelectRow from "@/forms/FormSelectRow";
 import OptionFormRow from "@/forms/OptionFormRow";
 import { type MetadataProps } from "@/pages/metadata/MetadataProps";
+import { GetAllGenreInput } from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/comicservice";
 
 // Wails binding
-import { GetAllGenreInput } from "@wailsjs/go/application/App";
 
 export default /** The user interface for show/edit Series MetaData. */
 function SeriesMetadata({ comicInfo, infoSetter }: Readonly<MetadataProps>) {
