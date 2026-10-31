@@ -1,4 +1,4 @@
-package application
+package services
 
 import (
 	"path/filepath"

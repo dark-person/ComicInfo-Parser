@@ -5,8 +5,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/dark-person/comicinfo-parser/internal/application"
 	"github.com/dark-person/comicinfo-parser/internal/assets"
+	"github.com/dark-person/comicinfo-parser/internal/services"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/wailsapp/wails/v2"
@@ -47,7 +47,7 @@ func main() {
 	// ------------------------------------------------------
 
 	// Create an instance of the app structure
-	app := application.NewApp(cfg, l)
+	app := services.NewApp(cfg, l)
 
 	// Create application with options
 	err = wails.Run(&options.App{
@@ -63,9 +63,9 @@ func main() {
 			app,
 		},
 		EnumBind: []interface{}{
-			application.AllMangaValue,
-			application.AllAgeRatingValue,
-			application.AllExportMethodValue,
+			services.AllMangaValue,
+			services.AllAgeRatingValue,
+			services.AllExportMethodValue,
 		},
 	})
 

@@ -1,4 +1,4 @@
-package application
+package services
 
 import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"

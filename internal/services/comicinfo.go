@@ -1,4 +1,4 @@
-package application
+package services
 
 import (
 	"github.com/dark-person/comicinfo-parser/internal/comicinfo"
