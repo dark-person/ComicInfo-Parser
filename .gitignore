@@ -23,8 +23,20 @@ go.work
 
 # Wails Default
 build/bin
-node_modules
+
+# Wails3
+.task
+bin
 frontend/dist
+frontend/node_modules
+build/linux/appimage/build
+build/windows/nsis/MicrosoftEdgeWebview2Setup.exe
+
+# Wails3 Mobile generated (per-machine; overlays hold absolute paths)
+build/ios/xcode/overlay.json
+build/ios/xcode/gen/
+build/android/overlay.json
+build/android/gen/
 
 # Local Note for Developer
 .dev-notes.md

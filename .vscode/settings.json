@@ -50,7 +50,8 @@
         ".vscode-insiders",
         "go.mod",
         "go.sum",
-        "wailsjs",
+        "Taskfile.yml",
+        "build/config.yml"
     ],
     "cSpell.languageSettings": [
         {
