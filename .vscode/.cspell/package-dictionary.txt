@@ -22,7 +22,9 @@ stretchr
 Struct
 Tracef
 Valuesf
+vite
 wailsapp
+wailsio
 wailsjs
 Warnf
 webp
