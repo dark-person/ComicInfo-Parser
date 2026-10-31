@@ -9,6 +9,7 @@ Debugf
 Emptyf
 Equalf
 fsprov
+GOPATH
 Infof
 innerxml
 iofs
