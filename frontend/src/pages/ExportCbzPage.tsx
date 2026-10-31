@@ -12,24 +12,22 @@ import { ColoredCheckBox, ColoredRadio } from "@/components/ColoredFormCheck";
 import FolderSelector from "@/components/FolderSelector";
 import { type ModalControl } from "@/controls/ModalControl";
 import { basename } from "@/filename";
-
-// Wails
+import type { ComicInfo } from "@bindings/github.com/dark-person/comicinfo-parser/internal/comicinfo/models";
+import { ExportMethod } from "@bindings/github.com/dark-person/comicinfo-parser/internal/definitions/models";
 import {
     ExportCbzOnly,
     ExportCbzWithDefaultWrap,
     ExportCbzWithWrap,
     GetDefaultOutputDirectory,
     RunSoftDelete,
-} from "@wailsjs/go/application/App";
-import { comicinfo, definitions } from "@wailsjs/go/models";
+} from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/comicservice";
 
-// Alias from namespace
-export import ExportMethod = definitions.ExportMethod;
+// Wails
 
 /** Props Interface for ExportCbzPage */
 type ExportCbzPageProps = {
     /** The comic info content. */
-    comicInfo: comicinfo.ComicInfo | undefined;
+    comicInfo: ComicInfo | undefined;
     /** The directory of original input, contains comic images. */
     originalDirectory: string | undefined;
     /** Modal Controller. */
@@ -63,7 +61,7 @@ export default function ExportCbzPage({
     useEffect(() => {
         if (originalDirectory !== undefined) {
             // Load config from file
-            GetDefaultOutputDirectory(originalDirectory).then((dir) => {
+            GetDefaultOutputDirectory(originalDirectory).then((dir: string) => {
                 setDefaultDir(dir);
                 setExportDir(dir);
             });
@@ -96,15 +94,15 @@ export default function ExportCbzPage({
         let promise: Promise<string>;
 
         switch (exportMethod) {
-            case ExportMethod.CBZ_ONLY:
+            case ExportMethod.ExportMethodOnlyCBZ:
                 promise = ExportCbzOnly(originalDirectory, exportDir, info);
                 break;
 
-            case ExportMethod.DEFAULT_WRAP_CBZ:
+            case ExportMethod.ExportMethodDefaultWrapCBZ:
                 promise = ExportCbzWithDefaultWrap(originalDirectory, exportDir, info);
                 break;
 
-            case ExportMethod.CUSTOM_WRAP_CBZ:
+            case ExportMethod.ExportMethodCustomWrapCBZ:
                 if (customWrap === "") {
                     modalControl.showErr("Custom Wrap folder cannot be empty");
                     return;
@@ -137,7 +135,7 @@ export default function ExportCbzPage({
             if (deleteAfterExport) {
                 console.log("Start soft deletion");
 
-                RunSoftDelete().then((errMsg) => {
+                RunSoftDelete().then((errMsg: string) => {
                     if (errMsg !== "") {
                         modalControl.showErr(errMsg);
                         return;
@@ -170,27 +168,27 @@ export default function ExportCbzPage({
                     name="export-type"
                     color="dark-orange"
                     label={"Export .cbz file only"}
-                    checked={exportMethod === ExportMethod.CBZ_ONLY}
-                    onChange={() => setExportMethod(ExportMethod.CBZ_ONLY)}
+                    checked={exportMethod === ExportMethod.ExportMethodOnlyCBZ}
+                    onChange={() => setExportMethod(ExportMethod.ExportMethodOnlyCBZ)}
                 />
                 <ColoredRadio
                     id="export-type-wrapped"
                     name="export-type"
                     color="dark-green"
                     label={"Export .cbz wrapped by default folder"}
-                    checked={exportMethod === ExportMethod.DEFAULT_WRAP_CBZ}
-                    onChange={() => setExportMethod(ExportMethod.DEFAULT_WRAP_CBZ)}
+                    checked={exportMethod === ExportMethod.ExportMethodDefaultWrapCBZ}
+                    onChange={() => setExportMethod(ExportMethod.ExportMethodDefaultWrapCBZ)}
                 />
                 <ColoredRadio
                     id="export-type-custom-wrapped"
                     name="export-type"
                     color="dark-blue"
                     label={"Export .cbz wrapped by custom folder"}
-                    checked={exportMethod === ExportMethod.CUSTOM_WRAP_CBZ}
-                    onChange={() => setExportMethod(ExportMethod.CUSTOM_WRAP_CBZ)}
+                    checked={exportMethod === ExportMethod.ExportMethodCustomWrapCBZ}
+                    onChange={() => setExportMethod(ExportMethod.ExportMethodCustomWrapCBZ)}
                 />
 
-                {exportMethod === ExportMethod.CUSTOM_WRAP_CBZ && (
+                {exportMethod === ExportMethod.ExportMethodCustomWrapCBZ && (
                     <Form.Control
                         className="ms-1-5em"
                         type="text"

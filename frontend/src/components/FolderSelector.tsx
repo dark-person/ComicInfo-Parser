@@ -1,8 +1,8 @@
+import { GetDirectory } from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/comicservice";
+import type { DirectoryResp } from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/models";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-
-import { GetDirectory } from "@wailsjs/go/application/App";
 
 type FolderSelectorProps = {
     /** ID of root element. */
@@ -43,7 +43,7 @@ export default function FolderSelector(props: Readonly<FolderSelectorProps>) {
             dir = props.defaultDirectory;
         }
 
-        GetDirectory(dir).then((resp) => {
+        GetDirectory(dir).then((resp: DirectoryResp) => {
             if (resp.ErrMsg !== "") {
                 console.error(resp.ErrMsg);
             }

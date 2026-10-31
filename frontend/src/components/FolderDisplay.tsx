@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 
 // Project Specified Component
 import { basename } from "@/filename";
-import { OpenFolder } from "@wailsjs/go/application/App";
+import { OpenFolder } from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/comicservice";
 
 /** Props for FolderNameDisplay. */
 type FolderNameDisplayProps = {

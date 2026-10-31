@@ -11,15 +11,15 @@ import CreatorMetadata from "@/pages/metadata/CreatorMetadata";
 import MiscMetadata from "@/pages/metadata/MiscMetadata";
 import SeriesMetadata from "@/pages/metadata/SeriesMetadata";
 import TagMetadata from "@/pages/metadata/TagMetadata";
+import type { ComicInfo } from "@bindings/github.com/dark-person/comicinfo-parser/internal/comicinfo/models";
+import { ExportXML } from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/comicservice";
 
 // Wails binding
-import { ExportXML } from "@wailsjs/go/application/App";
-import { comicinfo } from "@wailsjs/go/models";
 
 /** Props Interface for InputComicInfoPage */
 type InputComicInfoPageProps = {
     /** The comic info object. Accept undefined value. */
-    comicInfo: comicinfo.ComicInfo | undefined;
+    comicInfo: ComicInfo | undefined;
 
     /** Complete folder path, for reference. */
     folderPath?: string;
@@ -55,7 +55,7 @@ export default function InputComicInfoPage({
         }
 
         // Start Running
-        ExportXML(folderPath, comicInfo).then((msg) => {
+        ExportXML(folderPath, comicInfo).then((msg: string) => {
             console.log(`xml return: '${msg}'`);
             if (msg === "") {
                 modalControl.complete();

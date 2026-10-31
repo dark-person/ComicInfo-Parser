@@ -1,6 +1,6 @@
 import { Form } from "react-bootstrap";
 
-import { comicinfo } from "@wailsjs/go/models";
+import { AgeRating, Manga } from "@bindings/github.com/dark-person/comicinfo-parser/internal/comicinfo/models";
 
 /** Props for `EnumOptions` */
 type OptionProps = {
@@ -26,7 +26,7 @@ export function MangaSelect({ value, onChange }: Readonly<EnumSelectProps>) {
     return (
         <Form.Select value={value} title="Manga" onChange={onChange}>
             <option value={""}></option>
-            {Object.values(comicinfo.Manga).map((item, idx) => (
+            {Object.values(Manga).map((item, idx) => (
                 <EnumOptions value={item} key={"manga-opt-" + idx} />
             ))}
         </Form.Select>
@@ -38,7 +38,7 @@ export function AgeRatingSelect({ value, onChange }: Readonly<EnumSelectProps>) 
     return (
         <Form.Select value={value} title="AgeRating" onChange={onChange}>
             <option value={""}></option>
-            {Object.values(comicinfo.AgeRating).map((item, idx) => (
+            {Object.values(AgeRating).map((item, idx) => (
                 <EnumOptions value={item} key={"age-opt-" + idx} />
             ))}
         </Form.Select>

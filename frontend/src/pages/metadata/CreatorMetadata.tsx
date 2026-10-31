@@ -8,9 +8,9 @@ import { Form } from "react-bootstrap";
 import FormRow from "@/forms/FormRow";
 import OptionFormRow from "@/forms/OptionFormRow";
 import { type MetadataProps } from "@/pages/metadata/MetadataProps";
+import { GetAllPublisherInput } from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/comicservice";
 
 // Wails binding
-import { GetAllPublisherInput } from "@wailsjs/go/application/App";
 
 /**
  * The interface for show/edit creator metadata.

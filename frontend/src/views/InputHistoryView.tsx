@@ -2,10 +2,10 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 
 import DataTable from "@/components/DataTable";
-import { GetAllAutofillWord } from "@wailsjs/go/application/App";
-import type { store } from "@wailsjs/go/models";
+import { GetAllAutofillWord } from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/comicservice";
+import type { AutofillWord } from "@bindings/github.com/dark-person/comicinfo-parser/internal/store/models";
 
-const columnDef: ColumnDef<store.AutofillWord>[] = [
+const columnDef: ColumnDef<AutofillWord>[] = [
     { accessorKey: "word", header: "Word" },
     { accessorKey: "category", header: "Category" },
 ];
@@ -13,10 +13,10 @@ const columnDef: ColumnDef<store.AutofillWord>[] = [
 const columnClass: string[] = ["w-65", "w-35"];
 
 export default function AutofillView() {
-    const [data, setData] = useState<store.AutofillWord[]>([]);
+    const [data, setData] = useState<AutofillWord[]>([]);
 
     useEffect(() => {
-        GetAllAutofillWord().then((resp) => {
+        GetAllAutofillWord().then((resp: AutofillWord[]) => {
             setData(resp);
         });
     }, []);

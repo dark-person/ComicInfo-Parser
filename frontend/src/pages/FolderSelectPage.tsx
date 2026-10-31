@@ -7,9 +7,12 @@ import Button from "react-bootstrap/Button";
 // Project Specific Component
 import FolderSelector from "@/components/FolderSelector";
 import { type ModalControl } from "@/controls/ModalControl";
+import {
+    GetComicFolder,
+    QuickExportKomga,
+} from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/comicservice";
 
 // Wails
-import { GetComicFolder, QuickExportKomga } from "@wailsjs/go/application/App";
 
 /** Props Interface for FolderSelectPage */
 type FolderSelectPageProps = {
@@ -29,14 +32,14 @@ export default function FolderSelectPage({ handleFolder, modalControl }: Readonl
     const [comicFolder, setComicFolder] = useState<string | undefined>(undefined);
 
     useEffect(() => {
-        GetComicFolder().then((dir) => setComicFolder(dir));
+        GetComicFolder().then((dir: string) => setComicFolder(dir));
     }, []);
 
     /** Handler when user clicked Quick Export Komga Button. Start quick export process. */
     function handleQuickExport() {
         modalControl.loading();
 
-        QuickExportKomga(directory).then((err) => {
+        QuickExportKomga(directory).then((err: string) => {
             if (err !== "") {
                 modalControl.showErr(err);
             } else {
