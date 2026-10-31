@@ -26,7 +26,7 @@ func TestGetDefaultOutputDirectory(t *testing.T) {
 	}
 
 	// Create a dummy APP
-	a := &App{}
+	a := &ComicService{}
 
 	// Start test
 	tests := []testCase{

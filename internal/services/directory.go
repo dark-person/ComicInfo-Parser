@@ -1,9 +1,5 @@
 package services
 
-import (
-	"github.com/wailsapp/wails/v2/pkg/runtime"
-)
-
 // Response for get directory method. Designed due to wails API only allow single return.
 type DirectoryResp struct {
 	SelectedDir string
@@ -17,18 +13,17 @@ type DirectoryResp struct {
 //
 // If any error occur, the error message will be also returned in 2nd argument.
 // Empty string indicate no error occur.
-func (a *App) GetDirectory(dir string) DirectoryResp {
-	const title = "Select Directory"
+func (s *ComicService) GetDirectory(dir string) DirectoryResp {
+	dialog := s.app.Dialog.OpenFile().
+		SetTitle("Select Directory").
+		CanChooseDirectories(true).
+		CanChooseFiles(false)
 
-	var opt runtime.OpenDialogOptions
-
-	if dir == "" {
-		opt = runtime.OpenDialogOptions{Title: title}
-	} else {
-		opt = runtime.OpenDialogOptions{Title: title, DefaultDirectory: dir}
+	if dir != "" {
+		dialog.SetDirectory(dir)
 	}
 
-	directory, err := runtime.OpenDirectoryDialog(a.ctx, opt)
+	directory, err := dialog.PromptForSingleSelection()
 	if err != nil {
 		return DirectoryResp{SelectedDir: "", ErrMsg: err.Error()}
 	}
@@ -38,20 +33,20 @@ func (a *App) GetDirectory(dir string) DirectoryResp {
 
 // Attempt to load default output directory.
 // If no default directory is set, then return input directory instead.
-func (a *App) GetDefaultOutputDirectory(inputDir string) string {
-	if a.cfg.Preference.ExportDir == "" {
+func (s *ComicService) GetDefaultOutputDirectory(inputDir string) string {
+	if s.cfg.Preference.ExportDir == "" {
 		return inputDir
 	}
 
-	return a.cfg.Preference.ExportDir
+	return s.cfg.Preference.ExportDir
 }
 
 // Attempt to load default comic folder.
 // If config is not set, then return a empty string instead.
-func (a *App) GetComicFolder() string {
-	if a.cfg == nil {
+func (s *ComicService) GetComicFolder() string {
+	if s.cfg == nil {
 		return ""
 	}
 
-	return a.cfg.Preference.ComicDir
+	return s.cfg.Preference.ComicDir
 }

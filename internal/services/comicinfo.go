@@ -19,7 +19,7 @@ type ComicInfoResponse struct {
 // This function will not create/modify the comicinfo xml.
 //
 // This function will return a comicInfo struct, with error message in string.
-func (a *App) GetComicInfo(folder string) ComicInfoResponse {
+func (s *ComicService) GetComicInfo(folder string) ComicInfoResponse {
 	absPath := folder
 
 	// Check Absolute path is empty or not
@@ -62,7 +62,7 @@ func (a *App) GetComicInfo(folder string) ComicInfoResponse {
 	}
 
 	// Autofill by folder path (intermediate folder + book folder name)
-	prov = historyprov.New(a.DB, a.cfg.Preference.ComicDir, absPath)
+	prov = historyprov.New(s.DB, s.cfg.Preference.ComicDir, absPath)
 	c, err = prov.Fill(c)
 
 	// Consider as acceptable error, log error only
@@ -71,7 +71,7 @@ func (a *App) GetComicInfo(folder string) ComicInfoResponse {
 	}
 
 	// Fill by configuration
-	prov = cfgprov.New(a.cfg, absPath)
+	prov = cfgprov.New(s.cfg, absPath)
 	c, err = prov.Fill(c)
 
 	// Consider as acceptable error, log error only

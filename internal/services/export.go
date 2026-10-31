@@ -32,7 +32,7 @@ const comicInfoFile = "ComicInfo.xml"
 //  3. Wrap the .cbz file with a folder to copy to komga
 //
 // This function is specific designed for komga folder structure.
-func (a *App) QuickExportKomga(inputDir string) string {
+func (s *ComicService) QuickExportKomga(inputDir string) string {
 	if inputDir == "" {
 		return "folder cannot be empty"
 	}
@@ -59,7 +59,7 @@ func (a *App) QuickExportKomga(inputDir string) string {
 	}
 
 	// Fill by configuration
-	prov = cfgprov.New(a.cfg, inputDir)
+	prov = cfgprov.New(s.cfg, inputDir)
 	c, err = prov.Fill(c)
 
 	// Consider as acceptable error, log error only
@@ -68,13 +68,13 @@ func (a *App) QuickExportKomga(inputDir string) string {
 	}
 
 	// Write ComicInfo.xml
-	err = a.saveComicInfo(inputDir, c)
+	err = s.saveComicInfo(inputDir, c)
 	if err != nil {
 		return err.Error()
 	}
 
 	// Get destination folder
-	destDir := a.GetDefaultOutputDirectory(inputDir)
+	destDir := s.GetDefaultOutputDirectory(inputDir)
 
 	// Start Archive
 	filename, _ := archive.CreateZipTo(inputDir, destDir)
@@ -88,7 +88,7 @@ func (a *App) QuickExportKomga(inputDir string) string {
 
 // Save user input to history database.
 // All comicinfo handling logic should be inside this function.
-func (a *App) saveToHistory(c *comicinfo.ComicInfo) error {
+func (a *ComicService) saveToHistory(c *comicinfo.ComicInfo) error {
 	// ==================== Tags ====================
 	// Split the tags into slice of string by comma
 	s := strings.Split(c.Tags, ",")
@@ -151,7 +151,7 @@ func (a *App) saveToHistory(c *comicinfo.ComicInfo) error {
 // OriginalDir & comicinfo MUST be valid, or an error will be returned.
 //
 // The originalDir MUST be absolute path to write it precisely.
-func (a *App) saveComicInfo(originalDir string, c *comicinfo.ComicInfo) error {
+func (s *ComicService) saveComicInfo(originalDir string, c *comicinfo.ComicInfo) error {
 	// Check parameter values
 	if c == nil {
 		return fmt.Errorf("comicinfo is nil value")
@@ -168,7 +168,7 @@ func (a *App) saveComicInfo(originalDir string, c *comicinfo.ComicInfo) error {
 	}
 
 	// Write to database
-	err = a.saveToHistory(c)
+	err = s.saveToHistory(c)
 	if err != nil {
 		// This is consider as additional part, consider no error here
 		log.Error().Err(err).Msg("Failed to save history data.")
@@ -181,8 +181,8 @@ func (a *App) saveComicInfo(originalDir string, c *comicinfo.ComicInfo) error {
 //
 // If the process success, then function will output empty string.
 // Otherwise, function will return the reason for error.
-func (a *App) ExportXML(originalDir string, c *comicinfo.ComicInfo) (errorMsg string) {
-	err := a.saveComicInfo(originalDir, c)
+func (s *ComicService) ExportXML(originalDir string, c *comicinfo.ComicInfo) (errorMsg string) {
+	err := s.saveComicInfo(originalDir, c)
 	if err != nil {
 		return err.Error()
 	}
@@ -196,8 +196,8 @@ func (a *App) ExportXML(originalDir string, c *comicinfo.ComicInfo) (errorMsg st
 // Otherwise, function will return the reason for error.
 //
 // Both input directory and output directory MUST be absolute paths.
-func (a *App) ExportCbzOnly(inputDir string, exportDir string, c *comicinfo.ComicInfo) (errMsg string) {
-	return a.exportCbz(inputDir, exportDir, c, archive.NoWrap())
+func (s *ComicService) ExportCbzOnly(inputDir string, exportDir string, c *comicinfo.ComicInfo) (errMsg string) {
+	return s.exportCbz(inputDir, exportDir, c, archive.NoWrap())
 }
 
 // Export the .cbz (contains images & comicInfo) file to destination,
@@ -207,8 +207,8 @@ func (a *App) ExportCbzOnly(inputDir string, exportDir string, c *comicinfo.Comi
 // Otherwise, function will return the reason for error.
 //
 // Both input directory and output directory MUST be absolute paths.
-func (a *App) ExportCbzWithDefaultWrap(inputDir string, exportDir string, c *comicinfo.ComicInfo) (errMsg string) {
-	return a.exportCbz(inputDir, exportDir, c, archive.UseDefaultWrap())
+func (s *ComicService) ExportCbzWithDefaultWrap(inputDir string, exportDir string, c *comicinfo.ComicInfo) (errMsg string) {
+	return s.exportCbz(inputDir, exportDir, c, archive.UseDefaultWrap())
 }
 
 // Export the .cbz (contains images & comicInfo) file to destination,
@@ -218,14 +218,14 @@ func (a *App) ExportCbzWithDefaultWrap(inputDir string, exportDir string, c *com
 // Otherwise, function will return the reason for error.
 //
 // Both input directory and output directory MUST be absolute paths.
-func (a *App) ExportCbzWithWrap(inputDir string, exportDir string, wrapFolder string, c *comicinfo.ComicInfo) (errMsg string) {
-	return a.exportCbz(inputDir, exportDir, c, archive.UseCustomWrap(wrapFolder))
+func (s *ComicService) ExportCbzWithWrap(inputDir string, exportDir string, wrapFolder string, c *comicinfo.ComicInfo) (errMsg string) {
+	return s.exportCbz(inputDir, exportDir, c, archive.UseCustomWrap(wrapFolder))
 }
 
 // Core function to export a .cbz file with comicinfo file.
-func (a *App) exportCbz(inputDir string, exportDir string, c *comicinfo.ComicInfo, opt archive.RenameOption) (errMsg string) {
+func (s *ComicService) exportCbz(inputDir string, exportDir string, c *comicinfo.ComicInfo, opt archive.RenameOption) (errMsg string) {
 	// Reset last export path
-	a.lastExportedComic = ""
+	s.lastExportedComic = ""
 
 	// Check parameters first
 	if _, err := os.Stat(inputDir); os.IsNotExist(err) {
@@ -241,7 +241,7 @@ func (a *App) exportCbz(inputDir string, exportDir string, c *comicinfo.ComicInf
 	}
 
 	// Save ComicInfo.xml
-	err := a.saveComicInfo(inputDir, c)
+	err := s.saveComicInfo(inputDir, c)
 	if err != nil {
 		return err.Error()
 	}
@@ -262,7 +262,7 @@ func (a *App) exportCbz(inputDir string, exportDir string, c *comicinfo.ComicInf
 	}
 
 	// Mark last successful export path
-	a.lastExportedComic = inputDir
+	s.lastExportedComic = inputDir
 	return ""
 }
 
@@ -271,25 +271,25 @@ func (a *App) exportCbz(inputDir string, exportDir string, c *comicinfo.ComicInf
 //
 // This function only effect when one export function is run successfully.
 // If trash bin is not defined, then error will be returned.
-func (a *App) RunSoftDelete() (errMsg string) {
+func (s *ComicService) RunSoftDelete() (errMsg string) {
 	// Ensure config exist
-	if a.cfg == nil {
+	if s.cfg == nil {
 		return "config is corrupted"
 	}
 
 	// Ensure last exported path is not empty
-	if a.lastExportedComic == "" {
+	if s.lastExportedComic == "" {
 		return "no last exported path"
 	}
 
 	// Ensure soft delete is allowed
-	trashBin := a.cfg.TrashBin.Path
+	trashBin := s.cfg.TrashBin.Path
 	if trashBin == "" {
 		return "soft delete is not allowed"
 	}
 
 	// Run soft delete
-	err := archive.SoftDeleteComic(a.lastExportedComic, trashBin)
+	err := archive.SoftDeleteComic(s.lastExportedComic, trashBin)
 	if err != nil {
 		return err.Error()
 	}
