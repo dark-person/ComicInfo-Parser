@@ -14,6 +14,10 @@ type DirectoryResp struct {
 // If any error occur, the error message will be also returned in 2nd argument.
 // Empty string indicate no error occur.
 func (s *ComicService) GetDirectory(dir string) DirectoryResp {
+	if s.app == nil {
+		return DirectoryResp{SelectedDir: "", ErrMsg: "wails application was not provided"}
+	}
+
 	dialog := s.app.Dialog.OpenFile().
 		SetTitle("Select Directory").
 		CanChooseDirectories(true).

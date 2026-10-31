@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"errors"
 
 	"github.com/dark-person/comicinfo-parser/internal/assets"
 	"github.com/dark-person/comicinfo-parser/internal/config"
@@ -28,15 +29,25 @@ func NewComicService(cfg *config.ProgramConfig, db *lazydb.LazyDB) *ComicService
 	return &ComicService{DB: db, cfg: cfg}
 }
 
+// SetApp will set the wails3 application to this service.
+// If service is not provided, then related function will likely throw error, not UI can be displayed.
+func (s *ComicService) SetApp(app *application.App) {
+	s.app = app
+}
+
 // Create a new ComicService with default configuration.
 // Suggested to use in testing only.
 func NewComicServiceWithDefaultConfig(db *lazydb.LazyDB) *ComicService {
 	return &ComicService{DB: db, cfg: assets.Config()}
 }
 
-// startup is called when the app starts. The context is saved
-// so we can call the runtime methods
+// ServiceStartup is called when wails application call `Run()` method.
+// Any error returned will cause the application to stop.
 func (s *ComicService) ServiceStartup(ctx context.Context, options application.ServiceOptions) error {
+	if s.app == nil {
+		return errors.New("wails application was not provided")
+	}
+
 	// Init database
 	err := s.InitDatabase()
 	if err != nil {
@@ -45,7 +56,8 @@ func (s *ComicService) ServiceStartup(ctx context.Context, options application.S
 			SetMessage("Database version is corrupted. To fix this issue, you can:\n\n1. Change database by config.yaml.\n2. Backup and remove the database file.\n3. Fix your database (Advanced User ONLY).").
 			Show()
 
-		log.Panic().Err(err).Msg("Failed to start application due to database corrupted")
+		log.Error().Err(err).Msg("Failed to start application due to database corrupted")
+		return err
 	}
 
 	return nil

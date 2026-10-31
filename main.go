@@ -46,13 +46,14 @@ func main() {
 
 	app := application.New(application.Options{
 		Name: "My App",
-		Services: []application.Service{
-			application.NewService(services.NewComicService(cfg, l)),
-		},
 		Assets: application.AssetOptions{
 			Handler: application.AssetFileServerFS(assetsFs),
 		},
 	})
+
+	comicService := services.NewComicService(cfg, l)
+	comicService.SetApp(app)
+	app.RegisterService(application.NewService(comicService))
 
 	app.Window.NewWithOptions(application.WebviewWindowOptions{
 		Title:            "Comicinfo Parser GUI",
@@ -63,6 +64,6 @@ func main() {
 
 	err = app.Run()
 	if err != nil {
-		log.Panic().Err(err).Msg("Failed to start application.")
+		log.Error().Err(err).Msg("Failed to start application.")
 	}
 }

@@ -19,6 +19,9 @@ import * as definitions$0 from "../definitions/models.js";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
 import * as store$0 from "../store/models.js";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore: Unused imports
+import * as application$0 from "../../../../wailsapp/wails/v3/pkg/application/models.js";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
@@ -202,6 +205,14 @@ export function QuickExportKomga(inputDir: string): $CancellablePromise<string> 
  */
 export function RunSoftDelete(): $CancellablePromise<string> {
     return $Call.ByID(1227428679);
+}
+
+/**
+ * SetApp will set the wails3 application to this service.
+ * If service is not provided, then related function will likely throw error, not UI can be displayed.
+ */
+export function SetApp(app: application$0.App | null): $CancellablePromise<void> {
+    return $Call.ByID(336241784, app);
 }
 
 // Private type creation functions
