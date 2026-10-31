@@ -10,6 +10,10 @@ help:		## List all available commands
 	@echo 'Please use wails3 command to run program.'
 	@echo ' - Use "wails3 dev" to Runs the application in development mode'
 
+.PHONY: assets
+assets:		## Regenerate every asset for wails3 build
+	wails3 task common:update:build-assets
+
 .PHONY: audit-fix
 audit-fix:	## Run npm audit fix for frontend
 	cd frontend; npm audit fix
@@ -24,8 +28,10 @@ build:		## Build program (Not recommend for human usage)
 
 .PHONY: clean 
 clean: 		## Remove distribution of both frontend and backend
-	cd frontend; rm -rf dist
-	rm -f bin/*.exe
+	@cd frontend; rm -rf dist
+	@rm -rf bin
+	@rm -rf .task
+	@echo "All built file removed."
 
 .PHONY: dist
 dist:		## Create a wails executable distribution
