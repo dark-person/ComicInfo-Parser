@@ -7,8 +7,8 @@ help:		## List all available commands
 	@sed -ne '/@sed/!s/## //p' $(MAKEFILE_LIST) 
 	@echo
 	@echo '--- Run program ---'
-	@echo 'Please use wails command to run program.'
-	@echo ' - Use "wails dev" to Runs the application in development mode'
+	@echo 'Please use wails3 command to run program.'
+	@echo ' - Use "wails3 dev" to Runs the application in development mode'
 
 .PHONY: audit-fix
 audit-fix:	## Run npm audit fix for frontend
@@ -16,29 +16,29 @@ audit-fix:	## Run npm audit fix for frontend
 
 .PHONY: binding
 binding:	## Generate wails binding
-	wails generate module
+	wails3 generate bindings -ts
 
 .PHONY: build
 build:		## Build program (Not recommend for human usage)
-	wails build
+	wails3 build
 
 .PHONY: clean 
 clean: 		## Remove distribution of both frontend and backend
 	cd frontend; rm -rf dist
-	rm -f build/bin/*.exe
+	rm -f bin/*.exe
 
 .PHONY: dist
 dist:		## Create a wails executable distribution
-	rm -f build/bin/*.*
-	wails build
+	rm -f bin/*.*
+	wails3 build
 	@CURRENT_TAG=$$(git tag --points-at | head -n 1);\
 	CURRENT_TAG=$$(echo "$${CURRENT_TAG////-}");\
 	if [ ! -z "$${CURRENT_TAG}" ]; then\
-		cd build/bin; mv ComicInfo-Parser.exe "ComicInfo-Parser-$${CURRENT_TAG}.exe";\
-		echo "Distribution ready at 'build/bin/ComicInfo-Parser-$${CURRENT_TAG}.exe'.";\
+		cd bin; mv ComicInfo-Parser.exe "ComicInfo-Parser-$${CURRENT_TAG}.exe";\
+		echo "Distribution ready at 'bin/ComicInfo-Parser-$${CURRENT_TAG}.exe'.";\
 	else\
-		cd build/bin; mv ComicInfo-Parser.exe "ComicInfo-Parser-testing.exe";\
-		echo "Distribution ready at 'build/bin/ComicInfo-Parser-testing.exe'.";\
+		cd bin; mv ComicInfo-Parser.exe "ComicInfo-Parser-testing.exe";\
+		echo "Distribution ready at 'bin/ComicInfo-Parser-testing.exe'.";\
 	fi
 
 .PHONY: demo
