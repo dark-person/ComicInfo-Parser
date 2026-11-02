@@ -9,7 +9,7 @@ import { OpenFolder } from "@bindings/github.com/dark-person/comicinfo-parser/in
 
 /** Props for FolderNameDisplay. */
 type FolderNameDisplayProps = {
-    /** Actual absolue path for folder. */
+    /** Actual absolute path for folder. */
     folderPath: string | undefined;
 };
 
@@ -28,7 +28,7 @@ export default function FolderNameDisplay({ folderPath }: Readonly<FolderNameDis
             return;
         }
 
-        OpenFolder(folderPath);
+        void OpenFolder(folderPath);
     }
 
     return (

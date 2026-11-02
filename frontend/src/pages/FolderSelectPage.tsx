@@ -32,14 +32,14 @@ export default function FolderSelectPage({ handleFolder, modalControl }: Readonl
     const [comicFolder, setComicFolder] = useState<string | undefined>(undefined);
 
     useEffect(() => {
-        GetComicFolder().then((dir: string) => setComicFolder(dir));
+        void GetComicFolder().then((dir: string) => setComicFolder(dir));
     }, []);
 
     /** Handler when user clicked Quick Export Komga Button. Start quick export process. */
     function handleQuickExport() {
         modalControl.loading();
 
-        QuickExportKomga(directory).then((err: string) => {
+        void QuickExportKomga(directory).then((err: string) => {
             if (err !== "") {
                 modalControl.showErr(err);
             } else {
