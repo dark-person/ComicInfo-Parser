@@ -12,6 +12,7 @@ import type { ModalControl } from "@/controls/ModalControl";
 import { defaultModalState, type ModalState } from "@/controls/ModalState";
 import { CreateCbzStatus } from "@/status/CreateCbzStatus";
 import AutofillView from "@/views/AutofillView";
+import AutomationView from "@/views/AutomationView";
 import CreateCbzView from "@/views/CreateCbzView";
 import HelpView from "@/views/HelpView";
 
@@ -69,6 +70,9 @@ function App() {
             <Tabs className="mt-2 mb-3">
                 <Tab eventKey={"create"} title={"Create CBZ"}>
                     <CreateCbzView mode={createMode} setMode={setCreateMode} modalController={modalController} />
+                </Tab>
+                <Tab eventKey={"automation"} title={"Automation"}>
+                    <AutomationView />
                 </Tab>
                 <Tab eventKey={"autofill"} title={"Autofill"}>
                     <AutofillView />
