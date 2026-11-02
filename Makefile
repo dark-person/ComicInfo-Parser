@@ -57,6 +57,10 @@ demo:		## Create a demo comic directory in 'testing/', contain total 5 images wi
 	@dd if=/dev/zero of='testing/[author] title/image4.jpg' bs=1024 count=0 seek=1024
 	@dd if=/dev/zero of='testing/[author] title/image5.jpg' bs=1024 count=0 seek=1024
 
+.PHONY: frontend
+front:
+	wails3 task common:build:frontend
+
 .PHONY: reinstall
 reinstall: 	## delete and then install all node_modules of frontend
 	cd frontend; rm -rf node_modules && npm install

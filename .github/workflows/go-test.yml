@@ -37,8 +37,8 @@ jobs:
           go install github.com/wailsapp/wails/v3/cmd/wails3@v3.0.0
           "$(go env GOPATH)\bin" >> $env:GITHUB_PATH
 
-      - name: Build Wails v3 app
-        run: wails3 build GOOS=windows ARCH=amd64
+      - name: Build Wails v3 frontend
+        run: wails3 common:build:frontend
 
       - name: Test
         run: go test -v ./...
