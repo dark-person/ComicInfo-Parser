@@ -10,7 +10,7 @@ import { useState } from "react";
 import { Button, Form, Table } from "react-bootstrap";
 
 interface DataTableProps<DataT> {
-    /** Column defintion for data table. */
+    /** Column definition for data table. */
     columns: ColumnDef<DataT>[];
     /** Custom headers for data table. */
     headerClassName?: string[];
