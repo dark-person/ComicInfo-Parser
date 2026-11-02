@@ -4,6 +4,7 @@ assetserver
 AUTOINCREMENT
 cfgprov
 Colour
+comicservice
 Containsf
 Debugf
 Emptyf

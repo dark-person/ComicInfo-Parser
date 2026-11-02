@@ -12,7 +12,7 @@ type FolderSelectorProps = {
 
     /** Text act as label for this folder selector element. */
     label?: string;
-    /** Absoulte path of selected directory. */
+    /** Absolute path of selected directory. */
     directory: string;
     /** React state hook setter for selected directory. */
     setDirectory: (value: string) => void;
@@ -50,7 +50,7 @@ export default function FolderSelector(props: Readonly<FolderSelectorProps>) {
 
             let dirToUse = resp.SelectedDir;
 
-            // When user failed to select/cancel, enfore to use default directory if any
+            // When user failed to select/cancel, enforce to use default directory if any
             if (dirToUse === "" && props.defaultDirectory !== undefined) {
                 dirToUse = props.defaultDirectory;
             }
