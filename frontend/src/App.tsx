@@ -11,9 +11,9 @@ import { CompleteModal, ErrorModal, LoadingModal } from "@/components/modal";
 import type { ModalControl } from "@/controls/ModalControl";
 import { defaultModalState, type ModalState } from "@/controls/ModalState";
 import { CreateCbzStatus } from "@/status/CreateCbzStatus";
+import AutofillView from "@/views/AutofillView";
 import CreateCbzView from "@/views/CreateCbzView";
 import HelpView from "@/views/HelpView";
-import AutofillView from "@/views/InputHistoryView";
 
 /**
  * The main component to be displayed. It will handle all pages data & timing to display.
