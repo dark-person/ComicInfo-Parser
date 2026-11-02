@@ -28,7 +28,7 @@ export default function FolderNameDisplay({ folderPath }: Readonly<FolderNameDis
             return;
         }
 
-        OpenFolder(folderPath);
+        void OpenFolder(folderPath);
     }
 
     return (

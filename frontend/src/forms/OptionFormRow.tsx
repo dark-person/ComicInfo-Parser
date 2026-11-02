@@ -93,7 +93,7 @@ export default function OptionFormRow({
     /** Get option for wails binding, which value came from database. */
     function getOptions() {
         // Get data from wails binding
-        getDefaultOpt().then((response) => {
+        void getDefaultOpt().then((response) => {
             console.log("[getOptions] " + JSON.stringify(response, null, 4));
 
             if (response.ErrorMsg !== "") {
