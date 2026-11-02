@@ -61,7 +61,7 @@ export default function ExportCbzPage({
     useEffect(() => {
         if (originalDirectory !== undefined) {
             // Load config from file
-            GetDefaultOutputDirectory(originalDirectory).then((dir: string) => {
+            void GetDefaultOutputDirectory(originalDirectory).then((dir: string) => {
                 setDefaultDir(dir);
                 setExportDir(dir);
             });
@@ -117,7 +117,7 @@ export default function ExportCbzPage({
         }
 
         // Start running
-        promise.then((msg) => {
+        void promise.then((msg) => {
             console.log(`cbz return: '${msg}'`);
 
             if (msg !== "") {
@@ -135,7 +135,7 @@ export default function ExportCbzPage({
             if (deleteAfterExport) {
                 console.log("Start soft deletion");
 
-                RunSoftDelete().then((errMsg: string) => {
+                void RunSoftDelete().then((errMsg: string) => {
                     if (errMsg !== "") {
                         modalControl.showErr(errMsg);
                         return;

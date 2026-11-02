@@ -43,7 +43,7 @@ export default function FolderSelector(props: Readonly<FolderSelectorProps>) {
             dir = props.defaultDirectory;
         }
 
-        GetDirectory(dir).then((resp: DirectoryResp) => {
+        void GetDirectory(dir).then((resp: DirectoryResp) => {
             if (resp.ErrMsg !== "") {
                 console.error(resp.ErrMsg);
             }

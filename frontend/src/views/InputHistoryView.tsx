@@ -16,7 +16,7 @@ export default function AutofillView() {
     const [data, setData] = useState<AutofillWord[]>([]);
 
     useEffect(() => {
-        GetAllAutofillWord().then((resp: AutofillWord[]) => {
+        void GetAllAutofillWord().then((resp: AutofillWord[]) => {
             setData(resp);
         });
     }, []);

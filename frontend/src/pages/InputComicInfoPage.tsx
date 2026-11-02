@@ -55,7 +55,7 @@ export default function InputComicInfoPage({
         }
 
         // Start Running
-        ExportXML(folderPath, comicInfo).then((msg: string) => {
+        void ExportXML(folderPath, comicInfo).then((msg: string) => {
             console.log(`xml return: '${msg}'`);
             if (msg === "") {
                 modalControl.complete();

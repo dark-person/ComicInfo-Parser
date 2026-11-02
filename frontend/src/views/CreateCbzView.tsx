@@ -46,7 +46,7 @@ export default function CreateCbzView({ mode, setMode, modalController }: Readon
 
     useEffect(() => {
         // Load default export method from backend to session
-        LoadSessionData().then((data: SessionData) => setSessionData(data));
+        void LoadSessionData().then((data: SessionData) => setSessionData(data));
     }, []);
 
     /**
@@ -60,7 +60,7 @@ export default function CreateCbzView({ mode, setMode, modalController }: Readon
         modalController.loading();
 
         // Get ComicInfo
-        GetComicInfo(folder).then((response: ComicInfoResponse) => {
+        void GetComicInfo(folder).then((response: ComicInfoResponse) => {
             const error = response.ErrorMessage;
 
             if (error !== "") {
