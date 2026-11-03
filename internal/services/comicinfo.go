@@ -31,7 +31,7 @@ func (s *ComicService) GetComicInfo(folder string) ComicInfoResponse {
 	}
 
 	// Validate the directory
-	isValid, err := dircheck.CheckFolder(absPath, dircheck.DirectoryOpt{SubFolder: dircheck.Reject, Image: dircheck.Allow})
+	isValid, err := dircheck.CheckIfComicFolder(absPath)
 	if err != nil {
 		return ComicInfoResponse{
 			ComicInfo:    nil,
