@@ -38,7 +38,7 @@ func (s *ComicService) QuickExportKomga(inputDir string) string {
 	}
 
 	// Validate the directory
-	isValid, err := dircheck.CheckFolder(inputDir, dircheck.DirectoryOpt{SubFolder: dircheck.Reject, Image: dircheck.Allow})
+	isValid, err := dircheck.CheckIfComicFolder(inputDir)
 	if err != nil {
 		return err.Error()
 	} else if !isValid {

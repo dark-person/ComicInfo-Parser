@@ -7,6 +7,11 @@ import (
 	"github.com/dark-person/comicinfo-parser/internal/files"
 )
 
+// CheckIfComicFolder will check if given folder is an valid comic folder that allowed to create a comicinfo.xml.
+func CheckIfComicFolder(folderPath string) (bool, error) {
+	return CheckFolder(folderPath, DirectoryOpt{SubFolder: Reject, Image: Allow})
+}
+
 // Check the folder fulfill requirement of the given Directory option.
 func CheckFolder(folderPath string, opt DirectoryOpt) (bool, error) {
 	if !opt.Valid() {
