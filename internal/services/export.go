@@ -88,11 +88,11 @@ func (s *ComicService) QuickExportKomga(inputDir string) string {
 
 // Save user input to history database.
 // All comicinfo handling logic should be inside this function.
-func (a *ComicService) saveToHistory(c *comicinfo.ComicInfo) error {
+func (s *ComicService) saveToHistory(c *comicinfo.ComicInfo) error {
 	// ==================== Tags ====================
 	// Split the tags into slice of string by comma
-	s := strings.Split(c.Tags, ",")
-	err := store.AddTag(a.DB, s...)
+	str := strings.Split(c.Tags, ",")
+	err := store.AddTag(s.DB, str...)
 
 	if err != nil {
 		return err
@@ -103,8 +103,8 @@ func (a *ComicService) saveToHistory(c *comicinfo.ComicInfo) error {
 
 	//  ------------- Genre ----------------
 	// Split the genre into slice of string by comma
-	s = strings.Split(c.Genre, ",")
-	for _, item := range s {
+	str = strings.Split(c.Genre, ",")
+	for _, item := range str {
 		values = append(values, store.HistoryVal{
 			Category: definitions.CategoryGenre,
 			Value:    item,
@@ -113,8 +113,8 @@ func (a *ComicService) saveToHistory(c *comicinfo.ComicInfo) error {
 
 	// ----------- Writer ----------------
 	// Split the publisher into slice of string by comma
-	s = strings.Split(c.Writer, ",")
-	for _, item := range s {
+	str = strings.Split(c.Writer, ",")
+	for _, item := range str {
 		values = append(values, store.HistoryVal{
 			Category: definitions.CategoryWriter,
 			Value:    item,
@@ -123,8 +123,8 @@ func (a *ComicService) saveToHistory(c *comicinfo.ComicInfo) error {
 
 	// ----------- Publisher ----------------
 	// Split the publisher into slice of string by comma
-	s = strings.Split(c.Publisher, ",")
-	for _, item := range s {
+	str = strings.Split(c.Publisher, ",")
+	for _, item := range str {
 		values = append(values, store.HistoryVal{
 			Category: definitions.CategoryPublisher,
 			Value:    item,
@@ -133,8 +133,8 @@ func (a *ComicService) saveToHistory(c *comicinfo.ComicInfo) error {
 
 	// ----------- Translator ----------------
 	// Split the translator into slice of string by comma
-	s = strings.Split(c.Translator, ",")
-	for _, item := range s {
+	str = strings.Split(c.Translator, ",")
+	for _, item := range str {
 		values = append(values, store.HistoryVal{
 			Category: definitions.CategoryTranslator,
 			Value:    item,
@@ -142,7 +142,7 @@ func (a *ComicService) saveToHistory(c *comicinfo.ComicInfo) error {
 	}
 
 	// ----------- INSERT ----------------
-	return store.InsertMultiHistory(a.DB, values...)
+	return store.InsertMultiHistory(s.DB, values...)
 }
 
 // Export the ComicInfo struct to XML file.
