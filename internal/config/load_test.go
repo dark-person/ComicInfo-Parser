@@ -1,11 +1,13 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
 
 	"github.com/dark-person/comicinfo-parser/internal/definitions"
+	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -38,6 +40,9 @@ func TestLoadYaml(t *testing.T) {
 			},
 			TrashBin: trashBinConfig{
 				Path: filepath.Join(exPath, "./.trash"),
+			},
+			LogConfig: logConfig{
+				LogLevelStr: "warn",
 			},
 		}, false},
 
@@ -92,5 +97,37 @@ func TestLoadYamlExportMethod(t *testing.T) {
 
 		assert.EqualValuesf(t, tt.want, c.Preference.ExportMethod, "Incorrect values in case %d", idx)
 		assert.NoErrorf(t, err, "Unexpected error in case %d", idx)
+	}
+}
+
+func TestLoadYamlLogLevel(t *testing.T) {
+	tests := []struct {
+		input  string
+		wanted zerolog.Level
+	}{
+		{"trace", zerolog.TraceLevel},
+		{"debug", zerolog.DebugLevel},
+		{"info", zerolog.InfoLevel},
+		{"warn", zerolog.WarnLevel},
+		{"error", zerolog.ErrorLevel},
+		{"fatal", zerolog.FatalLevel},
+		{"panic", zerolog.PanicLevel},
+		{"disabled", zerolog.Disabled},
+	}
+
+	for _, tt := range tests {
+		// Prepare an dummy config file for test case
+		path := filepath.Join(t.TempDir(), "config.yaml")
+		config := fmt.Appendf(nil, "log:\n  level: %s\n", tt.input)
+
+		if err := os.WriteFile(path, config, 0o600); err != nil {
+			t.Fatal(err)
+		}
+
+		// Test real function
+		c, err := LoadYaml(path)
+
+		assert.NoError(t, err)
+		assert.Equal(t, tt.wanted, c.LogConfig.Level())
 	}
 }

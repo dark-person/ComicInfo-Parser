@@ -12,3 +12,6 @@ database:
 
 trash-bin:
   path: "./.trash"
+
+log:
+  level: warn
