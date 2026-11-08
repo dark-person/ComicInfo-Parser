@@ -72,7 +72,7 @@ You can view and search the value that will be used in "Autofill" Tag.
 
 Advanced user can use `triggers` table in database to define keyword alias and its behavior.
 
-For examplem, to auto fill `me-value` to `Genre` when detect `my-value` in bookname, user require to:
+For example, to auto fill `me-value` to `Genre` when detect `my-value` in book name, user require to:
 
 1. Create `me-value` row in `word_store` table, with `category_id` for genre field
 2. Create `my-value` row in `triggers` table, with `word_id` in `word_store` table
