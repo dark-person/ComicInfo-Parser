@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/dark-person/comicinfo-parser/internal/dircheck"
+	"github.com/dark-person/comicinfo-parser/internal/files"
 	"github.com/rs/zerolog/log"
 )
 
@@ -51,15 +52,40 @@ func findValidComicFolders(target string) ([]string, error) {
 
 // AutoGenerateXML will identify all comic folder by filepath.Walk,
 // and generate ComicInfo.xml inside.
-func (s *ComicService) AutoGenerateXML(target string) AutomationResp {
+func (s *ComicService) AutoGenerateXML(target string, allowOverwrite bool) AutomationResp {
 	// First locate all directory that is valid comic folder
 	comicFolders, err := findValidComicFolders(target)
 
-	log.Debug().Strs("folders", comicFolders).Err(err).Send()
 	if err != nil {
 		return AutomationResp{jobID: -1, errorMessage: err.Error()}
 	}
 
-	// TODO: Impl logic for generate
+	// Loop directory
+	for _, path := range comicFolders {
+		// Check if comicinfo.xml is already exist,
+		// if it is exist and overwrite flag is false,
+		// then skip current folder
+		if !allowOverwrite && files.IsFileExist(filepath.Join(path, "comicinfo.xml")) {
+			continue
+		}
+
+		// Start generate comicinfo
+		cr := s.GetComicInfo(path)
+		if cr.ErrorMessage != "" {
+			return AutomationResp{jobID: -1, errorMessage: cr.ErrorMessage}
+		}
+
+		// Save comicinfo
+		err := s.saveComicInfo(path, cr.ComicInfo)
+
+		if err != nil {
+			return AutomationResp{jobID: -1, errorMessage: err.Error()}
+		}
+	}
+
 	return AutomationResp{jobID: -1, errorMessage: ""}
+}
+
+func (s *ComicService) GetAutomationProgress(jobID int) {
+
 }

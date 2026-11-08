@@ -1,6 +1,9 @@
 import { ColoredCheckBox } from "@/components/ColoredFormCheck";
 import FolderSelector from "@/components/FolderSelector";
-import { GetComicFolder } from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/comicservice";
+import {
+    AutoGenerateXML,
+    GetComicFolder,
+} from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/comicservice";
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 
@@ -23,6 +26,14 @@ export default function AutomationView() {
     useEffect(() => {
         void GetComicFolder().then((dir: string) => setComicFolder(dir));
     }, []);
+
+    function startAutomation() {
+        AutoGenerateXML(state.directory, state.isOverwrite)
+            .then((resp) => {
+                console.log(JSON.stringify(resp, null, 4));
+            })
+            .catch((err) => console.error(err));
+    }
 
     return (
         <div id="Automation-Panel" className="mt-2 mx-5">
@@ -55,7 +66,7 @@ export default function AutomationView() {
 
             {/* Button Group */}
             <div className="w-25 mx-auto d-grid gap-2">
-                <Button variant="outline-info" id="btn-quick-export">
+                <Button variant="outline-info" id="btn-quick-export" onClick={startAutomation}>
                     Start Automation
                 </Button>
             </div>
