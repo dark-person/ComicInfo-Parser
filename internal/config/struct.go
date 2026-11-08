@@ -1,6 +1,10 @@
 package config
 
-import "github.com/dark-person/comicinfo-parser/internal/definitions"
+import (
+	"github.com/dark-person/comicinfo-parser/internal/definitions"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
+)
 
 // Config for this program.
 type ProgramConfig struct {
@@ -8,6 +12,7 @@ type ProgramConfig struct {
 	Metadata   metadataConfig   `koanf:"metadata"`  // Config for metadata default values
 	Database   databaseConfig   `koanf:"database"`  // Config for database to use
 	TrashBin   trashBinConfig   `koanf:"trash-bin"` // Config of trash bin usage
+	LogConfig  logConfig        `koanf:"log"`       // Config for log settings
 }
 
 // Config for some user preference, e.g. default folder used.
@@ -33,6 +38,30 @@ type trashBinConfig struct {
 	Path string `koanf:"path"` // Trash bin location, empty string imply no trash bin defined
 }
 
+// logConfig is config for log settings.
+type logConfig struct {
+	LogLevelStr string `koanf:"level"` // Log level, empty string imply use INFO. Use Level() to get zerolog level.
+}
+
+// Level will convert logConfig value into zerolog.Level for global log level setting.
+func (l *logConfig) Level() zerolog.Level {
+	// Use default level is not specific
+	if l.LogLevelStr == "" {
+		return zerolog.InfoLevel
+	}
+
+	// Try to parse level from zerolog
+	level, err := zerolog.ParseLevel(l.LogLevelStr)
+
+	// Use default level if any error
+	if err != nil {
+		log.Warn().Err(err).Msg("Failed to parse log. Use INFO instead.")
+		return zerolog.InfoLevel
+	}
+
+	return level
+}
+
 // Default config struct for this program.
 func Default() *ProgramConfig {
 	return &ProgramConfig{
@@ -50,6 +79,9 @@ func Default() *ProgramConfig {
 		},
 		TrashBin: trashBinConfig{
 			Path: "", // No trash bin location defined
+		},
+		LogConfig: logConfig{
+			LogLevelStr: "",
 		},
 	}
 }

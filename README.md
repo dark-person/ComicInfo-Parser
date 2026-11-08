@@ -134,19 +134,21 @@ You may found a sample of configuration file in `config-example.yaml`, and defau
 
 You should use absolute paths as possible. If folder is missing, then program will try to create for all folders.
 
-| Field                     | Type    | Usage                                                             | When value is empty                                |
-| ------------------------- | ------- | ----------------------------------------------------------------- | -------------------------------------------------- |
-| `default`                 | struct  | storing default values for program                                | N/a                                                |
-| `default.export-folder`   | string  | default export folder path                                        | create inside input directory                      |
-| `default.comic-folder`    | string  | default folder location when choose folder to create comicinfo    | Folder select UI will be empty                     |
-| `default.export-method`   | string  | default method to export: `file` / `default-wrap` / `custom-wrap` | `default-wrap`                                     |
-| `delete-after-export`     | boolean | default to tick "Soft Delete After Export" checkbox               | `false`                                            |
-| `trash-bin`               | struct  | Store trash bin definition for soft-deletion                      | N/a                                                |
-| `trash-bin.path`          | string  | path of program trash bin                                         | no soft-deletion operation                         |
-| `database`                | struct  | Database related settings                                         | N/a                                                |
-| `database.path`           | string  | path of database                                                  | use `{Home Directory}/comicInfo-parser/storage.db` |
-| `metadata`                | struct  | Default Metadata values                                           | N/a                                                |
-| `metadata.default-number` | string  | `Number` in comicinfo                                             | use empty value                                    |
+| Field                     | Type    | Usage                                                                   | When value is empty                                |
+| ------------------------- | ------- | ----------------------------------------------------------------------- | -------------------------------------------------- |
+| `default`                 | struct  | storing default values for program                                      | N/a                                                |
+| `default.export-folder`   | string  | default export folder path                                              | create inside input directory                      |
+| `default.comic-folder`    | string  | default folder location when choose folder to create comicinfo          | Folder select UI will be empty                     |
+| `default.export-method`   | string  | default method to export: `file` / `default-wrap` / `custom-wrap`       | `default-wrap`                                     |
+| `delete-after-export`     | boolean | default to tick "Soft Delete After Export" checkbox                     | `false`                                            |
+| `trash-bin`               | struct  | Store trash bin definition for soft-deletion                            | N/a                                                |
+| `trash-bin.path`          | string  | path of program trash bin                                               | no soft-deletion operation                         |
+| `database`                | struct  | Database related settings                                               | N/a                                                |
+| `database.path`           | string  | path of database                                                        | use `{Home Directory}/comicInfo-parser/storage.db` |
+| `metadata`                | struct  | Default Metadata values                                                 | N/a                                                |
+| `metadata.default-number` | string  | `Number` in comicinfo                                                   | use empty value                                    |
+| `log`                     | struct  | Log settings                                                            | N/a                                                |
+| `log.level`               | string  | `trace`, `debug`, `info`, `warn`, `error`, `fatal`, `panic`, `disabled` | `info`                                             |
 
 ## Data
 

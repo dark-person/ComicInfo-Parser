@@ -12,3 +12,6 @@ metadata:
 
 trash-bin:
   path:
+
+log:
+  level:

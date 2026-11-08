@@ -12,3 +12,6 @@ metadata:
 
 trash-bin:
   path: "./.trash"
+
+log:
+  level: debug

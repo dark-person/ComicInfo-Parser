@@ -16,11 +16,18 @@ import (
 var assetsFs embed.FS
 
 func main() {
+	// Setup logger with default level first
+	setupLogger(zerolog.DebugLevel)
+
 	// Load Config
 	cfg := assets.Config()
+	log.Warn().Any("config", cfg).Send()
 
-	// Setup logger
-	setupLogger(zerolog.InfoLevel)
+	// Setup logger with config level
+	level := cfg.LogConfig.Level()
+	log.Info().Str("log_level", level.String()).Msg("Log level specified.")
+
+	zerolog.SetGlobalLevel(level)
 
 	// Get Home Directory
 	home, err := os.UserHomeDir()
