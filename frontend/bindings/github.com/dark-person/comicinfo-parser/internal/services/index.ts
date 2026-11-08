@@ -7,6 +7,7 @@ export {
 };
 
 export {
+    AutomationResp,
     ComicInfoResponse,
     DirectoryResp,
     HistoryResp

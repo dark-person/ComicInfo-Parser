@@ -28,6 +28,16 @@ import * as application$0 from "../../../../wailsapp/wails/v3/pkg/application/mo
 import * as $models from "./models.js";
 
 /**
+ * AutoGenerateXML will identify all comic folder by filepath.Walk,
+ * and generate ComicInfo.xml inside.
+ */
+export function AutoGenerateXML(target: string): $CancellablePromise<$models.AutomationResp> {
+    return $Call.ByID(1062949372, target).then(($result: any) => {
+        return $$createType0($result);
+    });
+}
+
+/**
  * Export the .cbz (contains images & comicInfo) file ONLY to destination.
  * 
  * If the process success, then function will output empty string.
@@ -80,7 +90,7 @@ export function ExportXML(originalDir: string, c: comicinfo$0.ComicInfo | null):
  */
 export function GetAllAutofillWord(): $CancellablePromise<store$0.AutofillWord[]> {
     return $Call.ByID(3814231734).then(($result: any) => {
-        return $$createType1($result);
+        return $$createType2($result);
     });
 }
 
@@ -89,7 +99,7 @@ export function GetAllAutofillWord(): $CancellablePromise<store$0.AutofillWord[]
  */
 export function GetAllGenreInput(): $CancellablePromise<$models.HistoryResp> {
     return $Call.ByID(1221561425).then(($result: any) => {
-        return $$createType2($result);
+        return $$createType3($result);
     });
 }
 
@@ -98,7 +108,7 @@ export function GetAllGenreInput(): $CancellablePromise<$models.HistoryResp> {
  */
 export function GetAllPublisherInput(): $CancellablePromise<$models.HistoryResp> {
     return $Call.ByID(2644616864).then(($result: any) => {
-        return $$createType2($result);
+        return $$createType3($result);
     });
 }
 
@@ -107,7 +117,7 @@ export function GetAllPublisherInput(): $CancellablePromise<$models.HistoryResp>
  */
 export function GetAllTagInput(): $CancellablePromise<$models.HistoryResp> {
     return $Call.ByID(4230540944).then(($result: any) => {
-        return $$createType2($result);
+        return $$createType3($result);
     });
 }
 
@@ -127,7 +137,7 @@ export function GetComicFolder(): $CancellablePromise<string> {
  */
 export function GetComicInfo(folder: string): $CancellablePromise<$models.ComicInfoResponse> {
     return $Call.ByID(973440682, folder).then(($result: any) => {
-        return $$createType3($result);
+        return $$createType4($result);
     });
 }
 
@@ -150,7 +160,7 @@ export function GetDefaultOutputDirectory(inputDir: string): $CancellablePromise
  */
 export function GetDirectory(dir: string): $CancellablePromise<$models.DirectoryResp> {
     return $Call.ByID(1982593624, dir).then(($result: any) => {
-        return $$createType4($result);
+        return $$createType5($result);
     });
 }
 
@@ -163,7 +173,7 @@ export function InitDatabase(): $CancellablePromise<void> {
  */
 export function LoadSessionData(): $CancellablePromise<definitions$0.SessionData> {
     return $Call.ByID(2457233093).then(($result: any) => {
-        return $$createType5($result);
+        return $$createType6($result);
     });
 }
 
@@ -216,9 +226,10 @@ export function SetApp(app: application$0.App | null): $CancellablePromise<void>
 }
 
 // Private type creation functions
-const $$createType0 = store$0.AutofillWord.createFrom;
-const $$createType1 = $Create.Array($$createType0);
-const $$createType2 = $models.HistoryResp.createFrom;
-const $$createType3 = $models.ComicInfoResponse.createFrom;
-const $$createType4 = $models.DirectoryResp.createFrom;
-const $$createType5 = definitions$0.SessionData.createFrom;
+const $$createType0 = $models.AutomationResp.createFrom;
+const $$createType1 = store$0.AutofillWord.createFrom;
+const $$createType2 = $Create.Array($$createType1);
+const $$createType3 = $models.HistoryResp.createFrom;
+const $$createType4 = $models.ComicInfoResponse.createFrom;
+const $$createType5 = $models.DirectoryResp.createFrom;
+const $$createType6 = definitions$0.SessionData.createFrom;

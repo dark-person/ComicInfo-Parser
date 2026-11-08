@@ -9,6 +9,26 @@ import { Create as $Create } from "@wailsio/runtime";
 // @ts-ignore: Unused imports
 import * as comicinfo$0 from "../comicinfo/models.js";
 
+/**
+ * AutomationResp will pass automation progress by ID.
+ */
+export class AutomationResp {
+
+    /** Creates a new AutomationResp instance. */
+    constructor($$source: Partial<AutomationResp> = {}) {
+
+        Object.assign(this, $$source);
+    }
+
+    /**
+     * Creates a new AutomationResp instance from a string or object.
+     */
+    static createFrom($$source: any = {}): AutomationResp {
+        let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
+        return new AutomationResp($$parsedSource as Partial<AutomationResp>);
+    }
+}
+
 export class ComicInfoResponse {
     "ComicInfo": comicinfo$0.ComicInfo | null;
     "ErrorMessage": string;
