@@ -11,8 +11,8 @@ import (
 
 // AutomationResp will pass automation progress by ID.
 type AutomationResp struct {
-	jobID        int    // Job ID for tracking automation progress
-	errorMessage string // Error message if any
+	JobID        int    `json:"job_id"`        // Job ID for tracking automation progress
+	ErrorMessage string `json:"error_message"` // Error message if any
 }
 
 // findValidComicFolders will find all valid comic folder in target path
@@ -57,7 +57,7 @@ func (s *ComicService) AutoGenerateXML(target string, allowOverwrite bool) Autom
 	comicFolders, err := findValidComicFolders(target)
 
 	if err != nil {
-		return AutomationResp{jobID: -1, errorMessage: err.Error()}
+		return AutomationResp{JobID: -1, ErrorMessage: err.Error()}
 	}
 
 	// Loop directory
@@ -72,18 +72,18 @@ func (s *ComicService) AutoGenerateXML(target string, allowOverwrite bool) Autom
 		// Start generate comicinfo
 		cr := s.GetComicInfo(path)
 		if cr.ErrorMessage != "" {
-			return AutomationResp{jobID: -1, errorMessage: cr.ErrorMessage}
+			return AutomationResp{JobID: -1, ErrorMessage: cr.ErrorMessage}
 		}
 
 		// Save comicinfo
 		err := s.saveComicInfo(path, cr.ComicInfo)
 
 		if err != nil {
-			return AutomationResp{jobID: -1, errorMessage: err.Error()}
+			return AutomationResp{JobID: -1, ErrorMessage: err.Error()}
 		}
 	}
 
-	return AutomationResp{jobID: -1, errorMessage: ""}
+	return AutomationResp{JobID: -1, ErrorMessage: ""}
 }
 
 func (s *ComicService) GetAutomationProgress(jobID int) {
