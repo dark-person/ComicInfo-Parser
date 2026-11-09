@@ -55,6 +55,7 @@ func findValidComicFolders(target string) ([]string, error) {
 func (s *ComicService) AutoGenerateXML(target string, allowOverwrite bool) AutomationResp {
 	// First locate all directory that is valid comic folder
 	comicFolders, err := findValidComicFolders(target)
+	log.Trace().Any("folders", comicFolders).Send()
 
 	if err != nil {
 		return AutomationResp{JobID: -1, ErrorMessage: err.Error()}
@@ -66,6 +67,7 @@ func (s *ComicService) AutoGenerateXML(target string, allowOverwrite bool) Autom
 		// if it is exist and overwrite flag is false,
 		// then skip current folder
 		if !allowOverwrite && files.IsFileExist(filepath.Join(path, "comicinfo.xml")) {
+			log.Debug().Str("path", path).Msg("Comicinfo.xml already existed, skipped.")
 			continue
 		}
 

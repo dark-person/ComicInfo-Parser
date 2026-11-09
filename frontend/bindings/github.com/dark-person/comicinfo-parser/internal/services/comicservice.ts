@@ -31,8 +31,8 @@ import * as $models from "./models.js";
  * AutoGenerateXML will identify all comic folder by filepath.Walk,
  * and generate ComicInfo.xml inside.
  */
-export function AutoGenerateXML(target: string): $CancellablePromise<$models.AutomationResp> {
-    return $Call.ByID(1062949372, target).then(($result: any) => {
+export function AutoGenerateXML(target: string, allowOverwrite: boolean): $CancellablePromise<$models.AutomationResp> {
+    return $Call.ByID(1062949372, target, allowOverwrite).then(($result: any) => {
         return $$createType0($result);
     });
 }
@@ -119,6 +119,10 @@ export function GetAllTagInput(): $CancellablePromise<$models.HistoryResp> {
     return $Call.ByID(4230540944).then(($result: any) => {
         return $$createType3($result);
     });
+}
+
+export function GetAutomationProgress(jobID: number): $CancellablePromise<void> {
+    return $Call.ByID(2708579525, jobID);
 }
 
 /**

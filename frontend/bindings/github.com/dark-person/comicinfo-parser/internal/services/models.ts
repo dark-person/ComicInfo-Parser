@@ -13,9 +13,24 @@ import * as comicinfo$0 from "../comicinfo/models.js";
  * AutomationResp will pass automation progress by ID.
  */
 export class AutomationResp {
+    /**
+     * Job ID for tracking automation progress
+     */
+    "job_id": number;
+
+    /**
+     * Error message if any
+     */
+    "error_message": string;
 
     /** Creates a new AutomationResp instance. */
     constructor($$source: Partial<AutomationResp> = {}) {
+        if (!("job_id" in $$source)) {
+            this["job_id"] = 0;
+        }
+        if (!("error_message" in $$source)) {
+            this["error_message"] = "";
+        }
 
         Object.assign(this, $$source);
     }
