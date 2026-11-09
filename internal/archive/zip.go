@@ -13,6 +13,7 @@ import (
 // Create ZIP File of inputDir, and output the zip to destDir.
 //
 // This function is a variant of CreateZip(), purpose to provide flexibility.
+// If destination directory is not exist, then it will create itself through files.MoveFile().
 func CreateZipTo(inputDir string, destDir string) (dest string, err error) {
 	// Prevent space include in paths
 	inputDir = strings.TrimSpace(inputDir)
