@@ -66,6 +66,12 @@ func MoveFile(target, dest string) error {
 		return nil
 	}
 
+	// Create Folder if necessary
+	err := os.MkdirAll(filepath.Dir(dest), 0755)
+	if err != nil {
+		return err
+	}
+
 	// Use rename if volume is same
 	if filepath.VolumeName(target) == filepath.VolumeName(dest) {
 		log.Info().Msg("Same volume in copy & dest, use rename")
@@ -74,12 +80,6 @@ func MoveFile(target, dest string) error {
 
 	// -------------- Standard io.Copy ---------------------
 	srcFile, err := os.Open(target)
-	if err != nil {
-		return err
-	}
-
-	// Create Folder if necessary
-	err = os.MkdirAll(filepath.Dir(dest), 0755)
 	if err != nil {
 		return err
 	}
