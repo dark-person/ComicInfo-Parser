@@ -60,11 +60,7 @@ func TestQuickExportKomga(t *testing.T) {
 			assert.EqualValuesf(t, tt.errMsg, errMsg, "Case %d: expected empty error message, but got non-empty.", idx)
 
 			cbzPath := filepath.Join(valid, "valid", "valid.cbz")
-			_, err := os.Stat(cbzPath)
-
-			// File existence
-			assert.EqualValuesf(t, false, os.IsNotExist(err),
-				"file is not generated for case %d, path=%s", idx, cbzPath)
+			assert.FileExistsf(t, cbzPath, "file is not generated for case %d, path=%s", idx, cbzPath)
 
 		} else {
 			assert.Containsf(t, errMsg, tt.errMsg, "Case %d: expected error message matched, but not.", idx)
@@ -177,16 +173,45 @@ func TestExportCbzNoErr(t *testing.T) {
 		// Check if error message is empty
 		assert.EqualValuesf(t, "", errMsg, "Case %d, expected empty error message but got non empty", idx)
 
-		// Special Handling for Normal case
+		// Special Handling for Normal case, Check file is exist
 		cbzPath := filepath.Join(tempFolder, tt.expectedPath)
-		_, err := os.Stat(cbzPath)
-
-		// Check file is exist & archive size is matched with expected
-		assert.EqualValuesf(t, false, os.IsNotExist(err), "Case %d, file is not generated in path=%s", idx, cbzPath)
+		assert.FileExistsf(t, filepath.Join(tempFolder, tt.expectedPath), "Case %d, file is not generated in path=%s", idx, cbzPath)
 	}
 
 	// Close database file
 	app.DB.Close()
+}
+
+func TestExportCbzNonExistFolder(t *testing.T) {
+	// Temp folder creation
+	tempFolder := t.TempDir()
+
+	// Test database
+	testDB := filepath.Join(tempFolder, "test_cbz_folder.db")
+
+	// Prepare folders
+	inputDir := filepath.Join(tempFolder, "input")
+	outputDir := filepath.Join(tempFolder, "output")
+	notYetExistDir := filepath.Join(outputDir, "not-yet-exist")
+
+	// Create contents
+	createFolderContent(inputDir, false)
+	os.MkdirAll(outputDir, 0755)
+
+	// ComicInfo Content
+	validInfo := comicinfo.New()
+
+	// Create a new app
+	app := NewComicServiceWithDefaultConfig(assets.DefaultDB(testDB))
+	app.InitDatabase()
+	defer app.DB.Close()
+
+	msg := app.exportCbz(inputDir, notYetExistDir, &validInfo, archive.NoWrap())
+	assert.Equal(t, "", msg)
+
+	// Check file actually exported
+	actualPath := filepath.Join(notYetExistDir, "input.cbz")
+	assert.FileExists(t, actualPath)
 }
 
 func TestExportCbzNilInfo(t *testing.T) {
@@ -238,33 +263,13 @@ func TestExportCbzErrOs(t *testing.T) {
 	// Create a new app
 	app := NewComicServiceWithDefaultConfig(assets.DefaultDB(testDB))
 	app.InitDatabase()
-
-	// Prepare test case struct
-	type testCase struct {
-		input  string
-		output string
-		errMsg string
-	}
-
-	// Prepare Tests
-	tests := []testCase{
-		// When input dir is invalid (os.Create fails)
-		{invalidDir, outputDir, "input directory does not exist"},
-		// When export dir is invalid (os.Create fails)
-		{inputDir, invalidDir, "export directory does not exist"},
-	}
+	defer app.DB.Close()
 
 	// Start Test
-	for idx, tt := range tests {
-		// RUN test case
-		errMsg := app.exportCbz(tt.input, tt.output, &validInfo, archive.NoWrap())
+	errMsg := app.exportCbz(invalidDir, outputDir, &validInfo, archive.NoWrap())
 
-		// Check error message contains
-		assert.Containsf(t, errMsg, tt.errMsg, "Case %d, unmatched error message", idx)
-	}
-
-	// Close database file
-	app.DB.Close()
+	// Check error message contains
+	assert.Contains(t, errMsg, "input directory does not exist")
 }
 
 func TestSoftDelete(t *testing.T) {
