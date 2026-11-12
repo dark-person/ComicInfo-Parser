@@ -232,10 +232,6 @@ func (s *ComicService) exportCbz(inputDir string, exportDir string, c *comicinfo
 		return "input directory does not exist"
 	}
 
-	if _, err := os.Stat(exportDir); os.IsNotExist(err) {
-		return "export directory does not exist"
-	}
-
 	if c == nil {
 		return "empty comic info"
 	}
