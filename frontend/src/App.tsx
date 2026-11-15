@@ -72,7 +72,7 @@ function App() {
                     <CreateCbzView mode={createMode} setMode={setCreateMode} modalController={modalController} />
                 </Tab>
                 <Tab eventKey={"automation"} title={"Automation"}>
-                    <AutomationView />
+                    <AutomationView modalController={modalController} />
                 </Tab>
                 <Tab eventKey={"autofill"} title={"Autofill"}>
                     <AutofillView />
