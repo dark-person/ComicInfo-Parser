@@ -1,4 +1,4 @@
-import type { ComicInfo } from "@bindings/github.com/dark-person/comicinfo-parser/internal/comicinfo/models";
+import type { ComicInfo } from "@bindings/comicinfo/models";
 
 /** The Props for Metadata Component. */
 export type MetadataProps = {

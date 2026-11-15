@@ -13,7 +13,7 @@ export default defineConfig({
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "./src"),
-            "@bindings": path.resolve(__dirname, "./bindings"),
+            "@bindings": path.resolve(__dirname, "./bindings/github.com/dark-person/comicinfo-parser/internal"),
         },
     },
     plugins: [react(), wails("./bindings")],

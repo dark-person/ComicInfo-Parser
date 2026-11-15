@@ -34,7 +34,7 @@
                 "./src/*"
             ],
             "@bindings/*": [
-                "./bindings/*"
+                "./bindings/github.com/dark-person/comicinfo-parser/internal/*"
             ]
         }
     },

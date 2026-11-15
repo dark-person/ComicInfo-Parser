@@ -1,5 +1,4 @@
 // React
-import type { HistoryResp } from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/models";
 import { useEffect, useState } from "react";
 
 // React Component
@@ -8,6 +7,8 @@ import Form from "react-bootstrap/Form";
 
 import { type ActionMeta, type GroupBase, type MultiValue, type StylesConfig } from "react-select";
 import CreatableSelect from "react-select/creatable";
+
+import type { HistoryResp } from "@bindings/services/models";
 
 /** Props for `OptionFormRow`. */
 type OptionFormRowProps = {

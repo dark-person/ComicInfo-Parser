@@ -7,12 +7,9 @@ import Button from "react-bootstrap/Button";
 // Project Specific Component
 import FolderSelector from "@/components/FolderSelector";
 import { type ModalControl } from "@/controls/ModalControl";
-import {
-    GetComicFolder,
-    QuickExportKomga,
-} from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/comicservice";
 
 // Wails
+import { GetComicFolder, QuickExportKomga } from "@bindings/services/comicservice";
 
 /** Props Interface for FolderSelectPage */
 type FolderSelectPageProps = {

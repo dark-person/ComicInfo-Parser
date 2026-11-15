@@ -1,8 +1,9 @@
-import { GetDirectory } from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/comicservice";
-import type { DirectoryResp } from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/models";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
+
+import { GetDirectory } from "@bindings/services/comicservice";
+import type { DirectoryResp } from "@bindings/services/models";
 
 type FolderSelectorProps = {
     /** ID of root element. */

@@ -11,16 +11,10 @@ import InputComicInfoPage from "@/pages/InputComicInfoPage";
 import { CreateCbzStatus } from "@/status/CreateCbzStatus";
 
 // Wails
-import { ComicInfo } from "@bindings/github.com/dark-person/comicinfo-parser/internal/comicinfo/models";
-import {
-    ExportMethod,
-    type SessionData,
-} from "@bindings/github.com/dark-person/comicinfo-parser/internal/definitions/models";
-import {
-    GetComicInfo,
-    LoadSessionData,
-} from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/comicservice";
-import type { ComicInfoResponse } from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/models";
+import { ComicInfo } from "@bindings/comicinfo/models";
+import { ExportMethod, type SessionData } from "@bindings/definitions/models";
+import { GetComicInfo, LoadSessionData } from "@bindings/services/comicservice";
+import type { ComicInfoResponse } from "@bindings/services/models";
 
 type CreateCbzViewProps = {
     /** Decide which panel will be displayed. */

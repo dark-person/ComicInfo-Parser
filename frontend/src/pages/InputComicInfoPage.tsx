@@ -11,10 +11,10 @@ import CreatorMetadata from "@/pages/metadata/CreatorMetadata";
 import MiscMetadata from "@/pages/metadata/MiscMetadata";
 import SeriesMetadata from "@/pages/metadata/SeriesMetadata";
 import TagMetadata from "@/pages/metadata/TagMetadata";
-import type { ComicInfo } from "@bindings/github.com/dark-person/comicinfo-parser/internal/comicinfo/models";
-import { ExportXML } from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/comicservice";
 
 // Wails binding
+import type { ComicInfo } from "@bindings/comicinfo/models";
+import { ExportXML } from "@bindings/services/comicservice";
 
 /** Props Interface for InputComicInfoPage */
 type InputComicInfoPageProps = {

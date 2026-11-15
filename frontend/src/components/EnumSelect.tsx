@@ -1,6 +1,6 @@
 import { Form } from "react-bootstrap";
 
-import { AgeRating, Manga } from "@bindings/github.com/dark-person/comicinfo-parser/internal/comicinfo/models";
+import { AgeRating, Manga } from "@bindings/comicinfo/models";
 
 /** Props for `EnumOptions` */
 type OptionProps = {
