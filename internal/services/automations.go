@@ -59,6 +59,21 @@ func (s *ComicService) AutoGenerateXML(target string) AutomationResp {
 		return AutomationResp{ErrorMessage: err.Error()}
 	}
 
-	// TODO: Impl logic for generate
+	// Loop directory
+	for _, path := range comicFolders {
+		// Start generate comicinfo
+		resp := s.GetComicInfo(path)
+		if resp.ErrorMessage != "" {
+			return AutomationResp{ErrorMessage: resp.ErrorMessage}
+		}
+
+		// Save comicinfo
+		err := s.saveComicInfo(path, resp.ComicInfo)
+
+		if err != nil {
+			return AutomationResp{ErrorMessage: err.Error()}
+		}
+	}
+
 	return AutomationResp{ErrorMessage: ""}
 }
