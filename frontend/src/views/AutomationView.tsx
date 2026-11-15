@@ -1,11 +1,10 @@
-import FolderSelector from "@/components/FolderSelector";
-import { type ModalControl } from "@/controls/ModalControl";
-import {
-    AutoGenerateXML,
-    GetComicFolder,
-} from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/comicservice";
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
+
+import FolderSelector from "@/components/FolderSelector";
+import { type ModalControl } from "@/controls/ModalControl";
+
+import { AutoGenerateXML, GetComicFolder } from "@bindings/services/comicservice";
 
 type AutomationState = {
     /** The Directory Absolute Path selected by User. */

@@ -2,8 +2,9 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 
 import DataTable from "@/components/DataTable";
-import { GetAllAutofillWord } from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/comicservice";
-import type { AutofillWord } from "@bindings/github.com/dark-person/comicinfo-parser/internal/store/models";
+
+import { GetAllAutofillWord } from "@bindings/services/comicservice";
+import type { AutofillWord } from "@bindings/store/models";
 
 const columnDef: ColumnDef<AutofillWord>[] = [
     { accessorKey: "word", header: "Word" },

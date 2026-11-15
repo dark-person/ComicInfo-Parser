@@ -4,9 +4,9 @@ import { Form } from "react-bootstrap";
 // Project Specified Component
 import OptionFormRow from "@/forms/OptionFormRow";
 import { type MetadataProps } from "@/pages/metadata/MetadataProps";
-import { GetAllTagInput } from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/comicservice";
 
 // Wails binding
+import { GetAllTagInput } from "@bindings/services/comicservice";
 
 /**
  * The interface for show/edit tags metadata.

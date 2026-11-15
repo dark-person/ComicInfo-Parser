@@ -12,17 +12,17 @@ import { ColoredCheckBox, ColoredRadio } from "@/components/ColoredFormCheck";
 import FolderSelector from "@/components/FolderSelector";
 import { type ModalControl } from "@/controls/ModalControl";
 import { basename } from "@/filename";
-import type { ComicInfo } from "@bindings/github.com/dark-person/comicinfo-parser/internal/comicinfo/models";
-import { ExportMethod } from "@bindings/github.com/dark-person/comicinfo-parser/internal/definitions/models";
+
+// Wails
+import type { ComicInfo } from "@bindings/comicinfo/models";
+import { ExportMethod } from "@bindings/definitions/models";
 import {
     ExportCbzOnly,
     ExportCbzWithDefaultWrap,
     ExportCbzWithWrap,
     GetDefaultOutputDirectory,
     RunSoftDelete,
-} from "@bindings/github.com/dark-person/comicinfo-parser/internal/services/comicservice";
-
-// Wails
+} from "@bindings/services/comicservice";
 
 /** Props Interface for ExportCbzPage */
 type ExportCbzPageProps = {
