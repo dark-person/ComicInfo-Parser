@@ -114,6 +114,12 @@ The file structure will be:
 
 User can directly copy `{comic-title}/` folder to `komga` comic directory.
 
+### Automation
+
+Provide method to auto generate Comicinfo.xml for all comic folders in given directory.
+
+![Automation](screenshots/automation.png)
+
 ## Configuration
 
 This program support some customizations by `.yaml` file configuration.
