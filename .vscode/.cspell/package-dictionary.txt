@@ -23,6 +23,7 @@ MSIX
 Nilf
 sirupsen
 stretchr
+Strs
 Struct
 Taskfile
 Tracef
