@@ -8,6 +8,7 @@ import FolderNameDisplay from "@/components/FolderDisplay";
 import { type ModalControl } from "@/controls/ModalControl";
 import BookMetadata from "@/pages/metadata/BookMetadata";
 import CreatorMetadata from "@/pages/metadata/CreatorMetadata";
+import EntityMetadata from "@/pages/metadata/EntityMetadata";
 import MiscMetadata from "@/pages/metadata/MiscMetadata";
 import SeriesMetadata from "@/pages/metadata/SeriesMetadata";
 import TagMetadata from "@/pages/metadata/TagMetadata";
@@ -80,6 +81,10 @@ export default function InputComicInfoPage({
 
                 <Tab eventKey="Creator" title="Creator">
                     <CreatorMetadata comicInfo={comicInfo} infoSetter={infoSetter} />
+                </Tab>
+
+                <Tab eventKey="Entity" title="Entity">
+                    <EntityMetadata comicInfo={comicInfo} infoSetter={infoSetter} />
                 </Tab>
 
                 <Tab eventKey="Tags" title="Tags">
