@@ -18,6 +18,7 @@ Currently, this project supports fields:
 
 - `Title`, `Number`, `Summary`, `Year/Month/Day`, `Web`, `GTIN`
 - ALL Creator fields: `Writer`, `Translator` .etc
+- `Characters`, `Teams`, `Locations` (Notable Entity)
 - `Tags` with GUI to edit & view
 - `Series`, `Volume`, `Count`
 - `AgeRating`, `Manga` with Enum values supported
