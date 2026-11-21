@@ -25,7 +25,6 @@ type EnumSelectProps = {
 export function MangaSelect({ value, onChange }: Readonly<EnumSelectProps>) {
     return (
         <Form.Select value={value} title="Manga" onChange={onChange}>
-            <option value={""}></option>
             {Object.values(Manga).map((item, idx) => (
                 <EnumOptions value={item} key={"manga-opt-" + idx} />
             ))}
@@ -37,7 +36,6 @@ export function MangaSelect({ value, onChange }: Readonly<EnumSelectProps>) {
 export function AgeRatingSelect({ value, onChange }: Readonly<EnumSelectProps>) {
     return (
         <Form.Select value={value} title="AgeRating" onChange={onChange}>
-            <option value={""}></option>
             {Object.values(AgeRating).map((item, idx) => (
                 <EnumOptions value={item} key={"age-opt-" + idx} />
             ))}
