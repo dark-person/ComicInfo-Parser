@@ -95,10 +95,28 @@ export function GetAllAutofillWord(): $CancellablePromise<store$0.AutofillWord[]
 }
 
 /**
+ * Get all user inputted characters from database.
+ */
+export function GetAllCharactersInput(): $CancellablePromise<$models.HistoryResp> {
+    return $Call.ByID(488454028).then(($result: any) => {
+        return $$createType3($result);
+    });
+}
+
+/**
  * Get all user inputted genre from database.
  */
 export function GetAllGenreInput(): $CancellablePromise<$models.HistoryResp> {
     return $Call.ByID(1221561425).then(($result: any) => {
+        return $$createType3($result);
+    });
+}
+
+/**
+ * Get all user inputted locations from database.
+ */
+export function GetAllLocationsInput(): $CancellablePromise<$models.HistoryResp> {
+    return $Call.ByID(3701407892).then(($result: any) => {
         return $$createType3($result);
     });
 }
@@ -117,6 +135,15 @@ export function GetAllPublisherInput(): $CancellablePromise<$models.HistoryResp>
  */
 export function GetAllTagInput(): $CancellablePromise<$models.HistoryResp> {
     return $Call.ByID(4230540944).then(($result: any) => {
+        return $$createType3($result);
+    });
+}
+
+/**
+ * Get all user inputted Teams from database.
+ */
+export function GetAllTeamsInput(): $CancellablePromise<$models.HistoryResp> {
+    return $Call.ByID(1499681526).then(($result: any) => {
         return $$createType3($result);
     });
 }

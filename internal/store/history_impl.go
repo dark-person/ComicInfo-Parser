@@ -27,6 +27,21 @@ func GetPublisherList(db *lazydb.LazyDB) ([]string, error) {
 	return getHistory(db, definitions.CategoryPublisher)
 }
 
+// Get all characters value that from database.
+func GetCharactersList(db *lazydb.LazyDB) ([]string, error) {
+	return getHistory(db, definitions.CategoryCharacters)
+}
+
+// Get all teams value that from database.
+func GetTeamsList(db *lazydb.LazyDB) ([]string, error) {
+	return getHistory(db, definitions.CategoryTeams)
+}
+
+// Get all locations value that from database.
+func GetLocationsList(db *lazydb.LazyDB) ([]string, error) {
+	return getHistory(db, definitions.CategoryLocations)
+}
+
 // ================================================================================
 
 // Container for history module,
