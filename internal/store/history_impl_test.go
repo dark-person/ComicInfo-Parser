@@ -4,9 +4,97 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/dark-person/comicinfo-parser/internal/definitions"
 	"github.com/dark-person/lazydb"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestSplitToHistoryValSeparator(t *testing.T) {
+	const (
+		str      = "A,B C"
+		category = definitions.CategoryGenre
+	)
+
+	type testCase struct {
+		name string
+		sep  string
+		want []HistoryVal
+	}
+
+	tests := []testCase{
+		{
+			name: "comma separator",
+			sep:  ",",
+			want: []HistoryVal{
+				{Category: category, Value: "A"},
+				{Category: category, Value: "B C"},
+			},
+		},
+		{
+			name: "space separator",
+			sep:  " ",
+			want: []HistoryVal{
+				{Category: category, Value: "A,B"},
+				{Category: category, Value: "C"},
+			},
+		},
+		{
+			name: "separator not found",
+			sep:  "|",
+			want: []HistoryVal{
+				{Category: category, Value: str},
+			},
+		},
+		{
+			name: "empty separator",
+			sep:  "",
+			want: []HistoryVal{
+				{Category: category, Value: "A"},
+				{Category: category, Value: ","},
+				{Category: category, Value: "B"},
+				{Category: category, Value: " "},
+				{Category: category, Value: "C"},
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, SplitToHistoryVal(str, tt.sep, category))
+		})
+	}
+}
+
+func TestSplitToHistoryValCategory(t *testing.T) {
+	const (
+		str = "Action,Adventure"
+		sep = ","
+	)
+
+	type testCase struct {
+		name     string
+		category definitions.CategoryType
+	}
+
+	tests := []testCase{
+		{name: "genre", category: definitions.CategoryGenre},
+		{name: "publisher", category: definitions.CategoryPublisher},
+		{name: "translator", category: definitions.CategoryTranslator},
+		{name: "tag", category: definitions.CategoryTag},
+		{name: "writer", category: definitions.CategoryWriter},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			want := []HistoryVal{
+				{Category: tt.category, Value: "Action"},
+				{Category: tt.category, Value: "Adventure"},
+			}
+
+			assert.Equal(t, want, SplitToHistoryVal(str, sep, tt.category))
+		})
+	}
+}
 
 // Test function of `InsertMultiple()`.
 // Since this function is using core function in `core.go`,

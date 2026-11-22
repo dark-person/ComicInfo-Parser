@@ -1,6 +1,8 @@
 package store
 
 import (
+	"strings"
+
 	"github.com/dark-person/comicinfo-parser/internal/definitions"
 	"github.com/dark-person/lazydb"
 )
@@ -34,6 +36,18 @@ func GetPublisherList(db *lazydb.LazyDB) ([]string, error) {
 type HistoryVal struct {
 	Category definitions.CategoryType // category to be inserted
 	Value    string                   // value to be inserted
+}
+
+// SplitToHistoryVal splits given string by given separator,
+// and returns a HistoryVal for each resulting substring.
+func SplitToHistoryVal(str string, sep string, category definitions.CategoryType) []HistoryVal {
+	separated := strings.Split(str, sep)
+
+	values := make([]HistoryVal, 0)
+	for _, item := range separated {
+		values = append(values, HistoryVal{Category: category, Value: item})
+	}
+	return values
 }
 
 // Insert values to database, which can include multiple record with different categories.

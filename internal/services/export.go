@@ -101,45 +101,17 @@ func (s *ComicService) saveToHistory(c *comicinfo.ComicInfo) error {
 	// ========== For values supported by history pkg ============
 	values := make([]store.HistoryVal, 0)
 
-	//  ------------- Genre ----------------
 	// Split the genre into slice of string by comma
-	str = strings.Split(c.Genre, ",")
-	for _, item := range str {
-		values = append(values, store.HistoryVal{
-			Category: definitions.CategoryGenre,
-			Value:    item,
-		})
-	}
+	values = append(values, store.SplitToHistoryVal(c.Genre, ",", definitions.CategoryGenre)...)
 
-	// ----------- Writer ----------------
+	// Split the writer into slice of string by comma
+	values = append(values, store.SplitToHistoryVal(c.Writer, ",", definitions.CategoryWriter)...)
+
 	// Split the publisher into slice of string by comma
-	str = strings.Split(c.Writer, ",")
-	for _, item := range str {
-		values = append(values, store.HistoryVal{
-			Category: definitions.CategoryWriter,
-			Value:    item,
-		})
-	}
+	values = append(values, store.SplitToHistoryVal(c.Publisher, ",", definitions.CategoryPublisher)...)
 
-	// ----------- Publisher ----------------
-	// Split the publisher into slice of string by comma
-	str = strings.Split(c.Publisher, ",")
-	for _, item := range str {
-		values = append(values, store.HistoryVal{
-			Category: definitions.CategoryPublisher,
-			Value:    item,
-		})
-	}
-
-	// ----------- Translator ----------------
 	// Split the translator into slice of string by comma
-	str = strings.Split(c.Translator, ",")
-	for _, item := range str {
-		values = append(values, store.HistoryVal{
-			Category: definitions.CategoryTranslator,
-			Value:    item,
-		})
-	}
+	values = append(values, store.SplitToHistoryVal(c.Translator, ",", definitions.CategoryTranslator)...)
 
 	// ----------- INSERT ----------------
 	return store.InsertMultiHistory(s.DB, values...)
