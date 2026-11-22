@@ -4,21 +4,9 @@ import { Form } from "react-bootstrap";
 // Project Specified Component
 import OptionFormRow from "@/forms/OptionFormRow";
 import { type MetadataProps } from "@/pages/metadata/MetadataProps";
-import { HistoryResp } from "@bindings/services";
 
-/**
- * Dummy function to return empty options for default options in `OptionFormRow`.
- * @returns promise to return an empty `HistoryResp`
- */
-function emptyOptions(): Promise<HistoryResp> {
-    return new Promise<HistoryResp>((resolve) => {
-        const resp = new HistoryResp();
-        resp.Inputs = [];
-        resp.ErrorMsg = "";
-
-        resolve(resp);
-    });
-}
+// Wails binding
+import { GetAllCharactersInput, GetAllLocationsInput, GetAllTeamsInput } from "@bindings/services/comicservice";
 
 /** The JSX Element for show/edit entity metadata. */
 export default function EntityMetadata({ comicInfo: info, infoSetter }: Readonly<MetadataProps>) {
@@ -29,7 +17,7 @@ export default function EntityMetadata({ comicInfo: info, infoSetter }: Readonly
                     title={"Characters"}
                     value={info?.Characters}
                     setValue={(val) => infoSetter("Characters", val)}
-                    getDefaultOpt={emptyOptions}
+                    getDefaultOpt={GetAllCharactersInput}
                     componentHeight="120px"
                 />
 
@@ -37,7 +25,7 @@ export default function EntityMetadata({ comicInfo: info, infoSetter }: Readonly
                     title={"Teams"}
                     value={info?.Teams}
                     setValue={(val) => infoSetter("Teams", val)}
-                    getDefaultOpt={emptyOptions}
+                    getDefaultOpt={GetAllTeamsInput}
                     componentHeight="120px"
                 />
 
@@ -45,7 +33,7 @@ export default function EntityMetadata({ comicInfo: info, infoSetter }: Readonly
                     title={"Locations"}
                     value={info?.Locations}
                     setValue={(val) => infoSetter("Locations", val)}
-                    getDefaultOpt={emptyOptions}
+                    getDefaultOpt={GetAllLocationsInput}
                     componentHeight="120px"
                 />
             </Form>
