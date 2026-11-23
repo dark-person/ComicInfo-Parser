@@ -14,35 +14,17 @@ type HistoryResp struct {
 
 // Get all user inputted genre from database.
 func (s *ComicService) GetAllGenreInput() HistoryResp {
-	list, err := store.GetGenreList(s.DB)
-
-	if err != nil {
-		return HistoryResp{nil, err.Error()}
-	}
-
-	return HistoryResp{list, ""}
+	return toHistoryResp(store.GetGenreList(s.DB))
 }
 
 // Get all user inputted publisher from database.
 func (s *ComicService) GetAllPublisherInput() HistoryResp {
-	list, err := store.GetPublisherList(s.DB)
-
-	if err != nil {
-		return HistoryResp{nil, err.Error()}
-	}
-
-	return HistoryResp{list, ""}
+	return toHistoryResp(store.GetPublisherList(s.DB))
 }
 
 // Get all user inputted tag from database.
 func (s *ComicService) GetAllTagInput() HistoryResp {
-	list, err := store.GetAllTags(s.DB)
-
-	if err != nil {
-		return HistoryResp{nil, err.Error()}
-	}
-
-	return HistoryResp{list, ""}
+	return toHistoryResp(store.GetAllTags(s.DB))
 }
 
 // Get all word with complete structure that stored in database and will be used in auto fill.
@@ -54,4 +36,14 @@ func (s *ComicService) GetAllAutofillWord() []store.AutofillWord {
 	}
 
 	return words
+}
+
+// toHistoryResp will convert given list and errors to HistoryResp object.
+//
+// This function is aim to simplify commonly used code.
+func toHistoryResp(list []string, err error) HistoryResp {
+	if err != nil {
+		return HistoryResp{nil, err.Error()}
+	}
+	return HistoryResp{list, ""}
 }
