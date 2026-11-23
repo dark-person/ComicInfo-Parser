@@ -82,6 +82,9 @@ func TestSplitToHistoryValCategory(t *testing.T) {
 		{name: "translator", category: definitions.CategoryTranslator},
 		{name: "tag", category: definitions.CategoryTag},
 		{name: "writer", category: definitions.CategoryWriter},
+		{name: "characters", category: definitions.CategoryCharacters},
+		{name: "teams", category: definitions.CategoryTeams},
+		{name: "locations", category: definitions.CategoryLocations},
 	}
 
 	for _, tt := range tests {
