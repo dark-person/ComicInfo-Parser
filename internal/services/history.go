@@ -27,6 +27,21 @@ func (s *ComicService) GetAllTagInput() HistoryResp {
 	return toHistoryResp(store.GetAllTags(s.DB))
 }
 
+// Get all user inputted characters from database.
+func (s *ComicService) GetAllCharactersInput() HistoryResp {
+	return toHistoryResp(store.GetCharactersList(s.DB))
+}
+
+// Get all user inputted Teams from database.
+func (s *ComicService) GetAllTeamsInput() HistoryResp {
+	return toHistoryResp(store.GetTeamsList(s.DB))
+}
+
+// Get all user inputted locations from database.
+func (s *ComicService) GetAllLocationsInput() HistoryResp {
+	return toHistoryResp(store.GetLocationsList(s.DB))
+}
+
 // Get all word with complete structure that stored in database and will be used in auto fill.
 func (s *ComicService) GetAllAutofillWord() []store.AutofillWord {
 	words, err := store.GetAllAutofillWord(s.DB)

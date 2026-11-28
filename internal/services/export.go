@@ -113,6 +113,11 @@ func (s *ComicService) saveToHistory(c *comicinfo.ComicInfo) error {
 	// Split the translator into slice of string by comma
 	values = append(values, store.SplitToHistoryVal(c.Translator, ",", definitions.CategoryTranslator)...)
 
+	// Entity: Characters, Teams, Locations
+	values = append(values, store.SplitToHistoryVal(c.Characters, ",", definitions.CategoryCharacters)...)
+	values = append(values, store.SplitToHistoryVal(c.Teams, ",", definitions.CategoryTeams)...)
+	values = append(values, store.SplitToHistoryVal(c.Locations, ",", definitions.CategoryLocations)...)
+
 	// ----------- INSERT ----------------
 	return store.InsertMultiHistory(s.DB, values...)
 }
