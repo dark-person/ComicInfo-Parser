@@ -46,6 +46,9 @@ Currently, this feature support below fields:
 - `Publisher`
 - `Translator`
 - `Tags`
+- `Characters`
+- `Teams`
+- `Locations`
 
 More field will be added in near future.
 
@@ -64,6 +67,9 @@ Currently, this feature support below fields:
 - `Publisher`
 - `Translator`
 - `Tags`
+- `Characters`
+- `Teams`
+- `Locations`
 
 You can view and search the value that will be used in "Autofill" Tag.
 
